@@ -1,0 +1,2987 @@
+ARM GAS  /tmp/ccob42Kd.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"gd32f1x0_usart.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.USART_DeInit,"ax",%progbits
+  17              		.align	2
+  18              		.global	USART_DeInit
+  19              		.thumb
+  20              		.thumb_func
+  22              	USART_DeInit:
+  23              	.LFB29:
+  24              		.file 1 "Peripherals/src/gd32f1x0_usart.c"
+   1:Peripherals/src/gd32f1x0_usart.c **** /**
+   2:Peripherals/src/gd32f1x0_usart.c ****   ******************************************************************************
+   3:Peripherals/src/gd32f1x0_usart.c ****   * @file    gd32f1x0_usart.c
+   4:Peripherals/src/gd32f1x0_usart.c ****   * @author  MCU SD
+   5:Peripherals/src/gd32f1x0_usart.c ****   * @version V1.0.1
+   6:Peripherals/src/gd32f1x0_usart.c ****   * @date    6-Sep-2014
+   7:Peripherals/src/gd32f1x0_usart.c ****   * @brief   USART functions of the firmware library.
+   8:Peripherals/src/gd32f1x0_usart.c ****   ******************************************************************************
+   9:Peripherals/src/gd32f1x0_usart.c ****   */
+  10:Peripherals/src/gd32f1x0_usart.c ****   
+  11:Peripherals/src/gd32f1x0_usart.c **** /* Includes ------------------------------------------------------------------*/
+  12:Peripherals/src/gd32f1x0_usart.c **** #include "gd32f1x0_usart.h"
+  13:Peripherals/src/gd32f1x0_usart.c **** #include "gd32f1x0_rcc.h"
+  14:Peripherals/src/gd32f1x0_usart.c ****   
+  15:Peripherals/src/gd32f1x0_usart.c **** /** @addtogroup GD32F1x0_Firmware
+  16:Peripherals/src/gd32f1x0_usart.c ****   * @{
+  17:Peripherals/src/gd32f1x0_usart.c ****   */
+  18:Peripherals/src/gd32f1x0_usart.c **** 
+  19:Peripherals/src/gd32f1x0_usart.c **** /** @defgroup USART 
+  20:Peripherals/src/gd32f1x0_usart.c ****   * @brief USART driver modules
+  21:Peripherals/src/gd32f1x0_usart.c ****   * @{
+  22:Peripherals/src/gd32f1x0_usart.c ****   */ 
+  23:Peripherals/src/gd32f1x0_usart.c **** 
+  24:Peripherals/src/gd32f1x0_usart.c **** /** @defgroup USART_Private_Defines
+  25:Peripherals/src/gd32f1x0_usart.c ****   * @{
+  26:Peripherals/src/gd32f1x0_usart.c ****   */
+  27:Peripherals/src/gd32f1x0_usart.c **** /* USART Interrupts mask */
+  28:Peripherals/src/gd32f1x0_usart.c **** #define INT_MASK                                        ((uint32_t)0x000000FF)
+  29:Peripherals/src/gd32f1x0_usart.c **** 
+  30:Peripherals/src/gd32f1x0_usart.c **** /* USART CTLR1 initializes bit mask */
+  31:Peripherals/src/gd32f1x0_usart.c **** #define CTLR1_CLEAR_MASK                                ((uint32_t)(0X0000160C))
+  32:Peripherals/src/gd32f1x0_usart.c **** 
+  33:Peripherals/src/gd32f1x0_usart.c **** /* USART CTLR2 CLOCK initializes bit mask */
+  34:Peripherals/src/gd32f1x0_usart.c **** #define CTLR2_CLOCK_CLEAR_MASK                          ((uint32_t)(0x00000F00))
+ARM GAS  /tmp/ccob42Kd.s 			page 2
+
+
+  35:Peripherals/src/gd32f1x0_usart.c **** 
+  36:Peripherals/src/gd32f1x0_usart.c **** /* USART CTLR3 CLOCK initializes bit mask */
+  37:Peripherals/src/gd32f1x0_usart.c **** #define CTLR3_CLEAR_MASK                                ((uint32_t)(0x00000300))
+  38:Peripherals/src/gd32f1x0_usart.c **** 
+  39:Peripherals/src/gd32f1x0_usart.c **** /**
+  40:Peripherals/src/gd32f1x0_usart.c ****   * @}
+  41:Peripherals/src/gd32f1x0_usart.c ****   */
+  42:Peripherals/src/gd32f1x0_usart.c **** 
+  43:Peripherals/src/gd32f1x0_usart.c **** /** @defgroup USART_Private_Functions
+  44:Peripherals/src/gd32f1x0_usart.c ****   * @{
+  45:Peripherals/src/gd32f1x0_usart.c ****   */
+  46:Peripherals/src/gd32f1x0_usart.c ****   
+  47:Peripherals/src/gd32f1x0_usart.c **** /**
+  48:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Reset the USART peripheral.
+  49:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+  50:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USARTx peripheral.
+  51:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+  52:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+  53:Peripherals/src/gd32f1x0_usart.c ****   */
+  54:Peripherals/src/gd32f1x0_usart.c **** void USART_DeInit(USART_TypeDef* USARTx)
+  55:Peripherals/src/gd32f1x0_usart.c **** {
+  25              		.loc 1 55 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29              	.LVL0:
+  30 0000 08B5     		push	{r3, lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+  56:Peripherals/src/gd32f1x0_usart.c ****     if (USARTx == USART1)
+  35              		.loc 1 56 0
+  36 0002 0E4B     		ldr	r3, .L4
+  37 0004 9842     		cmp	r0, r3
+  38 0006 0AD1     		bne	.L2
+  57:Peripherals/src/gd32f1x0_usart.c ****     {
+  58:Peripherals/src/gd32f1x0_usart.c ****         RCC_APB2PeriphReset_Enable(RCC_APB2PERIPH_USART1, ENABLE);
+  39              		.loc 1 58 0
+  40 0008 4FF48040 		mov	r0, #16384
+  41              	.LVL1:
+  42 000c 0121     		movs	r1, #1
+  43 000e FFF7FEFF 		bl	RCC_APB2PeriphReset_Enable
+  44              	.LVL2:
+  59:Peripherals/src/gd32f1x0_usart.c ****         RCC_APB2PeriphReset_Enable(RCC_APB2PERIPH_USART1, DISABLE);
+  45              		.loc 1 59 0
+  46 0012 4FF48040 		mov	r0, #16384
+  47 0016 0021     		movs	r1, #0
+  48 0018 FFF7FEFF 		bl	RCC_APB2PeriphReset_Enable
+  49              	.LVL3:
+  50 001c 08BD     		pop	{r3, pc}
+  51              	.LVL4:
+  52              	.L2:
+  60:Peripherals/src/gd32f1x0_usart.c ****     }
+  61:Peripherals/src/gd32f1x0_usart.c ****     else
+  62:Peripherals/src/gd32f1x0_usart.c ****     {
+  63:Peripherals/src/gd32f1x0_usart.c ****         if (USARTx == USART2)
+ARM GAS  /tmp/ccob42Kd.s 			page 3
+
+
+  53              		.loc 1 63 0
+  54 001e 084B     		ldr	r3, .L4+4
+  55 0020 9842     		cmp	r0, r3
+  56 0022 09D1     		bne	.L1
+  64:Peripherals/src/gd32f1x0_usart.c ****         {
+  65:Peripherals/src/gd32f1x0_usart.c ****             RCC_APB1PeriphReset_Enable(RCC_APB1PERIPH_USART2, ENABLE);
+  57              		.loc 1 65 0
+  58 0024 4FF40030 		mov	r0, #131072
+  59              	.LVL5:
+  60 0028 0121     		movs	r1, #1
+  61 002a FFF7FEFF 		bl	RCC_APB1PeriphReset_Enable
+  62              	.LVL6:
+  66:Peripherals/src/gd32f1x0_usart.c ****             RCC_APB1PeriphReset_Enable(RCC_APB1PERIPH_USART2, DISABLE);
+  63              		.loc 1 66 0
+  64 002e 4FF40030 		mov	r0, #131072
+  65 0032 0021     		movs	r1, #0
+  66 0034 FFF7FEFF 		bl	RCC_APB1PeriphReset_Enable
+  67              	.LVL7:
+  68              	.L1:
+  69 0038 08BD     		pop	{r3, pc}
+  70              	.L5:
+  71 003a 00BF     		.align	2
+  72              	.L4:
+  73 003c 00380140 		.word	1073821696
+  74 0040 00440040 		.word	1073759232
+  75              		.cfi_endproc
+  76              	.LFE29:
+  78              		.section	.text.USART_Init,"ax",%progbits
+  79              		.align	2
+  80              		.global	USART_Init
+  81              		.thumb
+  82              		.thumb_func
+  84              	USART_Init:
+  85              	.LFB30:
+  67:Peripherals/src/gd32f1x0_usart.c ****         }
+  68:Peripherals/src/gd32f1x0_usart.c ****     }
+  69:Peripherals/src/gd32f1x0_usart.c **** }
+  70:Peripherals/src/gd32f1x0_usart.c **** 
+  71:Peripherals/src/gd32f1x0_usart.c **** /**
+  72:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Initialize the USART peripheral interface parameters.
+  73:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+  74:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_InitParaStruct: the struct USART_InitPara pointer.
+  75:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+  76:Peripherals/src/gd32f1x0_usart.c ****   */
+  77:Peripherals/src/gd32f1x0_usart.c **** void USART_Init(USART_TypeDef* USARTx, USART_InitPara* USART_InitParaStruct)
+  78:Peripherals/src/gd32f1x0_usart.c **** {
+  86              		.loc 1 78 0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 32
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              	.LVL8:
+  91 0000 30B5     		push	{r4, r5, lr}
+  92              	.LCFI1:
+  93              		.cfi_def_cfa_offset 12
+  94              		.cfi_offset 4, -12
+  95              		.cfi_offset 5, -8
+  96              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccob42Kd.s 			page 4
+
+
+  97 0002 89B0     		sub	sp, sp, #36
+  98              	.LCFI2:
+  99              		.cfi_def_cfa_offset 48
+ 100 0004 0446     		mov	r4, r0
+ 101 0006 0D46     		mov	r5, r1
+ 102              	.LVL9:
+  79:Peripherals/src/gd32f1x0_usart.c ****     uint32_t divider = 0, apbclock = 0, temp = 0;
+  80:Peripherals/src/gd32f1x0_usart.c ****     RCC_ClocksPara RCC_ClocksState;
+  81:Peripherals/src/gd32f1x0_usart.c ****     
+  82:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR1 &= ~((uint32_t)USART_CTLR1_UEN);
+ 103              		.loc 1 82 0
+ 104 0008 0368     		ldr	r3, [r0]
+ 105 000a 23F00103 		bic	r3, r3, #1
+ 106 000e 0360     		str	r3, [r0]
+  83:Peripherals/src/gd32f1x0_usart.c ****     /* Initialize CTLR2 */ 
+  84:Peripherals/src/gd32f1x0_usart.c ****     temp = USARTx->CTLR2;
+ 107              		.loc 1 84 0
+ 108 0010 4268     		ldr	r2, [r0, #4]
+ 109              	.LVL10:
+  85:Peripherals/src/gd32f1x0_usart.c ****     /* Reset stop bits then set it use USART_STBits */
+  86:Peripherals/src/gd32f1x0_usart.c ****     temp &= ~((uint32_t)USART_CTLR2_STB);
+ 110              		.loc 1 86 0
+ 111 0012 22F44052 		bic	r2, r2, #12288
+ 112              	.LVL11:
+  87:Peripherals/src/gd32f1x0_usart.c ****     temp |= (uint32_t)USART_InitParaStruct->USART_STBits;
+ 113              		.loc 1 87 0
+ 114 0016 8B68     		ldr	r3, [r1, #8]
+ 115 0018 1343     		orrs	r3, r3, r2
+ 116              	.LVL12:
+  88:Peripherals/src/gd32f1x0_usart.c ****     
+  89:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 = temp;
+ 117              		.loc 1 89 0
+ 118 001a 4360     		str	r3, [r0, #4]
+  90:Peripherals/src/gd32f1x0_usart.c ****     
+  91:Peripherals/src/gd32f1x0_usart.c ****     /*Initialize CTLR1*/
+  92:Peripherals/src/gd32f1x0_usart.c ****     temp = USARTx->CTLR1;
+ 119              		.loc 1 92 0
+ 120 001c 0368     		ldr	r3, [r0]
+ 121              	.LVL13:
+  93:Peripherals/src/gd32f1x0_usart.c ****     /* Reset WL, PCEN, PM, TEN and REN bits */
+  94:Peripherals/src/gd32f1x0_usart.c ****     temp &= ~((uint32_t)CTLR1_CLEAR_MASK);
+ 122              		.loc 1 94 0
+ 123 001e 23F4B053 		bic	r3, r3, #5632
+ 124              	.LVL14:
+ 125 0022 23F00C03 		bic	r3, r3, #12
+ 126              	.LVL15:
+  95:Peripherals/src/gd32f1x0_usart.c ****     
+  96:Peripherals/src/gd32f1x0_usart.c ****     /* According to USART_WL,USART_Parity,USART_RxorTx to configure the CTLR1 */
+  97:Peripherals/src/gd32f1x0_usart.c ****     temp |= (uint32_t)USART_InitParaStruct->USART_WL | USART_InitParaStruct->USART_Parity |
+ 127              		.loc 1 97 0
+ 128 0026 4968     		ldr	r1, [r1, #4]
+ 129              	.LVL16:
+ 130 0028 EA68     		ldr	r2, [r5, #12]
+ 131 002a 1143     		orrs	r1, r1, r2
+  98:Peripherals/src/gd32f1x0_usart.c ****     USART_InitParaStruct->USART_RxorTx;
+ 132              		.loc 1 98 0
+ 133 002c 2A69     		ldr	r2, [r5, #16]
+ARM GAS  /tmp/ccob42Kd.s 			page 5
+
+
+  97:Peripherals/src/gd32f1x0_usart.c ****     temp |= (uint32_t)USART_InitParaStruct->USART_WL | USART_InitParaStruct->USART_Parity |
+ 134              		.loc 1 97 0
+ 135 002e 0A43     		orrs	r2, r2, r1
+ 136 0030 1343     		orrs	r3, r3, r2
+ 137              	.LVL17:
+  99:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR1 = temp;
+ 138              		.loc 1 99 0
+ 139 0032 0360     		str	r3, [r0]
+ 100:Peripherals/src/gd32f1x0_usart.c ****     
+ 101:Peripherals/src/gd32f1x0_usart.c ****     /*Initialize CTLR3*/
+ 102:Peripherals/src/gd32f1x0_usart.c ****     temp = USARTx->CTLR3;
+ 140              		.loc 1 102 0
+ 141 0034 8268     		ldr	r2, [r0, #8]
+ 142              	.LVL18:
+ 103:Peripherals/src/gd32f1x0_usart.c ****     /* Reset CTSEN and RTSEN bits */
+ 104:Peripherals/src/gd32f1x0_usart.c ****     temp &= ~((uint32_t)CTLR3_CLEAR_MASK);
+ 143              		.loc 1 104 0
+ 144 0036 22F44072 		bic	r2, r2, #768
+ 145              	.LVL19:
+ 105:Peripherals/src/gd32f1x0_usart.c ****     
+ 106:Peripherals/src/gd32f1x0_usart.c ****     /* According to USART_HardwareFlowControl to configure the CTLR3 */
+ 107:Peripherals/src/gd32f1x0_usart.c ****     temp |= USART_InitParaStruct->USART_HardwareFlowControl;
+ 146              		.loc 1 107 0
+ 147 003a 6B69     		ldr	r3, [r5, #20]
+ 148 003c 1343     		orrs	r3, r3, r2
+ 149              	.LVL20:
+ 108:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 = temp;
+ 150              		.loc 1 108 0
+ 151 003e 8360     		str	r3, [r0, #8]
+ 109:Peripherals/src/gd32f1x0_usart.c ****     
+ 110:Peripherals/src/gd32f1x0_usart.c ****     /*Initialize USART BRR*/
+ 111:Peripherals/src/gd32f1x0_usart.c ****     RCC_GetClocksFreq(&RCC_ClocksState);
+ 152              		.loc 1 111 0
+ 153 0040 01A8     		add	r0, sp, #4
+ 154              	.LVL21:
+ 155 0042 FFF7FEFF 		bl	RCC_GetClocksFreq
+ 156              	.LVL22:
+ 112:Peripherals/src/gd32f1x0_usart.c ****     
+ 113:Peripherals/src/gd32f1x0_usart.c ****     if (USARTx == USART1)
+ 157              		.loc 1 113 0
+ 158 0046 154B     		ldr	r3, .L13
+ 159 0048 9C42     		cmp	r4, r3
+ 160 004a 01D1     		bne	.L7
+ 114:Peripherals/src/gd32f1x0_usart.c ****     {
+ 115:Peripherals/src/gd32f1x0_usart.c ****         apbclock = RCC_ClocksState.USART1CLK_Frequency;
+ 161              		.loc 1 115 0
+ 162 004c 079A     		ldr	r2, [sp, #28]
+ 163              	.LVL23:
+ 164 004e 00E0     		b	.L8
+ 165              	.LVL24:
+ 166              	.L7:
+ 116:Peripherals/src/gd32f1x0_usart.c ****     }
+ 117:Peripherals/src/gd32f1x0_usart.c ****     else
+ 118:Peripherals/src/gd32f1x0_usart.c ****     {
+ 119:Peripherals/src/gd32f1x0_usart.c ****         apbclock = RCC_ClocksState.APB1_Frequency;
+ 167              		.loc 1 119 0
+ 168 0050 039A     		ldr	r2, [sp, #12]
+ARM GAS  /tmp/ccob42Kd.s 			page 6
+
+
+ 169              	.LVL25:
+ 170              	.L8:
+ 120:Peripherals/src/gd32f1x0_usart.c ****     }
+ 121:Peripherals/src/gd32f1x0_usart.c ****     
+ 122:Peripherals/src/gd32f1x0_usart.c ****     /* Get integer of baud-rate divide and raction of baud-rate divider */
+ 123:Peripherals/src/gd32f1x0_usart.c ****     if ((USARTx->CTLR1 & USART_CTLR1_OM) != 0)
+ 171              		.loc 1 123 0
+ 172 0052 2368     		ldr	r3, [r4]
+ 173 0054 13F4004F 		tst	r3, #32768
+ 174 0058 06D0     		beq	.L9
+ 124:Peripherals/src/gd32f1x0_usart.c ****     {
+ 125:Peripherals/src/gd32f1x0_usart.c ****         /* When Oversampling mode is 8 Samples,OM = 1, USARTDIV [3:1] = BRR [2:0], BRR [3] must be 
+ 126:Peripherals/src/gd32f1x0_usart.c ****         divider = (uint32_t)((2*apbclock) / ((USART_InitParaStruct->USART_BRR)));
+ 175              		.loc 1 126 0
+ 176 005a 5200     		lsls	r2, r2, #1
+ 177              	.LVL26:
+ 178 005c 2968     		ldr	r1, [r5]
+ 179 005e B2FBF1F3 		udiv	r3, r2, r1
+ 180              	.LVL27:
+ 127:Peripherals/src/gd32f1x0_usart.c ****         temp    = (uint32_t)((2*apbclock) % ((USART_InitParaStruct->USART_BRR)));
+ 181              		.loc 1 127 0
+ 182 0062 01FB1322 		mls	r2, r1, r3, r2
+ 183              	.LVL28:
+ 184 0066 04E0     		b	.L10
+ 185              	.LVL29:
+ 186              	.L9:
+ 128:Peripherals/src/gd32f1x0_usart.c ****     }
+ 129:Peripherals/src/gd32f1x0_usart.c ****     else 
+ 130:Peripherals/src/gd32f1x0_usart.c ****     {
+ 131:Peripherals/src/gd32f1x0_usart.c ****         /* When Oversampling mode is 16 Samples,OM = 1, USARTDIV [3:0] = BRR [3:0] */
+ 132:Peripherals/src/gd32f1x0_usart.c ****         divider = (uint32_t)((apbclock) / ((USART_InitParaStruct->USART_BRR)));
+ 187              		.loc 1 132 0
+ 188 0068 2968     		ldr	r1, [r5]
+ 189 006a B2FBF1F3 		udiv	r3, r2, r1
+ 190              	.LVL30:
+ 133:Peripherals/src/gd32f1x0_usart.c ****         temp    = (uint32_t)((apbclock) % ((USART_InitParaStruct->USART_BRR)));
+ 191              		.loc 1 133 0
+ 192 006e 01FB1322 		mls	r2, r1, r3, r2
+ 193              	.LVL31:
+ 194              	.L10:
+ 134:Peripherals/src/gd32f1x0_usart.c ****     }
+ 135:Peripherals/src/gd32f1x0_usart.c ****     /* Round the divider : if fractional part i greater than 0.5 increment divider */
+ 136:Peripherals/src/gd32f1x0_usart.c ****     if (temp >=  (USART_InitParaStruct->USART_BRR) / 2)
+ 195              		.loc 1 136 0
+ 196 0072 2968     		ldr	r1, [r5]
+ 197 0074 B2EB510F 		cmp	r2, r1, lsr #1
+ 198 0078 00D3     		bcc	.L11
+ 137:Peripherals/src/gd32f1x0_usart.c ****     {
+ 138:Peripherals/src/gd32f1x0_usart.c ****         divider++;
+ 199              		.loc 1 138 0
+ 200 007a 0133     		adds	r3, r3, #1
+ 201              	.LVL32:
+ 202              	.L11:
+ 139:Peripherals/src/gd32f1x0_usart.c ****     } 
+ 140:Peripherals/src/gd32f1x0_usart.c ****     
+ 141:Peripherals/src/gd32f1x0_usart.c ****     /* Implement the divider in case Oversampling mode is 8 Samples */
+ 142:Peripherals/src/gd32f1x0_usart.c ****     if ((USARTx->CTLR1 & USART_CTLR1_OM) != 0)
+ARM GAS  /tmp/ccob42Kd.s 			page 7
+
+
+ 203              		.loc 1 142 0
+ 204 007c 2268     		ldr	r2, [r4]
+ 205              	.LVL33:
+ 206 007e 12F4004F 		tst	r2, #32768
+ 207 0082 06D0     		beq	.L12
+ 143:Peripherals/src/gd32f1x0_usart.c ****     {
+ 144:Peripherals/src/gd32f1x0_usart.c ****         /* Get the LSB of divider and shift it to the right by 1 bit */
+ 145:Peripherals/src/gd32f1x0_usart.c ****         temp = (divider & (uint16_t)0x000F) >> 1;
+ 208              		.loc 1 145 0
+ 209 0084 C3F34202 		ubfx	r2, r3, #1, #3
+ 210              	.LVL34:
+ 146:Peripherals/src/gd32f1x0_usart.c ****     
+ 147:Peripherals/src/gd32f1x0_usart.c ****         /* Update the divider value */
+ 148:Peripherals/src/gd32f1x0_usart.c ****         divider = (divider & (uint16_t)0xFFF0) | temp;
+ 211              		.loc 1 148 0
+ 212 0088 23F00F03 		bic	r3, r3, #15
+ 213              	.LVL35:
+ 214 008c 1B04     		lsls	r3, r3, #16
+ 215 008e 1B0C     		lsrs	r3, r3, #16
+ 216 0090 1343     		orrs	r3, r3, r2
+ 217              	.LVL36:
+ 218              	.L12:
+ 149:Peripherals/src/gd32f1x0_usart.c ****     }  
+ 150:Peripherals/src/gd32f1x0_usart.c ****     USARTx->BRR = (uint16_t)divider;
+ 219              		.loc 1 150 0
+ 220 0092 9BB2     		uxth	r3, r3
+ 221              	.LVL37:
+ 222 0094 A381     		strh	r3, [r4, #12]	@ movhi
+ 151:Peripherals/src/gd32f1x0_usart.c **** }
+ 223              		.loc 1 151 0
+ 224 0096 09B0     		add	sp, sp, #36
+ 225              		@ sp needed
+ 226 0098 30BD     		pop	{r4, r5, pc}
+ 227              	.LVL38:
+ 228              	.L14:
+ 229 009a 00BF     		.align	2
+ 230              	.L13:
+ 231 009c 00380140 		.word	1073821696
+ 232              		.cfi_endproc
+ 233              	.LFE30:
+ 235              		.section	.text.USART_ParaInit,"ax",%progbits
+ 236              		.align	2
+ 237              		.global	USART_ParaInit
+ 238              		.thumb
+ 239              		.thumb_func
+ 241              	USART_ParaInit:
+ 242              	.LFB31:
+ 152:Peripherals/src/gd32f1x0_usart.c **** 
+ 153:Peripherals/src/gd32f1x0_usart.c **** /**
+ 154:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Initial the struct USART_InitPara
+ 155:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where x can be 1 or 2 to select the USART peripheral.
+ 156:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_InitParaStruct: the struct USART_InitPara pointer
+ 157:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 158:Peripherals/src/gd32f1x0_usart.c ****   */
+ 159:Peripherals/src/gd32f1x0_usart.c **** void USART_ParaInit(USART_TypeDef* USARTx,USART_InitPara* USART_InitParaStruct)
+ 160:Peripherals/src/gd32f1x0_usart.c **** {
+ 243              		.loc 1 160 0
+ARM GAS  /tmp/ccob42Kd.s 			page 8
+
+
+ 244              		.cfi_startproc
+ 245              		@ args = 0, pretend = 0, frame = 0
+ 246              		@ frame_needed = 0, uses_anonymous_args = 0
+ 247              		@ link register save eliminated.
+ 248              	.LVL39:
+ 161:Peripherals/src/gd32f1x0_usart.c ****     /* USART_InitStruct members default value */
+ 162:Peripherals/src/gd32f1x0_usart.c ****     USART_InitParaStruct->USART_BRR = 9600;
+ 249              		.loc 1 162 0
+ 250 0000 4FF41653 		mov	r3, #9600
+ 251 0004 0B60     		str	r3, [r1]
+ 163:Peripherals/src/gd32f1x0_usart.c ****     USART_InitParaStruct->USART_WL   =USART_WL_8B;
+ 252              		.loc 1 163 0
+ 253 0006 0023     		movs	r3, #0
+ 254 0008 4B60     		str	r3, [r1, #4]
+ 164:Peripherals/src/gd32f1x0_usart.c ****     USART_InitParaStruct->USART_STBits =USART_STBITS_1;
+ 255              		.loc 1 164 0
+ 256 000a 8B60     		str	r3, [r1, #8]
+ 165:Peripherals/src/gd32f1x0_usart.c ****     USART_InitParaStruct->USART_Parity =USART_PARITY_RESET;
+ 257              		.loc 1 165 0
+ 258 000c CB60     		str	r3, [r1, #12]
+ 166:Peripherals/src/gd32f1x0_usart.c ****     USART_InitParaStruct->USART_RxorTx =USART_RXORTX_RX | USART_RXORTX_TX;
+ 259              		.loc 1 166 0
+ 260 000e 0C22     		movs	r2, #12
+ 261 0010 0A61     		str	r2, [r1, #16]
+ 167:Peripherals/src/gd32f1x0_usart.c ****     USART_InitParaStruct->USART_HardwareFlowControl =USART_HARDWAREFLOWCONTROL_NONE;
+ 262              		.loc 1 167 0
+ 263 0012 4B61     		str	r3, [r1, #20]
+ 264 0014 7047     		bx	lr
+ 265              		.cfi_endproc
+ 266              	.LFE31:
+ 268 0016 00BF     		.section	.text.USART_ClockInit,"ax",%progbits
+ 269              		.align	2
+ 270              		.global	USART_ClockInit
+ 271              		.thumb
+ 272              		.thumb_func
+ 274              	USART_ClockInit:
+ 275              	.LFB32:
+ 168:Peripherals/src/gd32f1x0_usart.c **** }   
+ 169:Peripherals/src/gd32f1x0_usart.c **** 
+ 170:Peripherals/src/gd32f1x0_usart.c **** /**
+ 171:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Initialize the USARTx peripheral Clock according to the 
+ 172:Peripherals/src/gd32f1x0_usart.c ****   *         specified parameters in the USART_ClockInitStruct.
+ 173:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where x can be 1 or 2 to select the USART peripheral.
+ 174:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_ClockInitStruct: pointer to a USART_ClockInitTypeDef
+ 175:Peripherals/src/gd32f1x0_usart.c ****   *   structure that contains the configuration information for the specified 
+ 176:Peripherals/src/gd32f1x0_usart.c ****   *   USART peripheral.  
+ 177:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 178:Peripherals/src/gd32f1x0_usart.c ****   */
+ 179:Peripherals/src/gd32f1x0_usart.c **** void USART_ClockInit(USART_TypeDef* USARTx, USART_ClockInitPara* USART_ClockInitStruct)
+ 180:Peripherals/src/gd32f1x0_usart.c **** {
+ 276              		.loc 1 180 0
+ 277              		.cfi_startproc
+ 278              		@ args = 0, pretend = 0, frame = 0
+ 279              		@ frame_needed = 0, uses_anonymous_args = 0
+ 280              		@ link register save eliminated.
+ 281              	.LVL40:
+ 282 0000 10B4     		push	{r4}
+ARM GAS  /tmp/ccob42Kd.s 			page 9
+
+
+ 283              	.LCFI3:
+ 284              		.cfi_def_cfa_offset 4
+ 285              		.cfi_offset 4, -4
+ 286              	.LVL41:
+ 181:Peripherals/src/gd32f1x0_usart.c ****     uint32_t temp = 0;
+ 182:Peripherals/src/gd32f1x0_usart.c ****     
+ 183:Peripherals/src/gd32f1x0_usart.c ****     temp = USARTx->CTLR2;
+ 287              		.loc 1 183 0
+ 288 0002 4468     		ldr	r4, [r0, #4]
+ 289              	.LVL42:
+ 184:Peripherals/src/gd32f1x0_usart.c ****     /* Clear CKEN, CPL, CPH, LBCP and SSM bits */
+ 185:Peripherals/src/gd32f1x0_usart.c ****     temp &= ~((uint32_t)CTLR2_CLOCK_CLEAR_MASK);
+ 290              		.loc 1 185 0
+ 291 0004 24F47064 		bic	r4, r4, #3840
+ 292              	.LVL43:
+ 186:Peripherals/src/gd32f1x0_usart.c ****     
+ 187:Peripherals/src/gd32f1x0_usart.c ****     /* Reset hen set it usethe USART Clock, CPL, CPH, LBCP */
+ 188:Peripherals/src/gd32f1x0_usart.c ****     temp |= (uint32_t)(USART_ClockInitStruct->USART_CKEN | USART_ClockInitStruct->USART_CPL | 
+ 293              		.loc 1 188 0
+ 294 0008 0B68     		ldr	r3, [r1]
+ 295 000a 4A68     		ldr	r2, [r1, #4]
+ 296 000c 1A43     		orrs	r2, r2, r3
+ 189:Peripherals/src/gd32f1x0_usart.c ****                        USART_ClockInitStruct->USART_CPH | USART_ClockInitStruct->USART_LBCP);
+ 297              		.loc 1 189 0
+ 298 000e 8B68     		ldr	r3, [r1, #8]
+ 188:Peripherals/src/gd32f1x0_usart.c ****     temp |= (uint32_t)(USART_ClockInitStruct->USART_CKEN | USART_ClockInitStruct->USART_CPL | 
+ 299              		.loc 1 188 0
+ 300 0010 1343     		orrs	r3, r3, r2
+ 301              		.loc 1 189 0
+ 302 0012 C968     		ldr	r1, [r1, #12]
+ 303              	.LVL44:
+ 188:Peripherals/src/gd32f1x0_usart.c ****     temp |= (uint32_t)(USART_ClockInitStruct->USART_CKEN | USART_ClockInitStruct->USART_CPL | 
+ 304              		.loc 1 188 0
+ 305 0014 0B43     		orrs	r3, r3, r1
+ 306 0016 2343     		orrs	r3, r3, r4
+ 307              	.LVL45:
+ 190:Peripherals/src/gd32f1x0_usart.c ****     /* Write to USART CTLR2 */
+ 191:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 = temp;
+ 308              		.loc 1 191 0
+ 309 0018 4360     		str	r3, [r0, #4]
+ 192:Peripherals/src/gd32f1x0_usart.c **** }
+ 310              		.loc 1 192 0
+ 311 001a 5DF8044B 		ldr	r4, [sp], #4
+ 312 001e 7047     		bx	lr
+ 313              		.cfi_endproc
+ 314              	.LFE32:
+ 316              		.section	.text.USART_ClockStructInit,"ax",%progbits
+ 317              		.align	2
+ 318              		.global	USART_ClockStructInit
+ 319              		.thumb
+ 320              		.thumb_func
+ 322              	USART_ClockStructInit:
+ 323              	.LFB33:
+ 193:Peripherals/src/gd32f1x0_usart.c **** 
+ 194:Peripherals/src/gd32f1x0_usart.c **** /**
+ 195:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Initial the struct USART_ClockInitPara.
+ 196:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_ClockInitParaStruct: the struct USART_ClockInitPara pointer
+ARM GAS  /tmp/ccob42Kd.s 			page 10
+
+
+ 197:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 198:Peripherals/src/gd32f1x0_usart.c ****   */
+ 199:Peripherals/src/gd32f1x0_usart.c **** void USART_ClockStructInit(USART_ClockInitPara* USART_ClockInitParaStruct)
+ 200:Peripherals/src/gd32f1x0_usart.c **** {
+ 324              		.loc 1 200 0
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 0
+ 327              		@ frame_needed = 0, uses_anonymous_args = 0
+ 328              		@ link register save eliminated.
+ 329              	.LVL46:
+ 201:Peripherals/src/gd32f1x0_usart.c ****     /*Reset USART_ClockInitStruct members default value */
+ 202:Peripherals/src/gd32f1x0_usart.c ****     USART_ClockInitParaStruct->USART_CKEN = USART_CKEN_RESET;
+ 330              		.loc 1 202 0
+ 331 0000 0023     		movs	r3, #0
+ 332 0002 0360     		str	r3, [r0]
+ 203:Peripherals/src/gd32f1x0_usart.c ****     USART_ClockInitParaStruct->USART_CPL = USART_CPL_LOW;
+ 333              		.loc 1 203 0
+ 334 0004 4360     		str	r3, [r0, #4]
+ 204:Peripherals/src/gd32f1x0_usart.c ****     USART_ClockInitParaStruct->USART_CPH = USART_CPH_1EDGE;
+ 335              		.loc 1 204 0
+ 336 0006 8360     		str	r3, [r0, #8]
+ 205:Peripherals/src/gd32f1x0_usart.c ****     USART_ClockInitParaStruct->USART_LBCP = USART_LBCP_DISABLE;
+ 337              		.loc 1 205 0
+ 338 0008 C360     		str	r3, [r0, #12]
+ 339 000a 7047     		bx	lr
+ 340              		.cfi_endproc
+ 341              	.LFE33:
+ 343              		.section	.text.USART_Enable,"ax",%progbits
+ 344              		.align	2
+ 345              		.global	USART_Enable
+ 346              		.thumb
+ 347              		.thumb_func
+ 349              	USART_Enable:
+ 350              	.LFB34:
+ 206:Peripherals/src/gd32f1x0_usart.c **** }
+ 207:Peripherals/src/gd32f1x0_usart.c **** 
+ 208:Peripherals/src/gd32f1x0_usart.c **** /**
+ 209:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the specified USART peripheral.
+ 210:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx:  the USART peripheral where x can be 1 or 2.
+ 211:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USARTx peripheral.
+ 212:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 213:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 214:Peripherals/src/gd32f1x0_usart.c ****   */
+ 215:Peripherals/src/gd32f1x0_usart.c **** void USART_Enable(USART_TypeDef* USARTx, TypeState NewValue)
+ 216:Peripherals/src/gd32f1x0_usart.c **** {
+ 351              		.loc 1 216 0
+ 352              		.cfi_startproc
+ 353              		@ args = 0, pretend = 0, frame = 0
+ 354              		@ frame_needed = 0, uses_anonymous_args = 0
+ 355              		@ link register save eliminated.
+ 356              	.LVL47:
+ 217:Peripherals/src/gd32f1x0_usart.c ****     /* Enable or disable the specified USART peripheral by setting the UEN bit in the CTLR1 registe
+ 218:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue!= DISABLE)
+ 357              		.loc 1 218 0
+ 358 0000 21B1     		cbz	r1, .L19
+ 219:Peripherals/src/gd32f1x0_usart.c ****     {
+ 220:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 |= USART_CTLR1_UEN;
+ARM GAS  /tmp/ccob42Kd.s 			page 11
+
+
+ 359              		.loc 1 220 0
+ 360 0002 0368     		ldr	r3, [r0]
+ 361 0004 43F00103 		orr	r3, r3, #1
+ 362 0008 0360     		str	r3, [r0]
+ 363 000a 7047     		bx	lr
+ 364              	.L19:
+ 221:Peripherals/src/gd32f1x0_usart.c ****     }
+ 222:Peripherals/src/gd32f1x0_usart.c ****     else
+ 223:Peripherals/src/gd32f1x0_usart.c ****     {
+ 224:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 &= (uint32_t)~((uint32_t)USART_CTLR1_UEN);
+ 365              		.loc 1 224 0
+ 366 000c 0368     		ldr	r3, [r0]
+ 367 000e 23F00103 		bic	r3, r3, #1
+ 368 0012 0360     		str	r3, [r0]
+ 369 0014 7047     		bx	lr
+ 370              		.cfi_endproc
+ 371              	.LFE34:
+ 373 0016 00BF     		.section	.text.USART_TransferDirection_Enable,"ax",%progbits
+ 374              		.align	2
+ 375              		.global	USART_TransferDirection_Enable
+ 376              		.thumb
+ 377              		.thumb_func
+ 379              	USART_TransferDirection_Enable:
+ 380              	.LFB35:
+ 225:Peripherals/src/gd32f1x0_usart.c ****     }
+ 226:Peripherals/src/gd32f1x0_usart.c **** }
+ 227:Peripherals/src/gd32f1x0_usart.c **** 
+ 228:Peripherals/src/gd32f1x0_usart.c **** /**
+ 229:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's transmitter or receiver.
+ 230:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 231:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_Direction: specifies the USART direction.
+ 232:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be any:
+ 233:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_RXORTX_TX: USART Transmitter
+ 234:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_RXORTX_RX: USART Receiver
+ 235:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USART transfer direction.
+ 236:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 237:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 238:Peripherals/src/gd32f1x0_usart.c ****   */
+ 239:Peripherals/src/gd32f1x0_usart.c **** void USART_TransferDirection_Enable(USART_TypeDef* USARTx, uint32_t USART_Direction, TypeState NewV
+ 240:Peripherals/src/gd32f1x0_usart.c **** {
+ 381              		.loc 1 240 0
+ 382              		.cfi_startproc
+ 383              		@ args = 0, pretend = 0, frame = 0
+ 384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385              		@ link register save eliminated.
+ 386              	.LVL48:
+ 241:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the TEN and/or REN bits in the USART CTLR1 register to set the USART transfer dir
+ 242:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 387              		.loc 1 242 0
+ 388 0000 1AB1     		cbz	r2, .L22
+ 243:Peripherals/src/gd32f1x0_usart.c ****     {
+ 244:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 |= USART_Direction;
+ 389              		.loc 1 244 0
+ 390 0002 0368     		ldr	r3, [r0]
+ 391 0004 1943     		orrs	r1, r1, r3
+ 392              	.LVL49:
+ 393 0006 0160     		str	r1, [r0]
+ARM GAS  /tmp/ccob42Kd.s 			page 12
+
+
+ 394 0008 7047     		bx	lr
+ 395              	.LVL50:
+ 396              	.L22:
+ 245:Peripherals/src/gd32f1x0_usart.c ****     }
+ 246:Peripherals/src/gd32f1x0_usart.c ****     else
+ 247:Peripherals/src/gd32f1x0_usart.c ****     {
+ 248:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 &= ~USART_Direction;
+ 397              		.loc 1 248 0
+ 398 000a 0368     		ldr	r3, [r0]
+ 399 000c 23EA0101 		bic	r1, r3, r1
+ 400              	.LVL51:
+ 401 0010 0160     		str	r1, [r0]
+ 402 0012 7047     		bx	lr
+ 403              		.cfi_endproc
+ 404              	.LFE35:
+ 406              		.section	.text.USART_OverSampling8_Enable,"ax",%progbits
+ 407              		.align	2
+ 408              		.global	USART_OverSampling8_Enable
+ 409              		.thumb
+ 410              		.thumb_func
+ 412              	USART_OverSampling8_Enable:
+ 413              	.LFB36:
+ 249:Peripherals/src/gd32f1x0_usart.c ****     }
+ 250:Peripherals/src/gd32f1x0_usart.c **** }
+ 251:Peripherals/src/gd32f1x0_usart.c **** 
+ 252:Peripherals/src/gd32f1x0_usart.c **** /**
+ 253:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's 8x oversampling mode.
+ 254:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2 .
+ 255:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USART 8x oversampling mode.
+ 256:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 257:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 258:Peripherals/src/gd32f1x0_usart.c ****   */
+ 259:Peripherals/src/gd32f1x0_usart.c **** void USART_OverSampling8_Enable(USART_TypeDef* USARTx, TypeState NewValue)
+ 260:Peripherals/src/gd32f1x0_usart.c **** {
+ 414              		.loc 1 260 0
+ 415              		.cfi_startproc
+ 416              		@ args = 0, pretend = 0, frame = 0
+ 417              		@ frame_needed = 0, uses_anonymous_args = 0
+ 418              		@ link register save eliminated.
+ 419              	.LVL52:
+ 261:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the OM bit in the CTLR1 register enable or disable the USART's 8x oversampling mo
+ 262:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 420              		.loc 1 262 0
+ 421 0000 21B1     		cbz	r1, .L25
+ 263:Peripherals/src/gd32f1x0_usart.c ****     {
+ 264:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 |= USART_CTLR1_OM;
+ 422              		.loc 1 264 0
+ 423 0002 0368     		ldr	r3, [r0]
+ 424 0004 43F40043 		orr	r3, r3, #32768
+ 425 0008 0360     		str	r3, [r0]
+ 426 000a 7047     		bx	lr
+ 427              	.L25:
+ 265:Peripherals/src/gd32f1x0_usart.c ****     }
+ 266:Peripherals/src/gd32f1x0_usart.c ****     else
+ 267:Peripherals/src/gd32f1x0_usart.c ****     {
+ 268:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 &= ~((uint32_t)USART_CTLR1_OM);
+ 428              		.loc 1 268 0
+ARM GAS  /tmp/ccob42Kd.s 			page 13
+
+
+ 429 000c 0368     		ldr	r3, [r0]
+ 430 000e 23F40043 		bic	r3, r3, #32768
+ 431 0012 0360     		str	r3, [r0]
+ 432 0014 7047     		bx	lr
+ 433              		.cfi_endproc
+ 434              	.LFE36:
+ 436 0016 00BF     		.section	.text.USART_OneSamplingBit_Enable,"ax",%progbits
+ 437              		.align	2
+ 438              		.global	USART_OneSamplingBit_Enable
+ 439              		.thumb
+ 440              		.thumb_func
+ 442              	USART_OneSamplingBit_Enable:
+ 443              	.LFB37:
+ 269:Peripherals/src/gd32f1x0_usart.c ****     }
+ 270:Peripherals/src/gd32f1x0_usart.c **** }  
+ 271:Peripherals/src/gd32f1x0_usart.c **** 
+ 272:Peripherals/src/gd32f1x0_usart.c **** /**
+ 273:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's one sampling bit method.
+ 274:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 275:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USART one sampling bit method.
+ 276:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 277:Peripherals/src/gd32f1x0_usart.c ****   * @note   This function has to be called before calling USART_Enable() function.  
+ 278:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 279:Peripherals/src/gd32f1x0_usart.c ****   */
+ 280:Peripherals/src/gd32f1x0_usart.c **** void USART_OneSamplingBit_Enable(USART_TypeDef* USARTx, TypeState NewValue)
+ 281:Peripherals/src/gd32f1x0_usart.c **** {
+ 444              		.loc 1 281 0
+ 445              		.cfi_startproc
+ 446              		@ args = 0, pretend = 0, frame = 0
+ 447              		@ frame_needed = 0, uses_anonymous_args = 0
+ 448              		@ link register save eliminated.
+ 449              	.LVL53:
+ 282:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the OSBM bit in the CTLR3 register enableor disable the USART's one sampling bit 
+ 283:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 450              		.loc 1 283 0
+ 451 0000 21B1     		cbz	r1, .L28
+ 284:Peripherals/src/gd32f1x0_usart.c ****     {
+ 285:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 |= USART_CTLR3_OSBM;
+ 452              		.loc 1 285 0
+ 453 0002 8368     		ldr	r3, [r0, #8]
+ 454 0004 43F40063 		orr	r3, r3, #2048
+ 455 0008 8360     		str	r3, [r0, #8]
+ 456 000a 7047     		bx	lr
+ 457              	.L28:
+ 286:Peripherals/src/gd32f1x0_usart.c ****     }
+ 287:Peripherals/src/gd32f1x0_usart.c ****     else
+ 288:Peripherals/src/gd32f1x0_usart.c ****     {
+ 289:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_OSBM);
+ 458              		.loc 1 289 0
+ 459 000c 8368     		ldr	r3, [r0, #8]
+ 460 000e 23F40063 		bic	r3, r3, #2048
+ 461 0012 8360     		str	r3, [r0, #8]
+ 462 0014 7047     		bx	lr
+ 463              		.cfi_endproc
+ 464              	.LFE37:
+ 466 0016 00BF     		.section	.text.USART_MSBFirst_Enable,"ax",%progbits
+ 467              		.align	2
+ARM GAS  /tmp/ccob42Kd.s 			page 14
+
+
+ 468              		.global	USART_MSBFirst_Enable
+ 469              		.thumb
+ 470              		.thumb_func
+ 472              	USART_MSBFirst_Enable:
+ 473              	.LFB38:
+ 290:Peripherals/src/gd32f1x0_usart.c ****     }
+ 291:Peripherals/src/gd32f1x0_usart.c **** }
+ 292:Peripherals/src/gd32f1x0_usart.c **** 
+ 293:Peripherals/src/gd32f1x0_usart.c **** /**
+ 294:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's most significant bit first.
+ 295:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2 .
+ 296:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USART most significant bit first
+ 297:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 298:Peripherals/src/gd32f1x0_usart.c ****   * @note   This function has to be called before calling USART_Enable() function.
+ 299:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 300:Peripherals/src/gd32f1x0_usart.c ****   */
+ 301:Peripherals/src/gd32f1x0_usart.c **** void USART_MSBFirst_Enable(USART_TypeDef* USARTx, TypeState NewValue)
+ 302:Peripherals/src/gd32f1x0_usart.c **** {
+ 474              		.loc 1 302 0
+ 475              		.cfi_startproc
+ 476              		@ args = 0, pretend = 0, frame = 0
+ 477              		@ frame_needed = 0, uses_anonymous_args = 0
+ 478              		@ link register save eliminated.
+ 479              	.LVL54:
+ 303:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the MSBF bit in the CTLR2 register enable or disable the USART's most significant
+ 304:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 480              		.loc 1 304 0
+ 481 0000 21B1     		cbz	r1, .L31
+ 305:Peripherals/src/gd32f1x0_usart.c ****     {
+ 306:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 |= USART_CTLR2_MSBF;
+ 482              		.loc 1 306 0
+ 483 0002 4368     		ldr	r3, [r0, #4]
+ 484 0004 43F40023 		orr	r3, r3, #524288
+ 485 0008 4360     		str	r3, [r0, #4]
+ 486 000a 7047     		bx	lr
+ 487              	.L31:
+ 307:Peripherals/src/gd32f1x0_usart.c ****     }
+ 308:Peripherals/src/gd32f1x0_usart.c ****     else
+ 309:Peripherals/src/gd32f1x0_usart.c ****     {
+ 310:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 &= ~((uint32_t)USART_CTLR2_MSBF);
+ 488              		.loc 1 310 0
+ 489 000c 4368     		ldr	r3, [r0, #4]
+ 490 000e 23F40023 		bic	r3, r3, #524288
+ 491 0012 4360     		str	r3, [r0, #4]
+ 492 0014 7047     		bx	lr
+ 493              		.cfi_endproc
+ 494              	.LFE38:
+ 496 0016 00BF     		.section	.text.USART_DataInvert_Enable,"ax",%progbits
+ 497              		.align	2
+ 498              		.global	USART_DataInvert_Enable
+ 499              		.thumb
+ 500              		.thumb_func
+ 502              	USART_DataInvert_Enable:
+ 503              	.LFB39:
+ 311:Peripherals/src/gd32f1x0_usart.c ****     }
+ 312:Peripherals/src/gd32f1x0_usart.c **** }
+ 313:Peripherals/src/gd32f1x0_usart.c **** 
+ARM GAS  /tmp/ccob42Kd.s 			page 15
+
+
+ 314:Peripherals/src/gd32f1x0_usart.c **** /**
+ 315:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable data bit level inversion.
+ 316:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where x can be 1 or 2 to select the USART peripheral.
+ 317:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new levels of USART data.
+ 318:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 319:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 320:Peripherals/src/gd32f1x0_usart.c ****   */
+ 321:Peripherals/src/gd32f1x0_usart.c **** void USART_DataInvert_Enable(USART_TypeDef* USARTx, TypeState NewValue)
+ 322:Peripherals/src/gd32f1x0_usart.c **** {
+ 504              		.loc 1 322 0
+ 505              		.cfi_startproc
+ 506              		@ args = 0, pretend = 0, frame = 0
+ 507              		@ frame_needed = 0, uses_anonymous_args = 0
+ 508              		@ link register save eliminated.
+ 509              	.LVL55:
+ 323:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the DINV bit in the CTLR2 register enable or disable data bit level inversion */
+ 324:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 510              		.loc 1 324 0
+ 511 0000 21B1     		cbz	r1, .L34
+ 325:Peripherals/src/gd32f1x0_usart.c ****     {
+ 326:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 |= USART_CTLR2_DINV;
+ 512              		.loc 1 326 0
+ 513 0002 4368     		ldr	r3, [r0, #4]
+ 514 0004 43F48023 		orr	r3, r3, #262144
+ 515 0008 4360     		str	r3, [r0, #4]
+ 516 000a 7047     		bx	lr
+ 517              	.L34:
+ 327:Peripherals/src/gd32f1x0_usart.c ****     }
+ 328:Peripherals/src/gd32f1x0_usart.c ****     else
+ 329:Peripherals/src/gd32f1x0_usart.c ****     {
+ 330:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 &= (uint32_t)~((uint32_t)USART_CTLR2_DINV);
+ 518              		.loc 1 330 0
+ 519 000c 4368     		ldr	r3, [r0, #4]
+ 520 000e 23F48023 		bic	r3, r3, #262144
+ 521 0012 4360     		str	r3, [r0, #4]
+ 522 0014 7047     		bx	lr
+ 523              		.cfi_endproc
+ 524              	.LFE39:
+ 526 0016 00BF     		.section	.text.USART_InvPin_Enable,"ax",%progbits
+ 527              		.align	2
+ 528              		.global	USART_InvPin_Enable
+ 529              		.thumb
+ 530              		.thumb_func
+ 532              	USART_InvPin_Enable:
+ 533              	.LFB40:
+ 331:Peripherals/src/gd32f1x0_usart.c ****     }
+ 332:Peripherals/src/gd32f1x0_usart.c **** }
+ 333:Peripherals/src/gd32f1x0_usart.c **** 
+ 334:Peripherals/src/gd32f1x0_usart.c **** /**
+ 335:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the Pin signal values inversion.
+ 336:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 337:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_InvertPin:  The USART pin is inverted.
+ 338:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be :
+ 339:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_INVPIN_TX: USART Tx pin pin signal values inversion.
+ 340:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_INVPIN_RX: USART Rx pin signal values inversion.
+ 341:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value 0f the USART pin.
+ 342:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ARM GAS  /tmp/ccob42Kd.s 			page 16
+
+
+ 343:Peripherals/src/gd32f1x0_usart.c ****   *     @arg ENABLE: pin signal values are inverted (Vdd =0, Gnd =1).
+ 344:Peripherals/src/gd32f1x0_usart.c ****   *     @arg DISABLE: pin signal values are not inverted (Vdd =1, Gnd =0).
+ 345:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 346:Peripherals/src/gd32f1x0_usart.c ****   */
+ 347:Peripherals/src/gd32f1x0_usart.c **** void USART_InvPin_Enable(USART_TypeDef* USARTx, uint32_t USART_InvertPin, TypeState NewValue)
+ 348:Peripherals/src/gd32f1x0_usart.c **** {
+ 534              		.loc 1 348 0
+ 535              		.cfi_startproc
+ 536              		@ args = 0, pretend = 0, frame = 0
+ 537              		@ frame_needed = 0, uses_anonymous_args = 0
+ 538              		@ link register save eliminated.
+ 539              	.LVL56:
+ 349:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the TINV ,RINV in the USART CTLR2 register enable or disable the Pin signal value
+ 350:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 540              		.loc 1 350 0
+ 541 0000 1AB1     		cbz	r2, .L37
+ 351:Peripherals/src/gd32f1x0_usart.c ****     {
+ 352:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 |=USART_InvertPin;
+ 542              		.loc 1 352 0
+ 543 0002 4368     		ldr	r3, [r0, #4]
+ 544 0004 1943     		orrs	r1, r1, r3
+ 545              	.LVL57:
+ 546 0006 4160     		str	r1, [r0, #4]
+ 547 0008 7047     		bx	lr
+ 548              	.LVL58:
+ 549              	.L37:
+ 353:Peripherals/src/gd32f1x0_usart.c ****     }
+ 354:Peripherals/src/gd32f1x0_usart.c ****     else
+ 355:Peripherals/src/gd32f1x0_usart.c ****     {
+ 356:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 &= ~USART_InvertPin;
+ 550              		.loc 1 356 0
+ 551 000a 4368     		ldr	r3, [r0, #4]
+ 552 000c 23EA0101 		bic	r1, r3, r1
+ 553              	.LVL59:
+ 554 0010 4160     		str	r1, [r0, #4]
+ 555 0012 7047     		bx	lr
+ 556              		.cfi_endproc
+ 557              	.LFE40:
+ 559              		.section	.text.USART_SWPFunction_Enable,"ax",%progbits
+ 560              		.align	2
+ 561              		.global	USART_SWPFunction_Enable
+ 562              		.thumb
+ 563              		.thumb_func
+ 565              	USART_SWPFunction_Enable:
+ 566              	.LFB41:
+ 357:Peripherals/src/gd32f1x0_usart.c ****     }
+ 358:Peripherals/src/gd32f1x0_usart.c **** }
+ 359:Peripherals/src/gd32f1x0_usart.c **** 
+ 360:Peripherals/src/gd32f1x0_usart.c **** /**
+ 361:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable Swap TX/RX pins functions.
+ 362:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2 .
+ 363:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USARTx TX/RX pins.
+ 364:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ 365:Peripherals/src/gd32f1x0_usart.c ****   *     @arg ENABLE: The TX and RX pins functions are swapped.
+ 366:Peripherals/src/gd32f1x0_usart.c ****   *     @arg DISABLE: TX/RX pins are not swapped 
+ 367:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 368:Peripherals/src/gd32f1x0_usart.c ****   */
+ARM GAS  /tmp/ccob42Kd.s 			page 17
+
+
+ 369:Peripherals/src/gd32f1x0_usart.c **** void USART_SWPFunction_Enable(USART_TypeDef* USARTx, TypeState NewValue)
+ 370:Peripherals/src/gd32f1x0_usart.c **** {
+ 567              		.loc 1 370 0
+ 568              		.cfi_startproc
+ 569              		@ args = 0, pretend = 0, frame = 0
+ 570              		@ frame_needed = 0, uses_anonymous_args = 0
+ 571              		@ link register save eliminated.
+ 572              	.LVL60:
+ 371:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the STRP bit in the CTLR2 register enable or disable Swap TX/RX pins functions */
+ 372:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 573              		.loc 1 372 0
+ 574 0000 21B1     		cbz	r1, .L40
+ 373:Peripherals/src/gd32f1x0_usart.c ****     {
+ 374:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 |= USART_CTLR2_STRP;
+ 575              		.loc 1 374 0
+ 576 0002 4368     		ldr	r3, [r0, #4]
+ 577 0004 43F40043 		orr	r3, r3, #32768
+ 578 0008 4360     		str	r3, [r0, #4]
+ 579 000a 7047     		bx	lr
+ 580              	.L40:
+ 375:Peripherals/src/gd32f1x0_usart.c ****     }
+ 376:Peripherals/src/gd32f1x0_usart.c ****     else
+ 377:Peripherals/src/gd32f1x0_usart.c ****     {
+ 378:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 &= (uint32_t)~((uint32_t)USART_CTLR2_STRP);
+ 581              		.loc 1 378 0
+ 582 000c 4368     		ldr	r3, [r0, #4]
+ 583 000e 23F40043 		bic	r3, r3, #32768
+ 584 0012 4360     		str	r3, [r0, #4]
+ 585 0014 7047     		bx	lr
+ 586              		.cfi_endproc
+ 587              	.LFE41:
+ 589 0016 00BF     		.section	.text.USART_ReceiverTimeOut_Enable,"ax",%progbits
+ 590              		.align	2
+ 591              		.global	USART_ReceiverTimeOut_Enable
+ 592              		.thumb
+ 593              		.thumb_func
+ 595              	USART_ReceiverTimeOut_Enable:
+ 596              	.LFB42:
+ 379:Peripherals/src/gd32f1x0_usart.c ****     }
+ 380:Peripherals/src/gd32f1x0_usart.c **** }
+ 381:Peripherals/src/gd32f1x0_usart.c **** 
+ 382:Peripherals/src/gd32f1x0_usart.c **** /**
+ 383:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the receiver TimeOut function of USART1.
+ 384:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where USARTx is USART1 
+ 385:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USARTx receiver TimeOut function .
+ 386:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 387:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 388:Peripherals/src/gd32f1x0_usart.c ****   */
+ 389:Peripherals/src/gd32f1x0_usart.c **** void USART_ReceiverTimeOut_Enable(USART_TypeDef* USARTx,TypeState NewValue)
+ 390:Peripherals/src/gd32f1x0_usart.c **** {
+ 597              		.loc 1 390 0
+ 598              		.cfi_startproc
+ 599              		@ args = 0, pretend = 0, frame = 0
+ 600              		@ frame_needed = 0, uses_anonymous_args = 0
+ 601              		@ link register save eliminated.
+ 602              	.LVL61:
+ 391:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the RTEN bit in the CTLR2 register enable or disable the receiver TimeOut functio
+ARM GAS  /tmp/ccob42Kd.s 			page 18
+
+
+ 392:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 603              		.loc 1 392 0
+ 604 0000 21B1     		cbz	r1, .L43
+ 393:Peripherals/src/gd32f1x0_usart.c ****     {
+ 394:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 |= USART_CTLR2_RTEN;
+ 605              		.loc 1 394 0
+ 606 0002 4368     		ldr	r3, [r0, #4]
+ 607 0004 43F40003 		orr	r3, r3, #8388608
+ 608 0008 4360     		str	r3, [r0, #4]
+ 609 000a 7047     		bx	lr
+ 610              	.L43:
+ 395:Peripherals/src/gd32f1x0_usart.c ****     }
+ 396:Peripherals/src/gd32f1x0_usart.c ****     else
+ 397:Peripherals/src/gd32f1x0_usart.c ****     {
+ 398:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 &= ~((uint32_t)USART_CTLR2_RTEN);
+ 611              		.loc 1 398 0
+ 612 000c 4368     		ldr	r3, [r0, #4]
+ 613 000e 23F40003 		bic	r3, r3, #8388608
+ 614 0012 4360     		str	r3, [r0, #4]
+ 615 0014 7047     		bx	lr
+ 616              		.cfi_endproc
+ 617              	.LFE42:
+ 619 0016 00BF     		.section	.text.USART_SetReceiveTimeOut_Threshold,"ax",%progbits
+ 620              		.align	2
+ 621              		.global	USART_SetReceiveTimeOut_Threshold
+ 622              		.thumb
+ 623              		.thumb_func
+ 625              	USART_SetReceiveTimeOut_Threshold:
+ 626              	.LFB43:
+ 399:Peripherals/src/gd32f1x0_usart.c ****     }
+ 400:Peripherals/src/gd32f1x0_usart.c **** }
+ 401:Peripherals/src/gd32f1x0_usart.c **** 
+ 402:Peripherals/src/gd32f1x0_usart.c **** /**
+ 403:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the receiver TimeOut threshold.
+ 404:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where USARTx is USART1
+ 405:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_ReceiverTimeOutThreshold: the Receiver Time Out Threshold value.
+ 406:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 407:Peripherals/src/gd32f1x0_usart.c ****   */
+ 408:Peripherals/src/gd32f1x0_usart.c **** void USART_SetReceiveTimeOut_Threshold(USART_TypeDef* USARTx,uint32_t USART_ReceiverTimeOutThreshol
+ 409:Peripherals/src/gd32f1x0_usart.c **** {    
+ 627              		.loc 1 409 0
+ 628              		.cfi_startproc
+ 629              		@ args = 0, pretend = 0, frame = 0
+ 630              		@ frame_needed = 0, uses_anonymous_args = 0
+ 631              		@ link register save eliminated.
+ 632              	.LVL62:
+ 410:Peripherals/src/gd32f1x0_usart.c ****     /* Clear and set the receiver TimeOut threshold */
+ 411:Peripherals/src/gd32f1x0_usart.c ****     USARTx->RTR &= ~((uint32_t)USART_RTR_RT);
+ 633              		.loc 1 411 0
+ 634 0000 4369     		ldr	r3, [r0, #20]
+ 635 0002 03F07F43 		and	r3, r3, #-16777216
+ 636 0006 4361     		str	r3, [r0, #20]
+ 412:Peripherals/src/gd32f1x0_usart.c ****     
+ 413:Peripherals/src/gd32f1x0_usart.c ****     USARTx->RTR |= USART_ReceiverTimeOutThreshold;
+ 637              		.loc 1 413 0
+ 638 0008 4369     		ldr	r3, [r0, #20]
+ 639 000a 1943     		orrs	r1, r1, r3
+ARM GAS  /tmp/ccob42Kd.s 			page 19
+
+
+ 640              	.LVL63:
+ 641 000c 4161     		str	r1, [r0, #20]
+ 642 000e 7047     		bx	lr
+ 643              		.cfi_endproc
+ 644              	.LFE43:
+ 646              		.section	.text.USART_SetPrescaler,"ax",%progbits
+ 647              		.align	2
+ 648              		.global	USART_SetPrescaler
+ 649              		.thumb
+ 650              		.thumb_func
+ 652              	USART_SetPrescaler:
+ 653              	.LFB44:
+ 414:Peripherals/src/gd32f1x0_usart.c **** }
+ 415:Peripherals/src/gd32f1x0_usart.c **** 
+ 416:Peripherals/src/gd32f1x0_usart.c **** /**
+ 417:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the system clock prescaler.
+ 418:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where USARTx is USART1.
+ 419:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_Prescaler: specifies the prescaler clock.
+ 420:Peripherals/src/gd32f1x0_usart.c ****   * @note   This function has to be called before calling USART_Enable() function.
+ 421:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 422:Peripherals/src/gd32f1x0_usart.c ****   */
+ 423:Peripherals/src/gd32f1x0_usart.c **** void USART_SetPrescaler(USART_TypeDef* USARTx, uint8_t USART_Prescaler)
+ 424:Peripherals/src/gd32f1x0_usart.c **** { 
+ 654              		.loc 1 424 0
+ 655              		.cfi_startproc
+ 656              		@ args = 0, pretend = 0, frame = 0
+ 657              		@ frame_needed = 0, uses_anonymous_args = 0
+ 658              		@ link register save eliminated.
+ 659              	.LVL64:
+ 425:Peripherals/src/gd32f1x0_usart.c ****     /* Clear and set the USART prescaler */
+ 426:Peripherals/src/gd32f1x0_usart.c ****     USARTx->GTPR &= USART_GTPR_GT;
+ 660              		.loc 1 426 0
+ 661 0000 038A     		ldrh	r3, [r0, #16]
+ 662 0002 03F47F43 		and	r3, r3, #65280
+ 663 0006 0382     		strh	r3, [r0, #16]	@ movhi
+ 427:Peripherals/src/gd32f1x0_usart.c ****     
+ 428:Peripherals/src/gd32f1x0_usart.c ****     USARTx->GTPR |= USART_Prescaler;
+ 664              		.loc 1 428 0
+ 665 0008 038A     		ldrh	r3, [r0, #16]
+ 666 000a 9BB2     		uxth	r3, r3
+ 667 000c 1943     		orrs	r1, r1, r3
+ 668              	.LVL65:
+ 669 000e 0182     		strh	r1, [r0, #16]	@ movhi
+ 670 0010 7047     		bx	lr
+ 671              		.cfi_endproc
+ 672              	.LFE44:
+ 674 0012 00BF     		.section	.text.USART_DataSend,"ax",%progbits
+ 675              		.align	2
+ 676              		.global	USART_DataSend
+ 677              		.thumb
+ 678              		.thumb_func
+ 680              	USART_DataSend:
+ 681              	.LFB45:
+ 429:Peripherals/src/gd32f1x0_usart.c **** }
+ 430:Peripherals/src/gd32f1x0_usart.c **** 
+ 431:Peripherals/src/gd32f1x0_usart.c **** /**
+ 432:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Send data by the USART peripheral.
+ARM GAS  /tmp/ccob42Kd.s 			page 20
+
+
+ 433:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 434:Peripherals/src/gd32f1x0_usart.c ****   * @param  Data: the data will be sent.
+ 435:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 436:Peripherals/src/gd32f1x0_usart.c ****   */
+ 437:Peripherals/src/gd32f1x0_usart.c **** void USART_DataSend(USART_TypeDef* USARTx,uint16_t Data)
+ 438:Peripherals/src/gd32f1x0_usart.c **** {
+ 682              		.loc 1 438 0
+ 683              		.cfi_startproc
+ 684              		@ args = 0, pretend = 0, frame = 0
+ 685              		@ frame_needed = 0, uses_anonymous_args = 0
+ 686              		@ link register save eliminated.
+ 687              	.LVL66:
+ 439:Peripherals/src/gd32f1x0_usart.c ****     USARTx->TDTR = (Data & (uint16_t)0x01FF);
+ 688              		.loc 1 439 0
+ 689 0000 C1F30801 		ubfx	r1, r1, #0, #9
+ 690              	.LVL67:
+ 691 0004 0185     		strh	r1, [r0, #40]	@ movhi
+ 692 0006 7047     		bx	lr
+ 693              		.cfi_endproc
+ 694              	.LFE45:
+ 696              		.section	.text.USART_DataReceive,"ax",%progbits
+ 697              		.align	2
+ 698              		.global	USART_DataReceive
+ 699              		.thumb
+ 700              		.thumb_func
+ 702              	USART_DataReceive:
+ 703              	.LFB46:
+ 440:Peripherals/src/gd32f1x0_usart.c **** }
+ 441:Peripherals/src/gd32f1x0_usart.c ****    
+ 442:Peripherals/src/gd32f1x0_usart.c **** /**
+ 443:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Receive data by the USART peripheral.
+ 444:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 445:Peripherals/src/gd32f1x0_usart.c ****   * @retval The received data.
+ 446:Peripherals/src/gd32f1x0_usart.c ****   */
+ 447:Peripherals/src/gd32f1x0_usart.c **** uint16_t USART_DataReceive(USART_TypeDef* USARTx)
+ 448:Peripherals/src/gd32f1x0_usart.c **** {
+ 704              		.loc 1 448 0
+ 705              		.cfi_startproc
+ 706              		@ args = 0, pretend = 0, frame = 0
+ 707              		@ frame_needed = 0, uses_anonymous_args = 0
+ 708              		@ link register save eliminated.
+ 709              	.LVL68:
+ 449:Peripherals/src/gd32f1x0_usart.c ****     return (uint16_t)(USARTx->RDTR & (uint16_t)0x01FF);
+ 710              		.loc 1 449 0
+ 711 0000 808C     		ldrh	r0, [r0, #36]
+ 712              	.LVL69:
+ 450:Peripherals/src/gd32f1x0_usart.c **** }
+ 713              		.loc 1 450 0
+ 714 0002 C0F30800 		ubfx	r0, r0, #0, #9
+ 715 0006 7047     		bx	lr
+ 716              		.cfi_endproc
+ 717              	.LFE46:
+ 719              		.section	.text.USART_AutoBaudRateDect_Enable,"ax",%progbits
+ 720              		.align	2
+ 721              		.global	USART_AutoBaudRateDect_Enable
+ 722              		.thumb
+ 723              		.thumb_func
+ARM GAS  /tmp/ccob42Kd.s 			page 21
+
+
+ 725              	USART_AutoBaudRateDect_Enable:
+ 726              	.LFB47:
+ 451:Peripherals/src/gd32f1x0_usart.c ****  
+ 452:Peripherals/src/gd32f1x0_usart.c **** /**
+ 453:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the Auto Baud Rate detection.
+ 454:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: Where USARTx is USART1 .
+ 455:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new value of the USART1 auto baud rate.
+ 456:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 457:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 458:Peripherals/src/gd32f1x0_usart.c ****   */
+ 459:Peripherals/src/gd32f1x0_usart.c **** void USART_AutoBaudRateDect_Enable(USART_TypeDef* USARTx,TypeState NewValue)
+ 460:Peripherals/src/gd32f1x0_usart.c **** {
+ 727              		.loc 1 460 0
+ 728              		.cfi_startproc
+ 729              		@ args = 0, pretend = 0, frame = 0
+ 730              		@ frame_needed = 0, uses_anonymous_args = 0
+ 731              		@ link register save eliminated.
+ 732              	.LVL70:
+ 461:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 733              		.loc 1 461 0
+ 734 0000 21B1     		cbz	r1, .L50
+ 462:Peripherals/src/gd32f1x0_usart.c ****     {
+ 463:Peripherals/src/gd32f1x0_usart.c ****         /*By setting the ABDEN bit in the CTLR2 register */
+ 464:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 |= USART_CTLR2_ABDEN;
+ 735              		.loc 1 464 0
+ 736 0002 4368     		ldr	r3, [r0, #4]
+ 737 0004 43F48013 		orr	r3, r3, #1048576
+ 738 0008 4360     		str	r3, [r0, #4]
+ 739 000a 7047     		bx	lr
+ 740              	.L50:
+ 465:Peripherals/src/gd32f1x0_usart.c ****     }
+ 466:Peripherals/src/gd32f1x0_usart.c ****     else
+ 467:Peripherals/src/gd32f1x0_usart.c ****     {
+ 468:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 &= ~((uint32_t)USART_CTLR2_ABDEN);         
+ 741              		.loc 1 468 0
+ 742 000c 4368     		ldr	r3, [r0, #4]
+ 743 000e 23F48013 		bic	r3, r3, #1048576
+ 744 0012 4360     		str	r3, [r0, #4]
+ 745 0014 7047     		bx	lr
+ 746              		.cfi_endproc
+ 747              	.LFE47:
+ 749 0016 00BF     		.section	.text.USART_AutoBaudRateDectMode_Set,"ax",%progbits
+ 750              		.align	2
+ 751              		.global	USART_AutoBaudRateDectMode_Set
+ 752              		.thumb
+ 753              		.thumb_func
+ 755              	USART_AutoBaudRateDectMode_Set:
+ 756              	.LFB48:
+ 469:Peripherals/src/gd32f1x0_usart.c ****     }
+ 470:Peripherals/src/gd32f1x0_usart.c **** }
+ 471:Peripherals/src/gd32f1x0_usart.c **** 
+ 472:Peripherals/src/gd32f1x0_usart.c **** /**
+ 473:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set USART auto baud rate detection mode.
+ 474:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: Where USARTx is USART1.
+ 475:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_AutoBaudRate: USART auto baud rate detection mode.
+ 476:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 477:Peripherals/src/gd32f1x0_usart.c ****   */
+ARM GAS  /tmp/ccob42Kd.s 			page 22
+
+
+ 478:Peripherals/src/gd32f1x0_usart.c **** void USART_AutoBaudRateDectMode_Set(USART_TypeDef* USARTx, uint32_t USART_AutoBaudRate)
+ 479:Peripherals/src/gd32f1x0_usart.c **** {
+ 757              		.loc 1 479 0
+ 758              		.cfi_startproc
+ 759              		@ args = 0, pretend = 0, frame = 0
+ 760              		@ frame_needed = 0, uses_anonymous_args = 0
+ 761              		@ link register save eliminated.
+ 762              	.LVL71:
+ 480:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 &= (uint32_t)(~(USART_CTLR2_ABDM_0) |~(USART_CTLR2_ABDM_1));
+ 763              		.loc 1 480 0
+ 764 0000 4368     		ldr	r3, [r0, #4]
+ 765 0002 4360     		str	r3, [r0, #4]
+ 481:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 |= USART_AutoBaudRate;
+ 766              		.loc 1 481 0
+ 767 0004 4368     		ldr	r3, [r0, #4]
+ 768 0006 1943     		orrs	r1, r1, r3
+ 769              	.LVL72:
+ 770 0008 4160     		str	r1, [r0, #4]
+ 771 000a 7047     		bx	lr
+ 772              		.cfi_endproc
+ 773              	.LFE48:
+ 775              		.section	.text.USART_Address,"ax",%progbits
+ 776              		.align	2
+ 777              		.global	USART_Address
+ 778              		.thumb
+ 779              		.thumb_func
+ 781              	USART_Address:
+ 782              	.LFB49:
+ 482:Peripherals/src/gd32f1x0_usart.c **** }
+ 483:Peripherals/src/gd32f1x0_usart.c **** 
+ 484:Peripherals/src/gd32f1x0_usart.c **** /**
+ 485:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the address of the USART terminal.
+ 486:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 487:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_Address: Indicates the address of the USART node.
+ 488:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 489:Peripherals/src/gd32f1x0_usart.c ****   */
+ 490:Peripherals/src/gd32f1x0_usart.c **** void USART_Address(USART_TypeDef* USARTx, uint8_t USART_Address)
+ 491:Peripherals/src/gd32f1x0_usart.c **** {
+ 783              		.loc 1 491 0
+ 784              		.cfi_startproc
+ 785              		@ args = 0, pretend = 0, frame = 0
+ 786              		@ frame_needed = 0, uses_anonymous_args = 0
+ 787              		@ link register save eliminated.
+ 788              	.LVL73:
+ 492:Peripherals/src/gd32f1x0_usart.c ****     /* Clear the USART address and Set the USART terminal*/
+ 493:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 &= (uint32_t)(~(USART_CTLR2_ADDR));
+ 789              		.loc 1 493 0
+ 790 0000 4368     		ldr	r3, [r0, #4]
+ 791 0002 23F07F43 		bic	r3, r3, #-16777216
+ 792 0006 4360     		str	r3, [r0, #4]
+ 494:Peripherals/src/gd32f1x0_usart.c ****     
+ 495:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 |=((uint32_t)USART_Address << (uint32_t)0x18);
+ 793              		.loc 1 495 0
+ 794 0008 4368     		ldr	r3, [r0, #4]
+ 795 000a 43EA0161 		orr	r1, r3, r1, lsl #24
+ 796              	.LVL74:
+ 797 000e 4160     		str	r1, [r0, #4]
+ARM GAS  /tmp/ccob42Kd.s 			page 23
+
+
+ 798 0010 7047     		bx	lr
+ 799              		.cfi_endproc
+ 800              	.LFE49:
+ 802 0012 00BF     		.section	.text.USART_MuteMode_Enable,"ax",%progbits
+ 803              		.align	2
+ 804              		.global	USART_MuteMode_Enable
+ 805              		.thumb
+ 806              		.thumb_func
+ 808              	USART_MuteMode_Enable:
+ 809              	.LFB50:
+ 496:Peripherals/src/gd32f1x0_usart.c **** }
+ 497:Peripherals/src/gd32f1x0_usart.c **** 
+ 498:Peripherals/src/gd32f1x0_usart.c **** /**
+ 499:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's mute mode.
+ 500:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 501:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the USART mute mode.
+ 502:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 503:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 504:Peripherals/src/gd32f1x0_usart.c ****   */
+ 505:Peripherals/src/gd32f1x0_usart.c **** void USART_MuteMode_Enable(USART_TypeDef* USARTx, TypeState NewValue)
+ 506:Peripherals/src/gd32f1x0_usart.c **** {
+ 810              		.loc 1 506 0
+ 811              		.cfi_startproc
+ 812              		@ args = 0, pretend = 0, frame = 0
+ 813              		@ frame_needed = 0, uses_anonymous_args = 0
+ 814              		@ link register save eliminated.
+ 815              	.LVL75:
+ 507:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the MEN bit in the CTLR1 register enable or disable the USART's mute mode*/
+ 508:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 816              		.loc 1 508 0
+ 817 0000 21B1     		cbz	r1, .L55
+ 509:Peripherals/src/gd32f1x0_usart.c ****     {
+ 510:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 |= USART_CTLR1_MEN;
+ 818              		.loc 1 510 0
+ 819 0002 0368     		ldr	r3, [r0]
+ 820 0004 43F40053 		orr	r3, r3, #8192
+ 821 0008 0360     		str	r3, [r0]
+ 822 000a 7047     		bx	lr
+ 823              	.L55:
+ 511:Peripherals/src/gd32f1x0_usart.c ****     }
+ 512:Peripherals/src/gd32f1x0_usart.c ****     else
+ 513:Peripherals/src/gd32f1x0_usart.c ****     {
+ 514:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 &=~((uint32_t)USART_CTLR1_MEN);
+ 824              		.loc 1 514 0
+ 825 000c 0368     		ldr	r3, [r0]
+ 826 000e 23F40053 		bic	r3, r3, #8192
+ 827 0012 0360     		str	r3, [r0]
+ 828 0014 7047     		bx	lr
+ 829              		.cfi_endproc
+ 830              	.LFE50:
+ 832 0016 00BF     		.section	.text.USART_MuteModeWakeUp_Set,"ax",%progbits
+ 833              		.align	2
+ 834              		.global	USART_MuteModeWakeUp_Set
+ 835              		.thumb
+ 836              		.thumb_func
+ 838              	USART_MuteModeWakeUp_Set:
+ 839              	.LFB51:
+ARM GAS  /tmp/ccob42Kd.s 			page 24
+
+
+ 515:Peripherals/src/gd32f1x0_usart.c ****     }
+ 516:Peripherals/src/gd32f1x0_usart.c **** }
+ 517:Peripherals/src/gd32f1x0_usart.c **** 
+ 518:Peripherals/src/gd32f1x0_usart.c **** /**
+ 519:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the USART WakeUp method from mute mode.
+ 520:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 521:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_WakeUp
+ 522:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ 523:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_WAKEUP_IDLELINE
+ 524:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_WAKEUP_ADDRESSMARK
+ 525:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 526:Peripherals/src/gd32f1x0_usart.c ****   */
+ 527:Peripherals/src/gd32f1x0_usart.c **** void USART_MuteModeWakeUp_Set(USART_TypeDef* USARTx, uint32_t USART_WakeUp)
+ 528:Peripherals/src/gd32f1x0_usart.c **** {
+ 840              		.loc 1 528 0
+ 841              		.cfi_startproc
+ 842              		@ args = 0, pretend = 0, frame = 0
+ 843              		@ frame_needed = 0, uses_anonymous_args = 0
+ 844              		@ link register save eliminated.
+ 845              	.LVL76:
+ 529:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR1 &= ~((uint32_t)USART_CTLR1_WM);
+ 846              		.loc 1 529 0
+ 847 0000 0368     		ldr	r3, [r0]
+ 848 0002 23F40063 		bic	r3, r3, #2048
+ 849 0006 0360     		str	r3, [r0]
+ 530:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR1 |= USART_WakeUp;
+ 850              		.loc 1 530 0
+ 851 0008 0368     		ldr	r3, [r0]
+ 852 000a 1943     		orrs	r1, r1, r3
+ 853              	.LVL77:
+ 854 000c 0160     		str	r1, [r0]
+ 855 000e 7047     		bx	lr
+ 856              		.cfi_endproc
+ 857              	.LFE51:
+ 859              		.section	.text.USART_AddressDetection_Set,"ax",%progbits
+ 860              		.align	2
+ 861              		.global	USART_AddressDetection_Set
+ 862              		.thumb
+ 863              		.thumb_func
+ 865              	USART_AddressDetection_Set:
+ 866              	.LFB52:
+ 531:Peripherals/src/gd32f1x0_usart.c **** }
+ 532:Peripherals/src/gd32f1x0_usart.c **** 
+ 533:Peripherals/src/gd32f1x0_usart.c **** /**
+ 534:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the the USART Address detection length.
+ 535:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 536:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_AddressLength
+ 537:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ 538:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_ADDRESSLENGTH_4B
+ 539:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_ADDRESSLENGTH_7B
+ 540:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 541:Peripherals/src/gd32f1x0_usart.c ****   */
+ 542:Peripherals/src/gd32f1x0_usart.c **** void USART_AddressDetection_Set(USART_TypeDef* USARTx, uint32_t USART_AddressLength)
+ 543:Peripherals/src/gd32f1x0_usart.c **** {
+ 867              		.loc 1 543 0
+ 868              		.cfi_startproc
+ 869              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccob42Kd.s 			page 25
+
+
+ 870              		@ frame_needed = 0, uses_anonymous_args = 0
+ 871              		@ link register save eliminated.
+ 872              	.LVL78:
+ 544:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 &= ~((uint32_t)USART_CTLR2_ADDM);
+ 873              		.loc 1 544 0
+ 874 0000 4368     		ldr	r3, [r0, #4]
+ 875 0002 23F01003 		bic	r3, r3, #16
+ 876 0006 4360     		str	r3, [r0, #4]
+ 545:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 |= USART_AddressLength;
+ 877              		.loc 1 545 0
+ 878 0008 4368     		ldr	r3, [r0, #4]
+ 879 000a 1943     		orrs	r1, r1, r3
+ 880              	.LVL79:
+ 881 000c 4160     		str	r1, [r0, #4]
+ 882 000e 7047     		bx	lr
+ 883              		.cfi_endproc
+ 884              	.LFE52:
+ 886              		.section	.text.USART_SetLINBDLength,"ax",%progbits
+ 887              		.align	2
+ 888              		.global	USART_SetLINBDLength
+ 889              		.thumb
+ 890              		.thumb_func
+ 892              	USART_SetLINBDLength:
+ 893              	.LFB53:
+ 546:Peripherals/src/gd32f1x0_usart.c **** }
+ 547:Peripherals/src/gd32f1x0_usart.c **** 
+ 548:Peripherals/src/gd32f1x0_usart.c **** /**
+ 549:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the USART LIN Break detection length.
+ 550:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: Where USARTx is USART1.
+ 551:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_LINBreakDetectLength
+ 552:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ 553:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_LINBREAKDETECTLENGTH_10B
+ 554:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_LINBREAKDETECTLENGTH_11B
+ 555:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 556:Peripherals/src/gd32f1x0_usart.c ****   */
+ 557:Peripherals/src/gd32f1x0_usart.c **** void USART_SetLINBDLength(USART_TypeDef* USARTx,uint32_t USART_LINBreakDetectLength)
+ 558:Peripherals/src/gd32f1x0_usart.c **** {
+ 894              		.loc 1 558 0
+ 895              		.cfi_startproc
+ 896              		@ args = 0, pretend = 0, frame = 0
+ 897              		@ frame_needed = 0, uses_anonymous_args = 0
+ 898              		@ link register save eliminated.
+ 899              	.LVL80:
+ 559:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 &= ~((uint32_t)USART_CTLR2_LBDL);
+ 900              		.loc 1 559 0
+ 901 0000 4368     		ldr	r3, [r0, #4]
+ 902 0002 23F02003 		bic	r3, r3, #32
+ 903 0006 4360     		str	r3, [r0, #4]
+ 560:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR2 |= USART_LINBreakDetectLength;
+ 904              		.loc 1 560 0
+ 905 0008 4368     		ldr	r3, [r0, #4]
+ 906 000a 1943     		orrs	r1, r1, r3
+ 907              	.LVL81:
+ 908 000c 4160     		str	r1, [r0, #4]
+ 909 000e 7047     		bx	lr
+ 910              		.cfi_endproc
+ 911              	.LFE53:
+ARM GAS  /tmp/ccob42Kd.s 			page 26
+
+
+ 913              		.section	.text.USART_LIN_Enable,"ax",%progbits
+ 914              		.align	2
+ 915              		.global	USART_LIN_Enable
+ 916              		.thumb
+ 917              		.thumb_func
+ 919              	USART_LIN_Enable:
+ 920              	.LFB54:
+ 561:Peripherals/src/gd32f1x0_usart.c **** }
+ 562:Peripherals/src/gd32f1x0_usart.c **** 
+ 563:Peripherals/src/gd32f1x0_usart.c **** /**
+ 564:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's LIN mode.
+ 565:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: Where USARTx is USART1.
+ 566:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the USART LIN mode value.
+ 567:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 568:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 569:Peripherals/src/gd32f1x0_usart.c ****   */
+ 570:Peripherals/src/gd32f1x0_usart.c **** void USART_LIN_Enable(USART_TypeDef* USARTx,TypeState NewValue)
+ 571:Peripherals/src/gd32f1x0_usart.c **** {
+ 921              		.loc 1 571 0
+ 922              		.cfi_startproc
+ 923              		@ args = 0, pretend = 0, frame = 0
+ 924              		@ frame_needed = 0, uses_anonymous_args = 0
+ 925              		@ link register save eliminated.
+ 926              	.LVL82:
+ 572:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the LINEN bit in the CTLR2 register enable or disable the USART's LIN mode */
+ 573:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 927              		.loc 1 573 0
+ 928 0000 21B1     		cbz	r1, .L61
+ 574:Peripherals/src/gd32f1x0_usart.c ****     {
+ 575:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 |= USART_CTLR2_LMEN;
+ 929              		.loc 1 575 0
+ 930 0002 4368     		ldr	r3, [r0, #4]
+ 931 0004 43F48043 		orr	r3, r3, #16384
+ 932 0008 4360     		str	r3, [r0, #4]
+ 933 000a 7047     		bx	lr
+ 934              	.L61:
+ 576:Peripherals/src/gd32f1x0_usart.c ****     }
+ 577:Peripherals/src/gd32f1x0_usart.c ****     else
+ 578:Peripherals/src/gd32f1x0_usart.c ****     {
+ 579:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR2 &=~((uint32_t)USART_CTLR2_LMEN);
+ 935              		.loc 1 579 0
+ 936 000c 4368     		ldr	r3, [r0, #4]
+ 937 000e 23F48043 		bic	r3, r3, #16384
+ 938 0012 4360     		str	r3, [r0, #4]
+ 939 0014 7047     		bx	lr
+ 940              		.cfi_endproc
+ 941              	.LFE54:
+ 943 0016 00BF     		.section	.text.USART_HalfDuplex_Enable,"ax",%progbits
+ 944              		.align	2
+ 945              		.global	USART_HalfDuplex_Enable
+ 946              		.thumb
+ 947              		.thumb_func
+ 949              	USART_HalfDuplex_Enable:
+ 950              	.LFB55:
+ 580:Peripherals/src/gd32f1x0_usart.c ****     }
+ 581:Peripherals/src/gd32f1x0_usart.c **** }
+ 582:Peripherals/src/gd32f1x0_usart.c **** 
+ARM GAS  /tmp/ccob42Kd.s 			page 27
+
+
+ 583:Peripherals/src/gd32f1x0_usart.c **** /**
+ 584:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the Half-duplex mode.
+ 585:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 586:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the USART Half-duplex mode value.
+ 587:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 588:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 589:Peripherals/src/gd32f1x0_usart.c ****   */
+ 590:Peripherals/src/gd32f1x0_usart.c **** void USART_HalfDuplex_Enable(USART_TypeDef* USARTx, TypeState NewValue)
+ 591:Peripherals/src/gd32f1x0_usart.c **** {
+ 951              		.loc 1 591 0
+ 952              		.cfi_startproc
+ 953              		@ args = 0, pretend = 0, frame = 0
+ 954              		@ frame_needed = 0, uses_anonymous_args = 0
+ 955              		@ link register save eliminated.
+ 956              	.LVL83:
+ 592:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the HDEN bit in the CTLR3 register enable or disable the Half-duplex mode */ 
+ 593:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue  != DISABLE)
+ 957              		.loc 1 593 0
+ 958 0000 21B1     		cbz	r1, .L64
+ 594:Peripherals/src/gd32f1x0_usart.c ****     {
+ 595:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 |= USART_CTLR3_HDEN;
+ 959              		.loc 1 595 0
+ 960 0002 8368     		ldr	r3, [r0, #8]
+ 961 0004 43F00803 		orr	r3, r3, #8
+ 962 0008 8360     		str	r3, [r0, #8]
+ 963 000a 7047     		bx	lr
+ 964              	.L64:
+ 596:Peripherals/src/gd32f1x0_usart.c ****     }
+ 597:Peripherals/src/gd32f1x0_usart.c ****     else
+ 598:Peripherals/src/gd32f1x0_usart.c ****     {
+ 599:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_HDEN);
+ 965              		.loc 1 599 0
+ 966 000c 8368     		ldr	r3, [r0, #8]
+ 967 000e 23F00803 		bic	r3, r3, #8
+ 968 0012 8360     		str	r3, [r0, #8]
+ 969 0014 7047     		bx	lr
+ 970              		.cfi_endproc
+ 971              	.LFE55:
+ 973 0016 00BF     		.section	.text.USART_GuardTime_Set,"ax",%progbits
+ 974              		.align	2
+ 975              		.global	USART_GuardTime_Set
+ 976              		.thumb
+ 977              		.thumb_func
+ 979              	USART_GuardTime_Set:
+ 980              	.LFB56:
+ 600:Peripherals/src/gd32f1x0_usart.c ****     }
+ 601:Peripherals/src/gd32f1x0_usart.c **** }
+ 602:Peripherals/src/gd32f1x0_usart.c **** 
+ 603:Peripherals/src/gd32f1x0_usart.c **** /**
+ 604:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the the USART guard time.
+ 605:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: Where USARTx is USART1.
+ 606:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_GuardTime: the USART guard time.
+ 607:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 608:Peripherals/src/gd32f1x0_usart.c ****   */
+ 609:Peripherals/src/gd32f1x0_usart.c **** void USART_GuardTime_Set(USART_TypeDef* USARTx, uint8_t USART_GuardTime)
+ 610:Peripherals/src/gd32f1x0_usart.c **** {    
+ 981              		.loc 1 610 0
+ARM GAS  /tmp/ccob42Kd.s 			page 28
+
+
+ 982              		.cfi_startproc
+ 983              		@ args = 0, pretend = 0, frame = 0
+ 984              		@ frame_needed = 0, uses_anonymous_args = 0
+ 985              		@ link register save eliminated.
+ 986              	.LVL84:
+ 611:Peripherals/src/gd32f1x0_usart.c ****     /* Set the USART guard time */
+ 612:Peripherals/src/gd32f1x0_usart.c ****     USARTx->GTPR &= USART_GTPR_PSC;
+ 987              		.loc 1 612 0
+ 988 0000 038A     		ldrh	r3, [r0, #16]
+ 989 0002 DBB2     		uxtb	r3, r3
+ 990 0004 0382     		strh	r3, [r0, #16]	@ movhi
+ 613:Peripherals/src/gd32f1x0_usart.c ****     
+ 614:Peripherals/src/gd32f1x0_usart.c ****     USARTx->GTPR |= (uint16_t)((uint16_t)USART_GuardTime << 0x08);
+ 991              		.loc 1 614 0
+ 992 0006 038A     		ldrh	r3, [r0, #16]
+ 993 0008 9BB2     		uxth	r3, r3
+ 994 000a 43EA0121 		orr	r1, r3, r1, lsl #8
+ 995              	.LVL85:
+ 996 000e 0182     		strh	r1, [r0, #16]	@ movhi
+ 997 0010 7047     		bx	lr
+ 998              		.cfi_endproc
+ 999              	.LFE56:
+ 1001 0012 00BF     		.section	.text.USART_SmartCard_Enable,"ax",%progbits
+ 1002              		.align	2
+ 1003              		.global	USART_SmartCard_Enable
+ 1004              		.thumb
+ 1005              		.thumb_func
+ 1007              	USART_SmartCard_Enable:
+ 1008              	.LFB57:
+ 615:Peripherals/src/gd32f1x0_usart.c **** }
+ 616:Peripherals/src/gd32f1x0_usart.c **** 
+ 617:Peripherals/src/gd32f1x0_usart.c **** /**
+ 618:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's Smart Card mode.
+ 619:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral is USART1
+ 620:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the Smart Card mode value.
+ 621:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.      
+ 622:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 623:Peripherals/src/gd32f1x0_usart.c ****   */
+ 624:Peripherals/src/gd32f1x0_usart.c **** void USART_SmartCard_Enable(USART_TypeDef* USARTx,TypeState NewValue)
+ 625:Peripherals/src/gd32f1x0_usart.c **** {
+ 1009              		.loc 1 625 0
+ 1010              		.cfi_startproc
+ 1011              		@ args = 0, pretend = 0, frame = 0
+ 1012              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1013              		@ link register save eliminated.
+ 1014              	.LVL86:
+ 626:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the SCEN bit in the CTLR3 register enable or disable the USART's Smart Card mode 
+ 627:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 1015              		.loc 1 627 0
+ 1016 0000 21B1     		cbz	r1, .L68
+ 628:Peripherals/src/gd32f1x0_usart.c ****     {
+ 629:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 |= USART_CTLR3_SCEN;
+ 1017              		.loc 1 629 0
+ 1018 0002 8368     		ldr	r3, [r0, #8]
+ 1019 0004 43F02003 		orr	r3, r3, #32
+ 1020 0008 8360     		str	r3, [r0, #8]
+ 1021 000a 7047     		bx	lr
+ARM GAS  /tmp/ccob42Kd.s 			page 29
+
+
+ 1022              	.L68:
+ 630:Peripherals/src/gd32f1x0_usart.c ****     }
+ 631:Peripherals/src/gd32f1x0_usart.c ****     else
+ 632:Peripherals/src/gd32f1x0_usart.c ****     {
+ 633:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_SCEN);
+ 1023              		.loc 1 633 0
+ 1024 000c 8368     		ldr	r3, [r0, #8]
+ 1025 000e 23F02003 		bic	r3, r3, #32
+ 1026 0012 8360     		str	r3, [r0, #8]
+ 1027 0014 7047     		bx	lr
+ 1028              		.cfi_endproc
+ 1029              	.LFE57:
+ 1031 0016 00BF     		.section	.text.USART_SmartCardNACK_Enable,"ax",%progbits
+ 1032              		.align	2
+ 1033              		.global	USART_SmartCardNACK_Enable
+ 1034              		.thumb
+ 1035              		.thumb_func
+ 1037              	USART_SmartCardNACK_Enable:
+ 1038              	.LFB58:
+ 634:Peripherals/src/gd32f1x0_usart.c ****     }
+ 635:Peripherals/src/gd32f1x0_usart.c **** }
+ 636:Peripherals/src/gd32f1x0_usart.c **** 
+ 637:Peripherals/src/gd32f1x0_usart.c **** /**
+ 638:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable NACK transmission.
+ 639:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral is USART1
+ 640:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the NACK transmission state.
+ 641:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 642:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 643:Peripherals/src/gd32f1x0_usart.c ****   */
+ 644:Peripherals/src/gd32f1x0_usart.c **** void USART_SmartCardNACK_Enable(USART_TypeDef* USARTx,TypeState NewValue)
+ 645:Peripherals/src/gd32f1x0_usart.c **** {
+ 1039              		.loc 1 645 0
+ 1040              		.cfi_startproc
+ 1041              		@ args = 0, pretend = 0, frame = 0
+ 1042              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1043              		@ link register save eliminated.
+ 1044              	.LVL87:
+ 646:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the NACK bit in the CTLR3 register Enable or disable NACK transmission */
+ 647:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 1045              		.loc 1 647 0
+ 1046 0000 21B1     		cbz	r1, .L71
+ 648:Peripherals/src/gd32f1x0_usart.c ****     {
+ 649:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 |= USART_CTLR3_NACK;
+ 1047              		.loc 1 649 0
+ 1048 0002 8368     		ldr	r3, [r0, #8]
+ 1049 0004 43F01003 		orr	r3, r3, #16
+ 1050 0008 8360     		str	r3, [r0, #8]
+ 1051 000a 7047     		bx	lr
+ 1052              	.L71:
+ 650:Peripherals/src/gd32f1x0_usart.c ****     }
+ 651:Peripherals/src/gd32f1x0_usart.c ****     else
+ 652:Peripherals/src/gd32f1x0_usart.c ****     {
+ 653:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_NACK);
+ 1053              		.loc 1 653 0
+ 1054 000c 8368     		ldr	r3, [r0, #8]
+ 1055 000e 23F01003 		bic	r3, r3, #16
+ 1056 0012 8360     		str	r3, [r0, #8]
+ARM GAS  /tmp/ccob42Kd.s 			page 30
+
+
+ 1057 0014 7047     		bx	lr
+ 1058              		.cfi_endproc
+ 1059              	.LFE58:
+ 1061 0016 00BF     		.section	.text.USART_AutoRetryNumber_Set,"ax",%progbits
+ 1062              		.align	2
+ 1063              		.global	USART_AutoRetryNumber_Set
+ 1064              		.thumb
+ 1065              		.thumb_func
+ 1067              	USART_AutoRetryNumber_Set:
+ 1068              	.LFB59:
+ 654:Peripherals/src/gd32f1x0_usart.c ****     }
+ 655:Peripherals/src/gd32f1x0_usart.c **** }
+ 656:Peripherals/src/gd32f1x0_usart.c **** 
+ 657:Peripherals/src/gd32f1x0_usart.c **** /**
+ 658:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set Smartcard auto-retry number.
+ 659:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral is USART1  
+ 660:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_AutoNumber: the Smart Card auto retry number.
+ 661:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 662:Peripherals/src/gd32f1x0_usart.c ****   */
+ 663:Peripherals/src/gd32f1x0_usart.c **** void USART_AutoRetryNumber_Set(USART_TypeDef* USARTx,uint8_t USART_AutoNumber)
+ 664:Peripherals/src/gd32f1x0_usart.c **** {    
+ 1069              		.loc 1 664 0
+ 1070              		.cfi_startproc
+ 1071              		@ args = 0, pretend = 0, frame = 0
+ 1072              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1073              		@ link register save eliminated.
+ 1074              	.LVL88:
+ 665:Peripherals/src/gd32f1x0_usart.c ****     /* Set the USART auto retry count */
+ 666:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_SCRTNUM);
+ 1075              		.loc 1 666 0
+ 1076 0000 8368     		ldr	r3, [r0, #8]
+ 1077 0002 23F46023 		bic	r3, r3, #917504
+ 1078 0006 8360     		str	r3, [r0, #8]
+ 667:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 |= ((uint32_t)USART_AutoNumber << 0x11);
+ 1079              		.loc 1 667 0
+ 1080 0008 8368     		ldr	r3, [r0, #8]
+ 1081 000a 43EA4141 		orr	r1, r3, r1, lsl #17
+ 1082              	.LVL89:
+ 1083 000e 8160     		str	r1, [r0, #8]
+ 1084 0010 7047     		bx	lr
+ 1085              		.cfi_endproc
+ 1086              	.LFE59:
+ 1088 0012 00BF     		.section	.text.USART_BlockLength_Set,"ax",%progbits
+ 1089              		.align	2
+ 1090              		.global	USART_BlockLength_Set
+ 1091              		.thumb
+ 1092              		.thumb_func
+ 1094              	USART_BlockLength_Set:
+ 1095              	.LFB60:
+ 668:Peripherals/src/gd32f1x0_usart.c **** }
+ 669:Peripherals/src/gd32f1x0_usart.c **** 
+ 670:Peripherals/src/gd32f1x0_usart.c **** /**
+ 671:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the Smart Card Block length.
+ 672:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral is USART1  
+ 673:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_BlockLength: the Smart Card block length.
+ 674:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 675:Peripherals/src/gd32f1x0_usart.c ****   */
+ARM GAS  /tmp/ccob42Kd.s 			page 31
+
+
+ 676:Peripherals/src/gd32f1x0_usart.c **** void USART_BlockLength_Set(USART_TypeDef* USARTx,uint8_t USART_BlockLength)
+ 677:Peripherals/src/gd32f1x0_usart.c **** {    
+ 1096              		.loc 1 677 0
+ 1097              		.cfi_startproc
+ 1098              		@ args = 0, pretend = 0, frame = 0
+ 1099              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1100              		@ link register save eliminated.
+ 1101              	.LVL90:
+ 678:Peripherals/src/gd32f1x0_usart.c ****     /* Set the Smart Card Block length */
+ 679:Peripherals/src/gd32f1x0_usart.c ****     USARTx->RTR &= ~((uint32_t)USART_RTR_BL);
+ 1102              		.loc 1 679 0
+ 1103 0000 4369     		ldr	r3, [r0, #20]
+ 1104 0002 23F07F43 		bic	r3, r3, #-16777216
+ 1105 0006 4361     		str	r3, [r0, #20]
+ 680:Peripherals/src/gd32f1x0_usart.c ****     USARTx->RTR |= ((uint32_t)USART_BlockLength << 0x18);
+ 1106              		.loc 1 680 0
+ 1107 0008 4369     		ldr	r3, [r0, #20]
+ 1108 000a 43EA0161 		orr	r1, r3, r1, lsl #24
+ 1109              	.LVL91:
+ 1110 000e 4161     		str	r1, [r0, #20]
+ 1111 0010 7047     		bx	lr
+ 1112              		.cfi_endproc
+ 1113              	.LFE60:
+ 1115 0012 00BF     		.section	.text.USART_IrDA_Set,"ax",%progbits
+ 1116              		.align	2
+ 1117              		.global	USART_IrDA_Set
+ 1118              		.thumb
+ 1119              		.thumb_func
+ 1121              	USART_IrDA_Set:
+ 1122              	.LFB61:
+ 681:Peripherals/src/gd32f1x0_usart.c **** }
+ 682:Peripherals/src/gd32f1x0_usart.c **** 
+ 683:Peripherals/src/gd32f1x0_usart.c **** /**
+ 684:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the  USART1 IrDA low-power.
+ 685:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral is USART1  
+ 686:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_IrDAMode
+ 687:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ 688:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_IRDAMODE_LOWPOWER
+ 689:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_IRDAMODE_NORMAL
+ 690:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 691:Peripherals/src/gd32f1x0_usart.c ****   */
+ 692:Peripherals/src/gd32f1x0_usart.c **** void USART_IrDA_Set(USART_TypeDef* USARTx,uint32_t USART_IrDAMode)
+ 693:Peripherals/src/gd32f1x0_usart.c **** {
+ 1123              		.loc 1 693 0
+ 1124              		.cfi_startproc
+ 1125              		@ args = 0, pretend = 0, frame = 0
+ 1126              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1127              		@ link register save eliminated.
+ 1128              	.LVL92:
+ 694:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_IRLP);
+ 1129              		.loc 1 694 0
+ 1130 0000 8368     		ldr	r3, [r0, #8]
+ 1131 0002 23F00403 		bic	r3, r3, #4
+ 1132 0006 8360     		str	r3, [r0, #8]
+ 695:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 |= USART_IrDAMode;
+ 1133              		.loc 1 695 0
+ 1134 0008 8368     		ldr	r3, [r0, #8]
+ARM GAS  /tmp/ccob42Kd.s 			page 32
+
+
+ 1135 000a 1943     		orrs	r1, r1, r3
+ 1136              	.LVL93:
+ 1137 000c 8160     		str	r1, [r0, #8]
+ 1138 000e 7047     		bx	lr
+ 1139              		.cfi_endproc
+ 1140              	.LFE61:
+ 1142              		.section	.text.USART_IrDA_Enable,"ax",%progbits
+ 1143              		.align	2
+ 1144              		.global	USART_IrDA_Enable
+ 1145              		.thumb
+ 1146              		.thumb_func
+ 1148              	USART_IrDA_Enable:
+ 1149              	.LFB62:
+ 696:Peripherals/src/gd32f1x0_usart.c **** }
+ 697:Peripherals/src/gd32f1x0_usart.c **** 
+ 698:Peripherals/src/gd32f1x0_usart.c **** /**
+ 699:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's IrDA interface.
+ 700:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral is USART1. 
+ 701:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the IrDA mode value.
+ 702:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 703:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 704:Peripherals/src/gd32f1x0_usart.c ****   */
+ 705:Peripherals/src/gd32f1x0_usart.c **** void USART_IrDA_Enable(USART_TypeDef* USARTx,TypeState NewValue)
+ 706:Peripherals/src/gd32f1x0_usart.c **** {
+ 1150              		.loc 1 706 0
+ 1151              		.cfi_startproc
+ 1152              		@ args = 0, pretend = 0, frame = 0
+ 1153              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1154              		@ link register save eliminated.
+ 1155              	.LVL94:
+ 707:Peripherals/src/gd32f1x0_usart.c ****     /* By setting the IREN bit in the CTLR3 register enable or disable the USART's IrDA interface *
+ 708:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 1156              		.loc 1 708 0
+ 1157 0000 21B1     		cbz	r1, .L77
+ 709:Peripherals/src/gd32f1x0_usart.c ****     {
+ 710:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 |= USART_CTLR3_IREN;
+ 1158              		.loc 1 710 0
+ 1159 0002 8368     		ldr	r3, [r0, #8]
+ 1160 0004 43F00203 		orr	r3, r3, #2
+ 1161 0008 8360     		str	r3, [r0, #8]
+ 1162 000a 7047     		bx	lr
+ 1163              	.L77:
+ 711:Peripherals/src/gd32f1x0_usart.c ****     }
+ 712:Peripherals/src/gd32f1x0_usart.c ****     else
+ 713:Peripherals/src/gd32f1x0_usart.c ****     {
+ 714:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_IREN);
+ 1164              		.loc 1 714 0
+ 1165 000c 8368     		ldr	r3, [r0, #8]
+ 1166 000e 23F00203 		bic	r3, r3, #2
+ 1167 0012 8360     		str	r3, [r0, #8]
+ 1168 0014 7047     		bx	lr
+ 1169              		.cfi_endproc
+ 1170              	.LFE62:
+ 1172 0016 00BF     		.section	.text.USART_DE_Enable,"ax",%progbits
+ 1173              		.align	2
+ 1174              		.global	USART_DE_Enable
+ 1175              		.thumb
+ARM GAS  /tmp/ccob42Kd.s 			page 33
+
+
+ 1176              		.thumb_func
+ 1178              	USART_DE_Enable:
+ 1179              	.LFB63:
+ 715:Peripherals/src/gd32f1x0_usart.c ****     }
+ 716:Peripherals/src/gd32f1x0_usart.c **** }
+ 717:Peripherals/src/gd32f1x0_usart.c **** 
+ 718:Peripherals/src/gd32f1x0_usart.c **** /**
+ 719:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the Driver enable mode .
+ 720:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2. 
+ 721:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the Driver enable mode value.
+ 722:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 723:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 724:Peripherals/src/gd32f1x0_usart.c ****   */
+ 725:Peripherals/src/gd32f1x0_usart.c **** void USART_DE_Enable(USART_TypeDef* USARTx,TypeState NewValue)
+ 726:Peripherals/src/gd32f1x0_usart.c **** {
+ 1180              		.loc 1 726 0
+ 1181              		.cfi_startproc
+ 1182              		@ args = 0, pretend = 0, frame = 0
+ 1183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1184              		@ link register save eliminated.
+ 1185              	.LVL95:
+ 727:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 1186              		.loc 1 727 0
+ 1187 0000 21B1     		cbz	r1, .L80
+ 728:Peripherals/src/gd32f1x0_usart.c ****     {
+ 729:Peripherals/src/gd32f1x0_usart.c ****         /* By setting the DEM bit in the CTLR3 register enable or disable the Driver enable mode */
+ 730:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 |= USART_CTLR3_DEM;
+ 1188              		.loc 1 730 0
+ 1189 0002 8368     		ldr	r3, [r0, #8]
+ 1190 0004 43F48043 		orr	r3, r3, #16384
+ 1191 0008 8360     		str	r3, [r0, #8]
+ 1192 000a 7047     		bx	lr
+ 1193              	.L80:
+ 731:Peripherals/src/gd32f1x0_usart.c ****     }
+ 732:Peripherals/src/gd32f1x0_usart.c ****     else
+ 733:Peripherals/src/gd32f1x0_usart.c ****     {
+ 734:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_DEM);
+ 1194              		.loc 1 734 0
+ 1195 000c 8368     		ldr	r3, [r0, #8]
+ 1196 000e 23F48043 		bic	r3, r3, #16384
+ 1197 0012 8360     		str	r3, [r0, #8]
+ 1198 0014 7047     		bx	lr
+ 1199              		.cfi_endproc
+ 1200              	.LFE63:
+ 1202 0016 00BF     		.section	.text.USART_DriverEnablePolarity_Set,"ax",%progbits
+ 1203              		.align	2
+ 1204              		.global	USART_DriverEnablePolarity_Set
+ 1205              		.thumb
+ 1206              		.thumb_func
+ 1208              	USART_DriverEnablePolarity_Set:
+ 1209              	.LFB64:
+ 735:Peripherals/src/gd32f1x0_usart.c ****     }
+ 736:Peripherals/src/gd32f1x0_usart.c **** }
+ 737:Peripherals/src/gd32f1x0_usart.c **** 
+ 738:Peripherals/src/gd32f1x0_usart.c **** /**
+ 739:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set Driver enable polarity mode
+ 740:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ARM GAS  /tmp/ccob42Kd.s 			page 34
+
+
+ 741:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_DEPly
+ 742:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ 743:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_DEPOLARITY_HIGH
+ 744:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_DEPOLARITY_LOW
+ 745:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 746:Peripherals/src/gd32f1x0_usart.c ****   */
+ 747:Peripherals/src/gd32f1x0_usart.c **** void USART_DriverEnablePolarity_Set(USART_TypeDef* USARTx, uint32_t USART_DEPly)
+ 748:Peripherals/src/gd32f1x0_usart.c **** {
+ 1210              		.loc 1 748 0
+ 1211              		.cfi_startproc
+ 1212              		@ args = 0, pretend = 0, frame = 0
+ 1213              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1214              		@ link register save eliminated.
+ 1215              	.LVL96:
+ 749:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 &=~((uint32_t)USART_CTLR3_DEP);
+ 1216              		.loc 1 749 0
+ 1217 0000 8368     		ldr	r3, [r0, #8]
+ 1218 0002 23F40043 		bic	r3, r3, #32768
+ 1219 0006 8360     		str	r3, [r0, #8]
+ 750:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 |= USART_DEPly;
+ 1220              		.loc 1 750 0
+ 1221 0008 8368     		ldr	r3, [r0, #8]
+ 1222 000a 1943     		orrs	r1, r1, r3
+ 1223              	.LVL97:
+ 1224 000c 8160     		str	r1, [r0, #8]
+ 1225 000e 7047     		bx	lr
+ 1226              		.cfi_endproc
+ 1227              	.LFE64:
+ 1229              		.section	.text.USART_DEATime_Set,"ax",%progbits
+ 1230              		.align	2
+ 1231              		.global	USART_DEATime_Set
+ 1232              		.thumb
+ 1233              		.thumb_func
+ 1235              	USART_DEATime_Set:
+ 1236              	.LFB65:
+ 751:Peripherals/src/gd32f1x0_usart.c **** }
+ 752:Peripherals/src/gd32f1x0_usart.c **** 
+ 753:Peripherals/src/gd32f1x0_usart.c **** /**
+ 754:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the specified RS485 DE assertion time
+ 755:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 756:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_DEATime: define the time between the activation of the
+ 757:Peripherals/src/gd32f1x0_usart.c ****   *   DE (Driver Enable) signal and the beginning of the start bit.
+ 758:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 759:Peripherals/src/gd32f1x0_usart.c ****   */
+ 760:Peripherals/src/gd32f1x0_usart.c **** void USART_DEATime_Set(USART_TypeDef* USARTx, uint32_t USART_DEATime)
+ 761:Peripherals/src/gd32f1x0_usart.c **** {
+ 1237              		.loc 1 761 0
+ 1238              		.cfi_startproc
+ 1239              		@ args = 0, pretend = 0, frame = 0
+ 1240              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1241              		@ link register save eliminated.
+ 1242              	.LVL98:
+ 762:Peripherals/src/gd32f1x0_usart.c ****     /* Set the new value for the DE assertion time */
+ 763:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR1 &= ~((uint32_t)USART_CTLR1_DEA);
+ 1243              		.loc 1 763 0
+ 1244 0000 0368     		ldr	r3, [r0]
+ 1245 0002 23F07873 		bic	r3, r3, #65011712
+ARM GAS  /tmp/ccob42Kd.s 			page 35
+
+
+ 1246 0006 0360     		str	r3, [r0]
+ 764:Peripherals/src/gd32f1x0_usart.c ****     
+ 765:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR1 |=((uint32_t)USART_DEATime << 0x15);
+ 1247              		.loc 1 765 0
+ 1248 0008 0368     		ldr	r3, [r0]
+ 1249 000a 43EA4151 		orr	r1, r3, r1, lsl #21
+ 1250              	.LVL99:
+ 1251 000e 0160     		str	r1, [r0]
+ 1252 0010 7047     		bx	lr
+ 1253              		.cfi_endproc
+ 1254              	.LFE65:
+ 1256 0012 00BF     		.section	.text.USART_DEDTime_Set,"ax",%progbits
+ 1257              		.align	2
+ 1258              		.global	USART_DEDTime_Set
+ 1259              		.thumb
+ 1260              		.thumb_func
+ 1262              	USART_DEDTime_Set:
+ 1263              	.LFB66:
+ 766:Peripherals/src/gd32f1x0_usart.c **** }
+ 767:Peripherals/src/gd32f1x0_usart.c **** 
+ 768:Peripherals/src/gd32f1x0_usart.c **** /**
+ 769:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Set the specified RS485 DE deassertion time
+ 770:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where x can be 1 or 2 to select the USART peripheral.
+ 771:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_DEDTime: define the time between the end of the last stop bit,
+ 772:Peripherals/src/gd32f1x0_usart.c ****   *   in a transmitted message, and the de-activation of the DE (Driver Enable) signal
+ 773:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 774:Peripherals/src/gd32f1x0_usart.c ****   */
+ 775:Peripherals/src/gd32f1x0_usart.c **** void USART_DEDTime_Set(USART_TypeDef* USARTx, uint32_t USART_DEDTime)
+ 776:Peripherals/src/gd32f1x0_usart.c **** {
+ 1264              		.loc 1 776 0
+ 1265              		.cfi_startproc
+ 1266              		@ args = 0, pretend = 0, frame = 0
+ 1267              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1268              		@ link register save eliminated.
+ 1269              	.LVL100:
+ 777:Peripherals/src/gd32f1x0_usart.c ****     /* Set the new value for the DE deassertion time */
+ 778:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR1 &= ~((uint32_t)USART_CTLR1_DED);
+ 1270              		.loc 1 778 0
+ 1271 0000 0368     		ldr	r3, [r0]
+ 1272 0002 23F4F813 		bic	r3, r3, #2031616
+ 1273 0006 0360     		str	r3, [r0]
+ 779:Peripherals/src/gd32f1x0_usart.c ****     
+ 780:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR1 |=((uint32_t)USART_DEDTime << 0x10);
+ 1274              		.loc 1 780 0
+ 1275 0008 0368     		ldr	r3, [r0]
+ 1276 000a 43EA0141 		orr	r1, r3, r1, lsl #16
+ 1277              	.LVL101:
+ 1278 000e 0160     		str	r1, [r0]
+ 1279 0010 7047     		bx	lr
+ 1280              		.cfi_endproc
+ 1281              	.LFE66:
+ 1283 0012 00BF     		.section	.text.USART_DMA_Enable,"ax",%progbits
+ 1284              		.align	2
+ 1285              		.global	USART_DMA_Enable
+ 1286              		.thumb
+ 1287              		.thumb_func
+ 1289              	USART_DMA_Enable:
+ARM GAS  /tmp/ccob42Kd.s 			page 36
+
+
+ 1290              	.LFB67:
+ 781:Peripherals/src/gd32f1x0_usart.c **** }
+ 782:Peripherals/src/gd32f1x0_usart.c **** 
+ 783:Peripherals/src/gd32f1x0_usart.c **** /**
+ 784:Peripherals/src/gd32f1x0_usart.c ****   * @brief  DMA enable for transmission or reception.
+ 785:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2 .
+ 786:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_DMAEnable: the DMA request.
+ 787:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ 788:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_DMAREQ_RX
+ 789:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_DMAREQ_TX
+ 790:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the DMA Request sources state.
+ 791:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 792:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 793:Peripherals/src/gd32f1x0_usart.c ****   */
+ 794:Peripherals/src/gd32f1x0_usart.c **** void USART_DMA_Enable(USART_TypeDef* USARTx, uint32_t USART_DMAEnable, TypeState NewValue)
+ 795:Peripherals/src/gd32f1x0_usart.c **** {
+ 1291              		.loc 1 795 0
+ 1292              		.cfi_startproc
+ 1293              		@ args = 0, pretend = 0, frame = 0
+ 1294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1295              		@ link register save eliminated.
+ 1296              	.LVL102:
+ 796:Peripherals/src/gd32f1x0_usart.c ****     /* Enable or disable the DMA transfer for transmission or reception by setting the DENT and/or
+ 797:Peripherals/src/gd32f1x0_usart.c ****     DENR bits in the USART CTLR3 register */
+ 798:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 1297              		.loc 1 798 0
+ 1298 0000 1AB1     		cbz	r2, .L86
+ 799:Peripherals/src/gd32f1x0_usart.c ****     {
+ 800:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 |= USART_DMAEnable;
+ 1299              		.loc 1 800 0
+ 1300 0002 8368     		ldr	r3, [r0, #8]
+ 1301 0004 1943     		orrs	r1, r1, r3
+ 1302              	.LVL103:
+ 1303 0006 8160     		str	r1, [r0, #8]
+ 1304 0008 7047     		bx	lr
+ 1305              	.LVL104:
+ 1306              	.L86:
+ 801:Peripherals/src/gd32f1x0_usart.c ****     }
+ 802:Peripherals/src/gd32f1x0_usart.c ****     else
+ 803:Peripherals/src/gd32f1x0_usart.c ****     {
+ 804:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR3 &= ~USART_DMAEnable;
+ 1307              		.loc 1 804 0
+ 1308 000a 8368     		ldr	r3, [r0, #8]
+ 1309 000c 23EA0101 		bic	r1, r3, r1
+ 1310              	.LVL105:
+ 1311 0010 8160     		str	r1, [r0, #8]
+ 1312 0012 7047     		bx	lr
+ 1313              		.cfi_endproc
+ 1314              	.LFE67:
+ 1316              		.section	.text.USART_DMARE_Set,"ax",%progbits
+ 1317              		.align	2
+ 1318              		.global	USART_DMARE_Set
+ 1319              		.thumb
+ 1320              		.thumb_func
+ 1322              	USART_DMARE_Set:
+ 1323              	.LFB68:
+ 805:Peripherals/src/gd32f1x0_usart.c ****     }
+ARM GAS  /tmp/ccob42Kd.s 			page 37
+
+
+ 806:Peripherals/src/gd32f1x0_usart.c **** }
+ 807:Peripherals/src/gd32f1x0_usart.c **** 
+ 808:Peripherals/src/gd32f1x0_usart.c **** /**
+ 809:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's DMA on reception error.
+ 810:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 811:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_DMARE: the DMA state on reception error 
+ 812:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be:
+ 813:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_DMAONERROR_ENABLE
+ 814:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_DMAONERROR_DISABLE.
+ 815:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 816:Peripherals/src/gd32f1x0_usart.c ****   */
+ 817:Peripherals/src/gd32f1x0_usart.c **** void USART_DMARE_Set(USART_TypeDef* USARTx, uint32_t USART_DMARE)
+ 818:Peripherals/src/gd32f1x0_usart.c **** {
+ 1324              		.loc 1 818 0
+ 1325              		.cfi_startproc
+ 1326              		@ args = 0, pretend = 0, frame = 0
+ 1327              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1328              		@ link register save eliminated.
+ 1329              	.LVL106:
+ 819:Peripherals/src/gd32f1x0_usart.c ****     /* Clear the DMA Reception error detection bit */
+ 820:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 &= (uint32_t)~((uint32_t)USART_CTLR3_DDRE);
+ 1330              		.loc 1 820 0
+ 1331 0000 8368     		ldr	r3, [r0, #8]
+ 1332 0002 23F40053 		bic	r3, r3, #8192
+ 1333 0006 8360     		str	r3, [r0, #8]
+ 821:Peripherals/src/gd32f1x0_usart.c ****     /* Set the new value for the DMA Reception error detection bit */
+ 822:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 |= USART_DMARE;
+ 1334              		.loc 1 822 0
+ 1335 0008 8368     		ldr	r3, [r0, #8]
+ 1336 000a 1943     		orrs	r1, r1, r3
+ 1337              	.LVL107:
+ 1338 000c 8160     		str	r1, [r0, #8]
+ 1339 000e 7047     		bx	lr
+ 1340              		.cfi_endproc
+ 1341              	.LFE68:
+ 1343              		.section	.text.USART_DEEPSLEEPModeEnable,"ax",%progbits
+ 1344              		.align	2
+ 1345              		.global	USART_DEEPSLEEPModeEnable
+ 1346              		.thumb
+ 1347              		.thumb_func
+ 1349              	USART_DEEPSLEEPModeEnable:
+ 1350              	.LFB69:
+ 823:Peripherals/src/gd32f1x0_usart.c **** }
+ 824:Peripherals/src/gd32f1x0_usart.c **** 
+ 825:Peripherals/src/gd32f1x0_usart.c ****  /**
+ 826:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enables or disables the specified USART peripheral in Deep-sleep Mode.
+ 827:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where x can be 1 to select the USART peripheral.
+ 828:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewState: new state of the USARTx peripheral state in stop mode.
+ 829:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 830:Peripherals/src/gd32f1x0_usart.c ****   * @note   This function has to be called when USART clock is set to HSI or LSE.
+ 831:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 832:Peripherals/src/gd32f1x0_usart.c ****   */
+ 833:Peripherals/src/gd32f1x0_usart.c **** void USART_DEEPSLEEPModeEnable(USART_TypeDef* USARTx, TypeState NewState)
+ 834:Peripherals/src/gd32f1x0_usart.c **** {
+ 1351              		.loc 1 834 0
+ 1352              		.cfi_startproc
+ 1353              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccob42Kd.s 			page 38
+
+
+ 1354              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1355              		@ link register save eliminated.
+ 1356              	.LVL108:
+ 835:Peripherals/src/gd32f1x0_usart.c ****     if (NewState != DISABLE)
+ 1357              		.loc 1 835 0
+ 1358 0000 21B1     		cbz	r1, .L90
+ 836:Peripherals/src/gd32f1x0_usart.c ****     {
+ 837:Peripherals/src/gd32f1x0_usart.c ****         /* Enable the selected USART in DEEP-SLEEP mode by setting the UESM bit in the CTLR1
+ 838:Peripherals/src/gd32f1x0_usart.c ****         register */
+ 839:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 |= USART_CTLR1_UESM;
+ 1359              		.loc 1 839 0
+ 1360 0002 0368     		ldr	r3, [r0]
+ 1361 0004 43F00203 		orr	r3, r3, #2
+ 1362 0008 0360     		str	r3, [r0]
+ 1363 000a 7047     		bx	lr
+ 1364              	.L90:
+ 840:Peripherals/src/gd32f1x0_usart.c ****     }
+ 841:Peripherals/src/gd32f1x0_usart.c ****     else
+ 842:Peripherals/src/gd32f1x0_usart.c ****     {
+ 843:Peripherals/src/gd32f1x0_usart.c ****         /* Disable the selected USART in DEEP-SLEEP mode by clearing the UE bit in the CTLR1
+ 844:Peripherals/src/gd32f1x0_usart.c ****         register */
+ 845:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CTLR1 &= ~((uint32_t)USART_CTLR1_UESM);
+ 1365              		.loc 1 845 0
+ 1366 000c 0368     		ldr	r3, [r0]
+ 1367 000e 23F00203 		bic	r3, r3, #2
+ 1368 0012 0360     		str	r3, [r0]
+ 1369 0014 7047     		bx	lr
+ 1370              		.cfi_endproc
+ 1371              	.LFE69:
+ 1373 0016 00BF     		.section	.text.USART_DEEPSLEEPModeWakeUpSourceConfig,"ax",%progbits
+ 1374              		.align	2
+ 1375              		.global	USART_DEEPSLEEPModeWakeUpSourceConfig
+ 1376              		.thumb
+ 1377              		.thumb_func
+ 1379              	USART_DEEPSLEEPModeWakeUpSourceConfig:
+ 1380              	.LFB70:
+ 846:Peripherals/src/gd32f1x0_usart.c ****     }
+ 847:Peripherals/src/gd32f1x0_usart.c **** }
+ 848:Peripherals/src/gd32f1x0_usart.c **** 
+ 849:Peripherals/src/gd32f1x0_usart.c **** /**
+ 850:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Selects the USART WakeUp method form Deep-sleep mode.
+ 851:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: where x can be 1 to select the USART peripheral.
+ 852:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_WakeUpSource: specifies the selected USART wakeup method.
+ 853:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be one of the following values:
+ 854:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_WAKEUPSOURCE_ADDRESSMATCH: WUM active on address match.
+ 855:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_WAKEUPSOURCE_STARTBIT: WUM active on Start bit detection.
+ 856:Peripherals/src/gd32f1x0_usart.c ****   *     @arg USART_WAKEUPSOURCE_RBNE: WUM active on RBNE.
+ 857:Peripherals/src/gd32f1x0_usart.c ****   * @note   This function has to be called before calling USART_Enable() function.
+ 858:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 859:Peripherals/src/gd32f1x0_usart.c ****   */
+ 860:Peripherals/src/gd32f1x0_usart.c **** void USART_DEEPSLEEPModeWakeUpSourceConfig(USART_TypeDef* USARTx, uint32_t USART_WakeUpSource)
+ 861:Peripherals/src/gd32f1x0_usart.c **** {
+ 1381              		.loc 1 861 0
+ 1382              		.cfi_startproc
+ 1383              		@ args = 0, pretend = 0, frame = 0
+ 1384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1385              		@ link register save eliminated.
+ARM GAS  /tmp/ccob42Kd.s 			page 39
+
+
+ 1386              	.LVL109:
+ 862:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_WUM);
+ 1387              		.loc 1 862 0
+ 1388 0000 8368     		ldr	r3, [r0, #8]
+ 1389 0002 23F44013 		bic	r3, r3, #3145728
+ 1390 0006 8360     		str	r3, [r0, #8]
+ 863:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 |= USART_WakeUpSource;
+ 1391              		.loc 1 863 0
+ 1392 0008 8368     		ldr	r3, [r0, #8]
+ 1393 000a 1943     		orrs	r1, r1, r3
+ 1394              	.LVL110:
+ 1395 000c 8160     		str	r1, [r0, #8]
+ 1396 000e 7047     		bx	lr
+ 1397              		.cfi_endproc
+ 1398              	.LFE70:
+ 1400              		.section	.text.USART_INT_Set,"ax",%progbits
+ 1401              		.align	2
+ 1402              		.global	USART_INT_Set
+ 1403              		.thumb
+ 1404              		.thumb_func
+ 1406              	USART_INT_Set:
+ 1407              	.LFB71:
+ 864:Peripherals/src/gd32f1x0_usart.c **** }
+ 865:Peripherals/src/gd32f1x0_usart.c **** 
+ 866:Peripherals/src/gd32f1x0_usart.c **** /**
+ 867:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable USART interrupt.
+ 868:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 869:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_USART_INT: the USART interrupt
+ 870:Peripherals/src/gd32f1x0_usart.c ****       This parameter can be one of the following values:
+ 871:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_WU                                                   
+ 872:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_AM                                                   
+ 873:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_EB                                                  
+ 874:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_RT                                                   
+ 875:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_PE                                                   
+ 876:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_TBE                                                  
+ 877:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_TC                                                   
+ 878:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_RBNE                                                 
+ 879:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_IDLEF                                                
+ 880:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_LBDF                                                 
+ 881:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_CTSF                                                  
+ 882:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_ERIE                                                                       
+ 883:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: the USART interrupt State.
+ 884:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 885:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 886:Peripherals/src/gd32f1x0_usart.c ****   */
+ 887:Peripherals/src/gd32f1x0_usart.c **** void USART_INT_Set(USART_TypeDef* USARTx, uint32_t USART_INT, TypeState NewValue)
+ 888:Peripherals/src/gd32f1x0_usart.c **** {
+ 1408              		.loc 1 888 0
+ 1409              		.cfi_startproc
+ 1410              		@ args = 0, pretend = 0, frame = 0
+ 1411              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1412              		@ link register save eliminated.
+ 1413              	.LVL111:
+ 1414 0000 10B4     		push	{r4}
+ 1415              	.LCFI4:
+ 1416              		.cfi_def_cfa_offset 4
+ 1417              		.cfi_offset 4, -4
+ARM GAS  /tmp/ccob42Kd.s 			page 40
+
+
+ 1418              	.LVL112:
+ 889:Peripherals/src/gd32f1x0_usart.c ****     uint32_t  intpos , usartreg=0;
+ 890:Peripherals/src/gd32f1x0_usart.c ****     uint32_t usartxbase = 0;
+ 891:Peripherals/src/gd32f1x0_usart.c ****     
+ 892:Peripherals/src/gd32f1x0_usart.c ****     usartxbase = (uint32_t)USARTx;
+ 1419              		.loc 1 892 0
+ 1420 0002 0346     		mov	r3, r0
+ 1421              	.LVL113:
+ 893:Peripherals/src/gd32f1x0_usart.c ****     
+ 894:Peripherals/src/gd32f1x0_usart.c ****     /* Get the USART register index and the interrupt position */
+ 895:Peripherals/src/gd32f1x0_usart.c ****     usartreg = USART_INT& ((uint32_t)0x0000FF00); 
+ 1422              		.loc 1 895 0
+ 1423 0004 01F47F44 		and	r4, r1, #65280
+ 1424              	.LVL114:
+ 896:Peripherals/src/gd32f1x0_usart.c ****     intpos = USART_INT & ((uint32_t)0x000000FF);
+ 1425              		.loc 1 896 0
+ 1426 0008 C9B2     		uxtb	r1, r1
+ 1427              	.LVL115:
+ 897:Peripherals/src/gd32f1x0_usart.c ****     
+ 898:Peripherals/src/gd32f1x0_usart.c ****     /* Get the interrupt from which register: CTLR1,CTLR2 OR CTLR3 */
+ 899:Peripherals/src/gd32f1x0_usart.c ****     if (usartreg == 0x00000300) 
+ 1428              		.loc 1 899 0
+ 1429 000a B4F5407F 		cmp	r4, #768
+ 1430 000e 02D1     		bne	.L94
+ 900:Peripherals/src/gd32f1x0_usart.c ****     {
+ 901:Peripherals/src/gd32f1x0_usart.c ****         usartxbase += 0x08;
+ 1431              		.loc 1 901 0
+ 1432 0010 00F10803 		add	r3, r0, #8
+ 1433              	.LVL116:
+ 1434 0014 03E0     		b	.L95
+ 1435              	.LVL117:
+ 1436              	.L94:
+ 902:Peripherals/src/gd32f1x0_usart.c ****     }
+ 903:Peripherals/src/gd32f1x0_usart.c ****     else if (usartreg == 0x00000200) 
+ 1437              		.loc 1 903 0
+ 1438 0016 B4F5007F 		cmp	r4, #512
+ 1439 001a 00D1     		bne	.L95
+ 904:Peripherals/src/gd32f1x0_usart.c ****     {
+ 905:Peripherals/src/gd32f1x0_usart.c ****         usartxbase += 0x04;
+ 1440              		.loc 1 905 0
+ 1441 001c 031D     		adds	r3, r0, #4
+ 1442              	.LVL118:
+ 1443              	.L95:
+ 906:Peripherals/src/gd32f1x0_usart.c ****     }
+ 907:Peripherals/src/gd32f1x0_usart.c ****     else 
+ 908:Peripherals/src/gd32f1x0_usart.c ****     {
+ 909:Peripherals/src/gd32f1x0_usart.c ****     }
+ 910:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 1444              		.loc 1 910 0
+ 1445 001e 32B1     		cbz	r2, .L96
+ 911:Peripherals/src/gd32f1x0_usart.c ****     {
+ 912:Peripherals/src/gd32f1x0_usart.c ****         *(__IO uint32_t*)usartxbase  |= (((uint32_t)0x01) << intpos);
+ 1446              		.loc 1 912 0
+ 1447 0020 1A68     		ldr	r2, [r3]
+ 1448              	.LVL119:
+ 1449 0022 0120     		movs	r0, #1
+ 1450              	.LVL120:
+ARM GAS  /tmp/ccob42Kd.s 			page 41
+
+
+ 1451 0024 00FA01F1 		lsl	r1, r0, r1
+ 1452              	.LVL121:
+ 1453 0028 1143     		orrs	r1, r1, r2
+ 1454 002a 1960     		str	r1, [r3]
+ 1455 002c 06E0     		b	.L93
+ 1456              	.LVL122:
+ 1457              	.L96:
+ 913:Peripherals/src/gd32f1x0_usart.c ****     }
+ 914:Peripherals/src/gd32f1x0_usart.c ****     else
+ 915:Peripherals/src/gd32f1x0_usart.c ****     {
+ 916:Peripherals/src/gd32f1x0_usart.c ****         *(__IO uint32_t*)usartxbase &= ~(((uint32_t)0x01) << intpos);
+ 1458              		.loc 1 916 0
+ 1459 002e 1A68     		ldr	r2, [r3]
+ 1460              	.LVL123:
+ 1461 0030 0120     		movs	r0, #1
+ 1462              	.LVL124:
+ 1463 0032 00FA01F1 		lsl	r1, r0, r1
+ 1464              	.LVL125:
+ 1465 0036 22EA0101 		bic	r1, r2, r1
+ 1466 003a 1960     		str	r1, [r3]
+ 1467              	.L93:
+ 917:Peripherals/src/gd32f1x0_usart.c ****     }
+ 918:Peripherals/src/gd32f1x0_usart.c **** }
+ 1468              		.loc 1 918 0
+ 1469 003c 5DF8044B 		ldr	r4, [sp], #4
+ 1470              	.LVL126:
+ 1471 0040 7047     		bx	lr
+ 1472              		.cfi_endproc
+ 1473              	.LFE71:
+ 1475 0042 00BF     		.section	.text.USART_Request_Enable,"ax",%progbits
+ 1476              		.align	2
+ 1477              		.global	USART_Request_Enable
+ 1478              		.thumb
+ 1479              		.thumb_func
+ 1481              	USART_Request_Enable:
+ 1482              	.LFB72:
+ 919:Peripherals/src/gd32f1x0_usart.c **** 
+ 920:Peripherals/src/gd32f1x0_usart.c **** /**
+ 921:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's Request.
+ 922:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 923:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_Cmd: the USART request.
+ 924:Peripherals/src/gd32f1x0_usart.c ****       This parameter can be one of the following values:
+ 925:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_REQUEST_ABDCMD
+ 926:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_REQUEST_SBKCMD
+ 927:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_REQUEST_MMRQ
+ 928:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_REQUEST_RXFCMD
+ 929:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_REQUEST_TXFCMD 
+ 930:Peripherals/src/gd32f1x0_usart.c ****   * @param  NewValue: new state of the DMA interface on reception error occurs.
+ 931:Peripherals/src/gd32f1x0_usart.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 932:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 933:Peripherals/src/gd32f1x0_usart.c ****   */
+ 934:Peripherals/src/gd32f1x0_usart.c **** void USART_Request_Enable(USART_TypeDef* USARTx, uint32_t USART_Cmd, TypeState NewValue)
+ 935:Peripherals/src/gd32f1x0_usart.c **** {
+ 1483              		.loc 1 935 0
+ 1484              		.cfi_startproc
+ 1485              		@ args = 0, pretend = 0, frame = 0
+ 1486              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccob42Kd.s 			page 42
+
+
+ 1487              		@ link register save eliminated.
+ 1488              	.LVL127:
+ 936:Peripherals/src/gd32f1x0_usart.c ****     /* Enable or disable the USART ReQuest by setting the dedicated request bit in the CMDregister.
+ 937:Peripherals/src/gd32f1x0_usart.c ****     if (NewValue != DISABLE)
+ 1489              		.loc 1 937 0
+ 1490 0000 22B1     		cbz	r2, .L99
+ 938:Peripherals/src/gd32f1x0_usart.c ****     {
+ 939:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CMD |= USART_Cmd;
+ 1491              		.loc 1 939 0
+ 1492 0002 038B     		ldrh	r3, [r0, #24]
+ 1493 0004 1943     		orrs	r1, r1, r3
+ 1494              	.LVL128:
+ 1495 0006 89B2     		uxth	r1, r1
+ 1496 0008 0183     		strh	r1, [r0, #24]	@ movhi
+ 1497 000a 7047     		bx	lr
+ 1498              	.LVL129:
+ 1499              	.L99:
+ 940:Peripherals/src/gd32f1x0_usart.c ****     }
+ 941:Peripherals/src/gd32f1x0_usart.c ****     else
+ 942:Peripherals/src/gd32f1x0_usart.c ****     {
+ 943:Peripherals/src/gd32f1x0_usart.c ****         USARTx->CMD &= (uint32_t)~USART_Cmd;
+ 1500              		.loc 1 943 0
+ 1501 000c 038B     		ldrh	r3, [r0, #24]
+ 1502 000e 9BB2     		uxth	r3, r3
+ 1503 0010 23EA0101 		bic	r1, r3, r1
+ 1504              	.LVL130:
+ 1505 0014 0183     		strh	r1, [r0, #24]	@ movhi
+ 1506 0016 7047     		bx	lr
+ 1507              		.cfi_endproc
+ 1508              	.LFE72:
+ 1510              		.section	.text.USART_OverRunFunc_Set,"ax",%progbits
+ 1511              		.align	2
+ 1512              		.global	USART_OverRunFunc_Set
+ 1513              		.thumb
+ 1514              		.thumb_func
+ 1516              	USART_OverRunFunc_Set:
+ 1517              	.LFB73:
+ 944:Peripherals/src/gd32f1x0_usart.c ****     }
+ 945:Peripherals/src/gd32f1x0_usart.c **** }
+ 946:Peripherals/src/gd32f1x0_usart.c **** 
+ 947:Peripherals/src/gd32f1x0_usart.c **** /**
+ 948:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Enable or disable the USART's Overrun functionality.
+ 949:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 950:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_OVRD: the  OVRD bit state in case of Overrun error.
+ 951:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+ 952:Peripherals/src/gd32f1x0_usart.c ****   */
+ 953:Peripherals/src/gd32f1x0_usart.c **** void USART_OverRunFunc_Set(USART_TypeDef* USARTx, uint32_t USART_OVRD)
+ 954:Peripherals/src/gd32f1x0_usart.c **** {
+ 1518              		.loc 1 954 0
+ 1519              		.cfi_startproc
+ 1520              		@ args = 0, pretend = 0, frame = 0
+ 1521              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1522              		@ link register save eliminated.
+ 1523              	.LVL131:
+ 955:Peripherals/src/gd32f1x0_usart.c ****     /* Clear the OVRD bit and set a new value */
+ 956:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 &= ~((uint32_t)USART_CTLR3_OVRD); 
+ 1524              		.loc 1 956 0
+ARM GAS  /tmp/ccob42Kd.s 			page 43
+
+
+ 1525 0000 8368     		ldr	r3, [r0, #8]
+ 1526 0002 23F48053 		bic	r3, r3, #4096
+ 1527 0006 8360     		str	r3, [r0, #8]
+ 957:Peripherals/src/gd32f1x0_usart.c ****     USARTx->CTLR3 |= USART_OVRD;
+ 1528              		.loc 1 957 0
+ 1529 0008 8368     		ldr	r3, [r0, #8]
+ 1530 000a 1943     		orrs	r1, r1, r3
+ 1531              	.LVL132:
+ 1532 000c 8160     		str	r1, [r0, #8]
+ 1533 000e 7047     		bx	lr
+ 1534              		.cfi_endproc
+ 1535              	.LFE73:
+ 1537              		.section	.text.USART_GetBitState,"ax",%progbits
+ 1538              		.align	2
+ 1539              		.global	USART_GetBitState
+ 1540              		.thumb
+ 1541              		.thumb_func
+ 1543              	USART_GetBitState:
+ 1544              	.LFB74:
+ 958:Peripherals/src/gd32f1x0_usart.c **** }
+ 959:Peripherals/src/gd32f1x0_usart.c **** 
+ 960:Peripherals/src/gd32f1x0_usart.c **** /**
+ 961:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Detect the bit flag of STR register.
+ 962:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+ 963:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_FLAG: the flag of STR register.
+ 964:Peripherals/src/gd32f1x0_usart.c ****        This parameter can be one of the following values:
+ 965:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_REA:  Receive Enable acknowledge flag.
+ 966:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_TEA:  Transmit Enable acknowledge flag.
+ 967:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_WUF:  Wake up flag.
+ 968:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_RWU:  Receive Wake up .
+ 969:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_SBF:  Send Break flag.
+ 970:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_AMF:  Character match flag.
+ 971:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_BSY:  Busy flag.
+ 972:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_ABDF: Auto baud rate flag.
+ 973:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_ABRE: Auto baud rate error flag.
+ 974:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_EBF:  End of block flag.
+ 975:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_RTF:  Receive time out flag.
+ 976:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_CTS:  Inverted nCTS input bit status.
+ 977:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_CTSF: CTS Change flag.
+ 978:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_LBDF: LIN Break detection flag.
+ 979:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_TBE:  Transmit data register empty flag.
+ 980:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_TC:   Transmission Complete flag.
+ 981:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_RBNE: Receive data register not empty flag.
+ 982:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_IDLEF:Idle Line detection flag.
+ 983:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_ORE:  OverRun Error flag.
+ 984:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_NE:   Noise Error flag.
+ 985:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_FE:   Framing Error flag.
+ 986:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_PE:   Parity Error flag.
+ 987:Peripherals/src/gd32f1x0_usart.c ****   * @retval The new state of USART_FLAG (SET or RESET).
+ 988:Peripherals/src/gd32f1x0_usart.c ****   */
+ 989:Peripherals/src/gd32f1x0_usart.c **** TypeState USART_GetBitState(USART_TypeDef* USARTx, uint32_t USART_FLAG)
+ 990:Peripherals/src/gd32f1x0_usart.c **** {
+ 1545              		.loc 1 990 0
+ 1546              		.cfi_startproc
+ 1547              		@ args = 0, pretend = 0, frame = 0
+ 1548              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1549              		@ link register save eliminated.
+ARM GAS  /tmp/ccob42Kd.s 			page 44
+
+
+ 1550              	.LVL133:
+ 991:Peripherals/src/gd32f1x0_usart.c ****     if ((USARTx->STR & USART_FLAG) != (uint16_t)RESET)
+ 1551              		.loc 1 991 0
+ 1552 0000 C369     		ldr	r3, [r0, #28]
+ 1553 0002 0B42     		tst	r3, r1
+ 1554 0004 01D0     		beq	.L104
+ 992:Peripherals/src/gd32f1x0_usart.c ****     {
+ 993:Peripherals/src/gd32f1x0_usart.c ****         return  SET;
+ 1555              		.loc 1 993 0
+ 1556 0006 0120     		movs	r0, #1
+ 1557              	.LVL134:
+ 1558 0008 7047     		bx	lr
+ 1559              	.LVL135:
+ 1560              	.L104:
+ 994:Peripherals/src/gd32f1x0_usart.c ****     }
+ 995:Peripherals/src/gd32f1x0_usart.c ****     else
+ 996:Peripherals/src/gd32f1x0_usart.c ****     {
+ 997:Peripherals/src/gd32f1x0_usart.c ****         return  RESET;
+ 1561              		.loc 1 997 0
+ 1562 000a 0020     		movs	r0, #0
+ 1563              	.LVL136:
+ 998:Peripherals/src/gd32f1x0_usart.c ****     }
+ 999:Peripherals/src/gd32f1x0_usart.c **** }
+ 1564              		.loc 1 999 0
+ 1565 000c 7047     		bx	lr
+ 1566              		.cfi_endproc
+ 1567              	.LFE74:
+ 1569 000e 00BF     		.section	.text.USART_ClearBitState,"ax",%progbits
+ 1570              		.align	2
+ 1571              		.global	USART_ClearBitState
+ 1572              		.thumb
+ 1573              		.thumb_func
+ 1575              	USART_ClearBitState:
+ 1576              	.LFB75:
+1000:Peripherals/src/gd32f1x0_usart.c **** 
+1001:Peripherals/src/gd32f1x0_usart.c **** /**
+1002:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Clear the bit flag of SCR register.
+1003:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+1004:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_FLAG: the flag of SCR register.
+1005:Peripherals/src/gd32f1x0_usart.c ****        This parameter can be one of the following values:
+1006:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_WUF:  Wake up flag .
+1007:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_AMF:  Character match flag.
+1008:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_EBF:  End of block flag.
+1009:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_RTF:  Receive time out flag.
+1010:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_CTSF: CTS Change flag.
+1011:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_LBDF: LIN Break detection flag.
+1012:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_TC:   Transmission Complete flag.
+1013:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_IDLEF:Idle Line detection flag.
+1014:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_ORE:  OverRun Error flag.
+1015:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_NE:   Noise Error flag.
+1016:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_FE:   Framing Error flag.
+1017:Peripherals/src/gd32f1x0_usart.c ****   *      @arg USART_FLAG_PE:   Parity Error flag.
+1018:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+1019:Peripherals/src/gd32f1x0_usart.c ****   */
+1020:Peripherals/src/gd32f1x0_usart.c **** void USART_ClearBitState(USART_TypeDef* USARTx, uint32_t USART_FLAG)
+1021:Peripherals/src/gd32f1x0_usart.c **** {
+ 1577              		.loc 1 1021 0
+ARM GAS  /tmp/ccob42Kd.s 			page 45
+
+
+ 1578              		.cfi_startproc
+ 1579              		@ args = 0, pretend = 0, frame = 0
+ 1580              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1581              		@ link register save eliminated.
+ 1582              	.LVL137:
+1022:Peripherals/src/gd32f1x0_usart.c ****     USARTx->SCR = USART_FLAG;
+ 1583              		.loc 1 1022 0
+ 1584 0000 0162     		str	r1, [r0, #32]
+ 1585 0002 7047     		bx	lr
+ 1586              		.cfi_endproc
+ 1587              	.LFE75:
+ 1589              		.section	.text.USART_GetIntBitState,"ax",%progbits
+ 1590              		.align	2
+ 1591              		.global	USART_GetIntBitState
+ 1592              		.thumb
+ 1593              		.thumb_func
+ 1595              	USART_GetIntBitState:
+ 1596              	.LFB76:
+1023:Peripherals/src/gd32f1x0_usart.c **** }
+1024:Peripherals/src/gd32f1x0_usart.c **** 
+1025:Peripherals/src/gd32f1x0_usart.c **** /**
+1026:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Detect the interrupt bit flag.
+1027:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2.
+1028:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_INT: the USART interrupt bit flag.
+1029:Peripherals/src/gd32f1x0_usart.c ****       This parameter can be one of the following values:
+1030:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_WU                                                   
+1031:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_AM                                                   
+1032:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_EB                                                  
+1033:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_RT                                                   
+1034:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_PE                                                   
+1035:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_TBE                                                  
+1036:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_TC                                                   
+1037:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_RBNE                                                 
+1038:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_IDLEF                                                
+1039:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_LBDF                                                 
+1040:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_CTSF                                                  
+1041:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_ORE                                                  
+1042:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_NE                                                   
+1043:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_FE
+1044:Peripherals/src/gd32f1x0_usart.c ****   * @retval The new state of USART_INT (SET or RESET).
+1045:Peripherals/src/gd32f1x0_usart.c ****   */
+1046:Peripherals/src/gd32f1x0_usart.c **** TypeState USART_GetIntBitState(USART_TypeDef* USARTx, uint32_t USART_INT)
+1047:Peripherals/src/gd32f1x0_usart.c **** {
+ 1597              		.loc 1 1047 0
+ 1598              		.cfi_startproc
+ 1599              		@ args = 0, pretend = 0, frame = 0
+ 1600              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1601              		@ link register save eliminated.
+ 1602              	.LVL138:
+ 1603 0000 10B4     		push	{r4}
+ 1604              	.LCFI5:
+ 1605              		.cfi_def_cfa_offset 4
+ 1606              		.cfi_offset 4, -4
+ 1607              	.LVL139:
+1048:Peripherals/src/gd32f1x0_usart.c ****     uint32_t bitpos = 0, itmask = 0, usartreg = 0;
+1049:Peripherals/src/gd32f1x0_usart.c ****     
+1050:Peripherals/src/gd32f1x0_usart.c ****     /* Get the USART register index and the interrupt position */
+ARM GAS  /tmp/ccob42Kd.s 			page 46
+
+
+1051:Peripherals/src/gd32f1x0_usart.c ****     usartreg = (((uint16_t)USART_INT) >> 0x08);
+ 1608              		.loc 1 1051 0
+ 1609 0002 C1F30723 		ubfx	r3, r1, #8, #8
+ 1610              	.LVL140:
+1052:Peripherals/src/gd32f1x0_usart.c ****     
+1053:Peripherals/src/gd32f1x0_usart.c ****     itmask = (USART_INT)&(INT_MASK);
+ 1611              		.loc 1 1053 0
+ 1612 0006 CAB2     		uxtb	r2, r1
+ 1613              	.LVL141:
+1054:Peripherals/src/gd32f1x0_usart.c ****     
+1055:Peripherals/src/gd32f1x0_usart.c ****     itmask = (uint32_t)0x01 << itmask;
+ 1614              		.loc 1 1055 0
+ 1615 0008 0124     		movs	r4, #1
+ 1616 000a 04FA02F2 		lsl	r2, r4, r2
+ 1617              	.LVL142:
+1056:Peripherals/src/gd32f1x0_usart.c ****     
+1057:Peripherals/src/gd32f1x0_usart.c ****     if (usartreg == 0x01)
+ 1618              		.loc 1 1057 0
+ 1619 000e A342     		cmp	r3, r4
+ 1620 0010 02D1     		bne	.L107
+1058:Peripherals/src/gd32f1x0_usart.c ****     {
+1059:Peripherals/src/gd32f1x0_usart.c ****         itmask &= USARTx->CTLR1;
+ 1621              		.loc 1 1059 0
+ 1622 0012 0468     		ldr	r4, [r0]
+ 1623 0014 2240     		ands	r2, r2, r4
+ 1624              	.LVL143:
+ 1625 0016 06E0     		b	.L108
+ 1626              	.L107:
+1060:Peripherals/src/gd32f1x0_usart.c ****     }
+1061:Peripherals/src/gd32f1x0_usart.c ****     else
+1062:Peripherals/src/gd32f1x0_usart.c ****     {
+1063:Peripherals/src/gd32f1x0_usart.c ****         if (usartreg == 0x02) 
+ 1627              		.loc 1 1063 0
+ 1628 0018 022B     		cmp	r3, #2
+ 1629 001a 02D1     		bne	.L109
+1064:Peripherals/src/gd32f1x0_usart.c ****         {
+1065:Peripherals/src/gd32f1x0_usart.c ****             itmask &= USARTx->CTLR2;
+ 1630              		.loc 1 1065 0
+ 1631 001c 4468     		ldr	r4, [r0, #4]
+ 1632 001e 2240     		ands	r2, r2, r4
+ 1633              	.LVL144:
+ 1634 0020 01E0     		b	.L108
+ 1635              	.L109:
+1066:Peripherals/src/gd32f1x0_usart.c ****         }
+1067:Peripherals/src/gd32f1x0_usart.c ****         else 
+1068:Peripherals/src/gd32f1x0_usart.c ****         {
+1069:Peripherals/src/gd32f1x0_usart.c ****             itmask &= USARTx->CTLR3;
+ 1636              		.loc 1 1069 0
+ 1637 0022 8468     		ldr	r4, [r0, #8]
+ 1638 0024 2240     		ands	r2, r2, r4
+ 1639              	.LVL145:
+ 1640              	.L108:
+1070:Peripherals/src/gd32f1x0_usart.c ****         }
+1071:Peripherals/src/gd32f1x0_usart.c ****     }
+1072:Peripherals/src/gd32f1x0_usart.c ****     
+1073:Peripherals/src/gd32f1x0_usart.c ****     bitpos = USART_INT >> 0x10;
+ 1641              		.loc 1 1073 0
+ARM GAS  /tmp/ccob42Kd.s 			page 47
+
+
+ 1642 0026 090C     		lsrs	r1, r1, #16
+ 1643              	.LVL146:
+1074:Peripherals/src/gd32f1x0_usart.c ****     bitpos = (uint32_t)0x01 << bitpos;
+ 1644              		.loc 1 1074 0
+ 1645 0028 0123     		movs	r3, #1
+ 1646              	.LVL147:
+ 1647 002a 03FA01F1 		lsl	r1, r3, r1
+ 1648              	.LVL148:
+1075:Peripherals/src/gd32f1x0_usart.c ****     bitpos &= USARTx->STR;
+ 1649              		.loc 1 1075 0
+ 1650 002e C369     		ldr	r3, [r0, #28]
+ 1651 0030 1940     		ands	r1, r1, r3
+ 1652              	.LVL149:
+1076:Peripherals/src/gd32f1x0_usart.c ****     if ((itmask != (uint16_t)RESET)&&(bitpos != (uint16_t)RESET))
+ 1653              		.loc 1 1076 0
+ 1654 0032 12B1     		cbz	r2, .L111
+ 1655              		.loc 1 1076 0 is_stmt 0 discriminator 1
+ 1656 0034 19B9     		cbnz	r1, .L112
+1077:Peripherals/src/gd32f1x0_usart.c ****     {
+1078:Peripherals/src/gd32f1x0_usart.c ****         return  SET;
+1079:Peripherals/src/gd32f1x0_usart.c ****     }
+1080:Peripherals/src/gd32f1x0_usart.c ****     else
+1081:Peripherals/src/gd32f1x0_usart.c ****     {
+1082:Peripherals/src/gd32f1x0_usart.c ****         return  RESET;
+ 1657              		.loc 1 1082 0 is_stmt 1
+ 1658 0036 0020     		movs	r0, #0
+ 1659              	.LVL150:
+ 1660 0038 02E0     		b	.L110
+ 1661              	.LVL151:
+ 1662              	.L111:
+ 1663 003a 0020     		movs	r0, #0
+ 1664              	.LVL152:
+ 1665 003c 00E0     		b	.L110
+ 1666              	.LVL153:
+ 1667              	.L112:
+1078:Peripherals/src/gd32f1x0_usart.c ****         return  SET;
+ 1668              		.loc 1 1078 0
+ 1669 003e 0120     		movs	r0, #1
+ 1670              	.LVL154:
+ 1671              	.L110:
+1083:Peripherals/src/gd32f1x0_usart.c ****     }
+1084:Peripherals/src/gd32f1x0_usart.c **** }
+ 1672              		.loc 1 1084 0
+ 1673 0040 5DF8044B 		ldr	r4, [sp], #4
+ 1674 0044 7047     		bx	lr
+ 1675              		.cfi_endproc
+ 1676              	.LFE76:
+ 1678 0046 00BF     		.section	.text.USART_ClearIntBitState,"ax",%progbits
+ 1679              		.align	2
+ 1680              		.global	USART_ClearIntBitState
+ 1681              		.thumb
+ 1682              		.thumb_func
+ 1684              	USART_ClearIntBitState:
+ 1685              	.LFB77:
+1085:Peripherals/src/gd32f1x0_usart.c **** 
+1086:Peripherals/src/gd32f1x0_usart.c **** /**
+1087:Peripherals/src/gd32f1x0_usart.c ****   * @brief  Clears the interrupt bit flag.
+ARM GAS  /tmp/ccob42Kd.s 			page 48
+
+
+1088:Peripherals/src/gd32f1x0_usart.c ****   * @param  USARTx: the USART peripheral where x can be 1 or 2 to select.
+1089:Peripherals/src/gd32f1x0_usart.c ****   * @param  USART_INT: the interrupt pending bit.
+1090:Peripherals/src/gd32f1x0_usart.c ****       This parameter can be one of the following values:
+1091:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_WU                                                   
+1092:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_AM                                                   
+1093:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_EB                                                  
+1094:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_RT                                                   
+1095:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_PE                                                                         
+1096:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_TC                                                                         
+1097:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_IDLEF                                                
+1098:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_LBDF                                                 
+1099:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_CTSF                                                  
+1100:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_ORE                                                  
+1101:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_NE                                                   
+1102:Peripherals/src/gd32f1x0_usart.c ****          @arg USART_INT_FE
+1103:Peripherals/src/gd32f1x0_usart.c ****   * @retval None
+1104:Peripherals/src/gd32f1x0_usart.c ****   */
+1105:Peripherals/src/gd32f1x0_usart.c **** void USART_ClearIntBitState(USART_TypeDef* USARTx, uint32_t USART_INT)
+1106:Peripherals/src/gd32f1x0_usart.c **** {
+ 1686              		.loc 1 1106 0
+ 1687              		.cfi_startproc
+ 1688              		@ args = 0, pretend = 0, frame = 0
+ 1689              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1690              		@ link register save eliminated.
+ 1691              	.LVL155:
+1107:Peripherals/src/gd32f1x0_usart.c ****     uint32_t bitpos = 0, itmask = 0;
+1108:Peripherals/src/gd32f1x0_usart.c ****     
+1109:Peripherals/src/gd32f1x0_usart.c ****     bitpos = USART_INT >> 0x10;
+ 1692              		.loc 1 1109 0
+ 1693 0000 090C     		lsrs	r1, r1, #16
+ 1694              	.LVL156:
+1110:Peripherals/src/gd32f1x0_usart.c ****     itmask = ((uint32_t)0x01 << (uint32_t)bitpos);
+ 1695              		.loc 1 1110 0
+ 1696 0002 0123     		movs	r3, #1
+ 1697 0004 03FA01F1 		lsl	r1, r3, r1
+ 1698              	.LVL157:
+1111:Peripherals/src/gd32f1x0_usart.c ****     USARTx->SCR = (uint32_t)itmask;
+ 1699              		.loc 1 1111 0
+ 1700 0008 0162     		str	r1, [r0, #32]
+ 1701 000a 7047     		bx	lr
+ 1702              		.cfi_endproc
+ 1703              	.LFE77:
+ 1705              		.text
+ 1706              	.Letext0:
+ 1707              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 1708              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 1709              		.file 4 "CMSIS/gd32f1x0.h"
+ 1710              		.file 5 "Peripherals/inc/gd32f1x0_rcc.h"
+ 1711              		.file 6 "Peripherals/inc/gd32f1x0_usart.h"
+ 1712              		.file 7 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccob42Kd.s 			page 49
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 gd32f1x0_usart.c
+     /tmp/ccob42Kd.s:17     .text.USART_DeInit:00000000 $t
+     /tmp/ccob42Kd.s:22     .text.USART_DeInit:00000000 USART_DeInit
+     /tmp/ccob42Kd.s:73     .text.USART_DeInit:0000003c $d
+     /tmp/ccob42Kd.s:79     .text.USART_Init:00000000 $t
+     /tmp/ccob42Kd.s:84     .text.USART_Init:00000000 USART_Init
+     /tmp/ccob42Kd.s:231    .text.USART_Init:0000009c $d
+     /tmp/ccob42Kd.s:236    .text.USART_ParaInit:00000000 $t
+     /tmp/ccob42Kd.s:241    .text.USART_ParaInit:00000000 USART_ParaInit
+     /tmp/ccob42Kd.s:269    .text.USART_ClockInit:00000000 $t
+     /tmp/ccob42Kd.s:274    .text.USART_ClockInit:00000000 USART_ClockInit
+     /tmp/ccob42Kd.s:317    .text.USART_ClockStructInit:00000000 $t
+     /tmp/ccob42Kd.s:322    .text.USART_ClockStructInit:00000000 USART_ClockStructInit
+     /tmp/ccob42Kd.s:344    .text.USART_Enable:00000000 $t
+     /tmp/ccob42Kd.s:349    .text.USART_Enable:00000000 USART_Enable
+     /tmp/ccob42Kd.s:374    .text.USART_TransferDirection_Enable:00000000 $t
+     /tmp/ccob42Kd.s:379    .text.USART_TransferDirection_Enable:00000000 USART_TransferDirection_Enable
+     /tmp/ccob42Kd.s:407    .text.USART_OverSampling8_Enable:00000000 $t
+     /tmp/ccob42Kd.s:412    .text.USART_OverSampling8_Enable:00000000 USART_OverSampling8_Enable
+     /tmp/ccob42Kd.s:437    .text.USART_OneSamplingBit_Enable:00000000 $t
+     /tmp/ccob42Kd.s:442    .text.USART_OneSamplingBit_Enable:00000000 USART_OneSamplingBit_Enable
+     /tmp/ccob42Kd.s:467    .text.USART_MSBFirst_Enable:00000000 $t
+     /tmp/ccob42Kd.s:472    .text.USART_MSBFirst_Enable:00000000 USART_MSBFirst_Enable
+     /tmp/ccob42Kd.s:497    .text.USART_DataInvert_Enable:00000000 $t
+     /tmp/ccob42Kd.s:502    .text.USART_DataInvert_Enable:00000000 USART_DataInvert_Enable
+     /tmp/ccob42Kd.s:527    .text.USART_InvPin_Enable:00000000 $t
+     /tmp/ccob42Kd.s:532    .text.USART_InvPin_Enable:00000000 USART_InvPin_Enable
+     /tmp/ccob42Kd.s:560    .text.USART_SWPFunction_Enable:00000000 $t
+     /tmp/ccob42Kd.s:565    .text.USART_SWPFunction_Enable:00000000 USART_SWPFunction_Enable
+     /tmp/ccob42Kd.s:590    .text.USART_ReceiverTimeOut_Enable:00000000 $t
+     /tmp/ccob42Kd.s:595    .text.USART_ReceiverTimeOut_Enable:00000000 USART_ReceiverTimeOut_Enable
+     /tmp/ccob42Kd.s:620    .text.USART_SetReceiveTimeOut_Threshold:00000000 $t
+     /tmp/ccob42Kd.s:625    .text.USART_SetReceiveTimeOut_Threshold:00000000 USART_SetReceiveTimeOut_Threshold
+     /tmp/ccob42Kd.s:647    .text.USART_SetPrescaler:00000000 $t
+     /tmp/ccob42Kd.s:652    .text.USART_SetPrescaler:00000000 USART_SetPrescaler
+     /tmp/ccob42Kd.s:675    .text.USART_DataSend:00000000 $t
+     /tmp/ccob42Kd.s:680    .text.USART_DataSend:00000000 USART_DataSend
+     /tmp/ccob42Kd.s:697    .text.USART_DataReceive:00000000 $t
+     /tmp/ccob42Kd.s:702    .text.USART_DataReceive:00000000 USART_DataReceive
+     /tmp/ccob42Kd.s:720    .text.USART_AutoBaudRateDect_Enable:00000000 $t
+     /tmp/ccob42Kd.s:725    .text.USART_AutoBaudRateDect_Enable:00000000 USART_AutoBaudRateDect_Enable
+     /tmp/ccob42Kd.s:750    .text.USART_AutoBaudRateDectMode_Set:00000000 $t
+     /tmp/ccob42Kd.s:755    .text.USART_AutoBaudRateDectMode_Set:00000000 USART_AutoBaudRateDectMode_Set
+     /tmp/ccob42Kd.s:776    .text.USART_Address:00000000 $t
+     /tmp/ccob42Kd.s:781    .text.USART_Address:00000000 USART_Address
+     /tmp/ccob42Kd.s:803    .text.USART_MuteMode_Enable:00000000 $t
+     /tmp/ccob42Kd.s:808    .text.USART_MuteMode_Enable:00000000 USART_MuteMode_Enable
+     /tmp/ccob42Kd.s:833    .text.USART_MuteModeWakeUp_Set:00000000 $t
+     /tmp/ccob42Kd.s:838    .text.USART_MuteModeWakeUp_Set:00000000 USART_MuteModeWakeUp_Set
+     /tmp/ccob42Kd.s:860    .text.USART_AddressDetection_Set:00000000 $t
+     /tmp/ccob42Kd.s:865    .text.USART_AddressDetection_Set:00000000 USART_AddressDetection_Set
+     /tmp/ccob42Kd.s:887    .text.USART_SetLINBDLength:00000000 $t
+     /tmp/ccob42Kd.s:892    .text.USART_SetLINBDLength:00000000 USART_SetLINBDLength
+     /tmp/ccob42Kd.s:914    .text.USART_LIN_Enable:00000000 $t
+     /tmp/ccob42Kd.s:919    .text.USART_LIN_Enable:00000000 USART_LIN_Enable
+     /tmp/ccob42Kd.s:944    .text.USART_HalfDuplex_Enable:00000000 $t
+ARM GAS  /tmp/ccob42Kd.s 			page 50
+
+
+     /tmp/ccob42Kd.s:949    .text.USART_HalfDuplex_Enable:00000000 USART_HalfDuplex_Enable
+     /tmp/ccob42Kd.s:974    .text.USART_GuardTime_Set:00000000 $t
+     /tmp/ccob42Kd.s:979    .text.USART_GuardTime_Set:00000000 USART_GuardTime_Set
+     /tmp/ccob42Kd.s:1002   .text.USART_SmartCard_Enable:00000000 $t
+     /tmp/ccob42Kd.s:1007   .text.USART_SmartCard_Enable:00000000 USART_SmartCard_Enable
+     /tmp/ccob42Kd.s:1032   .text.USART_SmartCardNACK_Enable:00000000 $t
+     /tmp/ccob42Kd.s:1037   .text.USART_SmartCardNACK_Enable:00000000 USART_SmartCardNACK_Enable
+     /tmp/ccob42Kd.s:1062   .text.USART_AutoRetryNumber_Set:00000000 $t
+     /tmp/ccob42Kd.s:1067   .text.USART_AutoRetryNumber_Set:00000000 USART_AutoRetryNumber_Set
+     /tmp/ccob42Kd.s:1089   .text.USART_BlockLength_Set:00000000 $t
+     /tmp/ccob42Kd.s:1094   .text.USART_BlockLength_Set:00000000 USART_BlockLength_Set
+     /tmp/ccob42Kd.s:1116   .text.USART_IrDA_Set:00000000 $t
+     /tmp/ccob42Kd.s:1121   .text.USART_IrDA_Set:00000000 USART_IrDA_Set
+     /tmp/ccob42Kd.s:1143   .text.USART_IrDA_Enable:00000000 $t
+     /tmp/ccob42Kd.s:1148   .text.USART_IrDA_Enable:00000000 USART_IrDA_Enable
+     /tmp/ccob42Kd.s:1173   .text.USART_DE_Enable:00000000 $t
+     /tmp/ccob42Kd.s:1178   .text.USART_DE_Enable:00000000 USART_DE_Enable
+     /tmp/ccob42Kd.s:1203   .text.USART_DriverEnablePolarity_Set:00000000 $t
+     /tmp/ccob42Kd.s:1208   .text.USART_DriverEnablePolarity_Set:00000000 USART_DriverEnablePolarity_Set
+     /tmp/ccob42Kd.s:1230   .text.USART_DEATime_Set:00000000 $t
+     /tmp/ccob42Kd.s:1235   .text.USART_DEATime_Set:00000000 USART_DEATime_Set
+     /tmp/ccob42Kd.s:1257   .text.USART_DEDTime_Set:00000000 $t
+     /tmp/ccob42Kd.s:1262   .text.USART_DEDTime_Set:00000000 USART_DEDTime_Set
+     /tmp/ccob42Kd.s:1284   .text.USART_DMA_Enable:00000000 $t
+     /tmp/ccob42Kd.s:1289   .text.USART_DMA_Enable:00000000 USART_DMA_Enable
+     /tmp/ccob42Kd.s:1317   .text.USART_DMARE_Set:00000000 $t
+     /tmp/ccob42Kd.s:1322   .text.USART_DMARE_Set:00000000 USART_DMARE_Set
+     /tmp/ccob42Kd.s:1344   .text.USART_DEEPSLEEPModeEnable:00000000 $t
+     /tmp/ccob42Kd.s:1349   .text.USART_DEEPSLEEPModeEnable:00000000 USART_DEEPSLEEPModeEnable
+     /tmp/ccob42Kd.s:1374   .text.USART_DEEPSLEEPModeWakeUpSourceConfig:00000000 $t
+     /tmp/ccob42Kd.s:1379   .text.USART_DEEPSLEEPModeWakeUpSourceConfig:00000000 USART_DEEPSLEEPModeWakeUpSourceConfig
+     /tmp/ccob42Kd.s:1401   .text.USART_INT_Set:00000000 $t
+     /tmp/ccob42Kd.s:1406   .text.USART_INT_Set:00000000 USART_INT_Set
+     /tmp/ccob42Kd.s:1476   .text.USART_Request_Enable:00000000 $t
+     /tmp/ccob42Kd.s:1481   .text.USART_Request_Enable:00000000 USART_Request_Enable
+     /tmp/ccob42Kd.s:1511   .text.USART_OverRunFunc_Set:00000000 $t
+     /tmp/ccob42Kd.s:1516   .text.USART_OverRunFunc_Set:00000000 USART_OverRunFunc_Set
+     /tmp/ccob42Kd.s:1538   .text.USART_GetBitState:00000000 $t
+     /tmp/ccob42Kd.s:1543   .text.USART_GetBitState:00000000 USART_GetBitState
+     /tmp/ccob42Kd.s:1570   .text.USART_ClearBitState:00000000 $t
+     /tmp/ccob42Kd.s:1575   .text.USART_ClearBitState:00000000 USART_ClearBitState
+     /tmp/ccob42Kd.s:1590   .text.USART_GetIntBitState:00000000 $t
+     /tmp/ccob42Kd.s:1595   .text.USART_GetIntBitState:00000000 USART_GetIntBitState
+     /tmp/ccob42Kd.s:1679   .text.USART_ClearIntBitState:00000000 $t
+     /tmp/ccob42Kd.s:1684   .text.USART_ClearIntBitState:00000000 USART_ClearIntBitState
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphReset_Enable
+RCC_APB1PeriphReset_Enable
+RCC_GetClocksFreq

@@ -1,0 +1,994 @@
+ARM GAS  /tmp/ccBjuxdh.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"system_gd32f1x0.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.Set_SysClockTo48,"ax",%progbits
+  17              		.align	2
+  18              		.thumb
+  19              		.thumb_func
+  21              	Set_SysClockTo48:
+  22              	.LFB32:
+  23              		.file 1 "CMSIS/system_gd32f1x0.c"
+   1:CMSIS/system_gd32f1x0.c **** /**
+   2:CMSIS/system_gd32f1x0.c ****   ******************************************************************************
+   3:CMSIS/system_gd32f1x0.c ****   * @file    system_gd32f1x0.c
+   4:CMSIS/system_gd32f1x0.c ****   * @author  MCU SD
+   5:CMSIS/system_gd32f1x0.c ****   * @version V1.0.1
+   6:CMSIS/system_gd32f1x0.c ****   * @date    6-Sep-2014
+   7:CMSIS/system_gd32f1x0.c ****   * @brief   CMSIS Cortex-M3 Device Peripheral Access Layer System Source File.
+   8:CMSIS/system_gd32f1x0.c ****   ******************************************************************************
+   9:CMSIS/system_gd32f1x0.c ****   */
+  10:CMSIS/system_gd32f1x0.c **** 
+  11:CMSIS/system_gd32f1x0.c **** /** @addtogroup CMSIS
+  12:CMSIS/system_gd32f1x0.c ****   * @{
+  13:CMSIS/system_gd32f1x0.c ****   */
+  14:CMSIS/system_gd32f1x0.c **** 
+  15:CMSIS/system_gd32f1x0.c **** /** @addtogroup GD32F1x0_system
+  16:CMSIS/system_gd32f1x0.c ****   * @{
+  17:CMSIS/system_gd32f1x0.c ****   */  
+  18:CMSIS/system_gd32f1x0.c ****   
+  19:CMSIS/system_gd32f1x0.c **** /** @addtogroup GD32F1x0_System_Private_Includes
+  20:CMSIS/system_gd32f1x0.c ****   * @{
+  21:CMSIS/system_gd32f1x0.c ****   */
+  22:CMSIS/system_gd32f1x0.c **** 
+  23:CMSIS/system_gd32f1x0.c **** /* Includes ------------------------------------------------------------------*/
+  24:CMSIS/system_gd32f1x0.c **** #include "gd32f1x0.h"
+  25:CMSIS/system_gd32f1x0.c **** 
+  26:CMSIS/system_gd32f1x0.c **** /**
+  27:CMSIS/system_gd32f1x0.c ****   * @}
+  28:CMSIS/system_gd32f1x0.c ****   */
+  29:CMSIS/system_gd32f1x0.c **** 
+  30:CMSIS/system_gd32f1x0.c **** /** @addtogroup GD32F1x0_System_Private_Variables
+  31:CMSIS/system_gd32f1x0.c ****   * @{
+  32:CMSIS/system_gd32f1x0.c ****   */
+  33:CMSIS/system_gd32f1x0.c **** 
+  34:CMSIS/system_gd32f1x0.c **** #define RCC_GCFGR_FREQ_DIVIDE_RESET     (uint32_t)0x083F000C    /* Reset SCS[1:0], AHBPS[3:0], APB1
+  35:CMSIS/system_gd32f1x0.c ****                                                                    ADCPS[1:0],USBPS[1:0],CKOTUSRC[2
+ARM GAS  /tmp/ccBjuxdh.s 			page 2
+
+
+  36:CMSIS/system_gd32f1x0.c **** #define RCC_GCCR_CLK_ENABLE_RESET       (uint32_t)0xFEF6FFFF    /* Reset HSEEN, CKMEN and PLLEN bit
+  37:CMSIS/system_gd32f1x0.c **** #define RCC_GCCR_HSEBPS_RESET           (uint32_t)0xFFFBFFFF    /* Reset HSEBPS bit */
+  38:CMSIS/system_gd32f1x0.c **** #define RCC_GCFGR_CLK_SELECT_RESET      (uint32_t)0xF7C0FFFF    /* Reset PLLSEL, PLLPREDV and PLLMF
+  39:CMSIS/system_gd32f1x0.c **** #define RCC_GCFGR2_HSEPREDV1_RESET      (uint32_t)0xFFFFFFF0    /* Reset HSEPREDV1[3:0] bits */
+  40:CMSIS/system_gd32f1x0.c **** #define RCC_GCFGR3_RESET                (uint32_t)0xFFFFFEBC    /* Reset USARTSEL[1:0], I2CSEL, CEC
+  41:CMSIS/system_gd32f1x0.c **** #define RCC_GCCR2_HSI14_RESET           (uint32_t)0xFFFFFFFE    /* Reset HSI14 bit */
+  42:CMSIS/system_gd32f1x0.c **** #define RCC_GCIR_DISABLE                (uint32_t)0x00000000    /* Disable all interrupts */
+  43:CMSIS/system_gd32f1x0.c **** #define RCC_GCFGR_PLLMF3_0              (uint32_t)0x003C0000    /* PLLMF[3:0] Bits */
+  44:CMSIS/system_gd32f1x0.c **** 
+  45:CMSIS/system_gd32f1x0.c **** //#define SYSCLK_FREQ_HSE    HSE_VALUE 
+  46:CMSIS/system_gd32f1x0.c **** //#define SYSCLK_FREQ_24MHz  24000000  
+  47:CMSIS/system_gd32f1x0.c **** //#define SYSCLK_FREQ_36MHz  36000000 
+  48:CMSIS/system_gd32f1x0.c **** #define SYSCLK_FREQ_48MHz  48000000 
+  49:CMSIS/system_gd32f1x0.c **** //#define SYSCLK_FREQ_56MHz  56000000 
+  50:CMSIS/system_gd32f1x0.c **** //#define SYSCLK_FREQ_72MHz  72000000
+  51:CMSIS/system_gd32f1x0.c **** 
+  52:CMSIS/system_gd32f1x0.c **** /**
+  53:CMSIS/system_gd32f1x0.c ****   * @}
+  54:CMSIS/system_gd32f1x0.c ****   */
+  55:CMSIS/system_gd32f1x0.c **** 
+  56:CMSIS/system_gd32f1x0.c **** /** @addtogroup GD32F1x0_System_Private_Variables
+  57:CMSIS/system_gd32f1x0.c ****   * @{
+  58:CMSIS/system_gd32f1x0.c ****   */
+  59:CMSIS/system_gd32f1x0.c **** 
+  60:CMSIS/system_gd32f1x0.c **** /*******************************************************************************
+  61:CMSIS/system_gd32f1x0.c **** *  System Clock Select
+  62:CMSIS/system_gd32f1x0.c **** *******************************************************************************/
+  63:CMSIS/system_gd32f1x0.c **** #ifdef SYSCLK_FREQ_HSE
+  64:CMSIS/system_gd32f1x0.c ****     uint32_t SystemCoreClock         = SYSCLK_FREQ_HSE;          
+  65:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_24MHz
+  66:CMSIS/system_gd32f1x0.c ****     uint32_t SystemCoreClock         = SYSCLK_FREQ_24MHz;        
+  67:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_36MHz
+  68:CMSIS/system_gd32f1x0.c ****     uint32_t SystemCoreClock         = SYSCLK_FREQ_36MHz;       
+  69:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_48MHz
+  70:CMSIS/system_gd32f1x0.c ****     uint32_t SystemCoreClock         = SYSCLK_FREQ_48MHz;
+  71:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_56MHz
+  72:CMSIS/system_gd32f1x0.c ****     uint32_t SystemCoreClock         = SYSCLK_FREQ_56MHz;
+  73:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_72MHz
+  74:CMSIS/system_gd32f1x0.c ****     uint32_t SystemCoreClock         = SYSCLK_FREQ_72MHz;        
+  75:CMSIS/system_gd32f1x0.c **** #else
+  76:CMSIS/system_gd32f1x0.c ****     uint32_t SystemCoreClock         = HSI_VALUE;                      /*!< HSI is selected as syst
+  77:CMSIS/system_gd32f1x0.c **** #endif
+  78:CMSIS/system_gd32f1x0.c **** 
+  79:CMSIS/system_gd32f1x0.c **** __I uint8_t AHBPrescTableList[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+  80:CMSIS/system_gd32f1x0.c **** 
+  81:CMSIS/system_gd32f1x0.c **** /**
+  82:CMSIS/system_gd32f1x0.c ****   * @}
+  83:CMSIS/system_gd32f1x0.c ****   */
+  84:CMSIS/system_gd32f1x0.c **** 
+  85:CMSIS/system_gd32f1x0.c **** /** @addtogroup GD32F1x0_System_Private_FunctionPrototypes
+  86:CMSIS/system_gd32f1x0.c ****   * @{
+  87:CMSIS/system_gd32f1x0.c ****   */
+  88:CMSIS/system_gd32f1x0.c **** 
+  89:CMSIS/system_gd32f1x0.c **** static void Set_SysClock(void);
+  90:CMSIS/system_gd32f1x0.c **** 
+  91:CMSIS/system_gd32f1x0.c **** #ifdef SYSCLK_FREQ_HSE
+  92:CMSIS/system_gd32f1x0.c ****   static void Set_SysClockToHSE(void);
+ARM GAS  /tmp/ccBjuxdh.s 			page 3
+
+
+  93:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_24MHz
+  94:CMSIS/system_gd32f1x0.c ****   static void Set_SysClockTo24(void);
+  95:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_36MHz
+  96:CMSIS/system_gd32f1x0.c ****   static void Set_SysClockTo36(void);
+  97:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_48MHz
+  98:CMSIS/system_gd32f1x0.c ****   static void Set_SysClockTo48(void);
+  99:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_56MHz
+ 100:CMSIS/system_gd32f1x0.c ****   static void Set_SysClockTo56(void);  
+ 101:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_72MHz
+ 102:CMSIS/system_gd32f1x0.c ****   static void Set_SysClockTo72(void);
+ 103:CMSIS/system_gd32f1x0.c **** #endif
+ 104:CMSIS/system_gd32f1x0.c **** 
+ 105:CMSIS/system_gd32f1x0.c **** /**
+ 106:CMSIS/system_gd32f1x0.c ****   * @}
+ 107:CMSIS/system_gd32f1x0.c ****   */
+ 108:CMSIS/system_gd32f1x0.c **** 
+ 109:CMSIS/system_gd32f1x0.c **** /** @addtogroup GD32F1x0_System_Private_Functions
+ 110:CMSIS/system_gd32f1x0.c ****   * @{
+ 111:CMSIS/system_gd32f1x0.c ****   */
+ 112:CMSIS/system_gd32f1x0.c **** 
+ 113:CMSIS/system_gd32f1x0.c **** /**
+ 114:CMSIS/system_gd32f1x0.c ****   * @brief  Initialize the Embedded Flash Interface, the PLL and set the 
+ 115:CMSIS/system_gd32f1x0.c ****   *         SystemCoreClock variable.
+ 116:CMSIS/system_gd32f1x0.c ****   * @param  None
+ 117:CMSIS/system_gd32f1x0.c ****   * @retval None
+ 118:CMSIS/system_gd32f1x0.c ****   */
+ 119:CMSIS/system_gd32f1x0.c **** void System_Init (void)
+ 120:CMSIS/system_gd32f1x0.c **** {
+ 121:CMSIS/system_gd32f1x0.c ****     /* Set HSIEN bit */
+ 122:CMSIS/system_gd32f1x0.c ****     RCC->GCCR |= RCC_GCCR_HSIEN;
+ 123:CMSIS/system_gd32f1x0.c ****     
+ 124:CMSIS/system_gd32f1x0.c ****     /* Reset SCS[1:0], AHBPS[3:0], APB1PS[2:0],APB2PS[2:0],
+ 125:CMSIS/system_gd32f1x0.c ****        ADCPS[1:0],USBPS[1:0],CKOTUSRC[2:0], CKOUTDIV, and PLLDV bits*/
+ 126:CMSIS/system_gd32f1x0.c ****     RCC->GCFGR &= RCC_GCFGR_FREQ_DIVIDE_RESET;
+ 127:CMSIS/system_gd32f1x0.c ****     
+ 128:CMSIS/system_gd32f1x0.c ****     /* Reset HSEEN, CKMEN and PLLEN bits */
+ 129:CMSIS/system_gd32f1x0.c ****     RCC->GCCR &= RCC_GCCR_CLK_ENABLE_RESET;
+ 130:CMSIS/system_gd32f1x0.c ****     
+ 131:CMSIS/system_gd32f1x0.c ****     /* Reset HSEBPS bit */
+ 132:CMSIS/system_gd32f1x0.c ****     RCC->GCCR &= RCC_GCCR_HSEBPS_RESET;
+ 133:CMSIS/system_gd32f1x0.c ****     
+ 134:CMSIS/system_gd32f1x0.c ****     /* Reset PLLSEL, PLLPREDV and PLLMF[3:0] bits */
+ 135:CMSIS/system_gd32f1x0.c ****     RCC->GCFGR &= RCC_GCFGR_CLK_SELECT_RESET;
+ 136:CMSIS/system_gd32f1x0.c ****     
+ 137:CMSIS/system_gd32f1x0.c ****     /* Reset HSEPREDV1[3:0] bits */
+ 138:CMSIS/system_gd32f1x0.c ****     RCC->GCFGR2 &= RCC_GCFGR2_HSEPREDV1_RESET;
+ 139:CMSIS/system_gd32f1x0.c ****     
+ 140:CMSIS/system_gd32f1x0.c ****     /* Reset USARTSEL[1:0], CECSEL and ADCSEL bits */
+ 141:CMSIS/system_gd32f1x0.c ****     RCC->GCFGR3 &= RCC_GCFGR3_RESET;
+ 142:CMSIS/system_gd32f1x0.c ****     
+ 143:CMSIS/system_gd32f1x0.c ****     /* Reset HSI14 bit */
+ 144:CMSIS/system_gd32f1x0.c ****     RCC->GCCR2 &= RCC_GCCR2_HSI14_RESET;
+ 145:CMSIS/system_gd32f1x0.c ****     
+ 146:CMSIS/system_gd32f1x0.c ****     /* Disable all interrupts */
+ 147:CMSIS/system_gd32f1x0.c ****     RCC->GCIR = RCC_GCIR_DISABLE;
+ 148:CMSIS/system_gd32f1x0.c ****     
+ 149:CMSIS/system_gd32f1x0.c ****     /* Configures the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers */
+ARM GAS  /tmp/ccBjuxdh.s 			page 4
+
+
+ 150:CMSIS/system_gd32f1x0.c ****     Set_SysClock();
+ 151:CMSIS/system_gd32f1x0.c **** }
+ 152:CMSIS/system_gd32f1x0.c **** 
+ 153:CMSIS/system_gd32f1x0.c **** /**
+ 154:CMSIS/system_gd32f1x0.c ****   * @brief  Update SystemCoreClock according to RCC Register Values
+ 155:CMSIS/system_gd32f1x0.c ****   * @note   Every time the core clock (HCLK) changes, you must call this function
+ 156:CMSIS/system_gd32f1x0.c ****   *         to update the SystemCoreClock variable values. Otherwise, any configuration
+ 157:CMSIS/system_gd32f1x0.c ****   *         based on this variable will be wrong.
+ 158:CMSIS/system_gd32f1x0.c ****   * @param  None
+ 159:CMSIS/system_gd32f1x0.c ****   * @retval None
+ 160:CMSIS/system_gd32f1x0.c ****   */
+ 161:CMSIS/system_gd32f1x0.c **** void SystemCoreClock_Update (void)
+ 162:CMSIS/system_gd32f1x0.c **** {
+ 163:CMSIS/system_gd32f1x0.c ****     uint32_t temp = 0, pllmf = 0, pllmf4=0,pllselect = 0, prediv1factor = 0, presc = 0;
+ 164:CMSIS/system_gd32f1x0.c **** 
+ 165:CMSIS/system_gd32f1x0.c ****     /* Get SYSCLK source -------------------------------------------------------*/
+ 166:CMSIS/system_gd32f1x0.c ****     temp = RCC->GCFGR & RCC_GCFGR_SCSS;
+ 167:CMSIS/system_gd32f1x0.c ****     
+ 168:CMSIS/system_gd32f1x0.c ****     switch (temp)
+ 169:CMSIS/system_gd32f1x0.c ****     {
+ 170:CMSIS/system_gd32f1x0.c ****     case 0x00:  /* HSI selected as system clock */
+ 171:CMSIS/system_gd32f1x0.c ****         SystemCoreClock = HSI_VALUE;
+ 172:CMSIS/system_gd32f1x0.c ****         break;
+ 173:CMSIS/system_gd32f1x0.c ****     case 0x04:  /* HSE selected as system clock */
+ 174:CMSIS/system_gd32f1x0.c ****         SystemCoreClock = HSE_VALUE;
+ 175:CMSIS/system_gd32f1x0.c ****         break;
+ 176:CMSIS/system_gd32f1x0.c ****     case 0x08:
+ 177:CMSIS/system_gd32f1x0.c ****         /* PLL selected as system clock */
+ 178:CMSIS/system_gd32f1x0.c ****         /* Get PLL clock source and multiplication factor ----------------------*/
+ 179:CMSIS/system_gd32f1x0.c ****         /* Get PLLMF[3:0] */
+ 180:CMSIS/system_gd32f1x0.c ****         pllmf = RCC->GCFGR & RCC_GCFGR_PLLMF3_0;
+ 181:CMSIS/system_gd32f1x0.c ****         /* Get PLLMF[4] */
+ 182:CMSIS/system_gd32f1x0.c ****         pllmf4 = RCC->GCFGR & RCC_GCFGR_PLLMF_4;
+ 183:CMSIS/system_gd32f1x0.c ****         pllmf4 = (( pllmf4 >> 27)*15);
+ 184:CMSIS/system_gd32f1x0.c ****         
+ 185:CMSIS/system_gd32f1x0.c ****         pllmf = ( pllmf >> 18) + pllmf4+ 2;
+ 186:CMSIS/system_gd32f1x0.c ****         
+ 187:CMSIS/system_gd32f1x0.c ****         pllselect = RCC->GCFGR & RCC_GCFGR_PLLSEL;
+ 188:CMSIS/system_gd32f1x0.c ****         if (pllselect == 0x00)
+ 189:CMSIS/system_gd32f1x0.c ****         {
+ 190:CMSIS/system_gd32f1x0.c ****             /* HSI clock divided by two used as PLL clock entry */
+ 191:CMSIS/system_gd32f1x0.c ****             SystemCoreClock = (HSI_VALUE >> 1) * pllmf;
+ 192:CMSIS/system_gd32f1x0.c ****         }
+ 193:CMSIS/system_gd32f1x0.c ****         else
+ 194:CMSIS/system_gd32f1x0.c ****         {
+ 195:CMSIS/system_gd32f1x0.c ****             /* Get the HSEPREDV division factor */
+ 196:CMSIS/system_gd32f1x0.c ****             prediv1factor = (RCC->GCFGR2 & RCC_GCFGR2_HSEPREDV1) + 1;
+ 197:CMSIS/system_gd32f1x0.c ****             /* HSE clock used as PREDIV1 clock entry */
+ 198:CMSIS/system_gd32f1x0.c ****             SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmf; 
+ 199:CMSIS/system_gd32f1x0.c ****         }
+ 200:CMSIS/system_gd32f1x0.c ****         break;
+ 201:CMSIS/system_gd32f1x0.c ****     default: 
+ 202:CMSIS/system_gd32f1x0.c ****         /* HSI selected as system clock */
+ 203:CMSIS/system_gd32f1x0.c ****         SystemCoreClock = HSI_VALUE;
+ 204:CMSIS/system_gd32f1x0.c ****         break;
+ 205:CMSIS/system_gd32f1x0.c ****     }
+ 206:CMSIS/system_gd32f1x0.c ****     /* Calculate HCLK frequency ----------------*/
+ARM GAS  /tmp/ccBjuxdh.s 			page 5
+
+
+ 207:CMSIS/system_gd32f1x0.c ****     /* Get AHB prescaler */
+ 208:CMSIS/system_gd32f1x0.c ****     presc = AHBPrescTableList[((RCC->GCFGR & RCC_GCFGR_AHBPS) >> 4)];
+ 209:CMSIS/system_gd32f1x0.c ****     /* AHB frequency */
+ 210:CMSIS/system_gd32f1x0.c ****     SystemCoreClock >>= presc;  
+ 211:CMSIS/system_gd32f1x0.c **** }
+ 212:CMSIS/system_gd32f1x0.c **** 
+ 213:CMSIS/system_gd32f1x0.c **** /**
+ 214:CMSIS/system_gd32f1x0.c ****   * @brief  Configure the System clock frequency, AHB/APB1/APB2 prescalers and Flash
+ 215:CMSIS/system_gd32f1x0.c ****   *         settings.
+ 216:CMSIS/system_gd32f1x0.c ****   * @note   If none of the define below is enabled, the HSI is selected as System clock
+ 217:CMSIS/system_gd32f1x0.c ****   *         source (default after reset)
+ 218:CMSIS/system_gd32f1x0.c ****   * @param  None
+ 219:CMSIS/system_gd32f1x0.c ****   * @retval None
+ 220:CMSIS/system_gd32f1x0.c ****   */
+ 221:CMSIS/system_gd32f1x0.c **** static void Set_SysClock(void)
+ 222:CMSIS/system_gd32f1x0.c **** {
+ 223:CMSIS/system_gd32f1x0.c **** #ifdef SYSCLK_FREQ_HSE
+ 224:CMSIS/system_gd32f1x0.c ****     Set_SysClockToHSE();
+ 225:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_24MHz
+ 226:CMSIS/system_gd32f1x0.c ****     Set_SysClockTo24();
+ 227:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_36MHz
+ 228:CMSIS/system_gd32f1x0.c ****     Set_SysClockTo36();
+ 229:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_48MHz
+ 230:CMSIS/system_gd32f1x0.c ****     Set_SysClockTo48();
+ 231:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_56MHz
+ 232:CMSIS/system_gd32f1x0.c ****     Set_SysClockTo56();  
+ 233:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_72MHz
+ 234:CMSIS/system_gd32f1x0.c ****     Set_SysClockTo72();
+ 235:CMSIS/system_gd32f1x0.c **** #endif
+ 236:CMSIS/system_gd32f1x0.c **** }
+ 237:CMSIS/system_gd32f1x0.c **** 
+ 238:CMSIS/system_gd32f1x0.c **** #ifdef SYSCLK_FREQ_HSE
+ 239:CMSIS/system_gd32f1x0.c **** /**
+ 240:CMSIS/system_gd32f1x0.c ****   * @brief  HSE is chosen as the system clock source and configurate AHB/APB2
+ 241:CMSIS/system_gd32f1x0.c ****   *         /APB1 prescalers.
+ 242:CMSIS/system_gd32f1x0.c ****   * @note   This function should be called only after reset.
+ 243:CMSIS/system_gd32f1x0.c ****   * @param  None
+ 244:CMSIS/system_gd32f1x0.c ****   * @retval None
+ 245:CMSIS/system_gd32f1x0.c ****   */
+ 246:CMSIS/system_gd32f1x0.c **** static void Set_SysClockToHSE(void)
+ 247:CMSIS/system_gd32f1x0.c **** {
+ 248:CMSIS/system_gd32f1x0.c ****     __IO uint32_t tmp_StartUpCounter = 0, tmp_HSEStatus = 0;
+ 249:CMSIS/system_gd32f1x0.c ****     
+ 250:CMSIS/system_gd32f1x0.c ****     /* HSE Enable */
+ 251:CMSIS/system_gd32f1x0.c ****     RCC->GCCR |= ((uint32_t)RCC_GCCR_HSEEN);
+ 252:CMSIS/system_gd32f1x0.c ****  
+ 253:CMSIS/system_gd32f1x0.c ****     /* Wait untill HSE is ready ,but exit if Time out is reached  */
+ 254:CMSIS/system_gd32f1x0.c ****     do
+ 255:CMSIS/system_gd32f1x0.c ****     {
+ 256:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = RCC->GCCR & RCC_GCCR_HSESTB;
+ 257:CMSIS/system_gd32f1x0.c ****         tmp_StartUpCounter++;  
+ 258:CMSIS/system_gd32f1x0.c ****     } while((tmp_HSEStatus == 0) && (tmp_StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 259:CMSIS/system_gd32f1x0.c **** 
+ 260:CMSIS/system_gd32f1x0.c ****     if ((RCC->GCCR & RCC_GCCR_HSESTB) != RESET)
+ 261:CMSIS/system_gd32f1x0.c ****     {
+ 262:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = (uint32_t)0x01;
+ 263:CMSIS/system_gd32f1x0.c ****     }
+ARM GAS  /tmp/ccBjuxdh.s 			page 6
+
+
+ 264:CMSIS/system_gd32f1x0.c ****     else
+ 265:CMSIS/system_gd32f1x0.c ****     {
+ 266:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = (uint32_t)0x00;
+ 267:CMSIS/system_gd32f1x0.c ****     }  
+ 268:CMSIS/system_gd32f1x0.c **** 
+ 269:CMSIS/system_gd32f1x0.c ****     if (tmp_HSEStatus == (uint32_t)0x01)
+ 270:CMSIS/system_gd32f1x0.c ****     {
+ 271:CMSIS/system_gd32f1x0.c ****         /* AHB= SYSCLK not divided */
+ 272:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_AHBPS_DIV1;
+ 273:CMSIS/system_gd32f1x0.c ****         
+ 274:CMSIS/system_gd32f1x0.c ****         /* APB2 = AHB not divided */
+ 275:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_APB2PS_DIV1;
+ 276:CMSIS/system_gd32f1x0.c ****         
+ 277:CMSIS/system_gd32f1x0.c ****         /* APB1 = AHB not divided */
+ 278:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_APB1PS_DIV1;
+ 279:CMSIS/system_gd32f1x0.c ****         
+ 280:CMSIS/system_gd32f1x0.c ****         /* HSE is chosen as the system clock source */
+ 281:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR &= (uint32_t)((uint32_t)~(RCC_GCFGR_SCS));
+ 282:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_SCS_HSE;    
+ 283:CMSIS/system_gd32f1x0.c ****         
+ 284:CMSIS/system_gd32f1x0.c ****         /* Wait untill HSE is selected as system clock source */
+ 285:CMSIS/system_gd32f1x0.c ****         while ((RCC->GCFGR & (uint32_t)RCC_GCFGR_SCSS) != (uint32_t)0x04)
+ 286:CMSIS/system_gd32f1x0.c ****         {
+ 287:CMSIS/system_gd32f1x0.c ****         }
+ 288:CMSIS/system_gd32f1x0.c ****     }
+ 289:CMSIS/system_gd32f1x0.c ****     else
+ 290:CMSIS/system_gd32f1x0.c ****     { /* If HSE fails to start, the application will have wrong clock 
+ 291:CMSIS/system_gd32f1x0.c ****          configuration. To deal with the error,the user can add here some code  */
+ 292:CMSIS/system_gd32f1x0.c ****     }  
+ 293:CMSIS/system_gd32f1x0.c **** }
+ 294:CMSIS/system_gd32f1x0.c **** 
+ 295:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_24MHz
+ 296:CMSIS/system_gd32f1x0.c **** 
+ 297:CMSIS/system_gd32f1x0.c **** /**
+ 298:CMSIS/system_gd32f1x0.c ****   * @brief  Set the System clock frequency to 24MHz and configurate AHB/APB1/APB2 prescalers and Fl
+ 299:CMSIS/system_gd32f1x0.c ****   *         settings.
+ 300:CMSIS/system_gd32f1x0.c ****   * @note   This function should be called only after the RCC clock configuration
+ 301:CMSIS/system_gd32f1x0.c ****   *         is reset to the default reset value .
+ 302:CMSIS/system_gd32f1x0.c ****   * @param  None
+ 303:CMSIS/system_gd32f1x0.c ****   * @retval None
+ 304:CMSIS/system_gd32f1x0.c ****   */
+ 305:CMSIS/system_gd32f1x0.c **** static void Set_SysClockTo24(void)
+ 306:CMSIS/system_gd32f1x0.c **** {
+ 307:CMSIS/system_gd32f1x0.c ****     __IO uint32_t tmp_StartUpCounter = 0, tmp_HSEStatus = 0;
+ 308:CMSIS/system_gd32f1x0.c ****   
+ 309:CMSIS/system_gd32f1x0.c ****     /* SYSCLK, AHB, APB1,APB2 configuration ----------------------------------------*/
+ 310:CMSIS/system_gd32f1x0.c ****     /* HSE Enable */
+ 311:CMSIS/system_gd32f1x0.c ****     RCC->GCCR |= ((uint32_t)RCC_GCCR_HSEEN);
+ 312:CMSIS/system_gd32f1x0.c ****  
+ 313:CMSIS/system_gd32f1x0.c ****     /* Wait untill HSE is ready ,but exit if Time out is reached */
+ 314:CMSIS/system_gd32f1x0.c ****     do
+ 315:CMSIS/system_gd32f1x0.c ****     {
+ 316:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = RCC->GCCR & RCC_GCCR_HSESTB;
+ 317:CMSIS/system_gd32f1x0.c ****         tmp_StartUpCounter++;  
+ 318:CMSIS/system_gd32f1x0.c ****     } while((tmp_HSEStatus == 0) && (tmp_StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 319:CMSIS/system_gd32f1x0.c **** 
+ 320:CMSIS/system_gd32f1x0.c ****     if ((RCC->GCCR & RCC_GCCR_HSESTB) != RESET)
+ARM GAS  /tmp/ccBjuxdh.s 			page 7
+
+
+ 321:CMSIS/system_gd32f1x0.c ****     {
+ 322:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = (uint32_t)0x01;
+ 323:CMSIS/system_gd32f1x0.c ****     }
+ 324:CMSIS/system_gd32f1x0.c ****     else
+ 325:CMSIS/system_gd32f1x0.c ****     {
+ 326:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = (uint32_t)0x00;
+ 327:CMSIS/system_gd32f1x0.c ****     }  
+ 328:CMSIS/system_gd32f1x0.c **** 
+ 329:CMSIS/system_gd32f1x0.c ****     if (tmp_HSEStatus == (uint32_t)0x01)
+ 330:CMSIS/system_gd32f1x0.c ****     {
+ 331:CMSIS/system_gd32f1x0.c ****         /* AHB = SYSCLK not divided */
+ 332:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_AHBPS_DIV1;
+ 333:CMSIS/system_gd32f1x0.c ****         
+ 334:CMSIS/system_gd32f1x0.c ****         /* APB2 = AHB not divided */
+ 335:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_APB2PS_DIV1;
+ 336:CMSIS/system_gd32f1x0.c ****         
+ 337:CMSIS/system_gd32f1x0.c ****         /* APB1 = AHB not divided */
+ 338:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_APB1PS_DIV1;
+ 339:CMSIS/system_gd32f1x0.c ****         
+ 340:CMSIS/system_gd32f1x0.c ****         /* PLL multiplication factor is 3 , PLL = HSE * 3 = 72 MHz */
+ 341:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR &= (uint32_t)((uint32_t)~(RCC_GCFGR_PLLSEL | RCC_GCFGR_PLLPREDV | RCC_GCFGR_PLLM
+ 342:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)(RCC_GCFGR_PLLSEL_HSEPREDIV | RCC_GCFGR_PLLPREDV_PREDIV1 | RCC_GCFG
+ 343:CMSIS/system_gd32f1x0.c ****         
+ 344:CMSIS/system_gd32f1x0.c ****         /* PLL Enable */
+ 345:CMSIS/system_gd32f1x0.c ****         RCC->GCCR |= RCC_GCCR_PLLEN;
+ 346:CMSIS/system_gd32f1x0.c ****         
+ 347:CMSIS/system_gd32f1x0.c ****         /* Wait untill PLL is ready */
+ 348:CMSIS/system_gd32f1x0.c ****         while((RCC->GCCR & RCC_GCCR_PLLSTB) == 0)
+ 349:CMSIS/system_gd32f1x0.c ****         {
+ 350:CMSIS/system_gd32f1x0.c ****         }
+ 351:CMSIS/system_gd32f1x0.c ****         
+ 352:CMSIS/system_gd32f1x0.c ****         /* PLL is chosen as system clock source */
+ 353:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR &= (uint32_t)((uint32_t)~(RCC_GCFGR_SCS));
+ 354:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_SCS_PLL;    
+ 355:CMSIS/system_gd32f1x0.c ****         
+ 356:CMSIS/system_gd32f1x0.c ****         /* Wait untill PLL is chosen as system clock source */
+ 357:CMSIS/system_gd32f1x0.c ****         while ((RCC->GCFGR & (uint32_t)RCC_GCFGR_SCSS) != (uint32_t)RCC_GCFGR_SCSS_PLL)
+ 358:CMSIS/system_gd32f1x0.c ****         {
+ 359:CMSIS/system_gd32f1x0.c ****         }
+ 360:CMSIS/system_gd32f1x0.c ****     }
+ 361:CMSIS/system_gd32f1x0.c ****     else
+ 362:CMSIS/system_gd32f1x0.c ****     { /* If HSE fails to start, the application will have wrong clock 
+ 363:CMSIS/system_gd32f1x0.c ****          configuration. To deal with the error,the user can add here some code  */
+ 364:CMSIS/system_gd32f1x0.c ****     }  
+ 365:CMSIS/system_gd32f1x0.c **** }
+ 366:CMSIS/system_gd32f1x0.c **** 
+ 367:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_36MHz
+ 368:CMSIS/system_gd32f1x0.c **** 
+ 369:CMSIS/system_gd32f1x0.c **** /**
+ 370:CMSIS/system_gd32f1x0.c ****   * @brief  Set the System clock frequency to 36MHz and configurate AHB/APB1/APB2 prescalers and Fl
+ 371:CMSIS/system_gd32f1x0.c ****   *         settings.
+ 372:CMSIS/system_gd32f1x0.c ****   * @note   This function should be called only after the RCC clock configuration
+ 373:CMSIS/system_gd32f1x0.c ****   *         is reset to the default reset value .
+ 374:CMSIS/system_gd32f1x0.c ****   * @param  None
+ 375:CMSIS/system_gd32f1x0.c ****   * @retval None
+ 376:CMSIS/system_gd32f1x0.c ****   */
+ 377:CMSIS/system_gd32f1x0.c **** static void Set_SysClockTo36(void)
+ARM GAS  /tmp/ccBjuxdh.s 			page 8
+
+
+ 378:CMSIS/system_gd32f1x0.c **** {
+ 379:CMSIS/system_gd32f1x0.c ****     __IO uint32_t tmp_StartUpCounter = 0, tmp_HSEStatus = 0;
+ 380:CMSIS/system_gd32f1x0.c ****   
+ 381:CMSIS/system_gd32f1x0.c ****     /* SYSCLK, AHB, APB1, APB2 configuration ----------------------------------------*/
+ 382:CMSIS/system_gd32f1x0.c ****     /* HSE Enable */
+ 383:CMSIS/system_gd32f1x0.c ****     RCC->GCCR |= ((uint32_t)RCC_GCCR_HSEEN);
+ 384:CMSIS/system_gd32f1x0.c ****  
+ 385:CMSIS/system_gd32f1x0.c ****     /* Wait untill HSE is ready ,but exit if Time out is reached */
+ 386:CMSIS/system_gd32f1x0.c ****     do
+ 387:CMSIS/system_gd32f1x0.c ****     {
+ 388:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = RCC->GCCR & RCC_GCCR_HSESTB;
+ 389:CMSIS/system_gd32f1x0.c ****         tmp_StartUpCounter++;  
+ 390:CMSIS/system_gd32f1x0.c ****     } while((tmp_HSEStatus == 0) && (tmp_StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 391:CMSIS/system_gd32f1x0.c ****     
+ 392:CMSIS/system_gd32f1x0.c ****     if ((RCC->GCCR & RCC_GCCR_HSESTB) != RESET)
+ 393:CMSIS/system_gd32f1x0.c ****     {
+ 394:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = (uint32_t)0x01;
+ 395:CMSIS/system_gd32f1x0.c ****     }
+ 396:CMSIS/system_gd32f1x0.c ****     else
+ 397:CMSIS/system_gd32f1x0.c ****     {
+ 398:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = (uint32_t)0x00;
+ 399:CMSIS/system_gd32f1x0.c ****     }  
+ 400:CMSIS/system_gd32f1x0.c **** 
+ 401:CMSIS/system_gd32f1x0.c ****     if (tmp_HSEStatus == (uint32_t)0x01)
+ 402:CMSIS/system_gd32f1x0.c ****     {
+ 403:CMSIS/system_gd32f1x0.c ****         /* AHB = SYSCLK not divided */
+ 404:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_AHBPS_DIV1;
+ 405:CMSIS/system_gd32f1x0.c ****         
+ 406:CMSIS/system_gd32f1x0.c ****         /* APB2 = AHB not divided */
+ 407:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_APB2PS_DIV1;
+ 408:CMSIS/system_gd32f1x0.c ****         
+ 409:CMSIS/system_gd32f1x0.c ****         /* APB1 = AHB not divided */
+ 410:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_APB1PS_DIV1;
+ 411:CMSIS/system_gd32f1x0.c ****         
+ 412:CMSIS/system_gd32f1x0.c ****         /* PLL multiplication factor is 9 , PLL = HSE/2 * 9 = 36 MHz */
+ 413:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR &= (uint32_t)((uint32_t)~(RCC_GCFGR_PLLSEL | RCC_GCFGR_PLLPREDV | RCC_GCFGR_PLLM
+ 414:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)(RCC_GCFGR_PLLSEL_HSEPREDIV | RCC_GCFGR_PLLPREDV_PREDIV1_DIV2 | RCC
+ 415:CMSIS/system_gd32f1x0.c ****         
+ 416:CMSIS/system_gd32f1x0.c ****         /* PLL Enable */
+ 417:CMSIS/system_gd32f1x0.c ****         RCC->GCCR |= RCC_GCCR_PLLEN;
+ 418:CMSIS/system_gd32f1x0.c ****         
+ 419:CMSIS/system_gd32f1x0.c ****         /* Wait untill PLL is ready */
+ 420:CMSIS/system_gd32f1x0.c ****         while((RCC->GCCR & RCC_GCCR_PLLSTB) == 0)
+ 421:CMSIS/system_gd32f1x0.c ****         {
+ 422:CMSIS/system_gd32f1x0.c ****         }
+ 423:CMSIS/system_gd32f1x0.c ****         
+ 424:CMSIS/system_gd32f1x0.c ****         /* PLL is chosen as system clock source */
+ 425:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR &= (uint32_t)((uint32_t)~(RCC_GCFGR_SCS));
+ 426:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_SCS_PLL;    
+ 427:CMSIS/system_gd32f1x0.c ****         
+ 428:CMSIS/system_gd32f1x0.c ****         /* Wait untill PLL is chosen as system clock source */
+ 429:CMSIS/system_gd32f1x0.c ****         while ((RCC->GCFGR & (uint32_t)RCC_GCFGR_SCSS) != (uint32_t)RCC_GCFGR_SCSS_PLL)
+ 430:CMSIS/system_gd32f1x0.c ****         {
+ 431:CMSIS/system_gd32f1x0.c ****         }
+ 432:CMSIS/system_gd32f1x0.c ****     }
+ 433:CMSIS/system_gd32f1x0.c ****     else
+ 434:CMSIS/system_gd32f1x0.c ****     { /* If HSE fails to start, the application will have wrong clock 
+ARM GAS  /tmp/ccBjuxdh.s 			page 9
+
+
+ 435:CMSIS/system_gd32f1x0.c ****         configuration. To deal with the error,the user can add here some code  */
+ 436:CMSIS/system_gd32f1x0.c ****     }  
+ 437:CMSIS/system_gd32f1x0.c **** }
+ 438:CMSIS/system_gd32f1x0.c **** 
+ 439:CMSIS/system_gd32f1x0.c **** #elif defined SYSCLK_FREQ_48MHz
+ 440:CMSIS/system_gd32f1x0.c **** 
+ 441:CMSIS/system_gd32f1x0.c **** /**
+ 442:CMSIS/system_gd32f1x0.c ****   * @brief  Set the System clock frequency to 48MHZ and configurate AHB/APB1/APB2 prescalers and Fl
+ 443:CMSIS/system_gd32f1x0.c ****   *         settings.
+ 444:CMSIS/system_gd32f1x0.c ****   * @note   This function should be called only after the RCC clock configuration
+ 445:CMSIS/system_gd32f1x0.c ****   *         is reset to the default reset value .
+ 446:CMSIS/system_gd32f1x0.c ****   * @param  None
+ 447:CMSIS/system_gd32f1x0.c ****   * @retval None
+ 448:CMSIS/system_gd32f1x0.c ****   */
+ 449:CMSIS/system_gd32f1x0.c **** static void Set_SysClockTo48(void)
+ 450:CMSIS/system_gd32f1x0.c **** {
+  24              		.loc 1 450 0
+  25              		.cfi_startproc
+  26              		@ args = 0, pretend = 0, frame = 8
+  27              		@ frame_needed = 0, uses_anonymous_args = 0
+  28              		@ link register save eliminated.
+  29 0000 82B0     		sub	sp, sp, #8
+  30              	.LCFI0:
+  31              		.cfi_def_cfa_offset 8
+ 451:CMSIS/system_gd32f1x0.c ****     __IO uint32_t tmp_StartUpCounter = 0, tmp_HSEStatus = 0;
+  32              		.loc 1 451 0
+  33 0002 0023     		movs	r3, #0
+  34 0004 0193     		str	r3, [sp, #4]
+  35 0006 0093     		str	r3, [sp]
+ 452:CMSIS/system_gd32f1x0.c ****   
+ 453:CMSIS/system_gd32f1x0.c ****     /* HSE Enable */
+ 454:CMSIS/system_gd32f1x0.c ****     RCC->GCCR |= ((uint32_t)RCC_GCCR_HSEEN);
+  36              		.loc 1 454 0
+  37 0008 03F18043 		add	r3, r3, #1073741824
+  38 000c 03F50433 		add	r3, r3, #135168
+  39 0010 1A68     		ldr	r2, [r3]
+  40 0012 42F48032 		orr	r2, r2, #65536
+  41 0016 1A60     		str	r2, [r3]
+ 455:CMSIS/system_gd32f1x0.c ****  
+ 456:CMSIS/system_gd32f1x0.c ****     /* Wait untill HSE is ready ,but exit if Time out is reached */
+ 457:CMSIS/system_gd32f1x0.c ****     do
+ 458:CMSIS/system_gd32f1x0.c ****     {
+ 459:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = RCC->GCCR & RCC_GCCR_HSESTB;
+  42              		.loc 1 459 0
+  43 0018 1A46     		mov	r2, r3
+  44              	.L3:
+  45              		.loc 1 459 0 is_stmt 0 discriminator 1
+  46 001a 1368     		ldr	r3, [r2]
+  47 001c 03F40033 		and	r3, r3, #131072
+  48 0020 0093     		str	r3, [sp]
+ 460:CMSIS/system_gd32f1x0.c ****         tmp_StartUpCounter++;  
+  49              		.loc 1 460 0 is_stmt 1 discriminator 1
+  50 0022 019B     		ldr	r3, [sp, #4]
+  51 0024 0133     		adds	r3, r3, #1
+  52 0026 0193     		str	r3, [sp, #4]
+ 461:CMSIS/system_gd32f1x0.c ****     } while((tmp_HSEStatus == 0) && (tmp_StartUpCounter != HSE_STARTUP_TIMEOUT));
+  53              		.loc 1 461 0 discriminator 1
+ARM GAS  /tmp/ccBjuxdh.s 			page 10
+
+
+  54 0028 009B     		ldr	r3, [sp]
+  55 002a 1BB9     		cbnz	r3, .L2
+  56 002c 019B     		ldr	r3, [sp, #4]
+  57 002e B3F5006F 		cmp	r3, #2048
+  58 0032 F2D1     		bne	.L3
+  59              	.L2:
+ 462:CMSIS/system_gd32f1x0.c **** 
+ 463:CMSIS/system_gd32f1x0.c ****     if ((RCC->GCCR & RCC_GCCR_HSESTB) != RESET)
+  60              		.loc 1 463 0
+  61 0034 1B4B     		ldr	r3, .L12
+  62 0036 1B68     		ldr	r3, [r3]
+  63 0038 13F4003F 		tst	r3, #131072
+  64 003c 02D0     		beq	.L4
+ 464:CMSIS/system_gd32f1x0.c ****     {
+ 465:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = (uint32_t)0x01;
+  65              		.loc 1 465 0
+  66 003e 0123     		movs	r3, #1
+  67 0040 0093     		str	r3, [sp]
+  68 0042 01E0     		b	.L5
+  69              	.L4:
+ 466:CMSIS/system_gd32f1x0.c ****     }
+ 467:CMSIS/system_gd32f1x0.c ****     else
+ 468:CMSIS/system_gd32f1x0.c ****     {
+ 469:CMSIS/system_gd32f1x0.c ****         tmp_HSEStatus = (uint32_t)0x00;
+  70              		.loc 1 469 0
+  71 0044 0023     		movs	r3, #0
+  72 0046 0093     		str	r3, [sp]
+  73              	.L5:
+ 470:CMSIS/system_gd32f1x0.c ****     }  
+ 471:CMSIS/system_gd32f1x0.c **** 
+ 472:CMSIS/system_gd32f1x0.c ****     if (tmp_HSEStatus == (uint32_t)0x01)
+  74              		.loc 1 472 0
+  75 0048 009B     		ldr	r3, [sp]
+  76 004a 012B     		cmp	r3, #1
+  77 004c 28D1     		bne	.L1
+ 473:CMSIS/system_gd32f1x0.c ****     {
+ 474:CMSIS/system_gd32f1x0.c ****         /* AHB= SYSCLK not divided */
+ 475:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_AHBPS_DIV1;
+  78              		.loc 1 475 0
+  79 004e 154B     		ldr	r3, .L12
+  80 0050 5A68     		ldr	r2, [r3, #4]
+  81 0052 5A60     		str	r2, [r3, #4]
+ 476:CMSIS/system_gd32f1x0.c ****         
+ 477:CMSIS/system_gd32f1x0.c ****         /* APB2 = AHB not divided */
+ 478:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_APB2PS_DIV1;
+  82              		.loc 1 478 0
+  83 0054 5A68     		ldr	r2, [r3, #4]
+  84 0056 5A60     		str	r2, [r3, #4]
+ 479:CMSIS/system_gd32f1x0.c ****         
+ 480:CMSIS/system_gd32f1x0.c ****         /* APB1 = AHB not divided */
+ 481:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_APB1PS_DIV1;
+  85              		.loc 1 481 0
+  86 0058 5A68     		ldr	r2, [r3, #4]
+  87 005a 5A60     		str	r2, [r3, #4]
+ 482:CMSIS/system_gd32f1x0.c ****         
+ 483:CMSIS/system_gd32f1x0.c ****         /* PLL multiplication factor is 6 , PLL = HSE * 6 = 48 MHz */
+ 484:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR &= (uint32_t)((uint32_t)~(RCC_GCFGR_PLLSEL | RCC_GCFGR_PLLPREDV | RCC_GCFGR_PLLM
+ARM GAS  /tmp/ccBjuxdh.s 			page 11
+
+
+  88              		.loc 1 484 0
+  89 005c 5A68     		ldr	r2, [r3, #4]
+  90 005e 22F00362 		bic	r2, r2, #137363456
+  91 0062 22F47022 		bic	r2, r2, #983040
+  92 0066 5A60     		str	r2, [r3, #4]
+ 485:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)(RCC_GCFGR_PLLSEL_HSEPREDIV | RCC_GCFGR_PLLPREDV_PREDIV1 | RCC_GCFG
+  93              		.loc 1 485 0
+  94 0068 5A68     		ldr	r2, [r3, #4]
+  95 006a 42F48812 		orr	r2, r2, #1114112
+  96 006e 5A60     		str	r2, [r3, #4]
+ 486:CMSIS/system_gd32f1x0.c ****         
+ 487:CMSIS/system_gd32f1x0.c ****         /* PLL Enable */
+ 488:CMSIS/system_gd32f1x0.c ****         RCC->GCCR |= RCC_GCCR_PLLEN;
+  97              		.loc 1 488 0
+  98 0070 1A68     		ldr	r2, [r3]
+  99 0072 42F08072 		orr	r2, r2, #16777216
+ 100 0076 1A60     		str	r2, [r3]
+ 489:CMSIS/system_gd32f1x0.c ****         
+ 490:CMSIS/system_gd32f1x0.c ****         /* Wait untill PLL is ready */
+ 491:CMSIS/system_gd32f1x0.c ****         while((RCC->GCCR & RCC_GCCR_PLLSTB) == 0)
+ 101              		.loc 1 491 0
+ 102 0078 1A46     		mov	r2, r3
+ 103              	.L7:
+ 104              		.loc 1 491 0 is_stmt 0 discriminator 1
+ 105 007a 1368     		ldr	r3, [r2]
+ 106 007c 13F0007F 		tst	r3, #33554432
+ 107 0080 FBD0     		beq	.L7
+ 492:CMSIS/system_gd32f1x0.c ****         {
+ 493:CMSIS/system_gd32f1x0.c ****         }
+ 494:CMSIS/system_gd32f1x0.c ****         
+ 495:CMSIS/system_gd32f1x0.c ****         /* PLL is chosen as system clock source */
+ 496:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR &= (uint32_t)((uint32_t)~(RCC_GCFGR_SCS));
+ 108              		.loc 1 496 0 is_stmt 1
+ 109 0082 084B     		ldr	r3, .L12
+ 110 0084 5A68     		ldr	r2, [r3, #4]
+ 111 0086 22F00302 		bic	r2, r2, #3
+ 112 008a 5A60     		str	r2, [r3, #4]
+ 497:CMSIS/system_gd32f1x0.c ****         RCC->GCFGR |= (uint32_t)RCC_GCFGR_SCS_PLL;    
+ 113              		.loc 1 497 0
+ 114 008c 5A68     		ldr	r2, [r3, #4]
+ 115 008e 42F00202 		orr	r2, r2, #2
+ 116 0092 5A60     		str	r2, [r3, #4]
+ 498:CMSIS/system_gd32f1x0.c ****         
+ 499:CMSIS/system_gd32f1x0.c ****         /* Wait untill PLL is chosen as system clock source */
+ 500:CMSIS/system_gd32f1x0.c ****         while ((RCC->GCFGR & (uint32_t)RCC_GCFGR_SCSS) != (uint32_t)RCC_GCFGR_SCSS_PLL)
+ 117              		.loc 1 500 0
+ 118 0094 1A46     		mov	r2, r3
+ 119              	.L8:
+ 120              		.loc 1 500 0 is_stmt 0 discriminator 1
+ 121 0096 5368     		ldr	r3, [r2, #4]
+ 122 0098 03F00C03 		and	r3, r3, #12
+ 123 009c 082B     		cmp	r3, #8
+ 124 009e FAD1     		bne	.L8
+ 125              	.L1:
+ 501:CMSIS/system_gd32f1x0.c ****         {
+ 502:CMSIS/system_gd32f1x0.c ****         }
+ 503:CMSIS/system_gd32f1x0.c ****     }
+ARM GAS  /tmp/ccBjuxdh.s 			page 12
+
+
+ 504:CMSIS/system_gd32f1x0.c ****     else
+ 505:CMSIS/system_gd32f1x0.c ****     { /* If HSE fails to start, the application will have wrong clock 
+ 506:CMSIS/system_gd32f1x0.c ****         configuration. To deal with the error,the user can add here some code  */
+ 507:CMSIS/system_gd32f1x0.c ****     }  
+ 508:CMSIS/system_gd32f1x0.c **** }
+ 126              		.loc 1 508 0 is_stmt 1
+ 127 00a0 02B0     		add	sp, sp, #8
+ 128              		@ sp needed
+ 129 00a2 7047     		bx	lr
+ 130              	.L13:
+ 131              		.align	2
+ 132              	.L12:
+ 133 00a4 00100240 		.word	1073876992
+ 134              		.cfi_endproc
+ 135              	.LFE32:
+ 137              		.section	.text.Set_SysClock,"ax",%progbits
+ 138              		.align	2
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	Set_SysClock:
+ 143              	.LFB31:
+ 222:CMSIS/system_gd32f1x0.c **** {
+ 144              		.loc 1 222 0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 0
+ 147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148 0000 08B5     		push	{r3, lr}
+ 149              	.LCFI1:
+ 150              		.cfi_def_cfa_offset 8
+ 151              		.cfi_offset 3, -8
+ 152              		.cfi_offset 14, -4
+ 230:CMSIS/system_gd32f1x0.c ****     Set_SysClockTo48();
+ 153              		.loc 1 230 0
+ 154 0002 FFF7FEFF 		bl	Set_SysClockTo48
+ 155              	.LVL0:
+ 156 0006 08BD     		pop	{r3, pc}
+ 157              		.cfi_endproc
+ 158              	.LFE31:
+ 160              		.section	.text.System_Init,"ax",%progbits
+ 161              		.align	2
+ 162              		.global	System_Init
+ 163              		.thumb
+ 164              		.thumb_func
+ 166              	System_Init:
+ 167              	.LFB29:
+ 120:CMSIS/system_gd32f1x0.c **** {
+ 168              		.loc 1 120 0
+ 169              		.cfi_startproc
+ 170              		@ args = 0, pretend = 0, frame = 0
+ 171              		@ frame_needed = 0, uses_anonymous_args = 0
+ 172 0000 08B5     		push	{r3, lr}
+ 173              	.LCFI2:
+ 174              		.cfi_def_cfa_offset 8
+ 175              		.cfi_offset 3, -8
+ 176              		.cfi_offset 14, -4
+ 122:CMSIS/system_gd32f1x0.c ****     RCC->GCCR |= RCC_GCCR_HSIEN;
+ 177              		.loc 1 122 0
+ARM GAS  /tmp/ccBjuxdh.s 			page 13
+
+
+ 178 0002 164B     		ldr	r3, .L16
+ 179 0004 1A68     		ldr	r2, [r3]
+ 180 0006 42F00102 		orr	r2, r2, #1
+ 181 000a 1A60     		str	r2, [r3]
+ 126:CMSIS/system_gd32f1x0.c ****     RCC->GCFGR &= RCC_GCFGR_FREQ_DIVIDE_RESET;
+ 182              		.loc 1 126 0
+ 183 000c 5968     		ldr	r1, [r3, #4]
+ 184 000e 144A     		ldr	r2, .L16+4
+ 185 0010 0A40     		ands	r2, r2, r1
+ 186 0012 5A60     		str	r2, [r3, #4]
+ 129:CMSIS/system_gd32f1x0.c ****     RCC->GCCR &= RCC_GCCR_CLK_ENABLE_RESET;
+ 187              		.loc 1 129 0
+ 188 0014 1A68     		ldr	r2, [r3]
+ 189 0016 22F08472 		bic	r2, r2, #17301504
+ 190 001a 22F48032 		bic	r2, r2, #65536
+ 191 001e 1A60     		str	r2, [r3]
+ 132:CMSIS/system_gd32f1x0.c ****     RCC->GCCR &= RCC_GCCR_HSEBPS_RESET;
+ 192              		.loc 1 132 0
+ 193 0020 1A68     		ldr	r2, [r3]
+ 194 0022 22F48022 		bic	r2, r2, #262144
+ 195 0026 1A60     		str	r2, [r3]
+ 135:CMSIS/system_gd32f1x0.c ****     RCC->GCFGR &= RCC_GCFGR_CLK_SELECT_RESET;
+ 196              		.loc 1 135 0
+ 197 0028 5A68     		ldr	r2, [r3, #4]
+ 198 002a 22F00362 		bic	r2, r2, #137363456
+ 199 002e 22F47022 		bic	r2, r2, #983040
+ 200 0032 5A60     		str	r2, [r3, #4]
+ 138:CMSIS/system_gd32f1x0.c ****     RCC->GCFGR2 &= RCC_GCFGR2_HSEPREDV1_RESET;
+ 201              		.loc 1 138 0
+ 202 0034 DA6A     		ldr	r2, [r3, #44]
+ 203 0036 22F00F02 		bic	r2, r2, #15
+ 204 003a DA62     		str	r2, [r3, #44]
+ 141:CMSIS/system_gd32f1x0.c ****     RCC->GCFGR3 &= RCC_GCFGR3_RESET;
+ 205              		.loc 1 141 0
+ 206 003c 1A6B     		ldr	r2, [r3, #48]
+ 207 003e 22F4A172 		bic	r2, r2, #322
+ 208 0042 22F00102 		bic	r2, r2, #1
+ 209 0046 1A63     		str	r2, [r3, #48]
+ 144:CMSIS/system_gd32f1x0.c ****     RCC->GCCR2 &= RCC_GCCR2_HSI14_RESET;
+ 210              		.loc 1 144 0
+ 211 0048 5A6B     		ldr	r2, [r3, #52]
+ 212 004a 22F00102 		bic	r2, r2, #1
+ 213 004e 5A63     		str	r2, [r3, #52]
+ 147:CMSIS/system_gd32f1x0.c ****     RCC->GCIR = RCC_GCIR_DISABLE;
+ 214              		.loc 1 147 0
+ 215 0050 0022     		movs	r2, #0
+ 216 0052 9A60     		str	r2, [r3, #8]
+ 150:CMSIS/system_gd32f1x0.c ****     Set_SysClock();
+ 217              		.loc 1 150 0
+ 218 0054 FFF7FEFF 		bl	Set_SysClock
+ 219              	.LVL1:
+ 220 0058 08BD     		pop	{r3, pc}
+ 221              	.L17:
+ 222 005a 00BF     		.align	2
+ 223              	.L16:
+ 224 005c 00100240 		.word	1073876992
+ 225 0060 0C003F08 		.word	138346508
+ARM GAS  /tmp/ccBjuxdh.s 			page 14
+
+
+ 226              		.cfi_endproc
+ 227              	.LFE29:
+ 229              		.section	.text.SystemCoreClock_Update,"ax",%progbits
+ 230              		.align	2
+ 231              		.global	SystemCoreClock_Update
+ 232              		.thumb
+ 233              		.thumb_func
+ 235              	SystemCoreClock_Update:
+ 236              	.LFB30:
+ 162:CMSIS/system_gd32f1x0.c **** {
+ 237              		.loc 1 162 0
+ 238              		.cfi_startproc
+ 239              		@ args = 0, pretend = 0, frame = 0
+ 240              		@ frame_needed = 0, uses_anonymous_args = 0
+ 241              		@ link register save eliminated.
+ 242              	.LVL2:
+ 166:CMSIS/system_gd32f1x0.c ****     temp = RCC->GCFGR & RCC_GCFGR_SCSS;
+ 243              		.loc 1 166 0
+ 244 0000 204B     		ldr	r3, .L26
+ 245 0002 5B68     		ldr	r3, [r3, #4]
+ 246 0004 03F00C03 		and	r3, r3, #12
+ 247              	.LVL3:
+ 168:CMSIS/system_gd32f1x0.c ****     switch (temp)
+ 248              		.loc 1 168 0
+ 249 0008 042B     		cmp	r3, #4
+ 250 000a 06D0     		beq	.L20
+ 251 000c 082B     		cmp	r3, #8
+ 252 000e 08D0     		beq	.L21
+ 253 0010 4BBB     		cbnz	r3, .L25
+ 171:CMSIS/system_gd32f1x0.c ****         SystemCoreClock = HSI_VALUE;
+ 254              		.loc 1 171 0
+ 255 0012 1D4A     		ldr	r2, .L26+4
+ 256 0014 1D4B     		ldr	r3, .L26+8
+ 257              	.LVL4:
+ 258 0016 1A60     		str	r2, [r3]
+ 172:CMSIS/system_gd32f1x0.c ****         break;
+ 259              		.loc 1 172 0
+ 260 0018 28E0     		b	.L23
+ 261              	.LVL5:
+ 262              	.L20:
+ 174:CMSIS/system_gd32f1x0.c ****         SystemCoreClock = HSE_VALUE;
+ 263              		.loc 1 174 0
+ 264 001a 1B4A     		ldr	r2, .L26+4
+ 265 001c 1B4B     		ldr	r3, .L26+8
+ 266              	.LVL6:
+ 267 001e 1A60     		str	r2, [r3]
+ 175:CMSIS/system_gd32f1x0.c ****         break;
+ 268              		.loc 1 175 0
+ 269 0020 24E0     		b	.L23
+ 270              	.LVL7:
+ 271              	.L21:
+ 180:CMSIS/system_gd32f1x0.c ****         pllmf = RCC->GCFGR & RCC_GCFGR_PLLMF3_0;
+ 272              		.loc 1 180 0
+ 273 0022 184B     		ldr	r3, .L26
+ 274              	.LVL8:
+ 275 0024 5968     		ldr	r1, [r3, #4]
+ 276              	.LVL9:
+ARM GAS  /tmp/ccBjuxdh.s 			page 15
+
+
+ 182:CMSIS/system_gd32f1x0.c ****         pllmf4 = RCC->GCFGR & RCC_GCFGR_PLLMF_4;
+ 277              		.loc 1 182 0
+ 278 0026 5A68     		ldr	r2, [r3, #4]
+ 279              	.LVL10:
+ 183:CMSIS/system_gd32f1x0.c ****         pllmf4 = (( pllmf4 >> 27)*15);
+ 280              		.loc 1 183 0
+ 281 0028 C2F3C062 		ubfx	r2, r2, #27, #1
+ 282              	.LVL11:
+ 283 002c C2EB0212 		rsb	r2, r2, r2, lsl #4
+ 185:CMSIS/system_gd32f1x0.c ****         pllmf = ( pllmf >> 18) + pllmf4+ 2;
+ 284              		.loc 1 185 0
+ 285 0030 C1F38341 		ubfx	r1, r1, #18, #4
+ 286              	.LVL12:
+ 287 0034 0A44     		add	r2, r2, r1
+ 288 0036 0232     		adds	r2, r2, #2
+ 289              	.LVL13:
+ 187:CMSIS/system_gd32f1x0.c ****         pllselect = RCC->GCFGR & RCC_GCFGR_PLLSEL;
+ 290              		.loc 1 187 0
+ 291 0038 5B68     		ldr	r3, [r3, #4]
+ 292              	.LVL14:
+ 188:CMSIS/system_gd32f1x0.c ****         if (pllselect == 0x00)
+ 293              		.loc 1 188 0
+ 294 003a 13F4803F 		tst	r3, #65536
+ 295 003e 05D1     		bne	.L24
+ 191:CMSIS/system_gd32f1x0.c ****             SystemCoreClock = (HSI_VALUE >> 1) * pllmf;
+ 296              		.loc 1 191 0
+ 297 0040 134B     		ldr	r3, .L26+12
+ 298              	.LVL15:
+ 299 0042 03FB02F2 		mul	r2, r3, r2
+ 300              	.LVL16:
+ 301 0046 114B     		ldr	r3, .L26+8
+ 302 0048 1A60     		str	r2, [r3]
+ 303 004a 0FE0     		b	.L23
+ 304              	.LVL17:
+ 305              	.L24:
+ 196:CMSIS/system_gd32f1x0.c ****             prediv1factor = (RCC->GCFGR2 & RCC_GCFGR2_HSEPREDV1) + 1;
+ 306              		.loc 1 196 0
+ 307 004c 0D4B     		ldr	r3, .L26
+ 308              	.LVL18:
+ 309 004e DB6A     		ldr	r3, [r3, #44]
+ 310 0050 03F00F03 		and	r3, r3, #15
+ 311 0054 0133     		adds	r3, r3, #1
+ 312              	.LVL19:
+ 198:CMSIS/system_gd32f1x0.c ****             SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmf; 
+ 313              		.loc 1 198 0
+ 314 0056 0C49     		ldr	r1, .L26+4
+ 315 0058 B1FBF3F3 		udiv	r3, r1, r3
+ 316              	.LVL20:
+ 317 005c 02FB03F2 		mul	r2, r2, r3
+ 318              	.LVL21:
+ 319 0060 0A4B     		ldr	r3, .L26+8
+ 320 0062 1A60     		str	r2, [r3]
+ 321 0064 02E0     		b	.L23
+ 322              	.LVL22:
+ 323              	.L25:
+ 203:CMSIS/system_gd32f1x0.c ****         SystemCoreClock = HSI_VALUE;
+ 324              		.loc 1 203 0
+ARM GAS  /tmp/ccBjuxdh.s 			page 16
+
+
+ 325 0066 084A     		ldr	r2, .L26+4
+ 326 0068 084B     		ldr	r3, .L26+8
+ 327              	.LVL23:
+ 328 006a 1A60     		str	r2, [r3]
+ 329              	.LVL24:
+ 330              	.L23:
+ 208:CMSIS/system_gd32f1x0.c ****     presc = AHBPrescTableList[((RCC->GCFGR & RCC_GCFGR_AHBPS) >> 4)];
+ 331              		.loc 1 208 0
+ 332 006c 054B     		ldr	r3, .L26
+ 333 006e 5B68     		ldr	r3, [r3, #4]
+ 334 0070 C3F30313 		ubfx	r3, r3, #4, #4
+ 335 0074 074A     		ldr	r2, .L26+16
+ 336 0076 D15C     		ldrb	r1, [r2, r3]	@ zero_extendqisi2
+ 337 0078 C9B2     		uxtb	r1, r1
+ 338              	.LVL25:
+ 210:CMSIS/system_gd32f1x0.c ****     SystemCoreClock >>= presc;  
+ 339              		.loc 1 210 0
+ 340 007a 044B     		ldr	r3, .L26+8
+ 341 007c 1A68     		ldr	r2, [r3]
+ 342 007e CA40     		lsrs	r2, r2, r1
+ 343 0080 1A60     		str	r2, [r3]
+ 344 0082 7047     		bx	lr
+ 345              	.L27:
+ 346              		.align	2
+ 347              	.L26:
+ 348 0084 00100240 		.word	1073876992
+ 349 0088 00127A00 		.word	8000000
+ 350 008c 00000000 		.word	.LANCHOR0
+ 351 0090 00093D00 		.word	4000000
+ 352 0094 00000000 		.word	.LANCHOR1
+ 353              		.cfi_endproc
+ 354              	.LFE30:
+ 356              		.global	AHBPrescTableList
+ 357              		.global	SystemCoreClock
+ 358              		.section	.data.AHBPrescTableList,"aw",%progbits
+ 359              		.align	2
+ 360              		.set	.LANCHOR1,. + 0
+ 363              	AHBPrescTableList:
+ 364 0000 00       		.byte	0
+ 365 0001 00       		.byte	0
+ 366 0002 00       		.byte	0
+ 367 0003 00       		.byte	0
+ 368 0004 00       		.byte	0
+ 369 0005 00       		.byte	0
+ 370 0006 00       		.byte	0
+ 371 0007 00       		.byte	0
+ 372 0008 01       		.byte	1
+ 373 0009 02       		.byte	2
+ 374 000a 03       		.byte	3
+ 375 000b 04       		.byte	4
+ 376 000c 06       		.byte	6
+ 377 000d 07       		.byte	7
+ 378 000e 08       		.byte	8
+ 379 000f 09       		.byte	9
+ 380              		.section	.data.SystemCoreClock,"aw",%progbits
+ 381              		.align	2
+ 382              		.set	.LANCHOR0,. + 0
+ARM GAS  /tmp/ccBjuxdh.s 			page 17
+
+
+ 385              	SystemCoreClock:
+ 386 0000 006CDC02 		.word	48000000
+ 387              		.text
+ 388              	.Letext0:
+ 389              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 390              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 391              		.file 4 "CMSIS/gd32f1x0.h"
+ 392              		.file 5 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccBjuxdh.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 system_gd32f1x0.c
+     /tmp/ccBjuxdh.s:17     .text.Set_SysClockTo48:00000000 $t
+     /tmp/ccBjuxdh.s:21     .text.Set_SysClockTo48:00000000 Set_SysClockTo48
+     /tmp/ccBjuxdh.s:133    .text.Set_SysClockTo48:000000a4 $d
+     /tmp/ccBjuxdh.s:138    .text.Set_SysClock:00000000 $t
+     /tmp/ccBjuxdh.s:142    .text.Set_SysClock:00000000 Set_SysClock
+     /tmp/ccBjuxdh.s:161    .text.System_Init:00000000 $t
+     /tmp/ccBjuxdh.s:166    .text.System_Init:00000000 System_Init
+     /tmp/ccBjuxdh.s:224    .text.System_Init:0000005c $d
+     /tmp/ccBjuxdh.s:230    .text.SystemCoreClock_Update:00000000 $t
+     /tmp/ccBjuxdh.s:235    .text.SystemCoreClock_Update:00000000 SystemCoreClock_Update
+     /tmp/ccBjuxdh.s:348    .text.SystemCoreClock_Update:00000084 $d
+     /tmp/ccBjuxdh.s:363    .data.AHBPrescTableList:00000000 AHBPrescTableList
+     /tmp/ccBjuxdh.s:385    .data.SystemCoreClock:00000000 SystemCoreClock
+     /tmp/ccBjuxdh.s:359    .data.AHBPrescTableList:00000000 $d
+     /tmp/ccBjuxdh.s:381    .data.SystemCoreClock:00000000 $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

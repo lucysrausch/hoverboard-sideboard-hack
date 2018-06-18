@@ -1,0 +1,1765 @@
+Archive member included because of file (symbol)
+
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o (exit)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o) (_global_impure_ptr)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o (__libc_init_array)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o (memset)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o) (__call_exitprocs)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o) (atexit)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o) (__libc_fini_array)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o) (__register_exitproc)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o)
+                              /tmp/cccTkrLV.o (expf)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o) (__ieee754_expf)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_lib_ver.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o) (__fdlib_version)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_matherr.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o) (matherr)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-sf_finite.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o) (finitef)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o) (_exit)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubdf3.o)
+                              /tmp/cccTkrLV.o (__aeabi_dsub)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivdf3.o)
+                              /tmp/cccTkrLV.o (__aeabi_dmul)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpdf2.o)
+                              /tmp/cccTkrLV.o (__aeabi_dcmplt)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_truncdfsf2.o)
+                              /tmp/cccTkrLV.o (__aeabi_d2f)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubsf3.o)
+                              /tmp/cccTkrLV.o (__aeabi_fsub)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivsf3.o)
+                              /tmp/cccTkrLV.o (__aeabi_fmul)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpsf2.o)
+                              /tmp/cccTkrLV.o (__aeabi_fcmplt)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_fixsfsi.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o) (__aeabi_f2iz)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-errno.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o) (__errno)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+                              /tmp/cc5IZASw.o (puts)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o) (strlen)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o) (__sfvwrite_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o) (_malloc_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o) (memchr)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o) (memcpy)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o) (memmove)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o) (__malloc_lock)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o) (_realloc_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o) (_sbrk_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o) (__swsetup_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o) (_fflush_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o) (__sinit)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o) (_free_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fwalk.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o) (_fwalk)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o) (__smakebuf_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o) (errno)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o) (__sread)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-writer.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o) (_write_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-closer.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o) (_close_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fclose.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o) (fclose)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fstatr.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o) (_fstat_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-isattyr.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o) (_isatty_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-lseekr.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o) (_lseek_r)
+/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-readr.o)
+                              /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o) (_read_r)
+
+Allocating common symbols
+Common symbol       size              file
+
+errno               0x4               /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+globalticks         0x4               /tmp/ccyBTnAm.o
+liberror            0x4               /tmp/cc8Xnr6L.o
+accel               0xc               /tmp/ccVxblok.o
+lastticks           0x4               /tmp/ccyBTnAm.o
+gyro                0xc               /tmp/ccVxblok.o
+buffer              0x40              /tmp/ccpcFpTj.o
+sda                 0x4               /tmp/ccwalz7c.o
+error1              0x4               /tmp/ccwalz7c.o
+scl                 0x4               /tmp/ccwalz7c.o
+timeend             0x4               /tmp/cccTkrLV.o
+gyrocal             0xc               /tmp/ccVxblok.o
+
+Discarded input sections
+
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+ .data          0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ .text          0x00000000       0x74 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .ARM.extab     0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .ARM.exidx     0x00000000        0x8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .ARM.attributes
+                0x00000000       0x1b /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .text.exit     0x00000000       0x20 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .debug_frame   0x00000000       0x28 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .text.__libc_init_array
+                0x00000000       0x50 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .debug_frame   0x00000000       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .debug_frame   0x00000000       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .text.__call_exitprocs
+                0x00000000       0xf0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x00000000       0x48 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .debug_frame   0x00000000       0x20 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .debug_frame   0x00000000       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .debug_frame   0x00000000       0x30 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .text          0x00000000        0x0 /tmp/ccyBTnAm.o
+ .data          0x00000000        0x0 /tmp/ccyBTnAm.o
+ .bss           0x00000000        0x0 /tmp/ccyBTnAm.o
+ .bss.systickcount
+                0x00000000        0x4 /tmp/ccyBTnAm.o
+ .text          0x00000000        0x0 /tmp/ccprCjqw.o
+ .data          0x00000000        0x0 /tmp/ccprCjqw.o
+ .bss           0x00000000        0x0 /tmp/ccprCjqw.o
+ .text          0x00000000        0x0 /tmp/ccuiKJcK.o
+ .data          0x00000000        0x0 /tmp/ccuiKJcK.o
+ .bss           0x00000000        0x0 /tmp/ccuiKJcK.o
+ .text.fmc_erasepage
+                0x00000000       0x2c /tmp/ccuiKJcK.o
+ .text.fmc_write
+                0x00000000       0x36 /tmp/ccuiKJcK.o
+ .text.fmc_read
+                0x00000000        0xe /tmp/ccuiKJcK.o
+ .comment       0x00000000       0x71 /tmp/ccuiKJcK.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/ccuiKJcK.o
+ .text          0x00000000        0x0 /tmp/ccbBs8BW.o
+ .data          0x00000000        0x0 /tmp/ccbBs8BW.o
+ .bss           0x00000000        0x0 /tmp/ccbBs8BW.o
+ .text          0x00000000        0x0 /tmp/ccwalz7c.o
+ .data          0x00000000        0x0 /tmp/ccwalz7c.o
+ .bss           0x00000000        0x0 /tmp/ccwalz7c.o
+ .text.scllow   0x00000000       0x18 /tmp/ccwalz7c.o
+ .text.sclhigh  0x00000000       0x18 /tmp/ccwalz7c.o
+ .text.sclhighlow
+                0x00000000       0x18 /tmp/ccwalz7c.o
+ .text.setinput
+                0x00000000       0x20 /tmp/ccwalz7c.o
+ .text.setoutput
+                0x00000000       0x34 /tmp/ccwalz7c.o
+ .text.sdalow   0x00000000       0x28 /tmp/ccwalz7c.o
+ .text.sdahigh  0x00000000       0x28 /tmp/ccwalz7c.o
+ .text._readsda
+                0x00000000       0x24 /tmp/ccwalz7c.o
+ .text._sendstart
+                0x00000000       0x34 /tmp/ccwalz7c.o
+ .text._restart
+                0x00000000       0x1c /tmp/ccwalz7c.o
+ .text._sendstop
+                0x00000000       0x2c /tmp/ccwalz7c.o
+ .text._sendbyte
+                0x00000000       0x4c /tmp/ccwalz7c.o
+ .text._readbyte
+                0x00000000       0x78 /tmp/ccwalz7c.o
+ .text.softi2c_write
+                0x00000000       0x2c /tmp/ccwalz7c.o
+ .text.softi2c_read
+                0x00000000       0x36 /tmp/ccwalz7c.o
+ .text.softi2c_writedata
+                0x00000000       0x3c /tmp/ccwalz7c.o
+ .text.softi2c_readdata
+                0x00000000       0x52 /tmp/ccwalz7c.o
+ .text.softi2c_init
+                0x00000000       0x60 /tmp/ccwalz7c.o
+ .text.i2c_error
+                0x00000000       0x10 /tmp/ccwalz7c.o
+ .bss.sdaout    0x00000000        0x4 /tmp/ccwalz7c.o
+ .comment       0x00000000       0x71 /tmp/ccwalz7c.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/ccwalz7c.o
+ COMMON         0x00000000        0xc /tmp/ccwalz7c.o
+ .text          0x00000000        0x0 /tmp/cc5IZASw.o
+ .data          0x00000000        0x0 /tmp/cc5IZASw.o
+ .bss           0x00000000        0x0 /tmp/cc5IZASw.o
+ .text          0x00000000        0x0 /tmp/cccTkrLV.o
+ .data          0x00000000        0x0 /tmp/cccTkrLV.o
+ .bss           0x00000000        0x0 /tmp/cccTkrLV.o
+ .text.lpfcalc  0x00000000       0x54 /tmp/cccTkrLV.o
+ .text.mapf     0x00000000       0x38 /tmp/cccTkrLV.o
+ .text.lpf      0x00000000       0x2e /tmp/cccTkrLV.o
+ .text.limitf   0x00000000       0x22 /tmp/cccTkrLV.o
+ .text.rcexpo   0x00000000       0x60 /tmp/cccTkrLV.o
+ .text.TS       0x00000000       0x10 /tmp/cccTkrLV.o
+ .text.TE       0x00000000       0x1c /tmp/cccTkrLV.o
+ .text.fastsin  0x00000000       0xd0 /tmp/cccTkrLV.o
+ .text.fastcos  0x00000000       0x28 /tmp/cccTkrLV.o
+ .bss.timestart
+                0x00000000        0x4 /tmp/cccTkrLV.o
+ .comment       0x00000000       0x71 /tmp/cccTkrLV.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/cccTkrLV.o
+ COMMON         0x00000000        0x4 /tmp/cccTkrLV.o
+ .text          0x00000000        0x0 /tmp/ccpcFpTj.o
+ .data          0x00000000        0x0 /tmp/ccpcFpTj.o
+ .bss           0x00000000        0x0 /tmp/ccpcFpTj.o
+ .text.fputc    0x00000000       0x28 /tmp/ccpcFpTj.o
+ .text          0x00000000        0x0 /tmp/cc8Xnr6L.o
+ .data          0x00000000        0x0 /tmp/cc8Xnr6L.o
+ .bss           0x00000000        0x0 /tmp/cc8Xnr6L.o
+ .text.i2c_sendheader
+                0x00000000       0x8c /tmp/cc8Xnr6L.o
+ .text.i2c_writereg
+                0x00000000       0x7c /tmp/cc8Xnr6L.o
+ .text.i2c_readreg
+                0x00000000       0xec /tmp/cc8Xnr6L.o
+ .text.i2c_readdata
+                0x00000000      0x12c /tmp/cc8Xnr6L.o
+ .bss.i2ccount  0x00000000        0x4 /tmp/cc8Xnr6L.o
+ .text          0x00000000        0x0 /tmp/ccVxblok.o
+ .data          0x00000000        0x0 /tmp/ccVxblok.o
+ .bss           0x00000000        0x0 /tmp/ccVxblok.o
+ .text.sixaxis_init
+                0x00000000       0x2e /tmp/ccVxblok.o
+ .text.sixaxis_check
+                0x00000000       0x1e /tmp/ccVxblok.o
+ .text.gyro_read
+                0x00000000       0x88 /tmp/ccVxblok.o
+ .text.gyro_cal
+                0x00000000      0x188 /tmp/ccVxblok.o
+ .comment       0x00000000       0x71 /tmp/ccVxblok.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/ccVxblok.o
+ COMMON         0x00000000       0x24 /tmp/ccVxblok.o
+ .text          0x00000000        0x0 /tmp/cc2Lg6aV.o
+ .data          0x00000000        0x0 /tmp/cc2Lg6aV.o
+ .bss           0x00000000        0x0 /tmp/cc2Lg6aV.o
+ .text.SystemCoreClock_Update
+                0x00000000       0x70 /tmp/cc2Lg6aV.o
+ .data.AHBPrescTableList
+                0x00000000       0x10 /tmp/cc2Lg6aV.o
+ .data.SystemCoreClock
+                0x00000000        0x4 /tmp/cc2Lg6aV.o
+ .text          0x00000000        0x0 /tmp/ccLxjSou.o
+ .data          0x00000000        0x0 /tmp/ccLxjSou.o
+ .bss           0x00000000        0x0 /tmp/ccLxjSou.o
+ .text.__get_PSP
+                0x00000000        0x8 /tmp/ccLxjSou.o
+ .text.__set_PSP
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__get_MSP
+                0x00000000        0x8 /tmp/ccLxjSou.o
+ .text.__set_MSP
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__get_BASEPRI
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__set_BASEPRI
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__get_PRIMASK
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__set_PRIMASK
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__get_FAULTMASK
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__set_FAULTMASK
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__get_CONTROL
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__set_CONTROL
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__REV    0x00000000        0x4 /tmp/ccLxjSou.o
+ .text.__REV16  0x00000000        0x4 /tmp/ccLxjSou.o
+ .text.__REVSH  0x00000000        0x4 /tmp/ccLxjSou.o
+ .text.__RBIT   0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__LDREXB
+                0x00000000        0x8 /tmp/ccLxjSou.o
+ .text.__LDREXH
+                0x00000000        0x8 /tmp/ccLxjSou.o
+ .text.__LDREXW
+                0x00000000        0x6 /tmp/ccLxjSou.o
+ .text.__STREXB
+                0x00000000        0x8 /tmp/ccLxjSou.o
+ .text.__STREXH
+                0x00000000        0x8 /tmp/ccLxjSou.o
+ .text.__STREXW
+                0x00000000        0x8 /tmp/ccLxjSou.o
+ .comment       0x00000000       0x71 /tmp/ccLxjSou.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/ccLxjSou.o
+ .text          0x00000000        0x0 /tmp/ccgeFXF8.o
+ .data          0x00000000        0x0 /tmp/ccgeFXF8.o
+ .bss           0x00000000        0x0 /tmp/ccgeFXF8.o
+ .text.ADC_DeInit
+                0x00000000       0x28 /tmp/ccgeFXF8.o
+ .text.ADC_Init
+                0x00000000       0x44 /tmp/ccgeFXF8.o
+ .text.ADC_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_DMA_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_INTConfig
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_Calibration
+                0x00000000       0x28 /tmp/ccgeFXF8.o
+ .text.ADC_SoftwareStartConv_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_GetSoftwareStartConvBitState
+                0x00000000       0x10 /tmp/ccgeFXF8.o
+ .text.ADC_DiscModeChannelCount_Config
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_DiscMode_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_RegularChannel_Config
+                0x00000000       0x98 /tmp/ccgeFXF8.o
+ .text.ADC_ExternalTrigConv_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_GetConversionValue
+                0x00000000        0xc /tmp/ccgeFXF8.o
+ .text.ADC_AutoInsertedConv_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_InsertedDiscMode_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_ExternalTrigInsertedConv_Config
+                0x00000000       0x14 /tmp/ccgeFXF8.o
+ .text.ADC_ExternalTrigInsertedConv_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_SoftwareStartInsertedConv_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_GetSoftwareStartInsertedConvCmdBitState
+                0x00000000       0x10 /tmp/ccgeFXF8.o
+ .text.ADC_InsertedChannel_Config
+                0x00000000       0x64 /tmp/ccgeFXF8.o
+ .text.ADC_InsertedSequencerLength_Config
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_SetInsertedOffset
+                0x00000000       0x1c /tmp/ccgeFXF8.o
+ .text.ADC_GetInsertedConversionValue
+                0x00000000       0x20 /tmp/ccgeFXF8.o
+ .text.ADC_AnalogWatchdog_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_AnalogWatchdogThresholds_Config
+                0x00000000        0xc /tmp/ccgeFXF8.o
+ .text.ADC_AnalogWatchdogSingleChannel_Config
+                0x00000000       0x14 /tmp/ccgeFXF8.o
+ .text.ADC_TempSensorVrefint_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_VBat_Enable
+                0x00000000       0x18 /tmp/ccgeFXF8.o
+ .text.ADC_GetBitState
+                0x00000000       0x14 /tmp/ccgeFXF8.o
+ .text.ADC_ClearBitState
+                0x00000000        0xc /tmp/ccgeFXF8.o
+ .text.ADC_GetINTState
+                0x00000000       0x20 /tmp/ccgeFXF8.o
+ .text.ADC_ClearINTBitState
+                0x00000000       0x10 /tmp/ccgeFXF8.o
+ .comment       0x00000000       0x71 /tmp/ccgeFXF8.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/ccgeFXF8.o
+ .text          0x00000000        0x0 /tmp/ccb4CTdP.o
+ .data          0x00000000        0x0 /tmp/ccb4CTdP.o
+ .bss           0x00000000        0x0 /tmp/ccb4CTdP.o
+ .text.DMA_DeInit
+                0x00000000       0xbc /tmp/ccb4CTdP.o
+ .text.DMA_Init
+                0x00000000       0x3c /tmp/ccb4CTdP.o
+ .text.DMA_ParaInit
+                0x00000000       0x1a /tmp/ccb4CTdP.o
+ .text.DMA_Enable
+                0x00000000       0x16 /tmp/ccb4CTdP.o
+ .text.DMA_SetCurrDataCounter
+                0x00000000        0x4 /tmp/ccb4CTdP.o
+ .text.DMA_GetCurrDataCounter
+                0x00000000        0x6 /tmp/ccb4CTdP.o
+ .text.DMA_INTConfig
+                0x00000000       0x10 /tmp/ccb4CTdP.o
+ .text.DMA_GetBitState
+                0x00000000       0x14 /tmp/ccb4CTdP.o
+ .text.DMA_ClearBitState
+                0x00000000        0xc /tmp/ccb4CTdP.o
+ .text.DMA_GetIntBitState
+                0x00000000       0x14 /tmp/ccb4CTdP.o
+ .text.DMA_ClearIntBitState
+                0x00000000        0xc /tmp/ccb4CTdP.o
+ .comment       0x00000000       0x71 /tmp/ccb4CTdP.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/ccb4CTdP.o
+ .text          0x00000000        0x0 /tmp/ccobNPRB.o
+ .data          0x00000000        0x0 /tmp/ccobNPRB.o
+ .bss           0x00000000        0x0 /tmp/ccobNPRB.o
+ .text.FMC_Unlock
+                0x00000000       0x1c /tmp/ccobNPRB.o
+ .text.FMC_Lock
+                0x00000000       0x10 /tmp/ccobNPRB.o
+ .text.FMC_OB_Unlock
+                0x00000000       0x1c /tmp/ccobNPRB.o
+ .text.FMC_OB_Lock
+                0x00000000       0x10 /tmp/ccobNPRB.o
+ .text.FMC_OB_Reset
+                0x00000000       0x10 /tmp/ccobNPRB.o
+ .text.FMC_OB_GetUser
+                0x00000000       0x10 /tmp/ccobNPRB.o
+ .text.FMC_OB_GetWRP
+                0x00000000        0xc /tmp/ccobNPRB.o
+ .text.FMC_OB_GetRDP
+                0x00000000       0x14 /tmp/ccobNPRB.o
+ .text.FMC_INTConfig
+                0x00000000       0x18 /tmp/ccobNPRB.o
+ .text.FMC_GetBitState
+                0x00000000       0x14 /tmp/ccobNPRB.o
+ .text.FMC_ClearBitState
+                0x00000000        0xc /tmp/ccobNPRB.o
+ .text.FMC_GetState
+                0x00000000       0x28 /tmp/ccobNPRB.o
+ .text.FMC_WaitReady
+                0x00000000       0x18 /tmp/ccobNPRB.o
+ .text.FMC_ErasePage
+                0x00000000       0x38 /tmp/ccobNPRB.o
+ .text.FMC_MassErase
+                0x00000000       0x34 /tmp/ccobNPRB.o
+ .text.FMC_ProgramWord
+                0x00000000       0x34 /tmp/ccobNPRB.o
+ .text.FMC_OB_Erase
+                0x00000000       0x7c /tmp/ccobNPRB.o
+ .text.FMC_OB_EnableWRP
+                0x00000000       0x60 /tmp/ccobNPRB.o
+ .text.FMC_OB_RDPConfig
+                0x00000000       0x68 /tmp/ccobNPRB.o
+ .text.FMC_OB_UserConfig
+                0x00000000       0x48 /tmp/ccobNPRB.o
+ .text.FMC_OB_BOOTConfig
+                0x00000000       0x40 /tmp/ccobNPRB.o
+ .text.FMC_OB_VDDAConfig
+                0x00000000       0x40 /tmp/ccobNPRB.o
+ .text.FMC_OB_SRAMParityConfig
+                0x00000000       0x40 /tmp/ccobNPRB.o
+ .text.FMC_OB_WriteUser
+                0x00000000       0x40 /tmp/ccobNPRB.o
+ .text.FMC_ProgramOptionByteData
+                0x00000000       0x38 /tmp/ccobNPRB.o
+ .comment       0x00000000       0x71 /tmp/ccobNPRB.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/ccobNPRB.o
+ .text          0x00000000        0x0 /tmp/ccTZETip.o
+ .data          0x00000000        0x0 /tmp/ccTZETip.o
+ .bss           0x00000000        0x0 /tmp/ccTZETip.o
+ .text.GPIO_DeInit
+                0x00000000       0x7c /tmp/ccTZETip.o
+ .text.GPIO_ParaInit
+                0x00000000       0x14 /tmp/ccTZETip.o
+ .text.GPIO_PinLock
+                0x00000000       0x24 /tmp/ccTZETip.o
+ .text.GPIO_ReadInputData
+                0x00000000        0x6 /tmp/ccTZETip.o
+ .text.GPIO_ReadOutputBit
+                0x00000000        0xc /tmp/ccTZETip.o
+ .text.GPIO_ReadOutputData
+                0x00000000        0x6 /tmp/ccTZETip.o
+ .text.GPIO_SetBits
+                0x00000000        0x4 /tmp/ccTZETip.o
+ .text.GPIO_ResetBits
+                0x00000000        0x4 /tmp/ccTZETip.o
+ .text.GPIO_Write
+                0x00000000        0x4 /tmp/ccTZETip.o
+ .text          0x00000000        0x0 /tmp/ccYyPLoh.o
+ .data          0x00000000        0x0 /tmp/ccYyPLoh.o
+ .bss           0x00000000        0x0 /tmp/ccYyPLoh.o
+ .text.I2C_DeInit
+                0x00000000       0x4c /tmp/ccYyPLoh.o
+ .text.I2C_ParaInit
+                0x00000000       0x1c /tmp/ccYyPLoh.o
+ .text.I2C_DMA_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_DMALastTransfer_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_StartOnBus_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_StopOnBus_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_OwnAddress2
+                0x00000000       0x12 /tmp/ccYyPLoh.o
+ .text.I2C_DualAddress_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_GeneralCall_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_INTConfig
+                0x00000000       0x12 /tmp/ccYyPLoh.o
+ .text.I2C_SendData
+                0x00000000        0x4 /tmp/ccYyPLoh.o
+ .text.I2C_ReceiveData
+                0x00000000        0x6 /tmp/ccYyPLoh.o
+ .text.I2C_AddressingDevice_7bit
+                0x00000000       0x10 /tmp/ccYyPLoh.o
+ .text.I2C_ReadRegister
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_SoftwareReset_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_SMBusAlertSend_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_PECTransmit_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_PECPosition_Enable
+                0x00000000       0x1c /tmp/ccYyPLoh.o
+ .text.I2C_PEC_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_GetPECValue
+                0x00000000        0x8 /tmp/ccYyPLoh.o
+ .text.I2C_ARP_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_StretchClock_Enable
+                0x00000000       0x18 /tmp/ccYyPLoh.o
+ .text.I2C_FastModeDutyCycle
+                0x00000000       0x1c /tmp/ccYyPLoh.o
+ .text.I2C_StateDetect
+                0x00000000       0x20 /tmp/ccYyPLoh.o
+ .text.I2C_GetCurrentState
+                0x00000000       0x10 /tmp/ccYyPLoh.o
+ .text.I2C_GetBitState
+                0x00000000       0x34 /tmp/ccYyPLoh.o
+ .text.I2C_ClearBitState
+                0x00000000        0x8 /tmp/ccYyPLoh.o
+ .text.I2C_GetIntBitState
+                0x00000000       0x1c /tmp/ccYyPLoh.o
+ .text.I2C_ClearIntBitState
+                0x00000000        0x8 /tmp/ccYyPLoh.o
+ .text          0x00000000        0x0 /tmp/ccj2Ik1h.o
+ .data          0x00000000        0x0 /tmp/ccj2Ik1h.o
+ .bss           0x00000000        0x0 /tmp/ccj2Ik1h.o
+ .text.RCC_DeInit
+                0x00000000       0x5c /tmp/ccj2Ik1h.o
+ .text.RCC_AdjustHSICalibrationValue
+                0x00000000       0x14 /tmp/ccj2Ik1h.o
+ .text.RCC_AdjustHSI14CalibrationValue
+                0x00000000       0x14 /tmp/ccj2Ik1h.o
+ .text.RCC_HSI14_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_LSEConfig
+                0x00000000       0x20 /tmp/ccj2Ik1h.o
+ .text.RCC_LSEDriveConfig
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_LSI_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_HSEPREDVConfig
+                0x00000000       0x14 /tmp/ccj2Ik1h.o
+ .text.RCC_HSEClockMonitor_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_CKOUTSRCConfig
+                0x00000000       0x14 /tmp/ccj2Ik1h.o
+ .text.RCC_GetCK_SYSSource
+                0x00000000       0x10 /tmp/ccj2Ik1h.o
+ .text.RCC_ADCCLKConfig
+                0x00000000       0x28 /tmp/ccj2Ik1h.o
+ .text.RCC_USBCLKConfig
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_CECCLKConfig
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_USARTCLKConfig
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_RTCCLKConfig
+                0x00000000       0x10 /tmp/ccj2Ik1h.o
+ .text.RCC_APB2PeriphClock_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_ACCRPeriphClock_Enable
+                0x00000000       0x1c /tmp/ccj2Ik1h.o
+ .text.RCC_RTCCLK_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_AHBPeriphReset_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_APB2PeriphReset_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_APB1PeriphReset_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_ARCRPeriphReset_Enable
+                0x00000000       0x1c /tmp/ccj2Ik1h.o
+ .text.RCC_BackupReset_Enable
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_INTConfig
+                0x00000000       0x18 /tmp/ccj2Ik1h.o
+ .text.RCC_WaitForHSEStartUp
+                0x00000000       0x30 /tmp/ccj2Ik1h.o
+ .text.RCC_ClearBitState
+                0x00000000       0x10 /tmp/ccj2Ik1h.o
+ .text.RCC_GetIntBitState
+                0x00000000       0x14 /tmp/ccj2Ik1h.o
+ .text.RCC_ClearIntBitState
+                0x00000000        0xc /tmp/ccj2Ik1h.o
+ .text.RCC_UnlockPower
+                0x00000000       0x24 /tmp/ccj2Ik1h.o
+ .text.RCC_KERNELVOLConfig
+                0x00000000       0x20 /tmp/ccj2Ik1h.o
+ .text.RCC_POWERDOWNVOLConfig
+                0x00000000       0x20 /tmp/ccj2Ik1h.o
+ .text          0x00000000        0x0 /tmp/ccjGIV1h.o
+ .data          0x00000000        0x0 /tmp/ccjGIV1h.o
+ .bss           0x00000000        0x0 /tmp/ccjGIV1h.o
+ .text.TI1_Config
+                0x00000000       0x32 /tmp/ccjGIV1h.o
+ .text.TI2_Config
+                0x00000000       0x3a /tmp/ccjGIV1h.o
+ .text.TIMER_DeInit
+                0x00000000       0xf4 /tmp/ccjGIV1h.o
+ .text.TIMER_BaseInit
+                0x00000000       0x6c /tmp/ccjGIV1h.o
+ .text.TIMER_BaseStructInit
+                0x00000000       0x12 /tmp/ccjGIV1h.o
+ .text.TIMER_PrescalerConfig
+                0x00000000        0x6 /tmp/ccjGIV1h.o
+ .text.TIMER_CounterMode
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_SetCounter
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_SetAutoreload
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_GetCounter
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_GetPrescaler
+                0x00000000        0x6 /tmp/ccjGIV1h.o
+ .text.TIMER_UpdateDisableConfig
+                0x00000000       0x18 /tmp/ccjGIV1h.o
+ .text.TIMER_UpdateRequestConfig
+                0x00000000       0x18 /tmp/ccjGIV1h.o
+ .text.TIMER_CARLPreloadConfig
+                0x00000000       0x18 /tmp/ccjGIV1h.o
+ .text.TIMER_SinglePulseMode
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_SetClockDivision
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_Enable
+                0x00000000       0x18 /tmp/ccjGIV1h.o
+ .text.TIMER_BKDTConfig
+                0x00000000       0x22 /tmp/ccjGIV1h.o
+ .text.TIMER_BKDTStructInit
+                0x00000000       0x12 /tmp/ccjGIV1h.o
+ .text.TIMER_CtrlPWMOutputs
+                0x00000000       0x1c /tmp/ccjGIV1h.o
+ .text.TIMER_OC1_Init
+                0x00000000       0x80 /tmp/ccjGIV1h.o
+ .text.TIMER_OC2_Init
+                0x00000000       0x7c /tmp/ccjGIV1h.o
+ .text.TIMER_OC3_Init
+                0x00000000       0x78 /tmp/ccjGIV1h.o
+ .text.TIMER_OC4_Init
+                0x00000000       0x60 /tmp/ccjGIV1h.o
+ .text.TIMER_OCStructInit
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OCxModeConfig
+                0x00000000       0x42 /tmp/ccjGIV1h.o
+ .text.TIMER_Compare1Config
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_Compare2Config
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_Compare3Config
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_Compare4Config
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_Forced_OC1
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_Forced_OC2
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_Forced_OC3
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_Forced_OC4
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_CC_PreloadControl
+                0x00000000       0x18 /tmp/ccjGIV1h.o
+ .text.TIMER_OC1_Preload
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC2_Preload
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OC3_Preload
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC4_Preload
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OC1_FastConfig
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC2_FastConfig
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OC3_FastConfig
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC4_FastConfig
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OC1_RefClear
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC2_RefClear
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC3_RefClear
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC4_RefClear
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC1_Polarity
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC1N_Polarity
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_OC2_Polarity
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OC2N_Polarity
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OC3_Polarity
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OC3N_Polarity
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_OC4_Polarity
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_SelectOCRefClear
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_CCxCmd
+                0x00000000       0x1c /tmp/ccjGIV1h.o
+ .text.TIMER_CCxNCmd
+                0x00000000       0x1c /tmp/ccjGIV1h.o
+ .text.TIMER_SelectCOM
+                0x00000000       0x18 /tmp/ccjGIV1h.o
+ .text.TIMER_ICStructInit
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_GetCapture1
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_GetCapture2
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_GetCapture3
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_GetCapture4
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_Set_IC1_Prescaler
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_Set_IC2_Prescaler
+                0x00000000       0x1a /tmp/ccjGIV1h.o
+ .text.TIMER_PWMCaptureConfig
+                0x00000000       0x6e /tmp/ccjGIV1h.o
+ .text.TIMER_Set_IC3_Prescaler
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_Set_IC4_Prescaler
+                0x00000000       0x1a /tmp/ccjGIV1h.o
+ .text.TIMER_ICInit
+                0x00000000       0xb8 /tmp/ccjGIV1h.o
+ .text.TIMER_INTConfig
+                0x00000000       0x12 /tmp/ccjGIV1h.o
+ .text.TIMER_GenerateEvent
+                0x00000000        0x4 /tmp/ccjGIV1h.o
+ .text.TIMER_GetBitState
+                0x00000000        0xc /tmp/ccjGIV1h.o
+ .text.TIMER_ClearBitState
+                0x00000000        0x8 /tmp/ccjGIV1h.o
+ .text.TIMER_GetIntBitState
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_ClearIntBitState
+                0x00000000        0x8 /tmp/ccjGIV1h.o
+ .text.TIMER_DMAConfig
+                0x00000000        0x8 /tmp/ccjGIV1h.o
+ .text.TIMER_DMACmd
+                0x00000000       0x12 /tmp/ccjGIV1h.o
+ .text.TIMER_CC_DMA
+                0x00000000       0x18 /tmp/ccjGIV1h.o
+ .text.TIMER_InternalClockConfig
+                0x00000000        0xe /tmp/ccjGIV1h.o
+ .text.TIMER_ITRxExtClock
+                0x00000000       0x1a /tmp/ccjGIV1h.o
+ .text.TIMER_TIxExtCLkConfig
+                0x00000000       0x34 /tmp/ccjGIV1h.o
+ .text.TIMER_SelectInputTrigger
+                0x00000000       0x10 /tmp/ccjGIV1h.o
+ .text.TIMER_SelectOutputTrigger
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_SelectSlaveMode
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_SelectMasterSlaveMode
+                0x00000000       0x16 /tmp/ccjGIV1h.o
+ .text.TIMER_ETRConfig
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_ETRClockMode1Config
+                0x00000000       0x1a /tmp/ccjGIV1h.o
+ .text.TIMER_ETRClockMode2Config
+                0x00000000       0x14 /tmp/ccjGIV1h.o
+ .text.TIMER_EncoderInterfaceConfig
+                0x00000000       0x3c /tmp/ccjGIV1h.o
+ .text.TIMER_SelectHallSensor
+                0x00000000       0x18 /tmp/ccjGIV1h.o
+ .text.TIMER_RemapConfig
+                0x00000000        0x6 /tmp/ccjGIV1h.o
+ .comment       0x00000000       0x71 /tmp/ccjGIV1h.o
+ .ARM.attributes
+                0x00000000       0x2f /tmp/ccjGIV1h.o
+ .text          0x00000000        0x0 /tmp/cc7ntQvp.o
+ .data          0x00000000        0x0 /tmp/cc7ntQvp.o
+ .bss           0x00000000        0x0 /tmp/cc7ntQvp.o
+ .text.USART_DeInit
+                0x00000000       0x48 /tmp/cc7ntQvp.o
+ .text.USART_ParaInit
+                0x00000000       0x16 /tmp/cc7ntQvp.o
+ .text.USART_ClockInit
+                0x00000000       0x1c /tmp/cc7ntQvp.o
+ .text.USART_ClockStructInit
+                0x00000000        0xc /tmp/cc7ntQvp.o
+ .text.USART_TransferDirection_Enable
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_OverSampling8_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_OneSamplingBit_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_MSBFirst_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_DataInvert_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_InvPin_Enable
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_SWPFunction_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_ReceiverTimeOut_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_SetReceiveTimeOut_Threshold
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_SetPrescaler
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_DataReceive
+                0x00000000        0x8 /tmp/cc7ntQvp.o
+ .text.USART_AutoBaudRateDect_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_AutoBaudRateDectMode_Set
+                0x00000000        0xc /tmp/cc7ntQvp.o
+ .text.USART_Address
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_MuteMode_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_MuteModeWakeUp_Set
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_AddressDetection_Set
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_SetLINBDLength
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_LIN_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_HalfDuplex_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_GuardTime_Set
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_SmartCard_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_SmartCardNACK_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_AutoRetryNumber_Set
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_BlockLength_Set
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_IrDA_Set
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_IrDA_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_DE_Enable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_DriverEnablePolarity_Set
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_DEATime_Set
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_DEDTime_Set
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_DMA_Enable
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_DMARE_Set
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_DEEPSLEEPModeEnable
+                0x00000000       0x12 /tmp/cc7ntQvp.o
+ .text.USART_DEEPSLEEPModeWakeUpSourceConfig
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_Request_Enable
+                0x00000000       0x14 /tmp/cc7ntQvp.o
+ .text.USART_OverRunFunc_Set
+                0x00000000       0x10 /tmp/cc7ntQvp.o
+ .text.USART_GetBitState
+                0x00000000        0xc /tmp/cc7ntQvp.o
+ .text.USART_ClearBitState
+                0x00000000        0x4 /tmp/cc7ntQvp.o
+ .text.USART_GetIntBitState
+                0x00000000       0x3a /tmp/cc7ntQvp.o
+ .text.USART_ClearIntBitState
+                0x00000000        0xc /tmp/cc7ntQvp.o
+ .text          0x00000000       0x14 /tmp/ccDelmJw.o
+ .data          0x00000000        0x0 /tmp/ccDelmJw.o
+ .bss           0x00000000        0x0 /tmp/ccDelmJw.o
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o)
+ .text.expf     0x00000000       0xe0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o)
+ .rodata.str1.4
+                0x00000000        0x8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o)
+ .debug_frame   0x00000000       0x30 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-wf_exp.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .text.__ieee754_expf
+                0x00000000      0x1f8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .rodata.halF   0x00000000        0x8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .rodata.ln2LO  0x00000000        0x8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .rodata.ln2HI  0x00000000        0x8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .debug_frame   0x00000000       0x30 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-ef_exp.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_lib_ver.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_lib_ver.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_lib_ver.o)
+ .data.__fdlib_version
+                0x00000000        0x1 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_lib_ver.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_lib_ver.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_matherr.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_matherr.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_matherr.o)
+ .text.matherr  0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_matherr.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_matherr.o)
+ .debug_frame   0x00000000       0x20 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-s_matherr.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-sf_finite.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-sf_finite.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-sf_finite.o)
+ .text.finitef  0x00000000       0x10 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-sf_finite.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-sf_finite.o)
+ .debug_frame   0x00000000       0x20 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a(lib_a-sf_finite.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .text._exit    0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .debug_frame   0x00000000       0x20 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .text          0x00000000      0x370 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubdf3.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubdf3.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubdf3.o)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubdf3.o)
+ .text          0x00000000      0x424 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivdf3.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivdf3.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivdf3.o)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivdf3.o)
+ .text          0x00000000      0x110 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpdf2.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpdf2.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpdf2.o)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpdf2.o)
+ .text          0x00000000       0xa0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_truncdfsf2.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_truncdfsf2.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_truncdfsf2.o)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_truncdfsf2.o)
+ .text          0x00000000      0x21c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubsf3.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubsf3.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubsf3.o)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_addsubsf3.o)
+ .text          0x00000000      0x2a0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivsf3.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivsf3.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivsf3.o)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_muldivsf3.o)
+ .text          0x00000000       0xec /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpsf2.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpsf2.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpsf2.o)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_cmpsf2.o)
+ .text          0x00000000       0x4c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_fixsfsi.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_fixsfsi.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_fixsfsi.o)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a(_arm_fixsfsi.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-errno.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-errno.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-errno.o)
+ .text.__errno  0x00000000        0xc /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-errno.o)
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-errno.o)
+ .debug_frame   0x00000000       0x20 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-errno.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+ .text.fflush   0x00000000       0x24 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text.__fp_lock
+                0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text.__fp_unlock
+                0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text.__sfmoreglue
+                0x00000000       0x30 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text._cleanup
+                0x00000000       0x14 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text.__sfp    0x00000000       0x8c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text.__sinit_lock_acquire
+                0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text.__sinit_lock_release
+                0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text.__fp_lock_all
+                0x00000000       0x14 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text.__fp_unlock_all
+                0x00000000       0x14 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fwalk.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fwalk.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fwalk.o)
+ .text._fwalk_reent
+                0x00000000       0x4c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fwalk.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+ .text.cleanup_glue
+                0x00000000       0x1c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+ .text._reclaim_reent
+                0x00000000       0x90 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+ .text.__seofread
+                0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-writer.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-writer.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-writer.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-closer.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-closer.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-closer.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fclose.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fclose.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fclose.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fstatr.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fstatr.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fstatr.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-isattyr.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-isattyr.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-isattyr.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-lseekr.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-lseekr.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-lseekr.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-readr.o)
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-readr.o)
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-readr.o)
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
+ .eh_frame      0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
+ .jcr           0x00000000        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
+ .ARM.attributes
+                0x00000000       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
+ .text          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+ .data          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+ .bss           0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x08000000         0x00008000         xr
+RAM              0x20000000         0x00001000         xrw
+MEMORY_B1        0x60000000         0x00000000         xr
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+                0x20000400                _estack = 0x20000400
+                0x00000400                _Min_Heap_Size = 0x400
+                0x00000400                _Min_Stack_Size = 0x400
+
+.isr_vector     0x08000000      0x110
+                0x08000000                . = ALIGN (0x4)
+ *(.isr_vector)
+ .isr_vector    0x08000000      0x110 /tmp/ccDelmJw.o
+                0x08000000                g_pfnVectors
+                0x08000110                . = ALIGN (0x4)
+
+.eh_frame       0x08000110        0x0
+ .eh_frame      0x08000110        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+
+.text           0x08000110     0x2390
+                0x08000110                . = ALIGN (0x4)
+ *(.text)
+ .text          0x08000110       0x54 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ .text          0x08000164       0xec /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
+                0x08000164                memcpy
+ *(.text*)
+ .text.memset   0x08000250       0x94 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+                0x08000250                memset
+ .text.startup.register_fini
+                0x080002e4       0x14 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x080002f8        0xc /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                0x080002f8                atexit
+ .text.__libc_fini_array
+                0x08000304       0x30 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                0x08000304                __libc_fini_array
+ .text.__register_exitproc
+                0x08000334       0xa8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                0x08000334                __register_exitproc
+ .text.SysTick_Handler
+                0x080003dc        0x2 /tmp/ccyBTnAm.o
+                0x080003dc                SysTick_Handler
+ *fill*         0x080003de        0x2 
+ .text.time_init
+                0x080003e0       0x24 /tmp/ccyBTnAm.o
+                0x080003e0                time_init
+ .text.time_update
+                0x08000404       0x30 /tmp/ccyBTnAm.o
+                0x08000404                time_update
+ .text.gettime  0x08000434        0x4 /tmp/ccyBTnAm.o
+                0x08000434                gettime
+ .text.delay    0x08000438       0x14 /tmp/ccyBTnAm.o
+                0x08000438                delay
+ .text.clk_init
+                0x0800044c       0x64 /tmp/ccprCjqw.o
+                0x0800044c                clk_init
+ .text.gpio_init
+                0x080004b0       0x54 /tmp/ccbBs8BW.o
+                0x080004b0                gpio_init
+ .text.startup.main
+                0x08000504       0x44 /tmp/cc5IZASw.o
+                0x08000504                main
+ .text.HardFault_Handler
+                0x08000548        0x2 /tmp/cc5IZASw.o
+                0x08000548                HardFault_Handler
+ .text.MemManage_Handler
+                0x0800054a        0x2 /tmp/cc5IZASw.o
+                0x0800054a                MemManage_Handler
+ .text.BusFault_Handler
+                0x0800054c        0x2 /tmp/cc5IZASw.o
+                0x0800054c                BusFault_Handler
+ .text.UsageFault_Handler
+                0x0800054e        0x2 /tmp/cc5IZASw.o
+                0x0800054e                UsageFault_Handler
+ .text.USART2_IRQHandler
+                0x08000550       0x44 /tmp/ccpcFpTj.o
+                0x08000550                USART2_IRQHandler
+ .text.serial_init
+                0x08000594       0x88 /tmp/ccpcFpTj.o
+                0x08000594                serial_init
+ .text.i2c_init
+                0x0800061c      0x154 /tmp/cc8Xnr6L.o
+                0x0800061c                i2c_init
+ .text.System_Init
+                0x08000770       0xe4 /tmp/cc2Lg6aV.o
+                0x08000770                System_Init
+ .text.GPIO_Init
+                0x08000854       0x7e /tmp/ccTZETip.o
+                0x08000854                GPIO_Init
+ .text.GPIO_ReadInputBit
+                0x080008d2        0xc /tmp/ccTZETip.o
+                0x080008d2                GPIO_ReadInputBit
+ .text.GPIO_WriteBit
+                0x080008de        0xa /tmp/ccTZETip.o
+                0x080008de                GPIO_WriteBit
+ .text.GPIO_PinAFConfig
+                0x080008e8       0x24 /tmp/ccTZETip.o
+                0x080008e8                GPIO_PinAFConfig
+ .text.I2C_Init
+                0x0800090c       0xd0 /tmp/ccYyPLoh.o
+                0x0800090c                I2C_Init
+ .text.I2C_Enable
+                0x080009dc       0x18 /tmp/ccYyPLoh.o
+                0x080009dc                I2C_Enable
+ .text.I2C_Acknowledge_Enable
+                0x080009f4       0x18 /tmp/ccYyPLoh.o
+                0x080009f4                I2C_Acknowledge_Enable
+ .text.I2C_NACKPosition_Enable
+                0x08000a0c       0x1c /tmp/ccYyPLoh.o
+                0x08000a0c                I2C_NACKPosition_Enable
+ .text.RCC_HSEConfig
+                0x08000a28       0x10 /tmp/ccj2Ik1h.o
+                0x08000a28                RCC_HSEConfig
+ .text.RCC_HSI_Enable
+                0x08000a38       0x18 /tmp/ccj2Ik1h.o
+                0x08000a38                RCC_HSI_Enable
+ .text.RCC_PLLConfig
+                0x08000a50       0x1c /tmp/ccj2Ik1h.o
+                0x08000a50                RCC_PLLConfig
+ .text.RCC_PLL_Enable
+                0x08000a6c       0x18 /tmp/ccj2Ik1h.o
+                0x08000a6c                RCC_PLL_Enable
+ .text.RCC_CK_SYSConfig
+                0x08000a84       0x14 /tmp/ccj2Ik1h.o
+                0x08000a84                RCC_CK_SYSConfig
+ .text.RCC_AHBConfig
+                0x08000a98       0x14 /tmp/ccj2Ik1h.o
+                0x08000a98                RCC_AHBConfig
+ .text.RCC_APB1Config
+                0x08000aac       0x14 /tmp/ccj2Ik1h.o
+                0x08000aac                RCC_APB1Config
+ .text.RCC_APB2Config
+                0x08000ac0       0x14 /tmp/ccj2Ik1h.o
+                0x08000ac0                RCC_APB2Config
+ .text.RCC_GetClocksFreq
+                0x08000ad4      0x108 /tmp/ccj2Ik1h.o
+                0x08000ad4                RCC_GetClocksFreq
+ .text.RCC_AHBPeriphClock_Enable
+                0x08000bdc       0x18 /tmp/ccj2Ik1h.o
+                0x08000bdc                RCC_AHBPeriphClock_Enable
+ .text.RCC_APB1PeriphClock_Enable
+                0x08000bf4       0x18 /tmp/ccj2Ik1h.o
+                0x08000bf4                RCC_APB1PeriphClock_Enable
+ .text.RCC_GetBitState
+                0x08000c0c       0x2c /tmp/ccj2Ik1h.o
+                0x08000c0c                RCC_GetBitState
+ .text.USART_Init
+                0x08000c38       0x8c /tmp/cc7ntQvp.o
+                0x08000c38                USART_Init
+ .text.USART_Enable
+                0x08000cc4       0x12 /tmp/cc7ntQvp.o
+                0x08000cc4                USART_Enable
+ .text.USART_DataSend
+                0x08000cd6        0x8 /tmp/cc7ntQvp.o
+                0x08000cd6                USART_DataSend
+ .text.USART_INT_Set
+                0x08000cde       0x34 /tmp/cc7ntQvp.o
+                0x08000cde                USART_INT_Set
+ *fill*         0x08000d12        0x2 
+ .text.Reset_Handler
+                0x08000d14       0x54 /tmp/ccDelmJw.o
+                0x08000d14                Reset_Handler
+ .text.Default_Handler
+                0x08000d68        0x4 /tmp/ccDelmJw.o
+                0x08000d68                DebugMon_Handler
+                0x08000d68                LVD_IRQHandler
+                0x08000d68                ADC1_CMP_IRQHandler
+                0x08000d68                TIM1_CC_IRQHandler
+                0x08000d68                USB_HP_IRQHandler
+                0x08000d68                PendSV_Handler
+                0x08000d68                NMI_Handler
+                0x08000d68                I2C3_ER_IRQHandler
+                0x08000d68                I2C2_EV_IRQHandler
+                0x08000d68                SPI1_IRQHandler
+                0x08000d68                TIM6_DAC_IRQHandler
+                0x08000d68                EXTI2_3_IRQHandler
+                0x08000d68                TIM17_IRQHandler
+                0x08000d68                RTC_IRQHandler
+                0x08000d68                I2C1_EV_IRQHandler
+                0x08000d68                TIM16_IRQHandler
+                0x08000d68                TIM3_IRQHandler
+                0x08000d68                EXTI4_15_IRQHandler
+                0x08000d68                RCC_IRQHandler
+                0x08000d68                DMA1_Channel1_IRQHandler
+                0x08000d68                Default_Handler
+                0x08000d68                CEC_IRQHandler
+                0x08000d68                TIM14_IRQHandler
+                0x08000d68                DMA1_Channel4_5_IRQHandler
+                0x08000d68                TIM15_IRQHandler
+                0x08000d68                I2C3_EV_IRQHandler
+                0x08000d68                EXTI0_1_IRQHandler
+                0x08000d68                SPI2_IRQHandler
+                0x08000d68                SVC_Handler
+                0x08000d68                USB_LP_IRQHandler
+                0x08000d68                DMA1_Channel6_7_IRQHandler
+                0x08000d68                TS_IRQHandler
+                0x08000d68                WWDG_IRQHandler
+                0x08000d68                TIM2_IRQHandler
+                0x08000d68                DMA1_Channel2_3_IRQHandler
+                0x08000d68                I2C2_ER_IRQHandler
+                0x08000d68                USART1_IRQHandler
+                0x08000d68                SPI3_IRQHandler
+                0x08000d68                I2C1_ER_IRQHandler
+                0x08000d68                FMC_IRQHandler
+                0x08000d68                TIM1_BRK_UP_TRG_COM_IRQHandler
+                0x08000d68                USBWakeUp_IRQHandler
+ .text._puts_r  0x08000d6c       0x60 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+                0x08000d6c                _puts_r
+ .text.puts     0x08000dcc       0x10 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+                0x08000dcc                puts
+ .text.strlen   0x08000ddc       0x60 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen.o)
+                0x08000ddc                strlen
+ .text.__sfvwrite_r
+                0x08000e3c      0x318 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o)
+                0x08000e3c                __sfvwrite_r
+ .text._malloc_r
+                0x08001154      0x538 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x08001154                _malloc_r
+ .text.memchr   0x0800168c       0x94 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+                0x0800168c                memchr
+ .text.memmove  0x08001720       0xcc /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+                0x08001720                memmove
+ .text.__malloc_lock
+                0x080017ec        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+                0x080017ec                __malloc_lock
+ .text.__malloc_unlock
+                0x080017f0        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+                0x080017f0                __malloc_unlock
+ .text._realloc_r
+                0x080017f4      0x3c0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+                0x080017f4                _realloc_r
+ .text._sbrk_r  0x08001bb4       0x24 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+                0x08001bb4                _sbrk_r
+ .text.__swsetup_r
+                0x08001bd8       0xc4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o)
+                0x08001bd8                __swsetup_r
+ .text.__sflush_r
+                0x08001c9c      0x148 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+                0x08001c9c                __sflush_r
+ .text._fflush_r
+                0x08001de4       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+                0x08001de4                _fflush_r
+ .text._cleanup_r
+                0x08001e10        0xc /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+                0x08001e10                _cleanup_r
+ .text.__sinit  0x08001e1c       0xf4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+                0x08001e1c                __sinit
+ .text.__sfp_lock_acquire
+                0x08001f10        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+                0x08001f10                __sfp_lock_acquire
+ .text.__sfp_lock_release
+                0x08001f14        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+                0x08001f14                __sfp_lock_release
+ .text._malloc_trim_r
+                0x08001f18       0x9c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+                0x08001f18                _malloc_trim_r
+ .text._free_r  0x08001fb4      0x198 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+                0x08001fb4                _free_r
+ .text._fwalk   0x0800214c       0x48 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fwalk.o)
+                0x0800214c                _fwalk
+ .text.__smakebuf_r
+                0x08002194       0xe0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o)
+                0x08002194                __smakebuf_r
+ .text.__sread  0x08002274       0x24 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+                0x08002274                __sread
+ .text.__swrite
+                0x08002298       0x38 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+                0x08002298                __swrite
+ .text.__sseek  0x080022d0       0x20 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+                0x080022d0                __sseek
+ .text.__sclose
+                0x080022f0        0x8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+                0x080022f0                __sclose
+ .text._write_r
+                0x080022f8       0x28 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-writer.o)
+                0x080022f8                _write_r
+ .text._close_r
+                0x08002320       0x24 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-closer.o)
+                0x08002320                _close_r
+ .text._fclose_r
+                0x08002344       0x80 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fclose.o)
+                0x08002344                _fclose_r
+ .text.fclose   0x080023c4       0x10 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fclose.o)
+                0x080023c4                fclose
+ .text._fstat_r
+                0x080023d4       0x28 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fstatr.o)
+                0x080023d4                _fstat_r
+ .text._isatty_r
+                0x080023fc       0x24 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-isattyr.o)
+                0x080023fc                _isatty_r
+ .text._lseek_r
+                0x08002420       0x28 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-lseekr.o)
+                0x08002420                _lseek_r
+ .text._read_r  0x08002448       0x28 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-readr.o)
+                0x08002448                _read_r
+ *(.rodata)
+ *(.rodata*)
+ .rodata.str1.4
+                0x08002470        0x2 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                                  0x4 (size before relaxing)
+ *fill*         0x08002472        0x2 
+ .rodata._global_impure_ptr
+                0x08002474        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x08002474                _global_impure_ptr
+ .rodata.str1.1
+                0x08002478        0xc /tmp/cc5IZASw.o
+ .rodata.str1.4
+                0x08002484        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+ *(.glue_7)
+ .glue_7        0x00000000        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x00000000        0x0 linker stubs
+ *(.init)
+ .init          0x08002488        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+                0x08002488                _init
+ .init          0x0800248c        0x8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+ *(.fini)
+ .fini          0x08002494        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+                0x08002494                _fini
+ .fini          0x08002498        0x8 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+                0x080024a0                . = ALIGN (0x4)
+                0x080024a0                _etext = .
+
+.vfp11_veneer   0x080024a0        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x080024a0        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x080024a0        0x0
+ .iplt          0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+
+.rel.dyn        0x080024a0        0x0
+ .rel.iplt      0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+
+.ARM.extab
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+
+.ARM            0x080024a0        0x0
+                0x080024a0                __exidx_start = .
+ *(.ARM.exidx*)
+                0x080024a0                __exidx_end = .
+
+.ARM.attributes
+                0x00000000       0x29
+ *(.ARM.attributes)
+ .ARM.attributes
+                0x00000000       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crti.o
+ .ARM.attributes
+                0x0000001d       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ .ARM.attributes
+                0x0000004a       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .ARM.attributes
+                0x00000077       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .ARM.attributes
+                0x000000a4       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .ARM.attributes
+                0x000000d1       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .ARM.attributes
+                0x000000fe       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .ARM.attributes
+                0x0000012b       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .ARM.attributes
+                0x00000158       0x2f /tmp/ccyBTnAm.o
+ .ARM.attributes
+                0x00000187       0x2f /tmp/ccprCjqw.o
+ .ARM.attributes
+                0x000001b6       0x2f /tmp/ccbBs8BW.o
+ .ARM.attributes
+                0x000001e5       0x2f /tmp/cc5IZASw.o
+ .ARM.attributes
+                0x00000214       0x2f /tmp/ccpcFpTj.o
+ .ARM.attributes
+                0x00000243       0x2f /tmp/cc8Xnr6L.o
+ .ARM.attributes
+                0x00000272       0x2f /tmp/cc2Lg6aV.o
+ .ARM.attributes
+                0x000002a1       0x2f /tmp/ccTZETip.o
+ .ARM.attributes
+                0x000002d0       0x2f /tmp/ccYyPLoh.o
+ .ARM.attributes
+                0x000002ff       0x2f /tmp/ccj2Ik1h.o
+ .ARM.attributes
+                0x0000032e       0x2f /tmp/cc7ntQvp.o
+ .ARM.attributes
+                0x0000035d       0x21 /tmp/ccDelmJw.o
+ .ARM.attributes
+                0x0000037e       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+ .ARM.attributes
+                0x000003ab       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen.o)
+ .ARM.attributes
+                0x000003d8       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o)
+ .ARM.attributes
+                0x00000405       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+ .ARM.attributes
+                0x00000432       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+ .ARM.attributes
+                0x0000045f       0x1b /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memcpy.o)
+ .ARM.attributes
+                0x0000047a       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+ .ARM.attributes
+                0x000004a7       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+ .ARM.attributes
+                0x000004d4       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+ .ARM.attributes
+                0x00000501       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+ .ARM.attributes
+                0x0000052e       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o)
+ .ARM.attributes
+                0x0000055b       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+ .ARM.attributes
+                0x00000588       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .ARM.attributes
+                0x000005b5       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+ .ARM.attributes
+                0x000005e2       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fwalk.o)
+ .ARM.attributes
+                0x0000060f       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o)
+ .ARM.attributes
+                0x0000063c       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+ .ARM.attributes
+                0x00000669       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+ .ARM.attributes
+                0x00000696       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-writer.o)
+ .ARM.attributes
+                0x000006c3       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-closer.o)
+ .ARM.attributes
+                0x000006f0       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fclose.o)
+ .ARM.attributes
+                0x0000071d       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fstatr.o)
+ .ARM.attributes
+                0x0000074a       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-isattyr.o)
+ .ARM.attributes
+                0x00000777       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-lseekr.o)
+ .ARM.attributes
+                0x000007a4       0x2d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-readr.o)
+ .ARM.attributes
+                0x000007d1       0x1d /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+
+.preinit_array  0x080024a0        0x0
+                0x080024a0                PROVIDE (__preinit_array_start, .)
+ *(.preinit_array*)
+                0x080024a0                PROVIDE (__preinit_array_end, .)
+
+.init_array     0x080024a0        0x8
+                0x080024a0                PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*))
+ .init_array.00000
+                0x080024a0        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ *(.init_array*)
+ .init_array    0x080024a4        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+                0x080024a8                PROVIDE (__init_array_end, .)
+
+.fini_array     0x080024a8        0x4
+                0x080024a8                PROVIDE (__fini_array_start, .)
+ *(.fini_array*)
+ .fini_array    0x080024a8        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ *(SORT(.fini_array.*))
+                0x080024ac                PROVIDE (__fini_array_end, .)
+                0x080024ac                _sidata = .
+
+.data           0x20000000      0x858 load address 0x080024ac
+                0x20000000                . = ALIGN (0x4)
+                0x20000000                _sdata = .
+ *(.data)
+ *(.data*)
+ .data.impure_data
+                0x20000000      0x428 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .data._impure_ptr
+                0x20000428        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x20000428                _impure_ptr
+ .data.buffer_end
+                0x2000042c        0x1 /tmp/ccpcFpTj.o
+                0x2000042c                buffer_end
+ .data.AHBPrescTable
+                0x2000042d       0x10 /tmp/ccj2Ik1h.o
+ .data.APBPrescTable
+                0x2000043d        0x8 /tmp/ccj2Ik1h.o
+ *fill*         0x20000445        0x3 
+ .data.__malloc_av_
+                0x20000448      0x408 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x20000448                __malloc_av_
+ .data.__malloc_trim_threshold
+                0x20000850        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x20000850                __malloc_trim_threshold
+ .data.__malloc_sbrk_base
+                0x20000854        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x20000854                __malloc_sbrk_base
+                0x20000858                . = ALIGN (0x4)
+                0x20000858                _edata = .
+
+.jcr            0x20000858        0x0 load address 0x08002d04
+ .jcr           0x20000858        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+
+.igot.plt       0x20000858        0x0 load address 0x08002d04
+ .igot.plt      0x00000000        0x0 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+                0x20000858                . = ALIGN (0x4)
+
+.bss            0x20000858       0xa4 load address 0x08002d04
+                0x20000858                _sbss = .
+                0x20000858                __bss_start__ = _sbss
+ *(.bss)
+ .bss           0x20000858       0x1c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtbegin.o
+ *(.bss*)
+ .bss.buffer_start
+                0x20000874        0x1 /tmp/ccpcFpTj.o
+                0x20000874                buffer_start
+ *fill*         0x20000875        0x3 
+ .bss.__malloc_max_total_mem
+                0x20000878        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x20000878                __malloc_max_total_mem
+ .bss.__malloc_max_sbrked_mem
+                0x2000087c        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x2000087c                __malloc_max_sbrked_mem
+ .bss.__malloc_top_pad
+                0x20000880        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x20000880                __malloc_top_pad
+ .bss.__malloc_current_mallinfo
+                0x20000884       0x28 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+                0x20000884                __malloc_current_mallinfo
+ *(COMMON)
+ COMMON         0x200008ac        0x8 /tmp/ccyBTnAm.o
+                0x200008ac                globalticks
+                0x200008b0                lastticks
+ COMMON         0x200008b4       0x40 /tmp/ccpcFpTj.o
+                0x200008b4                buffer
+ COMMON         0x200008f4        0x4 /tmp/cc8Xnr6L.o
+                0x200008f4                liberror
+ COMMON         0x200008f8        0x4 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+                0x200008f8                errno
+                0x200008fc                . = ALIGN (0x4)
+                0x200008fc                _ebss = .
+                0x200008fc                __bss_end__ = _ebss
+                0x200008fc                PROVIDE (end, _ebss)
+                0x200008fc                PROVIDE (_end, _ebss)
+
+._user_heap_stack
+                0x200008fc      0x800 load address 0x08002da8
+                0x200008fc                . = ALIGN (0x4)
+                0x20000cfc                . = (. + _Min_Heap_Size)
+ *fill*         0x200008fc      0x400 
+                0x200010fc                . = (. + _Min_Stack_Size)
+ *fill*         0x20000cfc      0x400 
+                0x200010fc                . = ALIGN (0x4)
+
+.memory_b1_text
+ *(.mb1text)
+ *(.mb1text*)
+ *(.mb1rodata)
+ *(.mb1rodata*)
+
+/DISCARD/
+ libc.a(*)
+ libm.a(*)
+ libgcc.a(*)
+LOAD /tmp/ccyBTnAm.o
+LOAD /tmp/ccprCjqw.o
+LOAD /tmp/ccuiKJcK.o
+LOAD /tmp/ccbBs8BW.o
+LOAD /tmp/ccwalz7c.o
+LOAD /tmp/cc5IZASw.o
+LOAD /tmp/cccTkrLV.o
+LOAD /tmp/ccpcFpTj.o
+LOAD /tmp/cc8Xnr6L.o
+LOAD /tmp/ccVxblok.o
+LOAD /tmp/cc2Lg6aV.o
+LOAD /tmp/ccLxjSou.o
+LOAD /tmp/ccgeFXF8.o
+LOAD /tmp/ccb4CTdP.o
+LOAD /tmp/ccobNPRB.o
+LOAD /tmp/ccTZETip.o
+LOAD /tmp/ccYyPLoh.o
+LOAD /tmp/ccj2Ik1h.o
+LOAD /tmp/ccjGIV1h.o
+LOAD /tmp/cc7ntQvp.o
+LOAD /tmp/ccDelmJw.o
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libm.a
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libnosys.a
+START GROUP
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/libgcc.a
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a
+END GROUP
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtend.o
+LOAD /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7-m/crtn.o
+OUTPUT(sideboard.elf elf32-littlearm)
+
+.comment        0x00000000       0x70
+ .comment       0x00000000       0x70 /tmp/ccyBTnAm.o
+                                 0x71 (size before relaxing)
+ .comment       0x00000000       0x71 /tmp/ccprCjqw.o
+ .comment       0x00000000       0x71 /tmp/ccbBs8BW.o
+ .comment       0x00000000       0x71 /tmp/cc5IZASw.o
+ .comment       0x00000000       0x71 /tmp/ccpcFpTj.o
+ .comment       0x00000000       0x71 /tmp/cc8Xnr6L.o
+ .comment       0x00000000       0x71 /tmp/cc2Lg6aV.o
+ .comment       0x00000000       0x71 /tmp/ccTZETip.o
+ .comment       0x00000000       0x71 /tmp/ccYyPLoh.o
+ .comment       0x00000000       0x71 /tmp/ccj2Ik1h.o
+ .comment       0x00000000       0x71 /tmp/cc7ntQvp.o
+
+.debug_frame    0x00000000      0x634
+ .debug_frame   0x00000000       0x40 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-puts.o)
+ .debug_frame   0x00000040       0x20 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-strlen.o)
+ .debug_frame   0x00000060       0x38 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fvwrite.o)
+ .debug_frame   0x00000098       0x38 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mallocr.o)
+ .debug_frame   0x000000d0       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memchr-stub.o)
+ .debug_frame   0x000000fc       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memmove.o)
+ .debug_frame   0x00000128       0x30 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-mlock.o)
+ .debug_frame   0x00000158       0x38 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reallocr.o)
+ .debug_frame   0x00000190       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-sbrkr.o)
+ .debug_frame   0x000001bc       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-wsetup.o)
+ .debug_frame   0x000001e8       0x5c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fflush.o)
+ .debug_frame   0x00000244      0x110 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-findfp.o)
+ .debug_frame   0x00000354       0x50 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-freer.o)
+ .debug_frame   0x000003a4       0x54 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fwalk.o)
+ .debug_frame   0x000003f8       0x30 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-makebuf.o)
+ .debug_frame   0x00000428       0x48 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-reent.o)
+ .debug_frame   0x00000470       0x80 /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-stdio.o)
+ .debug_frame   0x000004f0       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-writer.o)
+ .debug_frame   0x0000051c       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-closer.o)
+ .debug_frame   0x00000548       0x3c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fclose.o)
+ .debug_frame   0x00000584       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fstatr.o)
+ .debug_frame   0x000005b0       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-isattyr.o)
+ .debug_frame   0x000005dc       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-lseekr.o)
+ .debug_frame   0x00000608       0x2c /home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-readr.o)

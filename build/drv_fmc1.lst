@@ -1,0 +1,224 @@
+ARM GAS  /tmp/ccLyLBoI.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"drv_fmc1.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.fmc_erasepage,"ax",%progbits
+  17              		.align	2
+  18              		.global	fmc_erasepage
+  19              		.thumb
+  20              		.thumb_func
+  22              	fmc_erasepage:
+  23              	.LFB29:
+  24              		.file 1 "Src/drv_fmc1.c"
+   1:Src/drv_fmc1.c **** 
+   2:Src/drv_fmc1.c **** 
+   3:Src/drv_fmc1.c **** #include "gd32f1x0.h"
+   4:Src/drv_fmc1.c **** 
+   5:Src/drv_fmc1.c **** 
+   6:Src/drv_fmc1.c **** #define offset 0x08007C00 // last K of 32k
+   7:Src/drv_fmc1.c **** 
+   8:Src/drv_fmc1.c **** int fmc_erasepage( void)
+   9:Src/drv_fmc1.c **** {
+  25              		.loc 1 9 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29 0000 10B5     		push	{r4, lr}
+  30              	.LCFI0:
+  31              		.cfi_def_cfa_offset 8
+  32              		.cfi_offset 4, -8
+  33              		.cfi_offset 14, -4
+  10:Src/drv_fmc1.c ****   FMC_Unlock();
+  34              		.loc 1 10 0
+  35 0002 FFF7FEFF 		bl	FMC_Unlock
+  36              	.LVL0:
+  11:Src/drv_fmc1.c ****   FMC_ClearBitState(FMC_FLAG_EOP | FMC_FLAG_WERR | FMC_FLAG_PERR );
+  37              		.loc 1 11 0
+  38 0006 3420     		movs	r0, #52
+  39 0008 FFF7FEFF 		bl	FMC_ClearBitState
+  40              	.LVL1:
+  12:Src/drv_fmc1.c **** 	int test = FMC_ErasePage( (uint32_t)0x08007C00 ); 
+  41              		.loc 1 12 0
+  42 000c 0748     		ldr	r0, .L2
+  43 000e FFF7FEFF 		bl	FMC_ErasePage
+  44              	.LVL2:
+  45 0012 0446     		mov	r4, r0
+  46              	.LVL3:
+ARM GAS  /tmp/ccLyLBoI.s 			page 2
+
+
+  13:Src/drv_fmc1.c **** 	FMC_WaitReady(4000);
+  47              		.loc 1 13 0
+  48 0014 4FF47A60 		mov	r0, #4000
+  49              	.LVL4:
+  50 0018 FFF7FEFF 		bl	FMC_WaitReady
+  51              	.LVL5:
+  14:Src/drv_fmc1.c **** 	FMC_Lock();
+  52              		.loc 1 14 0
+  53 001c FFF7FEFF 		bl	FMC_Lock
+  54              	.LVL6:
+  15:Src/drv_fmc1.c **** #ifdef SERIAL
+  16:Src/drv_fmc1.c **** 	if ( test == FMC_WRPERR) printf( "FMC page erase error\n");
+  17:Src/drv_fmc1.c **** #endif
+  18:Src/drv_fmc1.c **** 	return ( test == FMC_WRPERR);
+  19:Src/drv_fmc1.c **** }
+  55              		.loc 1 19 0
+  56 0020 022C     		cmp	r4, #2
+  57 0022 14BF     		ite	ne
+  58 0024 0020     		movne	r0, #0
+  59 0026 0120     		moveq	r0, #1
+  60 0028 10BD     		pop	{r4, pc}
+  61              	.LVL7:
+  62              	.L3:
+  63 002a 00BF     		.align	2
+  64              	.L2:
+  65 002c 007C0008 		.word	134249472
+  66              		.cfi_endproc
+  67              	.LFE29:
+  69              		.section	.text.fmc_write,"ax",%progbits
+  70              		.align	2
+  71              		.global	fmc_write
+  72              		.thumb
+  73              		.thumb_func
+  75              	fmc_write:
+  76              	.LFB30:
+  20:Src/drv_fmc1.c **** 
+  21:Src/drv_fmc1.c **** int fmc_write( unsigned int address , int data)
+  22:Src/drv_fmc1.c **** {
+  77              		.loc 1 22 0
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              	.LVL8:
+  82 0000 38B5     		push	{r3, r4, r5, lr}
+  83              	.LCFI1:
+  84              		.cfi_def_cfa_offset 16
+  85              		.cfi_offset 3, -16
+  86              		.cfi_offset 4, -12
+  87              		.cfi_offset 5, -8
+  88              		.cfi_offset 14, -4
+  89 0002 0546     		mov	r5, r0
+  90 0004 0C46     		mov	r4, r1
+  23:Src/drv_fmc1.c ****  FMC_Unlock();
+  91              		.loc 1 23 0
+  92 0006 FFF7FEFF 		bl	FMC_Unlock
+  93              	.LVL9:
+  24:Src/drv_fmc1.c ****  FMC_ClearBitState(FMC_FLAG_EOP | FMC_FLAG_WERR | FMC_FLAG_PERR );
+ARM GAS  /tmp/ccLyLBoI.s 			page 3
+
+
+  94              		.loc 1 24 0
+  95 000a 3420     		movs	r0, #52
+  96 000c FFF7FEFF 		bl	FMC_ClearBitState
+  97              	.LVL10:
+  25:Src/drv_fmc1.c ****  int	test = FMC_ProgramWord( address*4 + offset , data );
+  98              		.loc 1 25 0
+  99 0010 05F10070 		add	r0, r5, #33554432
+ 100 0014 00F5F850 		add	r0, r0, #7936
+ 101 0018 8000     		lsls	r0, r0, #2
+ 102 001a 2146     		mov	r1, r4
+ 103 001c FFF7FEFF 		bl	FMC_ProgramWord
+ 104              	.LVL11:
+ 105 0020 0446     		mov	r4, r0
+ 106              	.LVL12:
+  26:Src/drv_fmc1.c ****  FMC_WaitReady(4000);
+ 107              		.loc 1 26 0
+ 108 0022 4FF47A60 		mov	r0, #4000
+ 109              	.LVL13:
+ 110 0026 FFF7FEFF 		bl	FMC_WaitReady
+ 111              	.LVL14:
+  27:Src/drv_fmc1.c ****  FMC_Lock();
+ 112              		.loc 1 27 0
+ 113 002a FFF7FEFF 		bl	FMC_Lock
+ 114              	.LVL15:
+  28:Src/drv_fmc1.c **** #ifdef SERIAL
+  29:Src/drv_fmc1.c ****  if ( test == FMC_BSY||test == FMC_WRPERR||test == FMC_PGERR||test == FMC_TIMEOUT_ERR	) printf( "FM
+  30:Src/drv_fmc1.c **** #endif
+  31:Src/drv_fmc1.c **** 
+  32:Src/drv_fmc1.c ****  return ( test == FMC_WRPERR);
+  33:Src/drv_fmc1.c **** }
+ 115              		.loc 1 33 0
+ 116 002e 022C     		cmp	r4, #2
+ 117 0030 14BF     		ite	ne
+ 118 0032 0020     		movne	r0, #0
+ 119 0034 0120     		moveq	r0, #1
+ 120 0036 38BD     		pop	{r3, r4, r5, pc}
+ 121              		.cfi_endproc
+ 122              	.LFE30:
+ 124              		.section	.text.fmc_read,"ax",%progbits
+ 125              		.align	2
+ 126              		.global	fmc_read
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	fmc_read:
+ 131              	.LFB31:
+  34:Src/drv_fmc1.c **** 
+  35:Src/drv_fmc1.c **** int fmc_read( unsigned int address )
+  36:Src/drv_fmc1.c **** {
+ 132              		.loc 1 36 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+ 136              		@ link register save eliminated.
+ 137              	.LVL16:
+  37:Src/drv_fmc1.c **** address = address*4+offset;
+ 138              		.loc 1 37 0
+ 139 0000 00F10070 		add	r0, r0, #33554432
+ARM GAS  /tmp/ccLyLBoI.s 			page 4
+
+
+ 140              	.LVL17:
+ 141 0004 00F5F850 		add	r0, r0, #7936
+ 142              	.LVL18:
+ 143 0008 8000     		lsls	r0, r0, #2
+ 144              	.LVL19:
+  38:Src/drv_fmc1.c **** unsigned int* addressptr = (unsigned int*) address;
+  39:Src/drv_fmc1.c **** return (*addressptr );
+  40:Src/drv_fmc1.c **** }
+ 145              		.loc 1 40 0
+ 146 000a 0068     		ldr	r0, [r0]
+ 147              	.LVL20:
+ 148 000c 7047     		bx	lr
+ 149              		.cfi_endproc
+ 150              	.LFE31:
+ 152 000e 00BF     		.text
+ 153              	.Letext0:
+ 154              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 155              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 156              		.file 4 "Peripherals/inc/gd32f1x0_fmc.h"
+ 157              		.file 5 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccLyLBoI.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_fmc1.c
+     /tmp/ccLyLBoI.s:17     .text.fmc_erasepage:00000000 $t
+     /tmp/ccLyLBoI.s:22     .text.fmc_erasepage:00000000 fmc_erasepage
+     /tmp/ccLyLBoI.s:65     .text.fmc_erasepage:0000002c $d
+     /tmp/ccLyLBoI.s:70     .text.fmc_write:00000000 $t
+     /tmp/ccLyLBoI.s:75     .text.fmc_write:00000000 fmc_write
+     /tmp/ccLyLBoI.s:125    .text.fmc_read:00000000 $t
+     /tmp/ccLyLBoI.s:130    .text.fmc_read:00000000 fmc_read
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+FMC_Unlock
+FMC_ClearBitState
+FMC_ErasePage
+FMC_WaitReady
+FMC_Lock
+FMC_ProgramWord

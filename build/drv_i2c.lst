@@ -1,0 +1,1347 @@
+ARM GAS  /tmp/ccrCmAz7.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"drv_i2c.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.i2c_init,"ax",%progbits
+  17              		.align	2
+  18              		.global	i2c_init
+  19              		.thumb
+  20              		.thumb_func
+  22              	i2c_init:
+  23              	.LFB29:
+  24              		.file 1 "Src/drv_i2c.c"
+   1:Src/drv_i2c.c **** /*
+   2:Src/drv_i2c.c **** The MIT License (MIT)
+   3:Src/drv_i2c.c **** 
+   4:Src/drv_i2c.c **** Copyright (c) 2015 silverx
+   5:Src/drv_i2c.c **** 
+   6:Src/drv_i2c.c **** Permission is hereby granted, free of charge, to any person obtaining a copy
+   7:Src/drv_i2c.c **** of this software and associated documentation files (the "Software"), to deal
+   8:Src/drv_i2c.c **** in the Software without restriction, including without limitation the rights
+   9:Src/drv_i2c.c **** to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  10:Src/drv_i2c.c **** copies of the Software, and to permit persons to whom the Software is
+  11:Src/drv_i2c.c **** furnished to do so, subject to the following conditions:
+  12:Src/drv_i2c.c **** 
+  13:Src/drv_i2c.c **** The above copyright notice and this permission notice shall be included in
+  14:Src/drv_i2c.c **** all copies or substantial portions of the Software.
+  15:Src/drv_i2c.c **** 
+  16:Src/drv_i2c.c **** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  17:Src/drv_i2c.c **** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  18:Src/drv_i2c.c **** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  19:Src/drv_i2c.c **** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  20:Src/drv_i2c.c **** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  21:Src/drv_i2c.c **** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  22:Src/drv_i2c.c **** THE SOFTWARE.
+  23:Src/drv_i2c.c **** */
+  24:Src/drv_i2c.c **** 
+  25:Src/drv_i2c.c **** 
+  26:Src/drv_i2c.c **** 
+  27:Src/drv_i2c.c **** #include "gd32f1x0.h"
+  28:Src/drv_i2c.c **** #include <stdint.h>
+  29:Src/drv_i2c.c **** #include <stdio.h>
+  30:Src/drv_i2c.c **** 
+  31:Src/drv_i2c.c **** #include "drv_i2c.h"
+  32:Src/drv_i2c.c **** 
+  33:Src/drv_i2c.c **** #include "drv_time.h"
+  34:Src/drv_i2c.c **** 
+ARM GAS  /tmp/ccrCmAz7.s 			page 2
+
+
+  35:Src/drv_i2c.c **** #define I2CADDRESS 0x68  
+  36:Src/drv_i2c.c **** 
+  37:Src/drv_i2c.c **** #define WAITFORSTOP
+  38:Src/drv_i2c.c **** 
+  39:Src/drv_i2c.c **** void i2c_init( void)
+  40:Src/drv_i2c.c **** {
+  25              		.loc 1 40 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 24
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  30              	.LCFI0:
+  31              		.cfi_def_cfa_offset 20
+  32              		.cfi_offset 4, -20
+  33              		.cfi_offset 5, -16
+  34              		.cfi_offset 6, -12
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 87B0     		sub	sp, sp, #28
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 48
+  41:Src/drv_i2c.c **** 
+  42:Src/drv_i2c.c ****  //   RCC_AHBPeriphClock_Enable(RCC_AHBPERIPH_GPIOB,ENABLE);
+  43:Src/drv_i2c.c **** 
+  44:Src/drv_i2c.c ****     RCC_APB1PeriphClock_Enable(RCC_APB1PERIPH_I2C1,ENABLE);
+  40              		.loc 1 44 0
+  41 0004 4FF40010 		mov	r0, #2097152
+  42 0008 0121     		movs	r1, #1
+  43 000a FFF7FEFF 		bl	RCC_APB1PeriphClock_Enable
+  44              	.LVL0:
+  45:Src/drv_i2c.c **** 	
+  46:Src/drv_i2c.c **** 	  GPIO_InitPara GPIO_InitStructure;
+  47:Src/drv_i2c.c **** 
+  48:Src/drv_i2c.c **** 	
+  49:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_6|GPIO_PIN_7;
+  45              		.loc 1 49 0
+  46 000e C023     		movs	r3, #192
+  47 0010 0493     		str	r3, [sp, #16]
+  50:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_MODE_IN;
+  48              		.loc 1 50 0
+  49 0012 0023     		movs	r3, #0
+  50 0014 8DF81430 		strb	r3, [sp, #20]
+  51:Src/drv_i2c.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_SPEED_50MHZ;
+  51              		.loc 1 51 0
+  52 0018 0323     		movs	r3, #3
+  53 001a 8DF81530 		strb	r3, [sp, #21]
+  52:Src/drv_i2c.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OTYPE_OD;
+  54              		.loc 1 52 0
+  55 001e 0123     		movs	r3, #1
+  56 0020 8DF81630 		strb	r3, [sp, #22]
+  53:Src/drv_i2c.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PUPD_PULLUP;
+  57              		.loc 1 53 0
+  58 0024 8DF81730 		strb	r3, [sp, #23]
+  54:Src/drv_i2c.c **** 	GPIO_Init(GPIOB,&GPIO_InitStructure);
+  59              		.loc 1 54 0
+  60 0028 4E4C     		ldr	r4, .L9
+  61 002a 2046     		mov	r0, r4
+ARM GAS  /tmp/ccrCmAz7.s 			page 3
+
+
+  62 002c 04A9     		add	r1, sp, #16
+  63 002e FFF7FEFF 		bl	GPIO_Init
+  64              	.LVL1:
+  55:Src/drv_i2c.c **** 	
+  56:Src/drv_i2c.c **** 	delay(10);
+  65              		.loc 1 56 0
+  66 0032 0A20     		movs	r0, #10
+  67 0034 FFF7FEFF 		bl	delay
+  68              	.LVL2:
+  57:Src/drv_i2c.c **** 	// the following checks deal with issues arrising from i2c being stopped while the gyro is sending
+  58:Src/drv_i2c.c **** 	// this happens mainly in debug mode and perhaps at low voltage reset
+  59:Src/drv_i2c.c **** int i2cfail = 0;
+  60:Src/drv_i2c.c **** 	// sda is set with pullup
+  61:Src/drv_i2c.c **** 	// if sda is low the gyro might have become stuck while waiting for clock(and is sending a "zero")
+  62:Src/drv_i2c.c **** 	if ( Bit_RESET == GPIO_ReadInputBit( GPIOB, GPIO_PIN_7) )
+  69              		.loc 1 62 0
+  70 0038 2046     		mov	r0, r4
+  71 003a 8021     		movs	r1, #128
+  72 003c FFF7FEFF 		bl	GPIO_ReadInputBit
+  73              	.LVL3:
+  74 0040 08B1     		cbz	r0, .L7
+  59:Src/drv_i2c.c **** int i2cfail = 0;
+  75              		.loc 1 59 0
+  76 0042 0026     		movs	r6, #0
+  77 0044 00E0     		b	.L2
+  78              	.L7:
+  63:Src/drv_i2c.c **** 	{
+  64:Src/drv_i2c.c **** 	i2cfail = 1;	
+  79              		.loc 1 64 0
+  80 0046 0126     		movs	r6, #1
+  81              	.L2:
+  82              	.LVL4:
+  65:Src/drv_i2c.c **** 	}
+  66:Src/drv_i2c.c **** delay(10);
+  83              		.loc 1 66 0
+  84 0048 0A20     		movs	r0, #10
+  85 004a FFF7FEFF 		bl	delay
+  86              	.LVL5:
+  67:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_7;
+  87              		.loc 1 67 0
+  88 004e 8024     		movs	r4, #128
+  89 0050 0494     		str	r4, [sp, #16]
+  68:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PUPD_PULLDOWN;
+  90              		.loc 1 68 0
+  91 0052 0223     		movs	r3, #2
+  92 0054 8DF81730 		strb	r3, [sp, #23]
+  69:Src/drv_i2c.c **** 	GPIO_Init(GPIOB,&GPIO_InitStructure);	
+  93              		.loc 1 69 0
+  94 0058 424D     		ldr	r5, .L9
+  95 005a 2846     		mov	r0, r5
+  96 005c 04A9     		add	r1, sp, #16
+  97 005e FFF7FEFF 		bl	GPIO_Init
+  98              	.LVL6:
+  70:Src/drv_i2c.c **** 	
+  71:Src/drv_i2c.c **** 		delay(10);
+  99              		.loc 1 71 0
+ 100 0062 0A20     		movs	r0, #10
+ARM GAS  /tmp/ccrCmAz7.s 			page 4
+
+
+ 101 0064 FFF7FEFF 		bl	delay
+ 102              	.LVL7:
+  72:Src/drv_i2c.c **** 	// sda is set with pulldown
+  73:Src/drv_i2c.c **** 	// if sda is high it could be because the gyro is stuck sending data
+  74:Src/drv_i2c.c **** 	if ( Bit_SET == GPIO_ReadInputBit( GPIOB, GPIO_PIN_7) )
+ 103              		.loc 1 74 0
+ 104 0068 2846     		mov	r0, r5
+ 105 006a 2146     		mov	r1, r4
+ 106 006c FFF7FEFF 		bl	GPIO_ReadInputBit
+ 107              	.LVL8:
+ 108 0070 0128     		cmp	r0, #1
+ 109 0072 00D1     		bne	.L3
+  75:Src/drv_i2c.c **** 	{
+  76:Src/drv_i2c.c **** 	i2cfail = 1;	
+ 110              		.loc 1 76 0
+ 111 0074 0126     		movs	r6, #1
+ 112              	.LVL9:
+ 113              	.L3:
+  77:Src/drv_i2c.c **** 	}
+  78:Src/drv_i2c.c **** 	
+  79:Src/drv_i2c.c **** 	if ( i2cfail )
+ 114              		.loc 1 79 0
+ 115 0076 002E     		cmp	r6, #0
+ 116 0078 33D0     		beq	.L4
+  80:Src/drv_i2c.c **** 	{
+  81:Src/drv_i2c.c **** 	
+  82:Src/drv_i2c.c **** 	// set sda pullup so it sends an ack
+  83:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_7;
+ 117              		.loc 1 83 0
+ 118 007a 8023     		movs	r3, #128
+ 119 007c 0493     		str	r3, [sp, #16]
+  84:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PUPD_PULLUP;
+ 120              		.loc 1 84 0
+ 121 007e 0124     		movs	r4, #1
+ 122 0080 8DF81740 		strb	r4, [sp, #23]
+  85:Src/drv_i2c.c **** 	GPIO_Init(GPIOB,&GPIO_InitStructure);	
+ 123              		.loc 1 85 0
+ 124 0084 374D     		ldr	r5, .L9
+ 125 0086 2846     		mov	r0, r5
+ 126 0088 04A9     		add	r1, sp, #16
+ 127 008a FFF7FEFF 		bl	GPIO_Init
+ 128              	.LVL10:
+  86:Src/drv_i2c.c **** 		
+  87:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_6;
+ 129              		.loc 1 87 0
+ 130 008e 4023     		movs	r3, #64
+ 131 0090 0493     		str	r3, [sp, #16]
+  88:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_MODE_OUT;
+ 132              		.loc 1 88 0
+ 133 0092 8DF81440 		strb	r4, [sp, #20]
+  89:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PUPD_PULLUP;
+ 134              		.loc 1 89 0
+ 135 0096 8DF81740 		strb	r4, [sp, #23]
+  90:Src/drv_i2c.c **** 	GPIO_Init(GPIOB,&GPIO_InitStructure);
+ 136              		.loc 1 90 0
+ 137 009a 2846     		mov	r0, r5
+ 138 009c 04A9     		add	r1, sp, #16
+ARM GAS  /tmp/ccrCmAz7.s 			page 5
+
+
+ 139 009e FFF7FEFF 		bl	GPIO_Init
+ 140              	.LVL11:
+  91:Src/drv_i2c.c ****   delay(10);
+ 141              		.loc 1 91 0
+ 142 00a2 0A20     		movs	r0, #10
+ 143 00a4 FFF7FEFF 		bl	delay
+ 144              	.LVL12:
+ 145              	.LBB2:
+  92:Src/drv_i2c.c **** 	for ( int i = 0 ; i < 18 ; i++)
+ 146              		.loc 1 92 0
+ 147 00a8 0025     		movs	r5, #0
+  93:Src/drv_i2c.c **** 		{// send 9 clock pulses on scl to clear any pending byte
+  94:Src/drv_i2c.c **** 		GPIO_WriteBit(GPIOB, GPIO_PIN_6, Bit_RESET);	
+ 148              		.loc 1 94 0
+ 149 00aa 2E4C     		ldr	r4, .L9
+ 150 00ac 4026     		movs	r6, #64
+ 151              	.LVL13:
+ 152 00ae 2F46     		mov	r7, r5
+  92:Src/drv_i2c.c **** 	for ( int i = 0 ; i < 18 ; i++)
+ 153              		.loc 1 92 0
+ 154 00b0 15E0     		b	.L5
+ 155              	.LVL14:
+ 156              	.L6:
+ 157              		.loc 1 94 0
+ 158 00b2 2046     		mov	r0, r4
+ 159 00b4 3146     		mov	r1, r6
+ 160 00b6 3A46     		mov	r2, r7
+ 161 00b8 FFF7FEFF 		bl	GPIO_WriteBit
+ 162              	.LVL15:
+  95:Src/drv_i2c.c **** 			delay(25);
+ 163              		.loc 1 95 0
+ 164 00bc 1920     		movs	r0, #25
+ 165 00be FFF7FEFF 		bl	delay
+ 166              	.LVL16:
+  96:Src/drv_i2c.c **** 		GPIO_WriteBit(GPIOB, GPIO_PIN_6, Bit_SET);					
+ 167              		.loc 1 96 0
+ 168 00c2 2046     		mov	r0, r4
+ 169 00c4 3146     		mov	r1, r6
+ 170 00c6 0122     		movs	r2, #1
+ 171 00c8 FFF7FEFF 		bl	GPIO_WriteBit
+ 172              	.LVL17:
+  97:Src/drv_i2c.c **** 			delay(5);
+ 173              		.loc 1 97 0
+ 174 00cc 0520     		movs	r0, #5
+ 175 00ce FFF7FEFF 		bl	delay
+ 176              	.LVL18:
+  98:Src/drv_i2c.c **** 		if ( Bit_RESET != GPIO_ReadInputBit( GPIOB, GPIO_PIN_7) )
+ 177              		.loc 1 98 0
+ 178 00d2 2046     		mov	r0, r4
+ 179 00d4 8021     		movs	r1, #128
+ 180 00d6 FFF7FEFF 		bl	GPIO_ReadInputBit
+ 181              	.LVL19:
+ 182 00da 10B9     		cbnz	r0, .L4
+  92:Src/drv_i2c.c **** 	for ( int i = 0 ; i < 18 ; i++)
+ 183              		.loc 1 92 0
+ 184 00dc 0135     		adds	r5, r5, #1
+ 185              	.LVL20:
+ARM GAS  /tmp/ccrCmAz7.s 			page 6
+
+
+ 186              	.L5:
+  92:Src/drv_i2c.c **** 	for ( int i = 0 ; i < 18 ; i++)
+ 187              		.loc 1 92 0 is_stmt 0 discriminator 1
+ 188 00de 112D     		cmp	r5, #17
+ 189 00e0 E7DD     		ble	.L6
+ 190              	.LVL21:
+ 191              	.L4:
+ 192              	.LBE2:
+  99:Src/drv_i2c.c **** 			{
+ 100:Src/drv_i2c.c **** 				break;
+ 101:Src/drv_i2c.c **** 			}
+ 102:Src/drv_i2c.c **** 		}
+ 103:Src/drv_i2c.c **** 		
+ 104:Src/drv_i2c.c **** 	}
+ 105:Src/drv_i2c.c **** 	
+ 106:Src/drv_i2c.c ****   // actual i2c setup
+ 107:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_6|GPIO_PIN_7;
+ 193              		.loc 1 107 0 is_stmt 1
+ 194 00e2 C023     		movs	r3, #192
+ 195 00e4 0493     		str	r3, [sp, #16]
+ 108:Src/drv_i2c.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_MODE_AF;
+ 196              		.loc 1 108 0
+ 197 00e6 0223     		movs	r3, #2
+ 198 00e8 8DF81430 		strb	r3, [sp, #20]
+ 109:Src/drv_i2c.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_SPEED_50MHZ;
+ 199              		.loc 1 109 0
+ 200 00ec 0323     		movs	r3, #3
+ 201 00ee 8DF81530 		strb	r3, [sp, #21]
+ 110:Src/drv_i2c.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OTYPE_OD;
+ 202              		.loc 1 110 0
+ 203 00f2 0124     		movs	r4, #1
+ 204 00f4 8DF81640 		strb	r4, [sp, #22]
+ 111:Src/drv_i2c.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PUPD_PULLUP;
+ 205              		.loc 1 111 0
+ 206 00f8 8DF81740 		strb	r4, [sp, #23]
+ 112:Src/drv_i2c.c **** 
+ 113:Src/drv_i2c.c ****   GPIO_Init(GPIOB,&GPIO_InitStructure);
+ 207              		.loc 1 113 0
+ 208 00fc 194D     		ldr	r5, .L9
+ 209 00fe 2846     		mov	r0, r5
+ 210 0100 04A9     		add	r1, sp, #16
+ 211 0102 FFF7FEFF 		bl	GPIO_Init
+ 212              	.LVL22:
+ 114:Src/drv_i2c.c **** 	
+ 115:Src/drv_i2c.c ****     GPIO_PinAFConfig(GPIOB,GPIO_PINSOURCE6,GPIO_AF_1);
+ 213              		.loc 1 115 0
+ 214 0106 2846     		mov	r0, r5
+ 215 0108 0621     		movs	r1, #6
+ 216 010a 2246     		mov	r2, r4
+ 217 010c FFF7FEFF 		bl	GPIO_PinAFConfig
+ 218              	.LVL23:
+ 116:Src/drv_i2c.c ****     GPIO_PinAFConfig(GPIOB,GPIO_PINSOURCE7,GPIO_AF_1);
+ 219              		.loc 1 116 0
+ 220 0110 2846     		mov	r0, r5
+ 221 0112 0721     		movs	r1, #7
+ 222 0114 2246     		mov	r2, r4
+ 223 0116 FFF7FEFF 		bl	GPIO_PinAFConfig
+ARM GAS  /tmp/ccrCmAz7.s 			page 7
+
+
+ 224              	.LVL24:
+ 117:Src/drv_i2c.c **** 		
+ 118:Src/drv_i2c.c **** 		I2C_InitPara I2C_InitStructure;
+ 119:Src/drv_i2c.c ****     I2C_InitStructure.I2C_Protocol = I2C_PROTOCOL_I2C;
+ 225              		.loc 1 119 0
+ 226 011a 0026     		movs	r6, #0
+ 227 011c ADF80460 		strh	r6, [sp, #4]	@ movhi
+ 120:Src/drv_i2c.c ****     I2C_InitStructure.I2C_DutyCycle = I2C_DUTYCYCLE_2;
+ 228              		.loc 1 120 0
+ 229 0120 4BF6FF73 		movw	r3, #49151
+ 230 0124 ADF80630 		strh	r3, [sp, #6]	@ movhi
+ 121:Src/drv_i2c.c ****     I2C_InitStructure.I2C_BitRate = 400000;
+ 231              		.loc 1 121 0
+ 232 0128 0F4B     		ldr	r3, .L9+4
+ 233 012a 0293     		str	r3, [sp, #8]
+ 122:Src/drv_i2c.c ****     I2C_InitStructure.I2C_AddressingMode = I2C_ADDRESSING_MODE_7BIT;
+ 234              		.loc 1 122 0
+ 235 012c 4FF48043 		mov	r3, #16384
+ 236 0130 ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 123:Src/drv_i2c.c ****     I2C_InitStructure.I2C_DeviceAddress = 0x24;
+ 237              		.loc 1 123 0
+ 238 0134 2423     		movs	r3, #36
+ 239 0136 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 124:Src/drv_i2c.c **** 	
+ 125:Src/drv_i2c.c ****     I2C_Init(I2C1, &I2C_InitStructure);
+ 240              		.loc 1 125 0
+ 241 013a 0C4D     		ldr	r5, .L9+8
+ 242 013c 2846     		mov	r0, r5
+ 243 013e 01A9     		add	r1, sp, #4
+ 244 0140 FFF7FEFF 		bl	I2C_Init
+ 245              	.LVL25:
+ 126:Src/drv_i2c.c **** 		
+ 127:Src/drv_i2c.c **** 	  I2C_Enable(I2C1,ENABLE);
+ 246              		.loc 1 127 0
+ 247 0144 2846     		mov	r0, r5
+ 248 0146 2146     		mov	r1, r4
+ 249 0148 FFF7FEFF 		bl	I2C_Enable
+ 250              	.LVL26:
+ 128:Src/drv_i2c.c **** 		I2C_Acknowledge_Enable(I2C1,DISABLE);
+ 251              		.loc 1 128 0
+ 252 014c 2846     		mov	r0, r5
+ 253 014e 3146     		mov	r1, r6
+ 254 0150 FFF7FEFF 		bl	I2C_Acknowledge_Enable
+ 255              	.LVL27:
+ 129:Src/drv_i2c.c **** 		I2C_NACKPosition_Enable(I2C1,I2C_NACKPOSITION_CURRENT);
+ 256              		.loc 1 129 0
+ 257 0154 2846     		mov	r0, r5
+ 258 0156 4FF2FF71 		movw	r1, #63487
+ 259 015a FFF7FEFF 		bl	I2C_NACKPosition_Enable
+ 260              	.LVL28:
+ 130:Src/drv_i2c.c **** 		
+ 131:Src/drv_i2c.c **** }
+ 261              		.loc 1 131 0
+ 262 015e 07B0     		add	sp, sp, #28
+ 263              		@ sp needed
+ 264 0160 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 265              	.L10:
+ARM GAS  /tmp/ccrCmAz7.s 			page 8
+
+
+ 266 0162 00BF     		.align	2
+ 267              	.L9:
+ 268 0164 00040048 		.word	1207960576
+ 269 0168 801A0600 		.word	400000
+ 270 016c 00540040 		.word	1073763328
+ 271              		.cfi_endproc
+ 272              	.LFE29:
+ 274              		.section	.text.i2c_sendheader,"ax",%progbits
+ 275              		.align	2
+ 276              		.global	i2c_sendheader
+ 277              		.thumb
+ 278              		.thumb_func
+ 280              	i2c_sendheader:
+ 281              	.LFB30:
+ 132:Src/drv_i2c.c **** 
+ 133:Src/drv_i2c.c **** unsigned int liberror;
+ 134:Src/drv_i2c.c **** 
+ 135:Src/drv_i2c.c **** #define I2CTIMEOUTCONDITION (i2ccount < 8092)
+ 136:Src/drv_i2c.c **** static unsigned int i2ccount = 0; 
+ 137:Src/drv_i2c.c **** 
+ 138:Src/drv_i2c.c **** 
+ 139:Src/drv_i2c.c **** void i2c_sendheader()
+ 140:Src/drv_i2c.c **** {
+ 282              		.loc 1 140 0
+ 283              		.cfi_startproc
+ 284              		@ args = 0, pretend = 0, frame = 0
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 286 0000 70B5     		push	{r4, r5, r6, lr}
+ 287              	.LCFI2:
+ 288              		.cfi_def_cfa_offset 16
+ 289              		.cfi_offset 4, -16
+ 290              		.cfi_offset 5, -12
+ 291              		.cfi_offset 6, -8
+ 292              		.cfi_offset 14, -4
+ 141:Src/drv_i2c.c **** 	i2ccount = 0;
+ 293              		.loc 1 141 0
+ 294 0002 0022     		movs	r2, #0
+ 295 0004 214B     		ldr	r3, .L20
+ 296 0006 1A60     		str	r2, [r3]
+ 142:Src/drv_i2c.c **** 	while(I2C_GetBitState(I2C1, I2C_FLAG_I2CBSY) && I2CTIMEOUTCONDITION ) i2ccount++;
+ 297              		.loc 1 142 0
+ 298 0008 214E     		ldr	r6, .L20+4
+ 299 000a 4FF40035 		mov	r5, #131072
+ 300 000e 1C46     		mov	r4, r3
+ 301 0010 01E0     		b	.L12
+ 302              	.L14:
+ 303              		.loc 1 142 0 is_stmt 0 discriminator 1
+ 304 0012 0133     		adds	r3, r3, #1
+ 305 0014 2360     		str	r3, [r4]
+ 306              	.L12:
+ 307 0016 3046     		mov	r0, r6
+ 308 0018 2946     		mov	r1, r5
+ 309 001a FFF7FEFF 		bl	I2C_GetBitState
+ 310              	.LVL29:
+ 311 001e 20B1     		cbz	r0, .L13
+ 312              		.loc 1 142 0 discriminator 2
+ 313 0020 2368     		ldr	r3, [r4]
+ARM GAS  /tmp/ccrCmAz7.s 			page 9
+
+
+ 314 0022 41F69B72 		movw	r2, #8091
+ 315 0026 9342     		cmp	r3, r2
+ 316 0028 F3D9     		bls	.L14
+ 317              	.L13:
+ 143:Src/drv_i2c.c **** 	
+ 144:Src/drv_i2c.c ****   I2C_StartOnBus_Enable(I2C1, ENABLE);
+ 318              		.loc 1 144 0 is_stmt 1
+ 319 002a 1948     		ldr	r0, .L20+4
+ 320 002c 0121     		movs	r1, #1
+ 321 002e FFF7FEFF 		bl	I2C_StartOnBus_Enable
+ 322              	.LVL30:
+ 145:Src/drv_i2c.c ****   while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_SBSEND && I2CTIMEOUTCONDITION ))i2ccount+
+ 323              		.loc 1 145 0
+ 324 0032 174E     		ldr	r6, .L20+4
+ 325 0034 154C     		ldr	r4, .L20
+ 326 0036 41F69B75 		movw	r5, #8091
+ 327 003a 02E0     		b	.L15
+ 328              	.L16:
+ 329              		.loc 1 145 0 is_stmt 0 discriminator 2
+ 330 003c 2368     		ldr	r3, [r4]
+ 331 003e 0133     		adds	r3, r3, #1
+ 332 0040 2360     		str	r3, [r4]
+ 333              	.L15:
+ 334              		.loc 1 145 0 discriminator 1
+ 335 0042 2168     		ldr	r1, [r4]
+ 336 0044 3046     		mov	r0, r6
+ 337 0046 A942     		cmp	r1, r5
+ 338 0048 8CBF     		ite	hi
+ 339 004a 0021     		movhi	r1, #0
+ 340 004c 0121     		movls	r1, #1
+ 341 004e FFF7FEFF 		bl	I2C_StateDetect
+ 342              	.LVL31:
+ 343 0052 0028     		cmp	r0, #0
+ 344 0054 F2D0     		beq	.L16
+ 146:Src/drv_i2c.c **** 	I2C_GetBitState(I2C1,I2C_FLAG_SBSEND);
+ 345              		.loc 1 146 0 is_stmt 1
+ 346 0056 0E4C     		ldr	r4, .L20+4
+ 347 0058 2046     		mov	r0, r4
+ 348 005a 0E49     		ldr	r1, .L20+8
+ 349 005c FFF7FEFF 		bl	I2C_GetBitState
+ 350              	.LVL32:
+ 147:Src/drv_i2c.c ****   
+ 148:Src/drv_i2c.c ****   I2C_SendData(I2C1, ( I2CADDRESS<<1));
+ 351              		.loc 1 148 0
+ 352 0060 2046     		mov	r0, r4
+ 353 0062 D021     		movs	r1, #208
+ 354 0064 FFF7FEFF 		bl	I2C_SendData
+ 355              	.LVL33:
+ 149:Src/drv_i2c.c ****   while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_TRANSMITTER_ADDSEND) && I2CTIMEOUTCONDITI
+ 356              		.loc 1 149 0
+ 357 0068 2646     		mov	r6, r4
+ 358 006a 0B4D     		ldr	r5, .L20+12
+ 359 006c 074C     		ldr	r4, .L20
+ 360 006e 01E0     		b	.L17
+ 361              	.L19:
+ 362              		.loc 1 149 0 is_stmt 0 discriminator 1
+ 363 0070 0133     		adds	r3, r3, #1
+ARM GAS  /tmp/ccrCmAz7.s 			page 10
+
+
+ 364 0072 2360     		str	r3, [r4]
+ 365              	.L17:
+ 366 0074 3046     		mov	r0, r6
+ 367 0076 2946     		mov	r1, r5
+ 368 0078 FFF7FEFF 		bl	I2C_StateDetect
+ 369              	.LVL34:
+ 370 007c 20B9     		cbnz	r0, .L11
+ 371              		.loc 1 149 0 discriminator 2
+ 372 007e 2368     		ldr	r3, [r4]
+ 373 0080 41F69B72 		movw	r2, #8091
+ 374 0084 9342     		cmp	r3, r2
+ 375 0086 F3D9     		bls	.L19
+ 376              	.L11:
+ 377 0088 70BD     		pop	{r4, r5, r6, pc}
+ 378              	.L21:
+ 379 008a 00BF     		.align	2
+ 380              	.L20:
+ 381 008c 00000000 		.word	.LANCHOR0
+ 382 0090 00540040 		.word	1073763328
+ 383 0094 01000010 		.word	268435457
+ 384 0098 82000700 		.word	458882
+ 385              		.cfi_endproc
+ 386              	.LFE30:
+ 388              		.section	.text.i2c_writereg,"ax",%progbits
+ 389              		.align	2
+ 390              		.global	i2c_writereg
+ 391              		.thumb
+ 392              		.thumb_func
+ 394              	i2c_writereg:
+ 395              	.LFB31:
+ 150:Src/drv_i2c.c **** 
+ 151:Src/drv_i2c.c **** }
+ 152:Src/drv_i2c.c **** 
+ 153:Src/drv_i2c.c **** void i2c_writereg( int reg ,int data)
+ 154:Src/drv_i2c.c **** {
+ 396              		.loc 1 154 0 is_stmt 1
+ 397              		.cfi_startproc
+ 398              		@ args = 0, pretend = 0, frame = 0
+ 399              		@ frame_needed = 0, uses_anonymous_args = 0
+ 400              	.LVL35:
+ 401 0000 70B5     		push	{r4, r5, r6, lr}
+ 402              	.LCFI3:
+ 403              		.cfi_def_cfa_offset 16
+ 404              		.cfi_offset 4, -16
+ 405              		.cfi_offset 5, -12
+ 406              		.cfi_offset 6, -8
+ 407              		.cfi_offset 14, -4
+ 408 0002 0646     		mov	r6, r0
+ 409 0004 0D46     		mov	r5, r1
+ 155:Src/drv_i2c.c ****  
+ 156:Src/drv_i2c.c ****  i2c_sendheader();
+ 410              		.loc 1 156 0
+ 411 0006 FFF7FEFF 		bl	i2c_sendheader
+ 412              	.LVL36:
+ 157:Src/drv_i2c.c **** 
+ 158:Src/drv_i2c.c **** 	I2C_SendData(I2C1,reg);
+ 413              		.loc 1 158 0
+ARM GAS  /tmp/ccrCmAz7.s 			page 11
+
+
+ 414 000a 1B4C     		ldr	r4, .L30
+ 415 000c 2046     		mov	r0, r4
+ 416 000e F1B2     		uxtb	r1, r6
+ 417 0010 FFF7FEFF 		bl	I2C_SendData
+ 418              	.LVL37:
+ 159:Src/drv_i2c.c **** 	I2C_SendData(I2C1,data);
+ 419              		.loc 1 159 0
+ 420 0014 2046     		mov	r0, r4
+ 421 0016 E9B2     		uxtb	r1, r5
+ 422 0018 FFF7FEFF 		bl	I2C_SendData
+ 423              	.LVL38:
+ 160:Src/drv_i2c.c **** 		 
+ 161:Src/drv_i2c.c **** 	while(I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTED) == ERROR && I2CTIMEOUTCOND
+ 424              		.loc 1 161 0
+ 425 001c 2646     		mov	r6, r4
+ 426              	.LVL39:
+ 427 001e 174D     		ldr	r5, .L30+4
+ 428              	.LVL40:
+ 429 0020 174C     		ldr	r4, .L30+8
+ 430 0022 01E0     		b	.L23
+ 431              	.L25:
+ 162:Src/drv_i2c.c **** 	{	i2ccount++; }
+ 432              		.loc 1 162 0
+ 433 0024 0133     		adds	r3, r3, #1
+ 434 0026 2360     		str	r3, [r4]
+ 435              	.L23:
+ 161:Src/drv_i2c.c **** 	while(I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTED) == ERROR && I2CTIMEOUTCOND
+ 436              		.loc 1 161 0 discriminator 1
+ 437 0028 3046     		mov	r0, r6
+ 438 002a 2946     		mov	r1, r5
+ 439 002c FFF7FEFF 		bl	I2C_StateDetect
+ 440              	.LVL41:
+ 441 0030 20B9     		cbnz	r0, .L24
+ 161:Src/drv_i2c.c **** 	while(I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTED) == ERROR && I2CTIMEOUTCOND
+ 442              		.loc 1 161 0 is_stmt 0 discriminator 2
+ 443 0032 2368     		ldr	r3, [r4]
+ 444 0034 41F69B72 		movw	r2, #8091
+ 445 0038 9342     		cmp	r3, r2
+ 446 003a F3D9     		bls	.L25
+ 447              	.L24:
+ 163:Src/drv_i2c.c **** 
+ 164:Src/drv_i2c.c **** 	I2C_StopOnBus_Enable(I2C1, ENABLE);
+ 448              		.loc 1 164 0 is_stmt 1
+ 449 003c 0E48     		ldr	r0, .L30
+ 450 003e 0121     		movs	r1, #1
+ 451 0040 FFF7FEFF 		bl	I2C_StopOnBus_Enable
+ 452              	.LVL42:
+ 165:Src/drv_i2c.c **** #ifdef WAITFORSTOP	
+ 166:Src/drv_i2c.c **** 	while(I2C1->CTLR1&0x0200 && I2CTIMEOUTCONDITION) i2ccount++;
+ 453              		.loc 1 166 0
+ 454 0044 0C49     		ldr	r1, .L30
+ 455 0046 0E4A     		ldr	r2, .L30+8
+ 456 0048 41F69B70 		movw	r0, #8091
+ 457 004c 01E0     		b	.L26
+ 458              	.L28:
+ 459              		.loc 1 166 0 is_stmt 0 discriminator 1
+ 460 004e 0133     		adds	r3, r3, #1
+ARM GAS  /tmp/ccrCmAz7.s 			page 12
+
+
+ 461 0050 1360     		str	r3, [r2]
+ 462              	.L26:
+ 463 0052 0B88     		ldrh	r3, [r1]
+ 464 0054 03F40073 		and	r3, r3, #512
+ 465 0058 9BB2     		uxth	r3, r3
+ 466 005a 13B1     		cbz	r3, .L27
+ 467              		.loc 1 166 0 discriminator 2
+ 468 005c 1368     		ldr	r3, [r2]
+ 469 005e 8342     		cmp	r3, r0
+ 470 0060 F5D9     		bls	.L28
+ 471              	.L27:
+ 167:Src/drv_i2c.c **** #endif
+ 168:Src/drv_i2c.c **** 		
+ 169:Src/drv_i2c.c **** 	if ( !I2CTIMEOUTCONDITION ) 
+ 472              		.loc 1 169 0 is_stmt 1
+ 473 0062 074B     		ldr	r3, .L30+8
+ 474 0064 1A68     		ldr	r2, [r3]
+ 475 0066 41F69B73 		movw	r3, #8091
+ 476 006a 9A42     		cmp	r2, r3
+ 477 006c 03D9     		bls	.L22
+ 170:Src/drv_i2c.c **** 	{
+ 171:Src/drv_i2c.c **** 		liberror++;
+ 478              		.loc 1 171 0
+ 479 006e 054B     		ldr	r3, .L30+12
+ 480 0070 1A68     		ldr	r2, [r3]
+ 481 0072 0132     		adds	r2, r2, #1
+ 482 0074 1A60     		str	r2, [r3]
+ 483              	.L22:
+ 484 0076 70BD     		pop	{r4, r5, r6, pc}
+ 485              	.L31:
+ 486              		.align	2
+ 487              	.L30:
+ 488 0078 00540040 		.word	1073763328
+ 489 007c 84000700 		.word	458884
+ 490 0080 00000000 		.word	.LANCHOR0
+ 491 0084 00000000 		.word	liberror
+ 492              		.cfi_endproc
+ 493              	.LFE31:
+ 495              		.section	.text.i2c_readreg,"ax",%progbits
+ 496              		.align	2
+ 497              		.global	i2c_readreg
+ 498              		.thumb
+ 499              		.thumb_func
+ 501              	i2c_readreg:
+ 502              	.LFB32:
+ 172:Src/drv_i2c.c **** 	}
+ 173:Src/drv_i2c.c **** 	
+ 174:Src/drv_i2c.c **** }
+ 175:Src/drv_i2c.c **** 
+ 176:Src/drv_i2c.c **** 
+ 177:Src/drv_i2c.c **** int i2c_readreg( int reg )
+ 178:Src/drv_i2c.c **** {
+ 503              		.loc 1 178 0
+ 504              		.cfi_startproc
+ 505              		@ args = 0, pretend = 0, frame = 0
+ 506              		@ frame_needed = 0, uses_anonymous_args = 0
+ 507              	.LVL43:
+ARM GAS  /tmp/ccrCmAz7.s 			page 13
+
+
+ 508 0000 70B5     		push	{r4, r5, r6, lr}
+ 509              	.LCFI4:
+ 510              		.cfi_def_cfa_offset 16
+ 511              		.cfi_offset 4, -16
+ 512              		.cfi_offset 5, -12
+ 513              		.cfi_offset 6, -8
+ 514              		.cfi_offset 14, -4
+ 515 0002 0446     		mov	r4, r0
+ 179:Src/drv_i2c.c **** 	 int data;
+ 180:Src/drv_i2c.c **** 
+ 181:Src/drv_i2c.c ****     
+ 182:Src/drv_i2c.c **** i2c_sendheader();
+ 516              		.loc 1 182 0
+ 517 0004 FFF7FEFF 		bl	i2c_sendheader
+ 518              	.LVL44:
+ 183:Src/drv_i2c.c **** 		
+ 184:Src/drv_i2c.c **** 	I2C_SendData(I2C1,reg);
+ 519              		.loc 1 184 0
+ 520 0008 3948     		ldr	r0, .L48
+ 521 000a E1B2     		uxtb	r1, r4
+ 522 000c FFF7FEFF 		bl	I2C_SendData
+ 523              	.LVL45:
+ 185:Src/drv_i2c.c **** 	while(I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTED) == ERROR && I2CTIMEOUTCOND
+ 524              		.loc 1 185 0
+ 525 0010 374E     		ldr	r6, .L48
+ 526 0012 384D     		ldr	r5, .L48+4
+ 527 0014 384C     		ldr	r4, .L48+8
+ 528              	.LVL46:
+ 529 0016 01E0     		b	.L33
+ 530              	.L35:
+ 186:Src/drv_i2c.c **** 	{
+ 187:Src/drv_i2c.c **** 		i2ccount++;
+ 531              		.loc 1 187 0
+ 532 0018 0133     		adds	r3, r3, #1
+ 533 001a 2360     		str	r3, [r4]
+ 534              	.L33:
+ 185:Src/drv_i2c.c **** 	while(I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTED) == ERROR && I2CTIMEOUTCOND
+ 535              		.loc 1 185 0 discriminator 1
+ 536 001c 3046     		mov	r0, r6
+ 537 001e 2946     		mov	r1, r5
+ 538 0020 FFF7FEFF 		bl	I2C_StateDetect
+ 539              	.LVL47:
+ 540 0024 20B9     		cbnz	r0, .L34
+ 185:Src/drv_i2c.c **** 	while(I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTED) == ERROR && I2CTIMEOUTCOND
+ 541              		.loc 1 185 0 is_stmt 0 discriminator 2
+ 542 0026 2368     		ldr	r3, [r4]
+ 543 0028 41F69B72 		movw	r2, #8091
+ 544 002c 9342     		cmp	r3, r2
+ 545 002e F3D9     		bls	.L35
+ 546              	.L34:
+ 188:Src/drv_i2c.c **** 	}
+ 189:Src/drv_i2c.c **** // restart
+ 190:Src/drv_i2c.c **** 	I2C_StartOnBus_Enable(I2C1,ENABLE);
+ 547              		.loc 1 190 0 is_stmt 1
+ 548 0030 2F48     		ldr	r0, .L48
+ 549 0032 0121     		movs	r1, #1
+ 550 0034 FFF7FEFF 		bl	I2C_StartOnBus_Enable
+ARM GAS  /tmp/ccrCmAz7.s 			page 14
+
+
+ 551              	.LVL48:
+ 191:Src/drv_i2c.c **** 	while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_SBSEND && I2CTIMEOUTCONDITION))
+ 552              		.loc 1 191 0
+ 553 0038 2D4E     		ldr	r6, .L48
+ 554 003a 2F4C     		ldr	r4, .L48+8
+ 555 003c 41F69B75 		movw	r5, #8091
+ 556 0040 02E0     		b	.L36
+ 557              	.L37:
+ 192:Src/drv_i2c.c **** 	{
+ 193:Src/drv_i2c.c **** 		i2ccount++;
+ 558              		.loc 1 193 0
+ 559 0042 2368     		ldr	r3, [r4]
+ 560 0044 0133     		adds	r3, r3, #1
+ 561 0046 2360     		str	r3, [r4]
+ 562              	.L36:
+ 191:Src/drv_i2c.c **** 	while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_SBSEND && I2CTIMEOUTCONDITION))
+ 563              		.loc 1 191 0 discriminator 1
+ 564 0048 2168     		ldr	r1, [r4]
+ 565 004a 3046     		mov	r0, r6
+ 566 004c A942     		cmp	r1, r5
+ 567 004e 8CBF     		ite	hi
+ 568 0050 0021     		movhi	r1, #0
+ 569 0052 0121     		movls	r1, #1
+ 570 0054 FFF7FEFF 		bl	I2C_StateDetect
+ 571              	.LVL49:
+ 572 0058 0028     		cmp	r0, #0
+ 573 005a F2D0     		beq	.L37
+ 194:Src/drv_i2c.c **** 	}
+ 195:Src/drv_i2c.c **** 	
+ 196:Src/drv_i2c.c **** // send receiveing address  
+ 197:Src/drv_i2c.c **** 	I2C_SendData(I2C1, ( I2CADDRESS<<1) + 1);
+ 574              		.loc 1 197 0
+ 575 005c 2448     		ldr	r0, .L48
+ 576 005e D121     		movs	r1, #209
+ 577 0060 FFF7FEFF 		bl	I2C_SendData
+ 578              	.LVL50:
+ 198:Src/drv_i2c.c **** 	while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_RECEIVER_ADDSEND) && I2CTIMEOUTCONDITION)
+ 579              		.loc 1 198 0
+ 580 0064 224E     		ldr	r6, .L48
+ 581 0066 254D     		ldr	r5, .L48+12
+ 582 0068 234C     		ldr	r4, .L48+8
+ 583 006a 01E0     		b	.L38
+ 584              	.L40:
+ 199:Src/drv_i2c.c **** 	{
+ 200:Src/drv_i2c.c **** 		i2ccount++;
+ 585              		.loc 1 200 0
+ 586 006c 0133     		adds	r3, r3, #1
+ 587 006e 2360     		str	r3, [r4]
+ 588              	.L38:
+ 198:Src/drv_i2c.c **** 	while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_RECEIVER_ADDSEND) && I2CTIMEOUTCONDITION)
+ 589              		.loc 1 198 0 discriminator 1
+ 590 0070 3046     		mov	r0, r6
+ 591 0072 2946     		mov	r1, r5
+ 592 0074 FFF7FEFF 		bl	I2C_StateDetect
+ 593              	.LVL51:
+ 594 0078 40B9     		cbnz	r0, .L39
+ 198:Src/drv_i2c.c **** 	while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_RECEIVER_ADDSEND) && I2CTIMEOUTCONDITION)
+ARM GAS  /tmp/ccrCmAz7.s 			page 15
+
+
+ 595              		.loc 1 198 0 is_stmt 0 discriminator 2
+ 596 007a 2368     		ldr	r3, [r4]
+ 597 007c 41F69B72 		movw	r2, #8091
+ 598 0080 9342     		cmp	r3, r2
+ 599 0082 F3D9     		bls	.L40
+ 600 0084 02E0     		b	.L39
+ 601              	.L42:
+ 201:Src/drv_i2c.c **** 	}
+ 202:Src/drv_i2c.c **** 
+ 203:Src/drv_i2c.c **** // wait for one byte
+ 204:Src/drv_i2c.c **** 	while(!I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_RECEIVED) && I2CTIMEOUTCONDITION)
+ 205:Src/drv_i2c.c **** 	{
+ 206:Src/drv_i2c.c **** 		i2ccount++;
+ 602              		.loc 1 206 0 is_stmt 1
+ 603 0086 0133     		adds	r3, r3, #1
+ 604 0088 2360     		str	r3, [r4]
+ 605 008a 02E0     		b	.L47
+ 606              	.L39:
+ 204:Src/drv_i2c.c **** 	while(!I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_RECEIVED) && I2CTIMEOUTCONDITION)
+ 607              		.loc 1 204 0 discriminator 1
+ 608 008c 184E     		ldr	r6, .L48
+ 609 008e 1C4D     		ldr	r5, .L48+16
+ 610 0090 194C     		ldr	r4, .L48+8
+ 611              	.L47:
+ 612 0092 3046     		mov	r0, r6
+ 613 0094 2946     		mov	r1, r5
+ 614 0096 FFF7FEFF 		bl	I2C_StateDetect
+ 615              	.LVL52:
+ 616 009a 20B9     		cbnz	r0, .L41
+ 204:Src/drv_i2c.c **** 	while(!I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_RECEIVED) && I2CTIMEOUTCONDITION)
+ 617              		.loc 1 204 0 is_stmt 0 discriminator 2
+ 618 009c 2368     		ldr	r3, [r4]
+ 619 009e 41F69B72 		movw	r2, #8091
+ 620 00a2 9342     		cmp	r3, r2
+ 621 00a4 EFD9     		bls	.L42
+ 622              	.L41:
+ 207:Src/drv_i2c.c **** 	}	
+ 208:Src/drv_i2c.c **** 	data = I2C_ReceiveData(I2C1);
+ 623              		.loc 1 208 0 is_stmt 1
+ 624 00a6 124D     		ldr	r5, .L48
+ 625 00a8 2846     		mov	r0, r5
+ 626 00aa FFF7FEFF 		bl	I2C_ReceiveData
+ 627              	.LVL53:
+ 628 00ae 0446     		mov	r4, r0
+ 629              	.LVL54:
+ 209:Src/drv_i2c.c **** 
+ 210:Src/drv_i2c.c **** 	I2C_StopOnBus_Enable(I2C1, ENABLE);
+ 630              		.loc 1 210 0
+ 631 00b0 2846     		mov	r0, r5
+ 632              	.LVL55:
+ 633 00b2 0121     		movs	r1, #1
+ 634 00b4 FFF7FEFF 		bl	I2C_StopOnBus_Enable
+ 635              	.LVL56:
+ 211:Src/drv_i2c.c **** 	// wait for stop
+ 212:Src/drv_i2c.c **** #ifdef WAITFORSTOP	
+ 213:Src/drv_i2c.c ****   while(I2C1->CTLR1&0x0200 && I2CTIMEOUTCONDITION)i2ccount++;
+ 636              		.loc 1 213 0
+ARM GAS  /tmp/ccrCmAz7.s 			page 16
+
+
+ 637 00b8 2946     		mov	r1, r5
+ 638 00ba 0F4A     		ldr	r2, .L48+8
+ 639 00bc 41F69B70 		movw	r0, #8091
+ 640 00c0 01E0     		b	.L43
+ 641              	.L45:
+ 642              		.loc 1 213 0 is_stmt 0 discriminator 1
+ 643 00c2 0133     		adds	r3, r3, #1
+ 644 00c4 1360     		str	r3, [r2]
+ 645              	.L43:
+ 646 00c6 0B88     		ldrh	r3, [r1]
+ 647 00c8 03F40073 		and	r3, r3, #512
+ 648 00cc 9BB2     		uxth	r3, r3
+ 649 00ce 13B1     		cbz	r3, .L44
+ 650              		.loc 1 213 0 discriminator 2
+ 651 00d0 1368     		ldr	r3, [r2]
+ 652 00d2 8342     		cmp	r3, r0
+ 653 00d4 F5D9     		bls	.L45
+ 654              	.L44:
+ 214:Src/drv_i2c.c **** #endif
+ 215:Src/drv_i2c.c **** 	if ( !I2CTIMEOUTCONDITION ) 
+ 655              		.loc 1 215 0 is_stmt 1
+ 656 00d6 084B     		ldr	r3, .L48+8
+ 657 00d8 1A68     		ldr	r2, [r3]
+ 658 00da 41F69B73 		movw	r3, #8091
+ 659 00de 9A42     		cmp	r2, r3
+ 660 00e0 03D9     		bls	.L46
+ 216:Src/drv_i2c.c **** 	{
+ 217:Src/drv_i2c.c **** 		liberror++;
+ 661              		.loc 1 217 0
+ 662 00e2 084B     		ldr	r3, .L48+20
+ 663 00e4 1A68     		ldr	r2, [r3]
+ 664 00e6 0132     		adds	r2, r2, #1
+ 665 00e8 1A60     		str	r2, [r3]
+ 666              	.L46:
+ 218:Src/drv_i2c.c **** 	}
+ 219:Src/drv_i2c.c **** 		
+ 220:Src/drv_i2c.c **** 	return data;
+ 221:Src/drv_i2c.c **** }
+ 667              		.loc 1 221 0
+ 668 00ea 2046     		mov	r0, r4
+ 669 00ec 70BD     		pop	{r4, r5, r6, pc}
+ 670              	.LVL57:
+ 671              	.L49:
+ 672 00ee 00BF     		.align	2
+ 673              	.L48:
+ 674 00f0 00540040 		.word	1073763328
+ 675 00f4 84000700 		.word	458884
+ 676 00f8 00000000 		.word	.LANCHOR0
+ 677 00fc 02000300 		.word	196610
+ 678 0100 40000300 		.word	196672
+ 679 0104 00000000 		.word	liberror
+ 680              		.cfi_endproc
+ 681              	.LFE32:
+ 683              		.section	.text.i2c_readdata,"ax",%progbits
+ 684              		.align	2
+ 685              		.global	i2c_readdata
+ 686              		.thumb
+ARM GAS  /tmp/ccrCmAz7.s 			page 17
+
+
+ 687              		.thumb_func
+ 689              	i2c_readdata:
+ 690              	.LFB33:
+ 222:Src/drv_i2c.c **** 
+ 223:Src/drv_i2c.c **** 
+ 224:Src/drv_i2c.c **** int i2c_readdata( int reg, int *data, int size )
+ 225:Src/drv_i2c.c **** {
+ 691              		.loc 1 225 0
+ 692              		.cfi_startproc
+ 693              		@ args = 0, pretend = 0, frame = 0
+ 694              		@ frame_needed = 0, uses_anonymous_args = 0
+ 695              	.LVL58:
+ 696 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 697              	.LCFI5:
+ 698              		.cfi_def_cfa_offset 32
+ 699              		.cfi_offset 4, -32
+ 700              		.cfi_offset 5, -28
+ 701              		.cfi_offset 6, -24
+ 702              		.cfi_offset 7, -20
+ 703              		.cfi_offset 8, -16
+ 704              		.cfi_offset 9, -12
+ 705              		.cfi_offset 10, -8
+ 706              		.cfi_offset 14, -4
+ 707 0004 0446     		mov	r4, r0
+ 708 0006 8946     		mov	r9, r1
+ 709 0008 9046     		mov	r8, r2
+ 710              	.LVL59:
+ 226:Src/drv_i2c.c **** 	int index = 0;
+ 227:Src/drv_i2c.c **** 	int error = 0;
+ 228:Src/drv_i2c.c **** 	int i2ccount2 = 0;
+ 229:Src/drv_i2c.c **** 	int byteerror = 0;
+ 230:Src/drv_i2c.c **** 
+ 231:Src/drv_i2c.c **** i2c_sendheader();
+ 711              		.loc 1 231 0
+ 712 000a FFF7FEFF 		bl	i2c_sendheader
+ 713              	.LVL60:
+ 232:Src/drv_i2c.c **** 
+ 233:Src/drv_i2c.c ****     I2C_SendData(I2C1,reg);
+ 714              		.loc 1 233 0
+ 715 000e 4A48     		ldr	r0, .L76
+ 716 0010 E1B2     		uxtb	r1, r4
+ 717 0012 FFF7FEFF 		bl	I2C_SendData
+ 718              	.LVL61:
+ 234:Src/drv_i2c.c **** 
+ 235:Src/drv_i2c.c **** 	  while(I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTED) == ERROR && I2CTIMEOUTCO
+ 719              		.loc 1 235 0
+ 720 0016 484E     		ldr	r6, .L76
+ 721 0018 484D     		ldr	r5, .L76+4
+ 722 001a 494C     		ldr	r4, .L76+8
+ 723              	.LVL62:
+ 724 001c 01E0     		b	.L51
+ 725              	.L53:
+ 726              		.loc 1 235 0 is_stmt 0 discriminator 1
+ 727 001e 0133     		adds	r3, r3, #1
+ 728 0020 2360     		str	r3, [r4]
+ 729              	.L51:
+ 730 0022 3046     		mov	r0, r6
+ARM GAS  /tmp/ccrCmAz7.s 			page 18
+
+
+ 731 0024 2946     		mov	r1, r5
+ 732 0026 FFF7FEFF 		bl	I2C_StateDetect
+ 733              	.LVL63:
+ 734 002a 20B9     		cbnz	r0, .L52
+ 735              		.loc 1 235 0 discriminator 2
+ 736 002c 2368     		ldr	r3, [r4]
+ 737 002e 41F69B72 		movw	r2, #8091
+ 738 0032 9342     		cmp	r3, r2
+ 739 0034 F3D9     		bls	.L53
+ 740              	.L52:
+ 236:Src/drv_i2c.c **** // restart
+ 237:Src/drv_i2c.c **** 		I2C_StartOnBus_Enable(I2C1,ENABLE);
+ 741              		.loc 1 237 0 is_stmt 1
+ 742 0036 4048     		ldr	r0, .L76
+ 743 0038 0121     		movs	r1, #1
+ 744 003a FFF7FEFF 		bl	I2C_StartOnBus_Enable
+ 745              	.LVL64:
+ 238:Src/drv_i2c.c ****    
+ 239:Src/drv_i2c.c ****     while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_SBSEND) && I2CTIMEOUTCONDITION)
+ 746              		.loc 1 239 0
+ 747 003e 3E4E     		ldr	r6, .L76
+ 748 0040 404D     		ldr	r5, .L76+12
+ 749 0042 3F4C     		ldr	r4, .L76+8
+ 750 0044 01E0     		b	.L54
+ 751              	.L56:
+ 240:Src/drv_i2c.c **** 		{
+ 241:Src/drv_i2c.c **** 			i2ccount++;
+ 752              		.loc 1 241 0
+ 753 0046 0133     		adds	r3, r3, #1
+ 754 0048 2360     		str	r3, [r4]
+ 755              	.L54:
+ 239:Src/drv_i2c.c ****     while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_SBSEND) && I2CTIMEOUTCONDITION)
+ 756              		.loc 1 239 0 discriminator 1
+ 757 004a 3046     		mov	r0, r6
+ 758 004c 2946     		mov	r1, r5
+ 759 004e FFF7FEFF 		bl	I2C_StateDetect
+ 760              	.LVL65:
+ 761 0052 20B9     		cbnz	r0, .L55
+ 239:Src/drv_i2c.c ****     while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_SBSEND) && I2CTIMEOUTCONDITION)
+ 762              		.loc 1 239 0 is_stmt 0 discriminator 2
+ 763 0054 2368     		ldr	r3, [r4]
+ 764 0056 41F69B72 		movw	r2, #8091
+ 765 005a 9342     		cmp	r3, r2
+ 766 005c F3D9     		bls	.L56
+ 767              	.L55:
+ 242:Src/drv_i2c.c **** 		}
+ 243:Src/drv_i2c.c ****  // read address  
+ 244:Src/drv_i2c.c ****     I2C_SendData(I2C1, ( I2CADDRESS<<1) + 1);
+ 768              		.loc 1 244 0 is_stmt 1
+ 769 005e 364C     		ldr	r4, .L76
+ 770 0060 2046     		mov	r0, r4
+ 771 0062 D121     		movs	r1, #209
+ 772 0064 FFF7FEFF 		bl	I2C_SendData
+ 773              	.LVL66:
+ 245:Src/drv_i2c.c **** 
+ 246:Src/drv_i2c.c **** 		I2C_Acknowledge_Enable(I2C1, ENABLE);
+ 774              		.loc 1 246 0
+ARM GAS  /tmp/ccrCmAz7.s 			page 19
+
+
+ 775 0068 2046     		mov	r0, r4
+ 776 006a 0121     		movs	r1, #1
+ 777 006c FFF7FEFF 		bl	I2C_Acknowledge_Enable
+ 778              	.LVL67:
+ 247:Src/drv_i2c.c **** 
+ 248:Src/drv_i2c.c ****     while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_RECEIVER_ADDSEND) && I2CTIMEOUTCONDITIO
+ 779              		.loc 1 248 0
+ 780 0070 2646     		mov	r6, r4
+ 781 0072 354D     		ldr	r5, .L76+16
+ 782 0074 324C     		ldr	r4, .L76+8
+ 783 0076 01E0     		b	.L57
+ 784              	.L59:
+ 249:Src/drv_i2c.c **** 		{
+ 250:Src/drv_i2c.c **** 			i2ccount++;
+ 785              		.loc 1 250 0
+ 786 0078 0133     		adds	r3, r3, #1
+ 787 007a 2360     		str	r3, [r4]
+ 788              	.L57:
+ 248:Src/drv_i2c.c ****     while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_RECEIVER_ADDSEND) && I2CTIMEOUTCONDITIO
+ 789              		.loc 1 248 0 discriminator 1
+ 790 007c 3046     		mov	r0, r6
+ 791 007e 2946     		mov	r1, r5
+ 792 0080 FFF7FEFF 		bl	I2C_StateDetect
+ 793              	.LVL68:
+ 794 0084 38BB     		cbnz	r0, .L70
+ 248:Src/drv_i2c.c ****     while(!I2C_StateDetect(I2C1, I2C_PROGRAMMINGMODE_MASTER_RECEIVER_ADDSEND) && I2CTIMEOUTCONDITIO
+ 795              		.loc 1 248 0 is_stmt 0 discriminator 2
+ 796 0086 2368     		ldr	r3, [r4]
+ 797 0088 41F69B72 		movw	r2, #8091
+ 798 008c 9342     		cmp	r3, r2
+ 799 008e F3D9     		bls	.L59
+ 800 0090 4FF0000A 		mov	r10, #0
+ 801 0094 5746     		mov	r7, r10
+ 802 0096 21E0     		b	.L75
+ 803              	.LVL69:
+ 804              	.L61:
+ 251:Src/drv_i2c.c **** 		}
+ 252:Src/drv_i2c.c **** 
+ 253:Src/drv_i2c.c **** 		
+ 254:Src/drv_i2c.c **** while ( index < size)
+ 255:Src/drv_i2c.c **** {		
+ 256:Src/drv_i2c.c **** 		i2ccount2 = 0;
+ 257:Src/drv_i2c.c **** 	  while(!I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_RECEIVED) && ( i2ccount2 < 2048 ))
+ 258:Src/drv_i2c.c **** 		{
+ 259:Src/drv_i2c.c **** 			i2ccount2++;
+ 805              		.loc 1 259 0 is_stmt 1
+ 806 0098 0134     		adds	r4, r4, #1
+ 807              	.LVL70:
+ 808 009a 00E0     		b	.L64
+ 809              	.LVL71:
+ 810              	.L72:
+ 811 009c 0024     		movs	r4, #0
+ 812              	.L64:
+ 813              	.LVL72:
+ 257:Src/drv_i2c.c **** 	  while(!I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_RECEIVED) && ( i2ccount2 < 2048 ))
+ 814              		.loc 1 257 0 discriminator 1
+ 815 009e 2846     		mov	r0, r5
+ARM GAS  /tmp/ccrCmAz7.s 			page 20
+
+
+ 816 00a0 3146     		mov	r1, r6
+ 817 00a2 FFF7FEFF 		bl	I2C_StateDetect
+ 818              	.LVL73:
+ 819 00a6 10B9     		cbnz	r0, .L60
+ 257:Src/drv_i2c.c **** 	  while(!I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_RECEIVED) && ( i2ccount2 < 2048 ))
+ 820              		.loc 1 257 0 is_stmt 0 discriminator 2
+ 821 00a8 B4F5006F 		cmp	r4, #2048
+ 822 00ac F4DB     		blt	.L61
+ 823              	.L60:
+ 260:Src/drv_i2c.c **** 		}
+ 261:Src/drv_i2c.c **** 		if ( i2ccount2 >= 2048 ) byteerror = 1;
+ 824              		.loc 1 261 0 is_stmt 1
+ 825 00ae B4F5006F 		cmp	r4, #2048
+ 826 00b2 01DB     		blt	.L62
+ 827 00b4 4FF0010A 		mov	r10, #1
+ 828              	.L62:
+ 262:Src/drv_i2c.c **** 		
+ 263:Src/drv_i2c.c ****     data[index] = I2C_ReceiveData(I2C1);
+ 829              		.loc 1 263 0
+ 830 00b8 2846     		mov	r0, r5
+ 831 00ba FFF7FEFF 		bl	I2C_ReceiveData
+ 832              	.LVL74:
+ 833 00be 49F82700 		str	r0, [r9, r7, lsl #2]
+ 264:Src/drv_i2c.c **** 	  index++;
+ 834              		.loc 1 264 0
+ 835 00c2 0137     		adds	r7, r7, #1
+ 836              	.LVL75:
+ 265:Src/drv_i2c.c **** 	  if ( index == size-1 )  I2C_Acknowledge_Enable(I2C1, DISABLE);
+ 837              		.loc 1 265 0
+ 838 00c4 08F1FF33 		add	r3, r8, #-1
+ 839 00c8 BB42     		cmp	r3, r7
+ 840 00ca 09D1     		bne	.L74
+ 841              		.loc 1 265 0 is_stmt 0 discriminator 1
+ 842 00cc 2846     		mov	r0, r5
+ 843 00ce 0021     		movs	r1, #0
+ 844 00d0 FFF7FEFF 		bl	I2C_Acknowledge_Enable
+ 845              	.LVL76:
+ 846 00d4 04E0     		b	.L74
+ 847              	.LVL77:
+ 848              	.L70:
+ 849 00d6 4FF0000A 		mov	r10, #0
+ 850 00da 5746     		mov	r7, r10
+ 851              	.L75:
+ 257:Src/drv_i2c.c **** 	  while(!I2C_StateDetect(I2C1,I2C_PROGRAMMINGMODE_MASTER_BYTE_RECEIVED) && ( i2ccount2 < 2048 ))
+ 852              		.loc 1 257 0 is_stmt 1 discriminator 1
+ 853 00dc 1B4E     		ldr	r6, .L76+20
+ 854 00de 164D     		ldr	r5, .L76
+ 855              	.LVL78:
+ 856              	.L74:
+ 254:Src/drv_i2c.c **** while ( index < size)
+ 857              		.loc 1 254 0 discriminator 1
+ 858 00e0 4745     		cmp	r7, r8
+ 859 00e2 DBDB     		blt	.L72
+ 266:Src/drv_i2c.c **** }
+ 267:Src/drv_i2c.c ****     I2C_StopOnBus_Enable(I2C1, ENABLE);
+ 860              		.loc 1 267 0
+ 861 00e4 1448     		ldr	r0, .L76
+ARM GAS  /tmp/ccrCmAz7.s 			page 21
+
+
+ 862 00e6 0121     		movs	r1, #1
+ 863 00e8 FFF7FEFF 		bl	I2C_StopOnBus_Enable
+ 864              	.LVL79:
+ 268:Src/drv_i2c.c **** // wait for stop
+ 269:Src/drv_i2c.c **** #ifdef WAITFORSTOP	
+ 270:Src/drv_i2c.c ****    while(I2C1->CTLR1&0x0200 && I2CTIMEOUTCONDITION) i2ccount++;
+ 865              		.loc 1 270 0
+ 866 00ec 1249     		ldr	r1, .L76
+ 867 00ee 144A     		ldr	r2, .L76+8
+ 868 00f0 41F69B70 		movw	r0, #8091
+ 869 00f4 01E0     		b	.L65
+ 870              	.L67:
+ 871              		.loc 1 270 0 is_stmt 0 discriminator 1
+ 872 00f6 0133     		adds	r3, r3, #1
+ 873 00f8 1360     		str	r3, [r2]
+ 874              	.L65:
+ 875 00fa 0B88     		ldrh	r3, [r1]
+ 876 00fc 03F40073 		and	r3, r3, #512
+ 877 0100 9BB2     		uxth	r3, r3
+ 878 0102 13B1     		cbz	r3, .L66
+ 879              		.loc 1 270 0 discriminator 2
+ 880 0104 1368     		ldr	r3, [r2]
+ 881 0106 8342     		cmp	r3, r0
+ 882 0108 F5D9     		bls	.L67
+ 883              	.L66:
+ 271:Src/drv_i2c.c **** #endif
+ 272:Src/drv_i2c.c **** 
+ 273:Src/drv_i2c.c **** 	if ( !I2CTIMEOUTCONDITION || byteerror) 
+ 884              		.loc 1 273 0 is_stmt 1
+ 885 010a 0D4B     		ldr	r3, .L76+8
+ 886 010c 1A68     		ldr	r2, [r3]
+ 887 010e 41F69B73 		movw	r3, #8091
+ 888 0112 9A42     		cmp	r2, r3
+ 889 0114 02D8     		bhi	.L68
+ 890              		.loc 1 273 0 is_stmt 0 discriminator 1
+ 891 0116 BAF1000F 		cmp	r10, #0
+ 892 011a 05D0     		beq	.L73
+ 893              	.L68:
+ 274:Src/drv_i2c.c **** 	{
+ 275:Src/drv_i2c.c **** 		liberror++;
+ 894              		.loc 1 275 0 is_stmt 1
+ 895 011c 0C4B     		ldr	r3, .L76+24
+ 896 011e 1A68     		ldr	r2, [r3]
+ 897 0120 0132     		adds	r2, r2, #1
+ 898 0122 1A60     		str	r2, [r3]
+ 899              	.LVL80:
+ 276:Src/drv_i2c.c **** 		error = 1;
+ 900              		.loc 1 276 0
+ 901 0124 0124     		movs	r4, #1
+ 902 0126 00E0     		b	.L69
+ 903              	.LVL81:
+ 904              	.L73:
+ 227:Src/drv_i2c.c **** 	int error = 0;
+ 905              		.loc 1 227 0
+ 906 0128 0024     		movs	r4, #0
+ 907              	.LVL82:
+ 908              	.L69:
+ARM GAS  /tmp/ccrCmAz7.s 			page 22
+
+
+ 277:Src/drv_i2c.c **** 	}
+ 278:Src/drv_i2c.c ****   I2C_Acknowledge_Enable(I2C1,DISABLE);
+ 909              		.loc 1 278 0
+ 910 012a 0348     		ldr	r0, .L76
+ 911 012c 0021     		movs	r1, #0
+ 912 012e FFF7FEFF 		bl	I2C_Acknowledge_Enable
+ 913              	.LVL83:
+ 279:Src/drv_i2c.c **** 	
+ 280:Src/drv_i2c.c **** 	return error;
+ 281:Src/drv_i2c.c **** }
+ 914              		.loc 1 281 0
+ 915 0132 2046     		mov	r0, r4
+ 916 0134 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 917              	.LVL84:
+ 918              	.L77:
+ 919              		.align	2
+ 920              	.L76:
+ 921 0138 00540040 		.word	1073763328
+ 922 013c 84000700 		.word	458884
+ 923 0140 00000000 		.word	.LANCHOR0
+ 924 0144 01000300 		.word	196609
+ 925 0148 02000300 		.word	196610
+ 926 014c 40000300 		.word	196672
+ 927 0150 00000000 		.word	liberror
+ 928              		.cfi_endproc
+ 929              	.LFE33:
+ 931              		.comm	liberror,4,4
+ 932              		.section	.bss.i2ccount,"aw",%nobits
+ 933              		.align	2
+ 934              		.set	.LANCHOR0,. + 0
+ 937              	i2ccount:
+ 938 0000 00000000 		.space	4
+ 939              		.text
+ 940              	.Letext0:
+ 941              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 942              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 943              		.file 4 "CMSIS/gd32f1x0.h"
+ 944              		.file 5 "Peripherals/inc/gd32f1x0_gpio.h"
+ 945              		.file 6 "Peripherals/inc/gd32f1x0_i2c.h"
+ 946              		.file 7 "CMSIS/core_cm3.h"
+ 947              		.file 8 "Src/drv_time.h"
+ 948              		.file 9 "Peripherals/inc/gd32f1x0_rcc.h"
+ARM GAS  /tmp/ccrCmAz7.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_i2c.c
+     /tmp/ccrCmAz7.s:17     .text.i2c_init:00000000 $t
+     /tmp/ccrCmAz7.s:22     .text.i2c_init:00000000 i2c_init
+     /tmp/ccrCmAz7.s:268    .text.i2c_init:00000164 $d
+     /tmp/ccrCmAz7.s:275    .text.i2c_sendheader:00000000 $t
+     /tmp/ccrCmAz7.s:280    .text.i2c_sendheader:00000000 i2c_sendheader
+     /tmp/ccrCmAz7.s:381    .text.i2c_sendheader:0000008c $d
+     /tmp/ccrCmAz7.s:389    .text.i2c_writereg:00000000 $t
+     /tmp/ccrCmAz7.s:394    .text.i2c_writereg:00000000 i2c_writereg
+     /tmp/ccrCmAz7.s:488    .text.i2c_writereg:00000078 $d
+                            *COM*:00000004 liberror
+     /tmp/ccrCmAz7.s:496    .text.i2c_readreg:00000000 $t
+     /tmp/ccrCmAz7.s:501    .text.i2c_readreg:00000000 i2c_readreg
+     /tmp/ccrCmAz7.s:674    .text.i2c_readreg:000000f0 $d
+     /tmp/ccrCmAz7.s:684    .text.i2c_readdata:00000000 $t
+     /tmp/ccrCmAz7.s:689    .text.i2c_readdata:00000000 i2c_readdata
+     /tmp/ccrCmAz7.s:921    .text.i2c_readdata:00000138 $d
+     /tmp/ccrCmAz7.s:933    .bss.i2ccount:00000000 $d
+     /tmp/ccrCmAz7.s:937    .bss.i2ccount:00000000 i2ccount
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphClock_Enable
+GPIO_Init
+delay
+GPIO_ReadInputBit
+GPIO_WriteBit
+GPIO_PinAFConfig
+I2C_Init
+I2C_Enable
+I2C_Acknowledge_Enable
+I2C_NACKPosition_Enable
+I2C_GetBitState
+I2C_StartOnBus_Enable
+I2C_StateDetect
+I2C_SendData
+I2C_StopOnBus_Enable
+I2C_ReceiveData

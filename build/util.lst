@@ -1,0 +1,816 @@
+ARM GAS  /tmp/ccF1ztc0.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"util.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.global	__aeabi_fcmple
+  17              		.global	__aeabi_fdiv
+  18              		.global	__aeabi_fmul
+  19              		.global	__aeabi_fcmpgt
+  20              		.section	.text.lpfcalc,"ax",%progbits
+  21              		.align	2
+  22              		.global	lpfcalc
+  23              		.thumb
+  24              		.thumb_func
+  26              	lpfcalc:
+  27              	.LFB0:
+  28              		.file 1 "Src/util.c"
+   1:Src/util.c    **** /*
+   2:Src/util.c    **** The MIT License (MIT)
+   3:Src/util.c    **** 
+   4:Src/util.c    **** Copyright (c) 2015 silverx
+   5:Src/util.c    **** 
+   6:Src/util.c    **** Permission is hereby granted, free of charge, to any person obtaining a copy
+   7:Src/util.c    **** of this software and associated documentation files (the "Software"), to deal
+   8:Src/util.c    **** in the Software without restriction, including without limitation the rights
+   9:Src/util.c    **** to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  10:Src/util.c    **** copies of the Software, and to permit persons to whom the Software is
+  11:Src/util.c    **** furnished to do so, subject to the following conditions:
+  12:Src/util.c    **** 
+  13:Src/util.c    **** The above copyright notice and this permission notice shall be included in
+  14:Src/util.c    **** all copies or substantial portions of the Software.
+  15:Src/util.c    **** 
+  16:Src/util.c    **** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  17:Src/util.c    **** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  18:Src/util.c    **** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  19:Src/util.c    **** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  20:Src/util.c    **** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  21:Src/util.c    **** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  22:Src/util.c    **** THE SOFTWARE.
+  23:Src/util.c    **** */
+  24:Src/util.c    **** 
+  25:Src/util.c    **** 
+  26:Src/util.c    **** #include <math.h>
+  27:Src/util.c    **** #include "util.h"
+  28:Src/util.c    **** #include "drv_time.h"
+  29:Src/util.c    **** 
+  30:Src/util.c    **** // calculates the coefficient for lpf filter, times in the same units
+ARM GAS  /tmp/ccF1ztc0.s 			page 2
+
+
+  31:Src/util.c    **** float lpfcalc( float sampleperiod , float filtertime)
+  32:Src/util.c    **** {
+  29              		.loc 1 32 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              	.LVL0:
+  34 0000 38B5     		push	{r3, r4, r5, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 16
+  37              		.cfi_offset 3, -16
+  38              		.cfi_offset 4, -12
+  39              		.cfi_offset 5, -8
+  40              		.cfi_offset 14, -4
+  41 0002 0546     		mov	r5, r0
+  42 0004 0C46     		mov	r4, r1
+  33:Src/util.c    **** 	if ( sampleperiod <= 0 ) return 0;
+  43              		.loc 1 33 0
+  44 0006 0021     		movs	r1, #0
+  45              	.LVL1:
+  46 0008 FFF7FEFF 		bl	__aeabi_fcmple
+  47              	.LVL2:
+  48 000c E0B9     		cbnz	r0, .L4
+  34:Src/util.c    ****   if ( filtertime <= 0 ) return 1;
+  49              		.loc 1 34 0
+  50 000e 2046     		mov	r0, r4
+  51 0010 0021     		movs	r1, #0
+  52 0012 FFF7FEFF 		bl	__aeabi_fcmple
+  53              	.LVL3:
+  54 0016 C8B9     		cbnz	r0, .L5
+  35:Src/util.c    ****    float ga = expf(-1.0f/( (1.0f/ sampleperiod) * (filtertime) ));
+  55              		.loc 1 35 0
+  56 0018 4FF07E50 		mov	r0, #1065353216
+  57 001c 2946     		mov	r1, r5
+  58 001e FFF7FEFF 		bl	__aeabi_fdiv
+  59              	.LVL4:
+  60 0022 2146     		mov	r1, r4
+  61 0024 FFF7FEFF 		bl	__aeabi_fmul
+  62              	.LVL5:
+  63 0028 0146     		mov	r1, r0
+  64 002a 0A48     		ldr	r0, .L7
+  65 002c FFF7FEFF 		bl	__aeabi_fdiv
+  66              	.LVL6:
+  67 0030 FFF7FEFF 		bl	expf
+  68              	.LVL7:
+  69 0034 0446     		mov	r4, r0
+  70              	.LVL8:
+  36:Src/util.c    **** 	if (ga > 1) ga = 1;
+  71              		.loc 1 36 0
+  72 0036 4FF07E51 		mov	r1, #1065353216
+  73 003a FFF7FEFF 		bl	__aeabi_fcmpgt
+  74              	.LVL9:
+  75 003e 08B1     		cbz	r0, .L3
+  76 0040 4FF07E54 		mov	r4, #1065353216
+  77              	.LVL10:
+  78              	.L3:
+  37:Src/util.c    **** 	return ga;
+ARM GAS  /tmp/ccF1ztc0.s 			page 3
+
+
+  79              		.loc 1 37 0
+  80 0044 2046     		mov	r0, r4
+  81 0046 38BD     		pop	{r3, r4, r5, pc}
+  82              	.LVL11:
+  83              	.L4:
+  33:Src/util.c    **** 	if ( sampleperiod <= 0 ) return 0;
+  84              		.loc 1 33 0
+  85 0048 0020     		movs	r0, #0
+  86 004a 38BD     		pop	{r3, r4, r5, pc}
+  87              	.LVL12:
+  88              	.L5:
+  34:Src/util.c    ****   if ( filtertime <= 0 ) return 1;
+  89              		.loc 1 34 0
+  90 004c 4FF07E50 		mov	r0, #1065353216
+  38:Src/util.c    **** }
+  91              		.loc 1 38 0
+  92 0050 38BD     		pop	{r3, r4, r5, pc}
+  93              	.LVL13:
+  94              	.L8:
+  95 0052 00BF     		.align	2
+  96              	.L7:
+  97 0054 000080BF 		.word	-1082130432
+  98              		.cfi_endproc
+  99              	.LFE0:
+ 101              		.global	__aeabi_fsub
+ 102              		.global	__aeabi_fadd
+ 103              		.section	.text.mapf,"ax",%progbits
+ 104              		.align	2
+ 105              		.global	mapf
+ 106              		.thumb
+ 107              		.thumb_func
+ 109              	mapf:
+ 110              	.LFB1:
+  39:Src/util.c    **** 
+  40:Src/util.c    **** 
+  41:Src/util.c    **** float mapf(float x, float in_min, float in_max, float out_min, float out_max)
+  42:Src/util.c    **** {
+ 111              		.loc 1 42 0
+ 112              		.cfi_startproc
+ 113              		@ args = 4, pretend = 0, frame = 0
+ 114              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115              	.LVL14:
+ 116 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 117              	.LCFI1:
+ 118              		.cfi_def_cfa_offset 24
+ 119              		.cfi_offset 3, -24
+ 120              		.cfi_offset 4, -20
+ 121              		.cfi_offset 5, -16
+ 122              		.cfi_offset 6, -12
+ 123              		.cfi_offset 7, -8
+ 124              		.cfi_offset 14, -4
+ 125 0002 0E46     		mov	r6, r1
+ 126 0004 1746     		mov	r7, r2
+ 127 0006 1C46     		mov	r4, r3
+  43:Src/util.c    **** 
+  44:Src/util.c    **** return ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
+ 128              		.loc 1 44 0
+ARM GAS  /tmp/ccF1ztc0.s 			page 4
+
+
+ 129 0008 FFF7FEFF 		bl	__aeabi_fsub
+ 130              	.LVL15:
+ 131 000c 0546     		mov	r5, r0
+ 132 000e 0698     		ldr	r0, [sp, #24]	@ float
+ 133 0010 2146     		mov	r1, r4
+ 134 0012 FFF7FEFF 		bl	__aeabi_fsub
+ 135              	.LVL16:
+ 136 0016 0146     		mov	r1, r0
+ 137 0018 2846     		mov	r0, r5
+ 138 001a FFF7FEFF 		bl	__aeabi_fmul
+ 139              	.LVL17:
+ 140 001e 0546     		mov	r5, r0
+ 141 0020 3846     		mov	r0, r7
+ 142 0022 3146     		mov	r1, r6
+ 143 0024 FFF7FEFF 		bl	__aeabi_fsub
+ 144              	.LVL18:
+ 145 0028 0146     		mov	r1, r0
+ 146 002a 2846     		mov	r0, r5
+ 147 002c FFF7FEFF 		bl	__aeabi_fdiv
+ 148              	.LVL19:
+ 149 0030 2146     		mov	r1, r4
+ 150 0032 FFF7FEFF 		bl	__aeabi_fadd
+ 151              	.LVL20:
+  45:Src/util.c    **** 
+  46:Src/util.c    **** }
+ 152              		.loc 1 46 0
+ 153 0036 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 154              		.cfi_endproc
+ 155              	.LFE1:
+ 157              		.section	.text.lpf,"ax",%progbits
+ 158              		.align	2
+ 159              		.global	lpf
+ 160              		.thumb
+ 161              		.thumb_func
+ 163              	lpf:
+ 164              	.LFB2:
+  47:Src/util.c    **** 
+  48:Src/util.c    **** 
+  49:Src/util.c    **** void lpf( float *out, float in , float coeff)
+  50:Src/util.c    **** {
+ 165              		.loc 1 50 0
+ 166              		.cfi_startproc
+ 167              		@ args = 0, pretend = 0, frame = 0
+ 168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 169              	.LVL21:
+ 170 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 171              	.LCFI2:
+ 172              		.cfi_def_cfa_offset 24
+ 173              		.cfi_offset 3, -24
+ 174              		.cfi_offset 4, -20
+ 175              		.cfi_offset 5, -16
+ 176              		.cfi_offset 6, -12
+ 177              		.cfi_offset 7, -8
+ 178              		.cfi_offset 14, -4
+ 179 0002 0446     		mov	r4, r0
+ 180 0004 0F46     		mov	r7, r1
+ 181 0006 1546     		mov	r5, r2
+ARM GAS  /tmp/ccF1ztc0.s 			page 5
+
+
+  51:Src/util.c    **** 	*out = ( *out )* coeff + in * ( 1-coeff); 
+ 182              		.loc 1 51 0
+ 183 0008 0068     		ldr	r0, [r0]	@ float
+ 184              	.LVL22:
+ 185 000a 1146     		mov	r1, r2
+ 186              	.LVL23:
+ 187 000c FFF7FEFF 		bl	__aeabi_fmul
+ 188              	.LVL24:
+ 189 0010 0646     		mov	r6, r0
+ 190 0012 4FF07E50 		mov	r0, #1065353216
+ 191 0016 2946     		mov	r1, r5
+ 192 0018 FFF7FEFF 		bl	__aeabi_fsub
+ 193              	.LVL25:
+ 194 001c 3946     		mov	r1, r7
+ 195 001e FFF7FEFF 		bl	__aeabi_fmul
+ 196              	.LVL26:
+ 197 0022 0146     		mov	r1, r0
+ 198 0024 3046     		mov	r0, r6
+ 199 0026 FFF7FEFF 		bl	__aeabi_fadd
+ 200              	.LVL27:
+ 201 002a 2060     		str	r0, [r4]	@ float
+ 202 002c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 203              		.cfi_endproc
+ 204              	.LFE2:
+ 206              		.global	__aeabi_fcmplt
+ 207 002e 00BF     		.section	.text.limitf,"ax",%progbits
+ 208              		.align	2
+ 209              		.global	limitf
+ 210              		.thumb
+ 211              		.thumb_func
+ 213              	limitf:
+ 214              	.LFB3:
+  52:Src/util.c    **** }
+  53:Src/util.c    **** 
+  54:Src/util.c    **** 
+  55:Src/util.c    **** void limitf ( float *input , const float limit)
+  56:Src/util.c    **** {
+ 215              		.loc 1 56 0
+ 216              		.cfi_startproc
+ 217              		@ args = 0, pretend = 0, frame = 0
+ 218              		@ frame_needed = 0, uses_anonymous_args = 0
+ 219              	.LVL28:
+ 220 0000 38B5     		push	{r3, r4, r5, lr}
+ 221              	.LCFI3:
+ 222              		.cfi_def_cfa_offset 16
+ 223              		.cfi_offset 3, -16
+ 224              		.cfi_offset 4, -12
+ 225              		.cfi_offset 5, -8
+ 226              		.cfi_offset 14, -4
+ 227 0002 0446     		mov	r4, r0
+ 228 0004 0D46     		mov	r5, r1
+  57:Src/util.c    **** 	if (*input > limit) *input = limit;
+ 229              		.loc 1 57 0
+ 230 0006 0068     		ldr	r0, [r0]	@ float
+ 231              	.LVL29:
+ 232 0008 FFF7FEFF 		bl	__aeabi_fcmpgt
+ 233              	.LVL30:
+ARM GAS  /tmp/ccF1ztc0.s 			page 6
+
+
+ 234 000c 00B1     		cbz	r0, .L12
+ 235              		.loc 1 57 0 is_stmt 0 discriminator 1
+ 236 000e 2560     		str	r5, [r4]	@ float
+ 237              	.L12:
+  58:Src/util.c    **** 	if (*input < - limit) *input = - limit;		
+ 238              		.loc 1 58 0 is_stmt 1
+ 239 0010 05F10045 		add	r5, r5, #-2147483648
+ 240              	.LVL31:
+ 241 0014 2068     		ldr	r0, [r4]	@ float
+ 242 0016 2946     		mov	r1, r5
+ 243 0018 FFF7FEFF 		bl	__aeabi_fcmplt
+ 244              	.LVL32:
+ 245 001c 00B1     		cbz	r0, .L11
+ 246              		.loc 1 58 0 is_stmt 0 discriminator 1
+ 247 001e 2560     		str	r5, [r4]	@ float
+ 248              	.L11:
+ 249 0020 38BD     		pop	{r3, r4, r5, pc}
+ 250              		.cfi_endproc
+ 251              	.LFE3:
+ 253 0022 00BF     		.section	.text.rcexpo,"ax",%progbits
+ 254              		.align	2
+ 255              		.global	rcexpo
+ 256              		.thumb
+ 257              		.thumb_func
+ 259              	rcexpo:
+ 260              	.LFB4:
+  59:Src/util.c    **** }
+  60:Src/util.c    **** 
+  61:Src/util.c    **** float rcexpo ( float in , float exp )
+  62:Src/util.c    **** {
+ 261              		.loc 1 62 0 is_stmt 1
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 8
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+ 265              	.LVL33:
+ 266 0000 70B5     		push	{r4, r5, r6, lr}
+ 267              	.LCFI4:
+ 268              		.cfi_def_cfa_offset 16
+ 269              		.cfi_offset 4, -16
+ 270              		.cfi_offset 5, -12
+ 271              		.cfi_offset 6, -8
+ 272              		.cfi_offset 14, -4
+ 273 0002 82B0     		sub	sp, sp, #8
+ 274              	.LCFI5:
+ 275              		.cfi_def_cfa_offset 24
+ 276 0004 0546     		mov	r5, r0
+ 277 0006 0C46     		mov	r4, r1
+  63:Src/util.c    **** 	if ( exp > 1 ) exp = 1;
+ 278              		.loc 1 63 0
+ 279 0008 0846     		mov	r0, r1
+ 280              	.LVL34:
+ 281 000a 4FF07E51 		mov	r1, #1065353216
+ 282              	.LVL35:
+ 283 000e FFF7FEFF 		bl	__aeabi_fcmpgt
+ 284              	.LVL36:
+ 285 0012 08B1     		cbz	r0, .L19
+ 286 0014 4FF07E54 		mov	r4, #1065353216
+ARM GAS  /tmp/ccF1ztc0.s 			page 7
+
+
+ 287              	.LVL37:
+ 288              	.L19:
+  64:Src/util.c    **** 	if ( exp < -1 ) exp = -1;
+ 289              		.loc 1 64 0
+ 290 0018 2046     		mov	r0, r4
+ 291 001a 1349     		ldr	r1, .L23
+ 292 001c FFF7FEFF 		bl	__aeabi_fcmplt
+ 293              	.LVL38:
+ 294 0020 00B1     		cbz	r0, .L20
+ 295 0022 114C     		ldr	r4, .L23
+ 296              	.LVL39:
+ 297              	.L20:
+  65:Src/util.c    **** 	float ans = in*in*in * exp + in * ( 1 - exp );
+ 298              		.loc 1 65 0
+ 299 0024 2846     		mov	r0, r5
+ 300 0026 2946     		mov	r1, r5
+ 301 0028 FFF7FEFF 		bl	__aeabi_fmul
+ 302              	.LVL40:
+ 303 002c 2946     		mov	r1, r5
+ 304 002e FFF7FEFF 		bl	__aeabi_fmul
+ 305              	.LVL41:
+ 306 0032 2146     		mov	r1, r4
+ 307 0034 FFF7FEFF 		bl	__aeabi_fmul
+ 308              	.LVL42:
+ 309 0038 0646     		mov	r6, r0
+ 310 003a 4FF07E50 		mov	r0, #1065353216
+ 311 003e 2146     		mov	r1, r4
+ 312 0040 FFF7FEFF 		bl	__aeabi_fsub
+ 313              	.LVL43:
+ 314 0044 2946     		mov	r1, r5
+ 315 0046 FFF7FEFF 		bl	__aeabi_fmul
+ 316              	.LVL44:
+ 317 004a 0146     		mov	r1, r0
+ 318 004c 3046     		mov	r0, r6
+ 319 004e FFF7FEFF 		bl	__aeabi_fadd
+ 320              	.LVL45:
+ 321 0052 02AB     		add	r3, sp, #8
+ 322 0054 43F8040D 		str	r0, [r3, #-4]!	@ float
+  66:Src/util.c    **** 	limitf( &ans , 1.0);
+ 323              		.loc 1 66 0
+ 324 0058 1846     		mov	r0, r3
+ 325 005a 4FF07E51 		mov	r1, #1065353216
+ 326 005e FFF7FEFF 		bl	limitf
+ 327              	.LVL46:
+  67:Src/util.c    **** 	return ans;
+  68:Src/util.c    **** }
+ 328              		.loc 1 68 0
+ 329 0062 0198     		ldr	r0, [sp, #4]	@ float
+ 330 0064 02B0     		add	sp, sp, #8
+ 331              		@ sp needed
+ 332 0066 70BD     		pop	{r4, r5, r6, pc}
+ 333              	.LVL47:
+ 334              	.L24:
+ 335              		.align	2
+ 336              	.L23:
+ 337 0068 000080BF 		.word	-1082130432
+ 338              		.cfi_endproc
+ARM GAS  /tmp/ccF1ztc0.s 			page 8
+
+
+ 339              	.LFE4:
+ 341              		.section	.text.TS,"ax",%progbits
+ 342              		.align	2
+ 343              		.global	TS
+ 344              		.thumb
+ 345              		.thumb_func
+ 347              	TS:
+ 348              	.LFB5:
+  69:Src/util.c    **** 
+  70:Src/util.c    **** 
+  71:Src/util.c    **** // timing routines for debugging
+  72:Src/util.c    **** static unsigned long timestart;
+  73:Src/util.c    **** unsigned long timeend;
+  74:Src/util.c    **** 
+  75:Src/util.c    **** // timestart
+  76:Src/util.c    **** void TS( void)
+  77:Src/util.c    **** {
+ 349              		.loc 1 77 0
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 0
+ 352              		@ frame_needed = 0, uses_anonymous_args = 0
+ 353 0000 08B5     		push	{r3, lr}
+ 354              	.LCFI6:
+ 355              		.cfi_def_cfa_offset 8
+ 356              		.cfi_offset 3, -8
+ 357              		.cfi_offset 14, -4
+  78:Src/util.c    **** 	timestart = gettime(); 
+ 358              		.loc 1 78 0
+ 359 0002 FFF7FEFF 		bl	gettime
+ 360              	.LVL48:
+ 361 0006 014B     		ldr	r3, .L26
+ 362 0008 1860     		str	r0, [r3]
+ 363 000a 08BD     		pop	{r3, pc}
+ 364              	.L27:
+ 365              		.align	2
+ 366              	.L26:
+ 367 000c 00000000 		.word	.LANCHOR0
+ 368              		.cfi_endproc
+ 369              	.LFE5:
+ 371              		.section	.text.TE,"ax",%progbits
+ 372              		.align	2
+ 373              		.global	TE
+ 374              		.thumb
+ 375              		.thumb_func
+ 377              	TE:
+ 378              	.LFB6:
+  79:Src/util.c    **** }
+  80:Src/util.c    **** // timeend
+  81:Src/util.c    **** void TE( void)
+  82:Src/util.c    **** {
+ 379              		.loc 1 82 0
+ 380              		.cfi_startproc
+ 381              		@ args = 0, pretend = 0, frame = 0
+ 382              		@ frame_needed = 0, uses_anonymous_args = 0
+ 383 0000 08B5     		push	{r3, lr}
+ 384              	.LCFI7:
+ 385              		.cfi_def_cfa_offset 8
+ARM GAS  /tmp/ccF1ztc0.s 			page 9
+
+
+ 386              		.cfi_offset 3, -8
+ 387              		.cfi_offset 14, -4
+  83:Src/util.c    **** 	timeend =( gettime() - timestart );	
+ 388              		.loc 1 83 0
+ 389 0002 FFF7FEFF 		bl	gettime
+ 390              	.LVL49:
+ 391 0006 034B     		ldr	r3, .L29
+ 392 0008 1B68     		ldr	r3, [r3]
+ 393 000a C01A     		subs	r0, r0, r3
+ 394 000c 024A     		ldr	r2, .L29+4
+ 395 000e 1060     		str	r0, [r2]
+ 396 0010 08BD     		pop	{r3, pc}
+ 397              	.L30:
+ 398 0012 00BF     		.align	2
+ 399              	.L29:
+ 400 0014 00000000 		.word	.LANCHOR0
+ 401 0018 00000000 		.word	timeend
+ 402              		.cfi_endproc
+ 403              	.LFE6:
+ 405              		.global	__aeabi_dadd
+ 406              		.global	__aeabi_d2f
+ 407              		.global	__aeabi_f2d
+ 408              		.global	__aeabi_dcmplt
+ 409              		.global	__aeabi_dsub
+ 410              		.global	__aeabi_dcmpgt
+ 411              		.global	__aeabi_dmul
+ 412              		.section	.text.fastsin,"ax",%progbits
+ 413              		.align	2
+ 414              		.global	fastsin
+ 415              		.thumb
+ 416              		.thumb_func
+ 418              	fastsin:
+ 419              	.LFB7:
+  84:Src/util.c    **** }
+  85:Src/util.c    **** 
+  86:Src/util.c    **** 
+  87:Src/util.c    **** 
+  88:Src/util.c    **** float fastsin( float x )
+  89:Src/util.c    **** {
+ 420              		.loc 1 89 0
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424              	.LVL50:
+ 425 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 426              	.LCFI8:
+ 427              		.cfi_def_cfa_offset 32
+ 428              		.cfi_offset 4, -32
+ 429              		.cfi_offset 5, -28
+ 430              		.cfi_offset 6, -24
+ 431              		.cfi_offset 7, -20
+ 432              		.cfi_offset 8, -16
+ 433              		.cfi_offset 9, -12
+ 434              		.cfi_offset 10, -8
+ 435              		.cfi_offset 14, -4
+ 436 0004 8246     		mov	r10, r0
+  90:Src/util.c    ****  //always wrap input angle to -PI..PI
+ARM GAS  /tmp/ccF1ztc0.s 			page 10
+
+
+  91:Src/util.c    **** while (x < -3.14159265)
+ 437              		.loc 1 91 0
+ 438 0006 36A7     		adr	r7, .L43
+ 439 0008 D7E90067 		ldrd	r6, [r7]
+  92:Src/util.c    ****     x += 6.28318531;
+ 440              		.loc 1 92 0
+ 441 000c 0FF2D809 		adr	r9, .L43+8
+ 442 0010 D9E90089 		ldrd	r8, [r9]
+  91:Src/util.c    **** while (x < -3.14159265)
+ 443              		.loc 1 91 0
+ 444 0014 08E0     		b	.L32
+ 445              	.LVL51:
+ 446              	.L33:
+ 447              		.loc 1 92 0
+ 448 0016 2046     		mov	r0, r4
+ 449 0018 2946     		mov	r1, r5
+ 450 001a 4246     		mov	r2, r8
+ 451 001c 4B46     		mov	r3, r9
+ 452 001e FFF7FEFF 		bl	__aeabi_dadd
+ 453              	.LVL52:
+ 454 0022 FFF7FEFF 		bl	__aeabi_d2f
+ 455              	.LVL53:
+ 456 0026 8246     		mov	r10, r0
+ 457              	.LVL54:
+ 458              	.L32:
+  91:Src/util.c    **** while (x < -3.14159265)
+ 459              		.loc 1 91 0 discriminator 1
+ 460 0028 5046     		mov	r0, r10
+ 461 002a FFF7FEFF 		bl	__aeabi_f2d
+ 462              	.LVL55:
+ 463 002e 0446     		mov	r4, r0
+ 464 0030 0D46     		mov	r5, r1
+ 465 0032 3246     		mov	r2, r6
+ 466 0034 3B46     		mov	r3, r7
+ 467 0036 FFF7FEFF 		bl	__aeabi_dcmplt
+ 468              	.LVL56:
+ 469 003a 0028     		cmp	r0, #0
+ 470 003c EBD1     		bne	.L33
+ 471 003e 09E0     		b	.L40
+ 472              	.L35:
+  93:Src/util.c    **** 
+  94:Src/util.c    **** while (x >  3.14159265)
+  95:Src/util.c    ****     x -= 6.28318531;
+ 473              		.loc 1 95 0
+ 474 0040 2046     		mov	r0, r4
+ 475 0042 2946     		mov	r1, r5
+ 476 0044 4246     		mov	r2, r8
+ 477 0046 4B46     		mov	r3, r9
+ 478 0048 FFF7FEFF 		bl	__aeabi_dsub
+ 479              	.LVL57:
+ 480 004c FFF7FEFF 		bl	__aeabi_d2f
+ 481              	.LVL58:
+ 482 0050 8246     		mov	r10, r0
+ 483              	.LVL59:
+ 484 0052 06E0     		b	.L41
+ 485              	.LVL60:
+ 486              	.L40:
+ARM GAS  /tmp/ccF1ztc0.s 			page 11
+
+
+  94:Src/util.c    **** while (x >  3.14159265)
+ 487              		.loc 1 94 0 discriminator 1
+ 488 0054 26A7     		adr	r7, .L43+16
+ 489 0056 D7E90067 		ldrd	r6, [r7]
+ 490              		.loc 1 95 0 discriminator 1
+ 491 005a 0FF28C09 		adr	r9, .L43+8
+ 492 005e D9E90089 		ldrd	r8, [r9]
+ 493              	.L41:
+  94:Src/util.c    **** while (x >  3.14159265)
+ 494              		.loc 1 94 0 discriminator 1
+ 495 0062 5046     		mov	r0, r10
+ 496 0064 FFF7FEFF 		bl	__aeabi_f2d
+ 497              	.LVL61:
+ 498 0068 0446     		mov	r4, r0
+ 499 006a 0D46     		mov	r5, r1
+ 500 006c 3246     		mov	r2, r6
+ 501 006e 3B46     		mov	r3, r7
+ 502 0070 FFF7FEFF 		bl	__aeabi_dcmpgt
+ 503              	.LVL62:
+ 504 0074 0028     		cmp	r0, #0
+ 505 0076 E3D1     		bne	.L35
+  96:Src/util.c    **** float sin1;
+  97:Src/util.c    **** 
+  98:Src/util.c    **** //compute sine
+  99:Src/util.c    **** if (x < 0)
+ 506              		.loc 1 99 0
+ 507 0078 5046     		mov	r0, r10
+ 508 007a 0021     		movs	r1, #0
+ 509 007c FFF7FEFF 		bl	__aeabi_fcmplt
+ 510              	.LVL63:
+ 511 0080 A8B1     		cbz	r0, .L42
+ 100:Src/util.c    ****    sin1 = (1.27323954 + .405284735 * x) *x;
+ 512              		.loc 1 100 0
+ 513 0082 2046     		mov	r0, r4
+ 514 0084 2946     		mov	r1, r5
+ 515 0086 1CA3     		adr	r3, .L43+24
+ 516 0088 D3E90023 		ldrd	r2, [r3]
+ 517 008c FFF7FEFF 		bl	__aeabi_dmul
+ 518              	.LVL64:
+ 519 0090 1BA3     		adr	r3, .L43+32
+ 520 0092 D3E90023 		ldrd	r2, [r3]
+ 521 0096 FFF7FEFF 		bl	__aeabi_dadd
+ 522              	.LVL65:
+ 523 009a 0246     		mov	r2, r0
+ 524 009c 0B46     		mov	r3, r1
+ 525 009e 2046     		mov	r0, r4
+ 526 00a0 2946     		mov	r1, r5
+ 527 00a2 FFF7FEFF 		bl	__aeabi_dmul
+ 528              	.LVL66:
+ 529 00a6 FFF7FEFF 		bl	__aeabi_d2f
+ 530              	.LVL67:
+ 531 00aa BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 532              	.LVL68:
+ 533              	.L42:
+ 101:Src/util.c    **** else
+ 102:Src/util.c    ****    sin1 = (1.27323954 - .405284735 * x) *x;
+ 534              		.loc 1 102 0
+ARM GAS  /tmp/ccF1ztc0.s 			page 12
+
+
+ 535 00ae 2046     		mov	r0, r4
+ 536 00b0 2946     		mov	r1, r5
+ 537 00b2 11A3     		adr	r3, .L43+24
+ 538 00b4 D3E90023 		ldrd	r2, [r3]
+ 539 00b8 FFF7FEFF 		bl	__aeabi_dmul
+ 540              	.LVL69:
+ 541 00bc 0246     		mov	r2, r0
+ 542 00be 0B46     		mov	r3, r1
+ 543 00c0 0FA1     		adr	r1, .L43+32
+ 544 00c2 D1E90001 		ldrd	r0, [r1]
+ 545 00c6 FFF7FEFF 		bl	__aeabi_dsub
+ 546              	.LVL70:
+ 547 00ca 0246     		mov	r2, r0
+ 548 00cc 0B46     		mov	r3, r1
+ 549 00ce 2046     		mov	r0, r4
+ 550 00d0 2946     		mov	r1, r5
+ 551 00d2 FFF7FEFF 		bl	__aeabi_dmul
+ 552              	.LVL71:
+ 553 00d6 FFF7FEFF 		bl	__aeabi_d2f
+ 554              	.LVL72:
+ 103:Src/util.c    **** 
+ 104:Src/util.c    **** 
+ 105:Src/util.c    **** return sin1; 
+ 106:Src/util.c    ****     
+ 107:Src/util.c    **** } 
+ 555              		.loc 1 107 0
+ 556 00da BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 557              	.LVL73:
+ 558              	.L44:
+ 559 00de 00BF     		.align	3
+ 560              	.L43:
+ 561 00e0 F1D4C853 		.word	1405670641
+ 562 00e4 FB2109C0 		.word	-1073143301
+ 563 00e8 68A17454 		.word	1416929640
+ 564 00ec FB211940 		.word	1075388923
+ 565 00f0 F1D4C853 		.word	1405670641
+ 566 00f4 FB210940 		.word	1074340347
+ 567 00f8 59279962 		.word	1654204249
+ 568 00fc 2FF0D93F 		.word	1071247407
+ 569 0100 A662846C 		.word	1820615334
+ 570 0104 305FF43F 		.word	1072979760
+ 571              		.cfi_endproc
+ 572              	.LFE7:
+ 574              		.section	.text.fastcos,"ax",%progbits
+ 575              		.align	2
+ 576              		.global	fastcos
+ 577              		.thumb
+ 578              		.thumb_func
+ 580              	fastcos:
+ 581              	.LFB8:
+ 108:Src/util.c    **** 
+ 109:Src/util.c    **** 
+ 110:Src/util.c    **** float fastcos( float x )
+ 111:Src/util.c    **** {
+ 582              		.loc 1 111 0
+ 583              		.cfi_startproc
+ 584              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccF1ztc0.s 			page 13
+
+
+ 585              		@ frame_needed = 0, uses_anonymous_args = 0
+ 586              	.LVL74:
+ 587 0000 08B5     		push	{r3, lr}
+ 588              	.LCFI9:
+ 589              		.cfi_def_cfa_offset 8
+ 590              		.cfi_offset 3, -8
+ 591              		.cfi_offset 14, -4
+ 112:Src/util.c    ****  x += 1.57079632;
+ 592              		.loc 1 112 0
+ 593 0002 FFF7FEFF 		bl	__aeabi_f2d
+ 594              	.LVL75:
+ 595 0006 06A3     		adr	r3, .L46
+ 596 0008 D3E90023 		ldrd	r2, [r3]
+ 597 000c FFF7FEFF 		bl	__aeabi_dadd
+ 598              	.LVL76:
+ 599 0010 FFF7FEFF 		bl	__aeabi_d2f
+ 600              	.LVL77:
+ 113:Src/util.c    **** 	return fastsin(x);
+ 601              		.loc 1 113 0
+ 602 0014 FFF7FEFF 		bl	fastsin
+ 603              	.LVL78:
+ 114:Src/util.c    **** }
+ 604              		.loc 1 114 0
+ 605 0018 08BD     		pop	{r3, pc}
+ 606              	.L47:
+ 607 001a 00BFAFF3 		.align	3
+ 607      0080
+ 608              	.L46:
+ 609 0020 023C7152 		.word	1383152642
+ 610 0024 FB21F93F 		.word	1073291771
+ 611              		.cfi_endproc
+ 612              	.LFE8:
+ 614              		.comm	timeend,4,4
+ 615              		.section	.bss.timestart,"aw",%nobits
+ 616              		.align	2
+ 617              		.set	.LANCHOR0,. + 0
+ 620              	timestart:
+ 621 0000 00000000 		.space	4
+ 622              		.text
+ 623              	.Letext0:
+ 624              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/math.h"
+ 625              		.file 3 "Src/drv_time.h"
+ARM GAS  /tmp/ccF1ztc0.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 util.c
+     /tmp/ccF1ztc0.s:21     .text.lpfcalc:00000000 $t
+     /tmp/ccF1ztc0.s:26     .text.lpfcalc:00000000 lpfcalc
+     /tmp/ccF1ztc0.s:97     .text.lpfcalc:00000054 $d
+     /tmp/ccF1ztc0.s:104    .text.mapf:00000000 $t
+     /tmp/ccF1ztc0.s:109    .text.mapf:00000000 mapf
+     /tmp/ccF1ztc0.s:158    .text.lpf:00000000 $t
+     /tmp/ccF1ztc0.s:163    .text.lpf:00000000 lpf
+     /tmp/ccF1ztc0.s:208    .text.limitf:00000000 $t
+     /tmp/ccF1ztc0.s:213    .text.limitf:00000000 limitf
+     /tmp/ccF1ztc0.s:254    .text.rcexpo:00000000 $t
+     /tmp/ccF1ztc0.s:259    .text.rcexpo:00000000 rcexpo
+     /tmp/ccF1ztc0.s:337    .text.rcexpo:00000068 $d
+     /tmp/ccF1ztc0.s:342    .text.TS:00000000 $t
+     /tmp/ccF1ztc0.s:347    .text.TS:00000000 TS
+     /tmp/ccF1ztc0.s:367    .text.TS:0000000c $d
+     /tmp/ccF1ztc0.s:372    .text.TE:00000000 $t
+     /tmp/ccF1ztc0.s:377    .text.TE:00000000 TE
+     /tmp/ccF1ztc0.s:400    .text.TE:00000014 $d
+                            *COM*:00000004 timeend
+     /tmp/ccF1ztc0.s:413    .text.fastsin:00000000 $t
+     /tmp/ccF1ztc0.s:418    .text.fastsin:00000000 fastsin
+     /tmp/ccF1ztc0.s:561    .text.fastsin:000000e0 $d
+     /tmp/ccF1ztc0.s:575    .text.fastcos:00000000 $t
+     /tmp/ccF1ztc0.s:580    .text.fastcos:00000000 fastcos
+     /tmp/ccF1ztc0.s:609    .text.fastcos:00000020 $d
+     /tmp/ccF1ztc0.s:616    .bss.timestart:00000000 $d
+     /tmp/ccF1ztc0.s:620    .bss.timestart:00000000 timestart
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+__aeabi_fcmple
+__aeabi_fdiv
+__aeabi_fmul
+__aeabi_fcmpgt
+expf
+__aeabi_fsub
+__aeabi_fadd
+__aeabi_fcmplt
+gettime
+__aeabi_dadd
+__aeabi_d2f
+__aeabi_f2d
+__aeabi_dcmplt
+__aeabi_dsub
+__aeabi_dcmpgt
+__aeabi_dmul

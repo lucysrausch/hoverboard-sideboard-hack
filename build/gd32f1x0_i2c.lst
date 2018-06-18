@@ -1,0 +1,2457 @@
+ARM GAS  /tmp/ccgzj87C.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"gd32f1x0_i2c.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.I2C_DeInit,"ax",%progbits
+  17              		.align	2
+  18              		.global	I2C_DeInit
+  19              		.thumb
+  20              		.thumb_func
+  22              	I2C_DeInit:
+  23              	.LFB29:
+  24              		.file 1 "Peripherals/src/gd32f1x0_i2c.c"
+   1:Peripherals/src/gd32f1x0_i2c.c **** /**
+   2:Peripherals/src/gd32f1x0_i2c.c ****   ******************************************************************************
+   3:Peripherals/src/gd32f1x0_i2c.c ****   * @file    gd32f1x0_i2c.c
+   4:Peripherals/src/gd32f1x0_i2c.c ****   * @author  MCU SD
+   5:Peripherals/src/gd32f1x0_i2c.c ****   * @version V1.0.1
+   6:Peripherals/src/gd32f1x0_i2c.c ****   * @date    6-Sep-2014
+   7:Peripherals/src/gd32f1x0_i2c.c ****   * @brief   I2C functions of the firmware library.
+   8:Peripherals/src/gd32f1x0_i2c.c ****   ******************************************************************************
+   9:Peripherals/src/gd32f1x0_i2c.c ****   */
+  10:Peripherals/src/gd32f1x0_i2c.c **** 
+  11:Peripherals/src/gd32f1x0_i2c.c **** /* Includes ------------------------------------------------------------------*/
+  12:Peripherals/src/gd32f1x0_i2c.c **** #include "gd32f1x0_i2c.h"
+  13:Peripherals/src/gd32f1x0_i2c.c **** #include "gd32f1x0_rcc.h"
+  14:Peripherals/src/gd32f1x0_i2c.c **** 
+  15:Peripherals/src/gd32f1x0_i2c.c **** /** @addtogroup GD32F1x0_Firmware
+  16:Peripherals/src/gd32f1x0_i2c.c ****   * @{
+  17:Peripherals/src/gd32f1x0_i2c.c ****   */
+  18:Peripherals/src/gd32f1x0_i2c.c **** 
+  19:Peripherals/src/gd32f1x0_i2c.c **** /** @defgroup I2C 
+  20:Peripherals/src/gd32f1x0_i2c.c ****   * @brief I2C driver modules
+  21:Peripherals/src/gd32f1x0_i2c.c ****   * @{
+  22:Peripherals/src/gd32f1x0_i2c.c ****   */ 
+  23:Peripherals/src/gd32f1x0_i2c.c **** 
+  24:Peripherals/src/gd32f1x0_i2c.c **** /** @defgroup I2C_Private_Defines
+  25:Peripherals/src/gd32f1x0_i2c.c ****   * @{
+  26:Peripherals/src/gd32f1x0_i2c.c ****   */
+  27:Peripherals/src/gd32f1x0_i2c.c **** 
+  28:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_I2CEN mask */
+  29:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_I2CEN_SET             I2C_CTLR1_I2CEN
+  30:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_I2CEN_RESET           ((uint16_t)~I2C_CTLR1_I2CEN)
+  31:Peripherals/src/gd32f1x0_i2c.c **** 
+  32:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_GENSTA mask */
+  33:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_GENSTA_SET            I2C_CTLR1_GENSTA
+  34:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_GENSTA_RESET          ((uint16_t)~I2C_CTLR1_GENSTA)
+ARM GAS  /tmp/ccgzj87C.s 			page 2
+
+
+  35:Peripherals/src/gd32f1x0_i2c.c **** 
+  36:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_GENSTP mask */
+  37:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_GENSTP_SET            I2C_CTLR1_GENSTP
+  38:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_GENSTP_RESET          ((uint16_t)~I2C_CTLR1_GENSTP)
+  39:Peripherals/src/gd32f1x0_i2c.c **** 
+  40:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_ACKEN mask */
+  41:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_ACKEN_SET             I2C_CTLR1_ACKEN
+  42:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_ACKEN_RESET           ((uint16_t)~I2C_CTLR1_ACKEN)
+  43:Peripherals/src/gd32f1x0_i2c.c **** 
+  44:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_GCEN mask */
+  45:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_GCEN_SET              I2C_CTLR1_GCEN
+  46:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_GCEN_RESET            ((uint16_t)~I2C_CTLR1_GCEN)
+  47:Peripherals/src/gd32f1x0_i2c.c **** 
+  48:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_SRESET mask */
+  49:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_SRESET_SET            I2C_CTLR1_SRESET
+  50:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_SRESET_RESET          ((uint16_t)~I2C_CTLR1_SRESET)
+  51:Peripherals/src/gd32f1x0_i2c.c **** 
+  52:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_SALT mask */
+  53:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_SALT_SET              I2C_CTLR1_SALT
+  54:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_SALT_RESET            ((uint16_t)~I2C_CTLR1_SALT)
+  55:Peripherals/src/gd32f1x0_i2c.c **** 
+  56:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_PECTRANS mask */
+  57:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_PECTRANS_SET          I2C_CTLR1_PECTRANS
+  58:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_PECTRANS_RESET        ((uint16_t)~I2C_CTLR1_PECTRANS)
+  59:Peripherals/src/gd32f1x0_i2c.c **** 
+  60:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_PECEN mask */
+  61:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_PECEN_SET             I2C_CTLR1_PECEN
+  62:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_PECEN_RESET           ((uint16_t)~I2C_CTLR1_PECEN)
+  63:Peripherals/src/gd32f1x0_i2c.c **** 
+  64:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_ARPEN mask */
+  65:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_ARPEN_SET             I2C_CTLR1_ARPEN
+  66:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_ARPEN_RESET           ((uint16_t)~I2C_CTLR1_ARPEN)
+  67:Peripherals/src/gd32f1x0_i2c.c **** 
+  68:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR1_DISSTRC mask */
+  69:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_DISSTRC_SET           I2C_CTLR1_DISSTRC
+  70:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_DISSTRC_RESET         ((uint16_t)~I2C_CTLR1_DISSTRC)
+  71:Peripherals/src/gd32f1x0_i2c.c **** 
+  72:Peripherals/src/gd32f1x0_i2c.c **** /* I2C registers Masks */
+  73:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR1_CLEAR_MASK            ((uint16_t)0xFBF5)
+  74:Peripherals/src/gd32f1x0_i2c.c **** 
+  75:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR2_DMAON mask */
+  76:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR2_DMAON_SET             I2C_CTLR2_DMAON
+  77:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR2_DMAON_RESET           ((uint16_t)~I2C_CTLR2_DMAON)
+  78:Peripherals/src/gd32f1x0_i2c.c **** 
+  79:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR2_DMALST mask */
+  80:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR2_DMALST_SET            I2C_CTLR2_DMALST
+  81:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR2_DMALST_RESET          ((uint16_t)~I2C_CTLR2_DMALST)
+  82:Peripherals/src/gd32f1x0_i2c.c **** 
+  83:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CTLR2_I2CCLK mask */
+  84:Peripherals/src/gd32f1x0_i2c.c **** #define CTLR2_I2CCLK_RESET          ((uint16_t)0xFFC0)
+  85:Peripherals/src/gd32f1x0_i2c.c **** 
+  86:Peripherals/src/gd32f1x0_i2c.c **** /* I2C I2CCLK_Freq_MAX */
+  87:Peripherals/src/gd32f1x0_i2c.c **** #define I2CCLK_FREQ_MAX             I2C_CTLR2_I2CCLK
+  88:Peripherals/src/gd32f1x0_i2c.c **** 
+  89:Peripherals/src/gd32f1x0_i2c.c **** /* I2C AR1_ADDRESS0 mask */
+  90:Peripherals/src/gd32f1x0_i2c.c **** #define AR1_ADDRESS0_SET            I2C_AR1_ADDRESS0
+  91:Peripherals/src/gd32f1x0_i2c.c **** #define AR1_ADDRESS0_RESET          ((uint16_t)~I2C_AR1_ADDRESS0)
+ARM GAS  /tmp/ccgzj87C.s 			page 3
+
+
+  92:Peripherals/src/gd32f1x0_i2c.c **** 
+  93:Peripherals/src/gd32f1x0_i2c.c **** /* I2C AR2_DUADEN mask */
+  94:Peripherals/src/gd32f1x0_i2c.c **** #define AR2_DUADEN_SET              ((uint16_t)0x0001)
+  95:Peripherals/src/gd32f1x0_i2c.c **** #define AR2_DUADEN_RESET            ((uint16_t)0xFFFE)
+  96:Peripherals/src/gd32f1x0_i2c.c **** 
+  97:Peripherals/src/gd32f1x0_i2c.c **** /* I2C AR2_ADDRESS2 mask */
+  98:Peripherals/src/gd32f1x0_i2c.c **** #define AR2_ADDRESS2_RESET          ((uint16_t)0xFF01)
+  99:Peripherals/src/gd32f1x0_i2c.c **** 
+ 100:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CLKR_FAST mask */
+ 101:Peripherals/src/gd32f1x0_i2c.c **** #define CLKR_FAST_SET               ((uint16_t)0x8000)
+ 102:Peripherals/src/gd32f1x0_i2c.c **** 
+ 103:Peripherals/src/gd32f1x0_i2c.c **** /* I2C CLKR_CLKC mask */
+ 104:Peripherals/src/gd32f1x0_i2c.c **** #define CLKR_CLKC_SET               ((uint16_t)0x0FFF)
+ 105:Peripherals/src/gd32f1x0_i2c.c **** 
+ 106:Peripherals/src/gd32f1x0_i2c.c **** /* I2C STR_FLAG mask */
+ 107:Peripherals/src/gd32f1x0_i2c.c **** #define STR_FLAG_MASK               ((uint32_t)0x00FFFFFF)
+ 108:Peripherals/src/gd32f1x0_i2c.c **** 
+ 109:Peripherals/src/gd32f1x0_i2c.c **** /* I2C Interrupt Enable mask */
+ 110:Peripherals/src/gd32f1x0_i2c.c **** #define INTEN_MASK                  ((uint32_t)0x07000000)
+ 111:Peripherals/src/gd32f1x0_i2c.c **** 
+ 112:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 113:Peripherals/src/gd32f1x0_i2c.c ****   * @}
+ 114:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 115:Peripherals/src/gd32f1x0_i2c.c **** 
+ 116:Peripherals/src/gd32f1x0_i2c.c **** /** @defgroup I2C_Private_Functions
+ 117:Peripherals/src/gd32f1x0_i2c.c ****   * @{
+ 118:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 119:Peripherals/src/gd32f1x0_i2c.c **** 
+ 120:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 121:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Reset the I2Cx interface.
+ 122:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 123:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 124:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 125:Peripherals/src/gd32f1x0_i2c.c **** void I2C_DeInit(I2C_TypeDef* I2Cx)
+ 126:Peripherals/src/gd32f1x0_i2c.c **** {
+  25              		.loc 1 126 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29              	.LVL0:
+  30 0000 08B5     		push	{r3, lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+ 127:Peripherals/src/gd32f1x0_i2c.c ****     if (I2Cx == I2C1 )
+  35              		.loc 1 127 0
+  36 0002 124B     		ldr	r3, .L5
+  37 0004 9842     		cmp	r0, r3
+  38 0006 0AD1     		bne	.L2
+ 128:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 129:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C1 reset state */
+ 130:Peripherals/src/gd32f1x0_i2c.c ****         RCC_APB1PeriphReset_Enable(RCC_APB1PERIPH_I2C1RST, ENABLE);
+  39              		.loc 1 130 0
+  40 0008 4FF40010 		mov	r0, #2097152
+  41              	.LVL1:
+  42 000c 0121     		movs	r1, #1
+ARM GAS  /tmp/ccgzj87C.s 			page 4
+
+
+  43 000e FFF7FEFF 		bl	RCC_APB1PeriphReset_Enable
+  44              	.LVL2:
+ 131:Peripherals/src/gd32f1x0_i2c.c ****         /* Release I2C1 from reset state */
+ 132:Peripherals/src/gd32f1x0_i2c.c ****         RCC_APB1PeriphReset_Enable(RCC_APB1PERIPH_I2C1RST, DISABLE);
+  45              		.loc 1 132 0
+  46 0012 4FF40010 		mov	r0, #2097152
+  47 0016 0021     		movs	r1, #0
+  48 0018 FFF7FEFF 		bl	RCC_APB1PeriphReset_Enable
+  49              	.LVL3:
+  50 001c 08BD     		pop	{r3, pc}
+  51              	.LVL4:
+  52              	.L2:
+ 133:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 134:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 135:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 136:Peripherals/src/gd32f1x0_i2c.c ****         if(I2Cx == I2C2 )
+  53              		.loc 1 136 0
+  54 001e 0C4B     		ldr	r3, .L5+4
+  55 0020 9842     		cmp	r0, r3
+  56 0022 0AD1     		bne	.L4
+ 137:Peripherals/src/gd32f1x0_i2c.c ****         {
+ 138:Peripherals/src/gd32f1x0_i2c.c ****             /* Enable I2C2 reset state */
+ 139:Peripherals/src/gd32f1x0_i2c.c ****             RCC_APB1PeriphReset_Enable(RCC_APB1PERIPH_I2C2RST, ENABLE);
+  57              		.loc 1 139 0
+  58 0024 4FF48000 		mov	r0, #4194304
+  59              	.LVL5:
+  60 0028 0121     		movs	r1, #1
+  61 002a FFF7FEFF 		bl	RCC_APB1PeriphReset_Enable
+  62              	.LVL6:
+ 140:Peripherals/src/gd32f1x0_i2c.c ****             /* Release I2C2 from reset state */
+ 141:Peripherals/src/gd32f1x0_i2c.c ****             RCC_APB1PeriphReset_Enable(RCC_APB1PERIPH_I2C2RST, DISABLE);
+  63              		.loc 1 141 0
+  64 002e 4FF48000 		mov	r0, #4194304
+  65 0032 0021     		movs	r1, #0
+  66 0034 FFF7FEFF 		bl	RCC_APB1PeriphReset_Enable
+  67              	.LVL7:
+  68 0038 08BD     		pop	{r3, pc}
+  69              	.LVL8:
+  70              	.L4:
+ 142:Peripherals/src/gd32f1x0_i2c.c ****         }
+ 143:Peripherals/src/gd32f1x0_i2c.c ****         else
+ 144:Peripherals/src/gd32f1x0_i2c.c ****         {
+ 145:Peripherals/src/gd32f1x0_i2c.c ****             /* Enable I2C3 reset state */
+ 146:Peripherals/src/gd32f1x0_i2c.c ****             RCC_APB1PeriphReset_Enable(RCC_ARCR_I2C3RST, ENABLE);
+  71              		.loc 1 146 0
+  72 003a 0120     		movs	r0, #1
+  73              	.LVL9:
+  74 003c 0146     		mov	r1, r0
+  75 003e FFF7FEFF 		bl	RCC_APB1PeriphReset_Enable
+  76              	.LVL10:
+ 147:Peripherals/src/gd32f1x0_i2c.c ****             /* Release I2C3 from reset state */
+ 148:Peripherals/src/gd32f1x0_i2c.c ****             RCC_APB1PeriphReset_Enable(RCC_ARCR_I2C3RST, DISABLE);
+  77              		.loc 1 148 0
+  78 0042 0120     		movs	r0, #1
+  79 0044 0021     		movs	r1, #0
+  80 0046 FFF7FEFF 		bl	RCC_APB1PeriphReset_Enable
+  81              	.LVL11:
+ARM GAS  /tmp/ccgzj87C.s 			page 5
+
+
+  82 004a 08BD     		pop	{r3, pc}
+  83              	.L6:
+  84              		.align	2
+  85              	.L5:
+  86 004c 00540040 		.word	1073763328
+  87 0050 00580040 		.word	1073764352
+  88              		.cfi_endproc
+  89              	.LFE29:
+  91              		.section	.text.I2C_Init,"ax",%progbits
+  92              		.align	2
+  93              		.global	I2C_Init
+  94              		.thumb
+  95              		.thumb_func
+  97              	I2C_Init:
+  98              	.LFB30:
+ 149:Peripherals/src/gd32f1x0_i2c.c ****         }
+ 150:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 151:Peripherals/src/gd32f1x0_i2c.c **** }
+ 152:Peripherals/src/gd32f1x0_i2c.c **** 
+ 153:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 154:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Initialize the I2Cx interface parameters.
+ 155:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 156:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_InitParaStruct: the sturct I2C_InitPara pointer.
+ 157:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 158:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 159:Peripherals/src/gd32f1x0_i2c.c **** void I2C_Init(I2C_TypeDef* I2Cx, I2C_InitPara* I2C_InitParaStruct)
+ 160:Peripherals/src/gd32f1x0_i2c.c **** {
+  99              		.loc 1 160 0
+ 100              		.cfi_startproc
+ 101              		@ args = 0, pretend = 0, frame = 32
+ 102              		@ frame_needed = 0, uses_anonymous_args = 0
+ 103              	.LVL12:
+ 104 0000 70B5     		push	{r4, r5, r6, lr}
+ 105              	.LCFI1:
+ 106              		.cfi_def_cfa_offset 16
+ 107              		.cfi_offset 4, -16
+ 108              		.cfi_offset 5, -12
+ 109              		.cfi_offset 6, -8
+ 110              		.cfi_offset 14, -4
+ 111 0002 88B0     		sub	sp, sp, #32
+ 112              	.LCFI2:
+ 113              		.cfi_def_cfa_offset 48
+ 114 0004 0446     		mov	r4, r0
+ 115 0006 0E46     		mov	r6, r1
+ 116              	.LVL13:
+ 161:Peripherals/src/gd32f1x0_i2c.c ****     uint16_t temp = 0, freqrange = 0;
+ 162:Peripherals/src/gd32f1x0_i2c.c ****     uint16_t result = 0x04;
+ 163:Peripherals/src/gd32f1x0_i2c.c ****     uint32_t pclk1 = 8000000;
+ 164:Peripherals/src/gd32f1x0_i2c.c ****     RCC_ClocksPara rcc_clocks;
+ 165:Peripherals/src/gd32f1x0_i2c.c ****     
+ 166:Peripherals/src/gd32f1x0_i2c.c ****     /* Disable I2C */
+ 167:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->CTLR1 &= CTLR1_I2CEN_RESET;
+ 117              		.loc 1 167 0
+ 118 0008 0388     		ldrh	r3, [r0]
+ 119 000a 23F00103 		bic	r3, r3, #1
+ 120 000e 1B04     		lsls	r3, r3, #16
+ 121 0010 1B0C     		lsrs	r3, r3, #16
+ARM GAS  /tmp/ccgzj87C.s 			page 6
+
+
+ 122 0012 0380     		strh	r3, [r0]	@ movhi
+ 168:Peripherals/src/gd32f1x0_i2c.c ****     
+ 169:Peripherals/src/gd32f1x0_i2c.c ****     /* CTLR2 */
+ 170:Peripherals/src/gd32f1x0_i2c.c ****     temp = I2Cx->CTLR2;
+ 123              		.loc 1 170 0
+ 124 0014 8588     		ldrh	r5, [r0, #4]
+ 125              	.LVL14:
+ 171:Peripherals/src/gd32f1x0_i2c.c ****     
+ 172:Peripherals/src/gd32f1x0_i2c.c ****     /* I2CCLK[5:0] */
+ 173:Peripherals/src/gd32f1x0_i2c.c ****     temp &= CTLR2_I2CCLK_RESET;
+ 126              		.loc 1 173 0
+ 127 0016 25F03F05 		bic	r5, r5, #63
+ 128              	.LVL15:
+ 129 001a 2D04     		lsls	r5, r5, #16
+ 130 001c 2D0C     		lsrs	r5, r5, #16
+ 131              	.LVL16:
+ 174:Peripherals/src/gd32f1x0_i2c.c ****     RCC_GetClocksFreq(&rcc_clocks);
+ 132              		.loc 1 174 0
+ 133 001e 01A8     		add	r0, sp, #4
+ 134              	.LVL17:
+ 135 0020 FFF7FEFF 		bl	RCC_GetClocksFreq
+ 136              	.LVL18:
+ 175:Peripherals/src/gd32f1x0_i2c.c ****     pclk1 = rcc_clocks.APB1_Frequency;
+ 137              		.loc 1 175 0
+ 138 0024 0399     		ldr	r1, [sp, #12]
+ 139              	.LVL19:
+ 176:Peripherals/src/gd32f1x0_i2c.c ****     freqrange = (uint16_t)(pclk1 / 1000000);
+ 140              		.loc 1 176 0
+ 141 0026 2B4B     		ldr	r3, .L18
+ 142 0028 A3FB0103 		umull	r0, r3, r3, r1
+ 143 002c 9B0C     		lsrs	r3, r3, #18
+ 144              	.LVL20:
+ 177:Peripherals/src/gd32f1x0_i2c.c ****     if(freqrange>I2CCLK_FREQ_MAX)
+ 145              		.loc 1 177 0
+ 146 002e 3F2B     		cmp	r3, #63
+ 147 0030 00D9     		bls	.L8
+ 178:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 179:Peripherals/src/gd32f1x0_i2c.c ****         freqrange=I2CCLK_FREQ_MAX;
+ 148              		.loc 1 179 0
+ 149 0032 3F23     		movs	r3, #63
+ 150              	.LVL21:
+ 151              	.L8:
+ 180:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 181:Peripherals/src/gd32f1x0_i2c.c ****     temp |= freqrange;
+ 152              		.loc 1 181 0
+ 153 0034 1D43     		orrs	r5, r5, r3
+ 154              	.LVL22:
+ 182:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->CTLR2 = temp;
+ 155              		.loc 1 182 0
+ 156 0036 A580     		strh	r5, [r4, #4]	@ movhi
+ 157              	.LVL23:
+ 183:Peripherals/src/gd32f1x0_i2c.c ****     
+ 184:Peripherals/src/gd32f1x0_i2c.c ****     /* RTR and CLKR */
+ 185:Peripherals/src/gd32f1x0_i2c.c ****     temp = 0;
+ 186:Peripherals/src/gd32f1x0_i2c.c ****     
+ 187:Peripherals/src/gd32f1x0_i2c.c ****     if (I2C_InitParaStruct->I2C_BitRate <= 100000)
+ 158              		.loc 1 187 0
+ARM GAS  /tmp/ccgzj87C.s 			page 7
+
+
+ 159 0038 7268     		ldr	r2, [r6, #4]
+ 160 003a 2748     		ldr	r0, .L18+4
+ 161 003c 8242     		cmp	r2, r0
+ 162 003e 0FD8     		bhi	.L9
+ 188:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 189:Peripherals/src/gd32f1x0_i2c.c ****         /* Standard mode */
+ 190:Peripherals/src/gd32f1x0_i2c.c ****         result = (uint16_t)(pclk1 / (I2C_InitParaStruct->I2C_BitRate << 1));
+ 163              		.loc 1 190 0
+ 164 0040 5200     		lsls	r2, r2, #1
+ 165 0042 B1FBF2F2 		udiv	r2, r1, r2
+ 166 0046 92B2     		uxth	r2, r2
+ 167              	.LVL24:
+ 191:Peripherals/src/gd32f1x0_i2c.c ****         if (result < 0x04)
+ 168              		.loc 1 191 0
+ 169 0048 032A     		cmp	r2, #3
+ 170 004a 00D8     		bhi	.L10
+ 192:Peripherals/src/gd32f1x0_i2c.c ****         {
+ 193:Peripherals/src/gd32f1x0_i2c.c ****             /* The CLKR.CLKC higher than 0x04 in standard mode*/
+ 194:Peripherals/src/gd32f1x0_i2c.c ****             result = 0x04;
+ 171              		.loc 1 194 0
+ 172 004c 0422     		movs	r2, #4
+ 173              	.LVL25:
+ 174              	.L10:
+ 195:Peripherals/src/gd32f1x0_i2c.c ****         }
+ 196:Peripherals/src/gd32f1x0_i2c.c ****         temp |= result;
+ 197:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CLKR = temp;
+ 175              		.loc 1 197 0
+ 176 004e A283     		strh	r2, [r4, #28]	@ movhi
+ 198:Peripherals/src/gd32f1x0_i2c.c ****         
+ 199:Peripherals/src/gd32f1x0_i2c.c ****         /* RTR */
+ 200:Peripherals/src/gd32f1x0_i2c.c ****         if(freqrange>=I2CCLK_FREQ_MAX)
+ 177              		.loc 1 200 0
+ 178 0050 3E2B     		cmp	r3, #62
+ 179 0052 02D9     		bls	.L11
+ 201:Peripherals/src/gd32f1x0_i2c.c ****         {
+ 202:Peripherals/src/gd32f1x0_i2c.c ****             I2Cx->RTR = I2CCLK_FREQ_MAX;
+ 180              		.loc 1 202 0
+ 181 0054 3F23     		movs	r3, #63
+ 182              	.LVL26:
+ 183 0056 2384     		strh	r3, [r4, #32]	@ movhi
+ 184 0058 2AE0     		b	.L12
+ 185              	.LVL27:
+ 186              	.L11:
+ 203:Peripherals/src/gd32f1x0_i2c.c ****         }
+ 204:Peripherals/src/gd32f1x0_i2c.c ****         else
+ 205:Peripherals/src/gd32f1x0_i2c.c ****         {
+ 206:Peripherals/src/gd32f1x0_i2c.c ****             I2Cx->RTR = freqrange + 1;
+ 187              		.loc 1 206 0
+ 188 005a 0133     		adds	r3, r3, #1
+ 189              	.LVL28:
+ 190 005c 2384     		strh	r3, [r4, #32]	@ movhi
+ 191 005e 27E0     		b	.L12
+ 192              	.LVL29:
+ 193              	.L9:
+ 207:Peripherals/src/gd32f1x0_i2c.c ****         }
+ 208:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 209:Peripherals/src/gd32f1x0_i2c.c ****     else
+ARM GAS  /tmp/ccgzj87C.s 			page 8
+
+
+ 210:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 211:Peripherals/src/gd32f1x0_i2c.c ****         /* Fast mode */
+ 212:Peripherals/src/gd32f1x0_i2c.c ****         if (I2C_InitParaStruct->I2C_DutyCycle == I2C_DUTYCYCLE_2)
+ 194              		.loc 1 212 0
+ 195 0060 7588     		ldrh	r5, [r6, #2]
+ 196 0062 4BF6FF70 		movw	r0, #49151
+ 197 0066 8542     		cmp	r5, r0
+ 198 0068 05D1     		bne	.L13
+ 213:Peripherals/src/gd32f1x0_i2c.c ****         {
+ 214:Peripherals/src/gd32f1x0_i2c.c ****             /* I2C_DutyCycle == 2 */
+ 215:Peripherals/src/gd32f1x0_i2c.c ****             result = (uint16_t)(pclk1 / (I2C_InitParaStruct->I2C_BitRate * 3));
+ 199              		.loc 1 215 0
+ 200 006a 02EB4202 		add	r2, r2, r2, lsl #1
+ 201 006e B1FBF2F2 		udiv	r2, r1, r2
+ 202 0072 92B2     		uxth	r2, r2
+ 203              	.LVL30:
+ 204 0074 08E0     		b	.L14
+ 205              	.LVL31:
+ 206              	.L13:
+ 216:Peripherals/src/gd32f1x0_i2c.c ****         }
+ 217:Peripherals/src/gd32f1x0_i2c.c ****         else
+ 218:Peripherals/src/gd32f1x0_i2c.c ****         {
+ 219:Peripherals/src/gd32f1x0_i2c.c ****             /* I2C_DutyCycle == 16/9 */
+ 220:Peripherals/src/gd32f1x0_i2c.c ****             result = (uint16_t)(pclk1 / (I2C_InitParaStruct->I2C_BitRate * 25));
+ 207              		.loc 1 220 0
+ 208 0076 02EB8202 		add	r2, r2, r2, lsl #2
+ 209 007a 02EB8202 		add	r2, r2, r2, lsl #2
+ 210 007e B1FBF2F2 		udiv	r2, r1, r2
+ 211 0082 92B2     		uxth	r2, r2
+ 212              	.LVL32:
+ 221:Peripherals/src/gd32f1x0_i2c.c ****             result |= I2C_DUTYCYCLE_16_9;
+ 213              		.loc 1 221 0
+ 214 0084 42F48042 		orr	r2, r2, #16384
+ 215              	.LVL33:
+ 216              	.L14:
+ 222:Peripherals/src/gd32f1x0_i2c.c ****         }
+ 223:Peripherals/src/gd32f1x0_i2c.c ****         
+ 224:Peripherals/src/gd32f1x0_i2c.c ****         if ((result & CLKR_CLKC_SET) == 0)
+ 217              		.loc 1 224 0
+ 218 0088 C2F30B01 		ubfx	r1, r2, #0, #12
+ 219              	.LVL34:
+ 220 008c 09B9     		cbnz	r1, .L15
+ 225:Peripherals/src/gd32f1x0_i2c.c ****         {
+ 226:Peripherals/src/gd32f1x0_i2c.c ****             /* The CLKR.CLKC higher than 0x01 in fast mode*/
+ 227:Peripherals/src/gd32f1x0_i2c.c ****             result |= (uint16_t)0x0001;  
+ 221              		.loc 1 227 0
+ 222 008e 42F00102 		orr	r2, r2, #1
+ 223              	.LVL35:
+ 224              	.L15:
+ 228:Peripherals/src/gd32f1x0_i2c.c ****         }
+ 229:Peripherals/src/gd32f1x0_i2c.c ****         temp |= (uint16_t)(result | CLKR_FAST_SET);
+ 225              		.loc 1 229 0
+ 226 0092 42F40042 		orr	r2, r2, #32768
+ 227              	.LVL36:
+ 230:Peripherals/src/gd32f1x0_i2c.c ****         
+ 231:Peripherals/src/gd32f1x0_i2c.c ****         /* RTR */
+ 232:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->RTR = (uint16_t)(((freqrange * (uint16_t)300) / (uint16_t)1000) + (uint16_t)1);
+ARM GAS  /tmp/ccgzj87C.s 			page 9
+
+
+ 228              		.loc 1 232 0
+ 229 0096 4FF49671 		mov	r1, #300
+ 230 009a 01FB03F3 		mul	r3, r1, r3
+ 231              	.LVL37:
+ 232 009e 0F49     		ldr	r1, .L18+8
+ 233 00a0 81FB0301 		smull	r0, r1, r1, r3
+ 234 00a4 DB17     		asrs	r3, r3, #31
+ 235 00a6 C3EBA113 		rsb	r3, r3, r1, asr #6
+ 236 00aa 0133     		adds	r3, r3, #1
+ 237 00ac 9BB2     		uxth	r3, r3
+ 238 00ae 2384     		strh	r3, [r4, #32]	@ movhi
+ 239              	.LVL38:
+ 240              	.L12:
+ 233:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 234:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->CLKR = temp;
+ 241              		.loc 1 234 0
+ 242 00b0 A283     		strh	r2, [r4, #28]	@ movhi
+ 235:Peripherals/src/gd32f1x0_i2c.c ****     
+ 236:Peripherals/src/gd32f1x0_i2c.c ****     /* CTLR1 */
+ 237:Peripherals/src/gd32f1x0_i2c.c ****     temp = I2Cx->CTLR1;
+ 243              		.loc 1 237 0
+ 244 00b2 2388     		ldrh	r3, [r4]
+ 245 00b4 9BB2     		uxth	r3, r3
+ 246              	.LVL39:
+ 238:Peripherals/src/gd32f1x0_i2c.c ****     temp &= CTLR1_CLEAR_MASK;
+ 247              		.loc 1 238 0
+ 248 00b6 23F48163 		bic	r3, r3, #1032
+ 249              	.LVL40:
+ 250 00ba 23F00203 		bic	r3, r3, #2
+ 251              	.LVL41:
+ 239:Peripherals/src/gd32f1x0_i2c.c ****     temp |= (uint16_t)((uint32_t)I2C_InitParaStruct->I2C_Protocol | CTLR1_ACKEN_SET);
+ 252              		.loc 1 239 0
+ 253 00be 3288     		ldrh	r2, [r6]
+ 254 00c0 1343     		orrs	r3, r3, r2
+ 255              	.LVL42:
+ 256 00c2 43F48063 		orr	r3, r3, #1024
+ 257              	.LVL43:
+ 240:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->CTLR1 = temp;
+ 258              		.loc 1 240 0
+ 259 00c6 2380     		strh	r3, [r4]	@ movhi
+ 241:Peripherals/src/gd32f1x0_i2c.c ****     
+ 242:Peripherals/src/gd32f1x0_i2c.c ****     /* AR1 */
+ 243:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->AR1 = (I2C_InitParaStruct->I2C_AddressingMode | I2C_InitParaStruct->I2C_DeviceAddress);
+ 260              		.loc 1 243 0
+ 261 00c8 3289     		ldrh	r2, [r6, #8]
+ 262 00ca 7389     		ldrh	r3, [r6, #10]
+ 263              	.LVL44:
+ 264 00cc 1343     		orrs	r3, r3, r2
+ 265 00ce 2381     		strh	r3, [r4, #8]	@ movhi
+ 244:Peripherals/src/gd32f1x0_i2c.c **** }
+ 266              		.loc 1 244 0
+ 267 00d0 08B0     		add	sp, sp, #32
+ 268              		@ sp needed
+ 269 00d2 70BD     		pop	{r4, r5, r6, pc}
+ 270              	.LVL45:
+ 271              	.L19:
+ 272              		.align	2
+ARM GAS  /tmp/ccgzj87C.s 			page 10
+
+
+ 273              	.L18:
+ 274 00d4 83DE1B43 		.word	1125899907
+ 275 00d8 A0860100 		.word	100000
+ 276 00dc D34D6210 		.word	274877907
+ 277              		.cfi_endproc
+ 278              	.LFE30:
+ 280              		.section	.text.I2C_ParaInit,"ax",%progbits
+ 281              		.align	2
+ 282              		.global	I2C_ParaInit
+ 283              		.thumb
+ 284              		.thumb_func
+ 286              	I2C_ParaInit:
+ 287              	.LFB31:
+ 245:Peripherals/src/gd32f1x0_i2c.c **** 
+ 246:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 247:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Initial the sturct I2C_InitPara
+ 248:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_InitParaStruct: the sturct I2C_InitPara pointer
+ 249:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 250:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 251:Peripherals/src/gd32f1x0_i2c.c **** void I2C_ParaInit(I2C_InitPara* I2C_InitParaStruct)
+ 252:Peripherals/src/gd32f1x0_i2c.c **** {
+ 288              		.loc 1 252 0
+ 289              		.cfi_startproc
+ 290              		@ args = 0, pretend = 0, frame = 0
+ 291              		@ frame_needed = 0, uses_anonymous_args = 0
+ 292              		@ link register save eliminated.
+ 293              	.LVL46:
+ 253:Peripherals/src/gd32f1x0_i2c.c ****     I2C_InitParaStruct->I2C_Protocol = I2C_PROTOCOL_I2C;
+ 294              		.loc 1 253 0
+ 295 0000 0023     		movs	r3, #0
+ 296 0002 0380     		strh	r3, [r0]	@ movhi
+ 254:Peripherals/src/gd32f1x0_i2c.c ****     I2C_InitParaStruct->I2C_DutyCycle = I2C_DUTYCYCLE_2;
+ 297              		.loc 1 254 0
+ 298 0004 4BF6FF73 		movw	r3, #49151
+ 299 0008 4380     		strh	r3, [r0, #2]	@ movhi
+ 255:Peripherals/src/gd32f1x0_i2c.c ****     I2C_InitParaStruct->I2C_BitRate = 10000;
+ 300              		.loc 1 255 0
+ 301 000a 42F21073 		movw	r3, #10000
+ 302 000e 4360     		str	r3, [r0, #4]
+ 256:Peripherals/src/gd32f1x0_i2c.c ****     I2C_InitParaStruct->I2C_AddressingMode = I2C_ADDRESSING_MODE_7BIT;
+ 303              		.loc 1 256 0
+ 304 0010 4FF48043 		mov	r3, #16384
+ 305 0014 0381     		strh	r3, [r0, #8]	@ movhi
+ 257:Peripherals/src/gd32f1x0_i2c.c ****     I2C_InitParaStruct->I2C_DeviceAddress = 0x08;
+ 306              		.loc 1 257 0
+ 307 0016 0823     		movs	r3, #8
+ 308 0018 4381     		strh	r3, [r0, #10]	@ movhi
+ 309 001a 7047     		bx	lr
+ 310              		.cfi_endproc
+ 311              	.LFE31:
+ 313              		.section	.text.I2C_Enable,"ax",%progbits
+ 314              		.align	2
+ 315              		.global	I2C_Enable
+ 316              		.thumb
+ 317              		.thumb_func
+ 319              	I2C_Enable:
+ 320              	.LFB32:
+ARM GAS  /tmp/ccgzj87C.s 			page 11
+
+
+ 258:Peripherals/src/gd32f1x0_i2c.c **** }
+ 259:Peripherals/src/gd32f1x0_i2c.c **** 
+ 260:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 261:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2Cx interface.
+ 262:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 263:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2Cx interface. 
+ 264:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 265:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 266:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 267:Peripherals/src/gd32f1x0_i2c.c **** void I2C_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 268:Peripherals/src/gd32f1x0_i2c.c **** {
+ 321              		.loc 1 268 0
+ 322              		.cfi_startproc
+ 323              		@ args = 0, pretend = 0, frame = 0
+ 324              		@ frame_needed = 0, uses_anonymous_args = 0
+ 325              		@ link register save eliminated.
+ 326              	.LVL47:
+ 269:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 327              		.loc 1 269 0
+ 328 0000 29B1     		cbz	r1, .L22
+ 270:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 271:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable the I2Cx interface */
+ 272:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_I2CEN_SET;
+ 329              		.loc 1 272 0
+ 330 0002 0388     		ldrh	r3, [r0]
+ 331 0004 9BB2     		uxth	r3, r3
+ 332 0006 43F00103 		orr	r3, r3, #1
+ 333 000a 0380     		strh	r3, [r0]	@ movhi
+ 334 000c 7047     		bx	lr
+ 335              	.L22:
+ 273:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 274:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 275:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 276:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable the I2Cx interface */
+ 277:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_I2CEN_RESET;
+ 336              		.loc 1 277 0
+ 337 000e 0388     		ldrh	r3, [r0]
+ 338 0010 23F00103 		bic	r3, r3, #1
+ 339 0014 1B04     		lsls	r3, r3, #16
+ 340 0016 1B0C     		lsrs	r3, r3, #16
+ 341 0018 0380     		strh	r3, [r0]	@ movhi
+ 342 001a 7047     		bx	lr
+ 343              		.cfi_endproc
+ 344              	.LFE32:
+ 346              		.section	.text.I2C_DMA_Enable,"ax",%progbits
+ 347              		.align	2
+ 348              		.global	I2C_DMA_Enable
+ 349              		.thumb
+ 350              		.thumb_func
+ 352              	I2C_DMA_Enable:
+ 353              	.LFB33:
+ 278:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 279:Peripherals/src/gd32f1x0_i2c.c **** }
+ 280:Peripherals/src/gd32f1x0_i2c.c **** 
+ 281:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 282:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2Cx DMA requests.
+ 283:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ARM GAS  /tmp/ccgzj87C.s 			page 12
+
+
+ 284:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C DMA transfer.
+ 285:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 286:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 287:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 288:Peripherals/src/gd32f1x0_i2c.c **** void I2C_DMA_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 289:Peripherals/src/gd32f1x0_i2c.c **** {
+ 354              		.loc 1 289 0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358              		@ link register save eliminated.
+ 359              	.LVL48:
+ 290:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 360              		.loc 1 290 0
+ 361 0000 29B1     		cbz	r1, .L25
+ 291:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 292:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable the I2Cx DMA requests */
+ 293:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR2 |= CTLR2_DMAON_SET;
+ 362              		.loc 1 293 0
+ 363 0002 8388     		ldrh	r3, [r0, #4]
+ 364 0004 9BB2     		uxth	r3, r3
+ 365 0006 43F40063 		orr	r3, r3, #2048
+ 366 000a 8380     		strh	r3, [r0, #4]	@ movhi
+ 367 000c 7047     		bx	lr
+ 368              	.L25:
+ 294:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 295:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 296:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 297:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable the I2Cx DMA requests */
+ 298:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR2 &= CTLR2_DMAON_RESET;
+ 369              		.loc 1 298 0
+ 370 000e 8388     		ldrh	r3, [r0, #4]
+ 371 0010 23F40063 		bic	r3, r3, #2048
+ 372 0014 1B04     		lsls	r3, r3, #16
+ 373 0016 1B0C     		lsrs	r3, r3, #16
+ 374 0018 8380     		strh	r3, [r0, #4]	@ movhi
+ 375 001a 7047     		bx	lr
+ 376              		.cfi_endproc
+ 377              	.LFE33:
+ 379              		.section	.text.I2C_DMALastTransfer_Enable,"ax",%progbits
+ 380              		.align	2
+ 381              		.global	I2C_DMALastTransfer_Enable
+ 382              		.thumb
+ 383              		.thumb_func
+ 385              	I2C_DMALastTransfer_Enable:
+ 386              	.LFB34:
+ 299:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 300:Peripherals/src/gd32f1x0_i2c.c **** }
+ 301:Peripherals/src/gd32f1x0_i2c.c **** 
+ 302:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 303:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the DMA last.
+ 304:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 305:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C DMA last transfer.
+ 306:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 307:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 308:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 309:Peripherals/src/gd32f1x0_i2c.c **** void I2C_DMALastTransfer_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ARM GAS  /tmp/ccgzj87C.s 			page 13
+
+
+ 310:Peripherals/src/gd32f1x0_i2c.c **** {
+ 387              		.loc 1 310 0
+ 388              		.cfi_startproc
+ 389              		@ args = 0, pretend = 0, frame = 0
+ 390              		@ frame_needed = 0, uses_anonymous_args = 0
+ 391              		@ link register save eliminated.
+ 392              	.LVL49:
+ 311:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 393              		.loc 1 311 0
+ 394 0000 29B1     		cbz	r1, .L28
+ 312:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 313:Peripherals/src/gd32f1x0_i2c.c ****         /* Next DMA transfer is the last transfer */
+ 314:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR2 |= CTLR2_DMALST_SET;
+ 395              		.loc 1 314 0
+ 396 0002 8388     		ldrh	r3, [r0, #4]
+ 397 0004 9BB2     		uxth	r3, r3
+ 398 0006 43F48053 		orr	r3, r3, #4096
+ 399 000a 8380     		strh	r3, [r0, #4]	@ movhi
+ 400 000c 7047     		bx	lr
+ 401              	.L28:
+ 315:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 316:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 317:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 318:Peripherals/src/gd32f1x0_i2c.c ****         /* Next DMA transfer is not the last transfer */
+ 319:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR2 &= CTLR2_DMALST_RESET;
+ 402              		.loc 1 319 0
+ 403 000e 8388     		ldrh	r3, [r0, #4]
+ 404 0010 23F48053 		bic	r3, r3, #4096
+ 405 0014 1B04     		lsls	r3, r3, #16
+ 406 0016 1B0C     		lsrs	r3, r3, #16
+ 407 0018 8380     		strh	r3, [r0, #4]	@ movhi
+ 408 001a 7047     		bx	lr
+ 409              		.cfi_endproc
+ 410              	.LFE34:
+ 412              		.section	.text.I2C_StartOnBus_Enable,"ax",%progbits
+ 413              		.align	2
+ 414              		.global	I2C_StartOnBus_Enable
+ 415              		.thumb
+ 416              		.thumb_func
+ 418              	I2C_StartOnBus_Enable:
+ 419              	.LFB35:
+ 320:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 321:Peripherals/src/gd32f1x0_i2c.c **** }
+ 322:Peripherals/src/gd32f1x0_i2c.c **** 
+ 323:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 324:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable I2C_CTLR1_GENSTA control bit.
+ 325:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 326:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C START condition generation.
+ 327:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 328:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None.
+ 329:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 330:Peripherals/src/gd32f1x0_i2c.c **** void I2C_StartOnBus_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 331:Peripherals/src/gd32f1x0_i2c.c **** {
+ 420              		.loc 1 331 0
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccgzj87C.s 			page 14
+
+
+ 424              		@ link register save eliminated.
+ 425              	.LVL50:
+ 332:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 426              		.loc 1 332 0
+ 427 0000 29B1     		cbz	r1, .L31
+ 333:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 334:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_GENSTA control bit */
+ 335:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_GENSTA_SET;
+ 428              		.loc 1 335 0
+ 429 0002 0388     		ldrh	r3, [r0]
+ 430 0004 9BB2     		uxth	r3, r3
+ 431 0006 43F48073 		orr	r3, r3, #256
+ 432 000a 0380     		strh	r3, [r0]	@ movhi
+ 433 000c 7047     		bx	lr
+ 434              	.L31:
+ 336:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 337:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 338:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 339:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_GENSTA control bit */
+ 340:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_GENSTA_RESET;
+ 435              		.loc 1 340 0
+ 436 000e 0388     		ldrh	r3, [r0]
+ 437 0010 23F48073 		bic	r3, r3, #256
+ 438 0014 1B04     		lsls	r3, r3, #16
+ 439 0016 1B0C     		lsrs	r3, r3, #16
+ 440 0018 0380     		strh	r3, [r0]	@ movhi
+ 441 001a 7047     		bx	lr
+ 442              		.cfi_endproc
+ 443              	.LFE35:
+ 445              		.section	.text.I2C_StopOnBus_Enable,"ax",%progbits
+ 446              		.align	2
+ 447              		.global	I2C_StopOnBus_Enable
+ 448              		.thumb
+ 449              		.thumb_func
+ 451              	I2C_StopOnBus_Enable:
+ 452              	.LFB36:
+ 341:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 342:Peripherals/src/gd32f1x0_i2c.c **** }
+ 343:Peripherals/src/gd32f1x0_i2c.c **** 
+ 344:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 345:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable I2C_CTLR1_GENSTP control bit.
+ 346:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 347:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C STOP condition generation.
+ 348:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 349:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None.
+ 350:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 351:Peripherals/src/gd32f1x0_i2c.c **** void I2C_StopOnBus_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 352:Peripherals/src/gd32f1x0_i2c.c **** {
+ 453              		.loc 1 352 0
+ 454              		.cfi_startproc
+ 455              		@ args = 0, pretend = 0, frame = 0
+ 456              		@ frame_needed = 0, uses_anonymous_args = 0
+ 457              		@ link register save eliminated.
+ 458              	.LVL51:
+ 353:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 459              		.loc 1 353 0
+ 460 0000 29B1     		cbz	r1, .L34
+ARM GAS  /tmp/ccgzj87C.s 			page 15
+
+
+ 354:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 355:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_GENSTP control bit */
+ 356:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_GENSTP_SET;
+ 461              		.loc 1 356 0
+ 462 0002 0388     		ldrh	r3, [r0]
+ 463 0004 9BB2     		uxth	r3, r3
+ 464 0006 43F40073 		orr	r3, r3, #512
+ 465 000a 0380     		strh	r3, [r0]	@ movhi
+ 466 000c 7047     		bx	lr
+ 467              	.L34:
+ 357:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 358:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 359:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 360:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_GENSTP control bit */
+ 361:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_GENSTP_RESET;
+ 468              		.loc 1 361 0
+ 469 000e 0388     		ldrh	r3, [r0]
+ 470 0010 23F40073 		bic	r3, r3, #512
+ 471 0014 1B04     		lsls	r3, r3, #16
+ 472 0016 1B0C     		lsrs	r3, r3, #16
+ 473 0018 0380     		strh	r3, [r0]	@ movhi
+ 474 001a 7047     		bx	lr
+ 475              		.cfi_endproc
+ 476              	.LFE36:
+ 478              		.section	.text.I2C_Acknowledge_Enable,"ax",%progbits
+ 479              		.align	2
+ 480              		.global	I2C_Acknowledge_Enable
+ 481              		.thumb
+ 482              		.thumb_func
+ 484              	I2C_Acknowledge_Enable:
+ 485              	.LFB37:
+ 362:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 363:Peripherals/src/gd32f1x0_i2c.c **** }
+ 364:Peripherals/src/gd32f1x0_i2c.c **** 
+ 365:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 366:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_ACKEN control bit.
+ 367:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 368:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C Acknowledgement.
+ 369:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 370:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None.
+ 371:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 372:Peripherals/src/gd32f1x0_i2c.c **** void I2C_Acknowledge_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 373:Peripherals/src/gd32f1x0_i2c.c **** {
+ 486              		.loc 1 373 0
+ 487              		.cfi_startproc
+ 488              		@ args = 0, pretend = 0, frame = 0
+ 489              		@ frame_needed = 0, uses_anonymous_args = 0
+ 490              		@ link register save eliminated.
+ 491              	.LVL52:
+ 374:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 492              		.loc 1 374 0
+ 493 0000 29B1     		cbz	r1, .L37
+ 375:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 376:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_ACKEN control bit */
+ 377:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_ACKEN_SET;
+ 494              		.loc 1 377 0
+ 495 0002 0388     		ldrh	r3, [r0]
+ARM GAS  /tmp/ccgzj87C.s 			page 16
+
+
+ 496 0004 9BB2     		uxth	r3, r3
+ 497 0006 43F48063 		orr	r3, r3, #1024
+ 498 000a 0380     		strh	r3, [r0]	@ movhi
+ 499 000c 7047     		bx	lr
+ 500              	.L37:
+ 378:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 379:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 380:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 381:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_ACKEN control bit */
+ 382:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_ACKEN_RESET;
+ 501              		.loc 1 382 0
+ 502 000e 0388     		ldrh	r3, [r0]
+ 503 0010 23F48063 		bic	r3, r3, #1024
+ 504 0014 1B04     		lsls	r3, r3, #16
+ 505 0016 1B0C     		lsrs	r3, r3, #16
+ 506 0018 0380     		strh	r3, [r0]	@ movhi
+ 507 001a 7047     		bx	lr
+ 508              		.cfi_endproc
+ 509              	.LFE37:
+ 511              		.section	.text.I2C_OwnAddress2,"ax",%progbits
+ 512              		.align	2
+ 513              		.global	I2C_OwnAddress2
+ 514              		.thumb
+ 515              		.thumb_func
+ 517              	I2C_OwnAddress2:
+ 518              	.LFB38:
+ 383:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 384:Peripherals/src/gd32f1x0_i2c.c **** }
+ 385:Peripherals/src/gd32f1x0_i2c.c **** 
+ 386:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 387:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Set the I2Cx own address2.
+ 388:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 389:Peripherals/src/gd32f1x0_i2c.c ****   * @param  Address: specifies the 7bit I2C own address2.
+ 390:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None.
+ 391:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 392:Peripherals/src/gd32f1x0_i2c.c **** void I2C_OwnAddress2(I2C_TypeDef* I2Cx, uint8_t Address)
+ 393:Peripherals/src/gd32f1x0_i2c.c **** {
+ 519              		.loc 1 393 0
+ 520              		.cfi_startproc
+ 521              		@ args = 0, pretend = 0, frame = 0
+ 522              		@ frame_needed = 0, uses_anonymous_args = 0
+ 523              		@ link register save eliminated.
+ 524              	.LVL53:
+ 394:Peripherals/src/gd32f1x0_i2c.c ****     uint16_t temp = 0;
+ 395:Peripherals/src/gd32f1x0_i2c.c ****     
+ 396:Peripherals/src/gd32f1x0_i2c.c ****     temp = I2Cx->AR2;
+ 525              		.loc 1 396 0
+ 526 0000 8389     		ldrh	r3, [r0, #12]
+ 527              	.LVL54:
+ 397:Peripherals/src/gd32f1x0_i2c.c ****     temp &= AR2_ADDRESS2_RESET;
+ 528              		.loc 1 397 0
+ 529 0002 23F0FE03 		bic	r3, r3, #254
+ 530              	.LVL55:
+ 531 0006 1B04     		lsls	r3, r3, #16
+ 532 0008 1B0C     		lsrs	r3, r3, #16
+ 533              	.LVL56:
+ 398:Peripherals/src/gd32f1x0_i2c.c ****     temp |= (uint16_t)((uint16_t)Address & (uint16_t)0x00FE);
+ARM GAS  /tmp/ccgzj87C.s 			page 17
+
+
+ 534              		.loc 1 398 0
+ 535 000a 01F0FE01 		and	r1, r1, #254
+ 536              	.LVL57:
+ 537 000e 0B43     		orrs	r3, r3, r1
+ 538              	.LVL58:
+ 399:Peripherals/src/gd32f1x0_i2c.c ****     /* I2C_AR2_ADDRESS2 */
+ 400:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->AR2 = temp;
+ 539              		.loc 1 400 0
+ 540 0010 8381     		strh	r3, [r0, #12]	@ movhi
+ 541 0012 7047     		bx	lr
+ 542              		.cfi_endproc
+ 543              	.LFE38:
+ 545              		.section	.text.I2C_DualAddress_Enable,"ax",%progbits
+ 546              		.align	2
+ 547              		.global	I2C_DualAddress_Enable
+ 548              		.thumb
+ 549              		.thumb_func
+ 551              	I2C_DualAddress_Enable:
+ 552              	.LFB39:
+ 401:Peripherals/src/gd32f1x0_i2c.c **** }
+ 402:Peripherals/src/gd32f1x0_i2c.c **** 
+ 403:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 404:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_AR2_DUADEN control bit.
+ 405:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 406:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C dual addressing mode.
+ 407:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 408:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 409:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 410:Peripherals/src/gd32f1x0_i2c.c **** void I2C_DualAddress_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 411:Peripherals/src/gd32f1x0_i2c.c **** {
+ 553              		.loc 1 411 0
+ 554              		.cfi_startproc
+ 555              		@ args = 0, pretend = 0, frame = 0
+ 556              		@ frame_needed = 0, uses_anonymous_args = 0
+ 557              		@ link register save eliminated.
+ 558              	.LVL59:
+ 412:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 559              		.loc 1 412 0
+ 560 0000 29B1     		cbz	r1, .L41
+ 413:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 414:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable the I2C_AR2_DUADEN control bit */
+ 415:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->AR2 |= AR2_DUADEN_SET;
+ 561              		.loc 1 415 0
+ 562 0002 8389     		ldrh	r3, [r0, #12]
+ 563 0004 9BB2     		uxth	r3, r3
+ 564 0006 43F00103 		orr	r3, r3, #1
+ 565 000a 8381     		strh	r3, [r0, #12]	@ movhi
+ 566 000c 7047     		bx	lr
+ 567              	.L41:
+ 416:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 417:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 418:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 419:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable the I2C_AR2_DUADEN control bit */
+ 420:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->AR2 &= AR2_DUADEN_RESET;
+ 568              		.loc 1 420 0
+ 569 000e 8389     		ldrh	r3, [r0, #12]
+ 570 0010 23F00103 		bic	r3, r3, #1
+ARM GAS  /tmp/ccgzj87C.s 			page 18
+
+
+ 571 0014 1B04     		lsls	r3, r3, #16
+ 572 0016 1B0C     		lsrs	r3, r3, #16
+ 573 0018 8381     		strh	r3, [r0, #12]	@ movhi
+ 574 001a 7047     		bx	lr
+ 575              		.cfi_endproc
+ 576              	.LFE39:
+ 578              		.section	.text.I2C_GeneralCall_Enable,"ax",%progbits
+ 579              		.align	2
+ 580              		.global	I2C_GeneralCall_Enable
+ 581              		.thumb
+ 582              		.thumb_func
+ 584              	I2C_GeneralCall_Enable:
+ 585              	.LFB40:
+ 421:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 422:Peripherals/src/gd32f1x0_i2c.c **** }
+ 423:Peripherals/src/gd32f1x0_i2c.c **** 
+ 424:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 425:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable I2C_CTLR1_GCEN control bit.
+ 426:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 427:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C General call.
+ 428:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 429:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 430:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 431:Peripherals/src/gd32f1x0_i2c.c **** void I2C_GeneralCall_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 432:Peripherals/src/gd32f1x0_i2c.c **** {
+ 586              		.loc 1 432 0
+ 587              		.cfi_startproc
+ 588              		@ args = 0, pretend = 0, frame = 0
+ 589              		@ frame_needed = 0, uses_anonymous_args = 0
+ 590              		@ link register save eliminated.
+ 591              	.LVL60:
+ 433:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 592              		.loc 1 433 0
+ 593 0000 29B1     		cbz	r1, .L44
+ 434:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 435:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_GCEN control bit */
+ 436:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_GCEN_SET;
+ 594              		.loc 1 436 0
+ 595 0002 0388     		ldrh	r3, [r0]
+ 596 0004 9BB2     		uxth	r3, r3
+ 597 0006 43F04003 		orr	r3, r3, #64
+ 598 000a 0380     		strh	r3, [r0]	@ movhi
+ 599 000c 7047     		bx	lr
+ 600              	.L44:
+ 437:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 438:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 439:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 440:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_GCEN control bit */
+ 441:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_GCEN_RESET;
+ 601              		.loc 1 441 0
+ 602 000e 0388     		ldrh	r3, [r0]
+ 603 0010 23F04003 		bic	r3, r3, #64
+ 604 0014 1B04     		lsls	r3, r3, #16
+ 605 0016 1B0C     		lsrs	r3, r3, #16
+ 606 0018 0380     		strh	r3, [r0]	@ movhi
+ 607 001a 7047     		bx	lr
+ 608              		.cfi_endproc
+ARM GAS  /tmp/ccgzj87C.s 			page 19
+
+
+ 609              	.LFE40:
+ 611              		.section	.text.I2C_INTConfig,"ax",%progbits
+ 612              		.align	2
+ 613              		.global	I2C_INTConfig
+ 614              		.thumb
+ 615              		.thumb_func
+ 617              	I2C_INTConfig:
+ 618              	.LFB41:
+ 442:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 443:Peripherals/src/gd32f1x0_i2c.c **** }
+ 444:Peripherals/src/gd32f1x0_i2c.c **** 
+ 445:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 446:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the specified I2C interrupt.
+ 447:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 448:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_INT: the I2C interrupt sources.
+ 449:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be any combination of the following values:
+ 450:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_EIE: Error interrupt
+ 451:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_EE: Event interrupt
+ 452:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_BIE: Buffer interrupt
+ 453:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the specified I2C interrupts.
+ 454:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 455:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 456:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 457:Peripherals/src/gd32f1x0_i2c.c **** void I2C_INTConfig(I2C_TypeDef* I2Cx, uint16_t I2C_INT, TypeState NewValue)
+ 458:Peripherals/src/gd32f1x0_i2c.c **** {
+ 619              		.loc 1 458 0
+ 620              		.cfi_startproc
+ 621              		@ args = 0, pretend = 0, frame = 0
+ 622              		@ frame_needed = 0, uses_anonymous_args = 0
+ 623              		@ link register save eliminated.
+ 624              	.LVL61:
+ 459:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 625              		.loc 1 459 0
+ 626 0000 22B1     		cbz	r2, .L47
+ 460:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 461:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable the I2C interrupt */
+ 462:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR2 |= I2C_INT;
+ 627              		.loc 1 462 0
+ 628 0002 8388     		ldrh	r3, [r0, #4]
+ 629 0004 9BB2     		uxth	r3, r3
+ 630 0006 1943     		orrs	r1, r1, r3
+ 631              	.LVL62:
+ 632 0008 8180     		strh	r1, [r0, #4]	@ movhi
+ 633 000a 7047     		bx	lr
+ 634              	.LVL63:
+ 635              	.L47:
+ 463:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 464:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 465:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 466:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable the I2C interrupt */
+ 467:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR2 &= (uint16_t)~I2C_INT;
+ 636              		.loc 1 467 0
+ 637 000c 8388     		ldrh	r3, [r0, #4]
+ 638 000e C943     		mvns	r1, r1
+ 639              	.LVL64:
+ 640 0010 89B2     		uxth	r1, r1
+ 641 0012 1940     		ands	r1, r1, r3
+ARM GAS  /tmp/ccgzj87C.s 			page 20
+
+
+ 642 0014 8180     		strh	r1, [r0, #4]	@ movhi
+ 643 0016 7047     		bx	lr
+ 644              		.cfi_endproc
+ 645              	.LFE41:
+ 647              		.section	.text.I2C_SendData,"ax",%progbits
+ 648              		.align	2
+ 649              		.global	I2C_SendData
+ 650              		.thumb
+ 651              		.thumb_func
+ 653              	I2C_SendData:
+ 654              	.LFB42:
+ 468:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 469:Peripherals/src/gd32f1x0_i2c.c **** }
+ 470:Peripherals/src/gd32f1x0_i2c.c **** 
+ 471:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 472:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Send one byte to bus.
+ 473:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 474:Peripherals/src/gd32f1x0_i2c.c ****   * @param  Data: Byte to be transmitted.
+ 475:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 476:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 477:Peripherals/src/gd32f1x0_i2c.c **** void I2C_SendData(I2C_TypeDef* I2Cx, uint8_t Data)
+ 478:Peripherals/src/gd32f1x0_i2c.c **** {
+ 655              		.loc 1 478 0
+ 656              		.cfi_startproc
+ 657              		@ args = 0, pretend = 0, frame = 0
+ 658              		@ frame_needed = 0, uses_anonymous_args = 0
+ 659              		@ link register save eliminated.
+ 660              	.LVL65:
+ 479:Peripherals/src/gd32f1x0_i2c.c ****     /* Write Data to DTR */
+ 480:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->DTR = Data;
+ 661              		.loc 1 480 0
+ 662 0000 0182     		strh	r1, [r0, #16]	@ movhi
+ 663 0002 7047     		bx	lr
+ 664              		.cfi_endproc
+ 665              	.LFE42:
+ 667              		.section	.text.I2C_ReceiveData,"ax",%progbits
+ 668              		.align	2
+ 669              		.global	I2C_ReceiveData
+ 670              		.thumb
+ 671              		.thumb_func
+ 673              	I2C_ReceiveData:
+ 674              	.LFB43:
+ 481:Peripherals/src/gd32f1x0_i2c.c **** }
+ 482:Peripherals/src/gd32f1x0_i2c.c **** 
+ 483:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 484:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Receive one byte from the bus.
+ 485:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 486:Peripherals/src/gd32f1x0_i2c.c ****   * @retval The received data.
+ 487:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 488:Peripherals/src/gd32f1x0_i2c.c **** uint8_t I2C_ReceiveData(I2C_TypeDef* I2Cx)
+ 489:Peripherals/src/gd32f1x0_i2c.c **** {
+ 675              		.loc 1 489 0
+ 676              		.cfi_startproc
+ 677              		@ args = 0, pretend = 0, frame = 0
+ 678              		@ frame_needed = 0, uses_anonymous_args = 0
+ 679              		@ link register save eliminated.
+ 680              	.LVL66:
+ARM GAS  /tmp/ccgzj87C.s 			page 21
+
+
+ 490:Peripherals/src/gd32f1x0_i2c.c ****     /* Read the DTR register */
+ 491:Peripherals/src/gd32f1x0_i2c.c ****     return (uint8_t)I2Cx->DTR;
+ 681              		.loc 1 491 0
+ 682 0000 008A     		ldrh	r0, [r0, #16]
+ 683              	.LVL67:
+ 492:Peripherals/src/gd32f1x0_i2c.c **** }
+ 684              		.loc 1 492 0
+ 685 0002 C0B2     		uxtb	r0, r0
+ 686 0004 7047     		bx	lr
+ 687              		.cfi_endproc
+ 688              	.LFE43:
+ 690 0006 00BF     		.section	.text.I2C_AddressingDevice_7bit,"ax",%progbits
+ 691              		.align	2
+ 692              		.global	I2C_AddressingDevice_7bit
+ 693              		.thumb
+ 694              		.thumb_func
+ 696              	I2C_AddressingDevice_7bit:
+ 697              	.LFB44:
+ 493:Peripherals/src/gd32f1x0_i2c.c **** 
+ 494:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 495:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Addressing a device on the I2C bus.
+ 496:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 497:Peripherals/src/gd32f1x0_i2c.c ****   * @param  Address: the slave device's address.
+ 498:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_Direction: Transmitter or a Receiver.
+ 499:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be one of the following values
+ 500:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_DIRECTION_TRANSMITTER: Transmitter mode
+ 501:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_DIRECTION_RECEIVER: Receiver mode
+ 502:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None.
+ 503:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 504:Peripherals/src/gd32f1x0_i2c.c **** void I2C_AddressingDevice_7bit(I2C_TypeDef* I2Cx, uint8_t Address, uint8_t I2C_Direction)
+ 505:Peripherals/src/gd32f1x0_i2c.c **** {
+ 698              		.loc 1 505 0
+ 699              		.cfi_startproc
+ 700              		@ args = 0, pretend = 0, frame = 0
+ 701              		@ frame_needed = 0, uses_anonymous_args = 0
+ 702              		@ link register save eliminated.
+ 703              	.LVL68:
+ 506:Peripherals/src/gd32f1x0_i2c.c ****     if (I2C_Direction != I2C_DIRECTION_TRANSMITTER)
+ 704              		.loc 1 506 0
+ 705 0000 12B1     		cbz	r2, .L52
+ 507:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 508:Peripherals/src/gd32f1x0_i2c.c ****         /* Receiver mode */
+ 509:Peripherals/src/gd32f1x0_i2c.c ****         Address |= AR1_ADDRESS0_SET;
+ 706              		.loc 1 509 0
+ 707 0002 41F00101 		orr	r1, r1, #1
+ 708              	.LVL69:
+ 709 0006 01E0     		b	.L53
+ 710              	.L52:
+ 510:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 511:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 512:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 513:Peripherals/src/gd32f1x0_i2c.c ****         /* Transmitter mode */
+ 514:Peripherals/src/gd32f1x0_i2c.c ****         Address &= AR1_ADDRESS0_RESET;
+ 711              		.loc 1 514 0
+ 712 0008 01F0FE01 		and	r1, r1, #254
+ 713              	.LVL70:
+ 714              	.L53:
+ARM GAS  /tmp/ccgzj87C.s 			page 22
+
+
+ 515:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 516:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->DTR = Address;
+ 715              		.loc 1 516 0
+ 716 000c 0182     		strh	r1, [r0, #16]	@ movhi
+ 717 000e 7047     		bx	lr
+ 718              		.cfi_endproc
+ 719              	.LFE44:
+ 721              		.section	.text.I2C_ReadRegister,"ax",%progbits
+ 722              		.align	2
+ 723              		.global	I2C_ReadRegister
+ 724              		.thumb
+ 725              		.thumb_func
+ 727              	I2C_ReadRegister:
+ 728              	.LFB45:
+ 517:Peripherals/src/gd32f1x0_i2c.c **** }
+ 518:Peripherals/src/gd32f1x0_i2c.c **** 
+ 519:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 520:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Read the I2Cx register.
+ 521:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 522:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_Register: the I2Cx register.
+ 523:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be one of the following values:
+ 524:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_CTLR1:    CTLR1 register.
+ 525:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_CTLR2:    CTLR2 register.
+ 526:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_AR1:      AR1 register.
+ 527:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_AR2:      AR2 register.
+ 528:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_DTR:      DTR register.
+ 529:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_STR1:     STR1 register.
+ 530:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_STR2:     STR2 register.
+ 531:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_CLKR:     CLKR register.
+ 532:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_REGISTER_RTR:      RTR register.
+ 533:Peripherals/src/gd32f1x0_i2c.c ****   * @retval The value of the read register.
+ 534:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 535:Peripherals/src/gd32f1x0_i2c.c **** uint16_t I2C_ReadRegister(I2C_TypeDef* I2Cx, uint8_t I2C_Register)
+ 536:Peripherals/src/gd32f1x0_i2c.c **** {
+ 729              		.loc 1 536 0
+ 730              		.cfi_startproc
+ 731              		@ args = 0, pretend = 0, frame = 8
+ 732              		@ frame_needed = 0, uses_anonymous_args = 0
+ 733              		@ link register save eliminated.
+ 734              	.LVL71:
+ 735 0000 82B0     		sub	sp, sp, #8
+ 736              	.LCFI3:
+ 737              		.cfi_def_cfa_offset 8
+ 537:Peripherals/src/gd32f1x0_i2c.c ****     __IO uint32_t temp = 0;
+ 738              		.loc 1 537 0
+ 739 0002 0023     		movs	r3, #0
+ 740 0004 0193     		str	r3, [sp, #4]
+ 538:Peripherals/src/gd32f1x0_i2c.c ****     
+ 539:Peripherals/src/gd32f1x0_i2c.c ****     temp = (uint32_t) I2Cx;
+ 741              		.loc 1 539 0
+ 742 0006 0190     		str	r0, [sp, #4]
+ 540:Peripherals/src/gd32f1x0_i2c.c ****     temp += I2C_Register;
+ 743              		.loc 1 540 0
+ 744 0008 019B     		ldr	r3, [sp, #4]
+ 745 000a 1944     		add	r1, r1, r3
+ 746              	.LVL72:
+ 747 000c 0191     		str	r1, [sp, #4]
+ARM GAS  /tmp/ccgzj87C.s 			page 23
+
+
+ 541:Peripherals/src/gd32f1x0_i2c.c ****     
+ 542:Peripherals/src/gd32f1x0_i2c.c ****     /* Return the selected register value */
+ 543:Peripherals/src/gd32f1x0_i2c.c ****     return (*(__IO uint16_t *) temp);
+ 748              		.loc 1 543 0
+ 749 000e 019B     		ldr	r3, [sp, #4]
+ 750 0010 1888     		ldrh	r0, [r3]
+ 751              	.LVL73:
+ 544:Peripherals/src/gd32f1x0_i2c.c **** }
+ 752              		.loc 1 544 0
+ 753 0012 80B2     		uxth	r0, r0
+ 754 0014 02B0     		add	sp, sp, #8
+ 755              		@ sp needed
+ 756 0016 7047     		bx	lr
+ 757              		.cfi_endproc
+ 758              	.LFE45:
+ 760              		.section	.text.I2C_SoftwareReset_Enable,"ax",%progbits
+ 761              		.align	2
+ 762              		.global	I2C_SoftwareReset_Enable
+ 763              		.thumb
+ 764              		.thumb_func
+ 766              	I2C_SoftwareReset_Enable:
+ 767              	.LFB46:
+ 545:Peripherals/src/gd32f1x0_i2c.c **** 
+ 546:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 547:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_SRESET control bit.
+ 548:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 549:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C software reset.
+ 550:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 551:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 552:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 553:Peripherals/src/gd32f1x0_i2c.c **** void I2C_SoftwareReset_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 554:Peripherals/src/gd32f1x0_i2c.c **** {
+ 768              		.loc 1 554 0
+ 769              		.cfi_startproc
+ 770              		@ args = 0, pretend = 0, frame = 0
+ 771              		@ frame_needed = 0, uses_anonymous_args = 0
+ 772              		@ link register save eliminated.
+ 773              	.LVL74:
+ 555:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 774              		.loc 1 555 0
+ 775 0000 39B1     		cbz	r1, .L56
+ 556:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 557:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_SRESET control bit */
+ 558:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_SRESET_SET;
+ 776              		.loc 1 558 0
+ 777 0002 0388     		ldrh	r3, [r0]
+ 778 0004 6FEA4343 		mvn	r3, r3, lsl #17
+ 779 0008 6FEA5343 		mvn	r3, r3, lsr #17
+ 780 000c 9BB2     		uxth	r3, r3
+ 781 000e 0380     		strh	r3, [r0]	@ movhi
+ 782 0010 7047     		bx	lr
+ 783              	.L56:
+ 559:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 560:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 561:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 562:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_SRESET control bit */
+ 563:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_SRESET_RESET;
+ARM GAS  /tmp/ccgzj87C.s 			page 24
+
+
+ 784              		.loc 1 563 0
+ 785 0012 0388     		ldrh	r3, [r0]
+ 786 0014 C3F30E03 		ubfx	r3, r3, #0, #15
+ 787 0018 0380     		strh	r3, [r0]	@ movhi
+ 788 001a 7047     		bx	lr
+ 789              		.cfi_endproc
+ 790              	.LFE46:
+ 792              		.section	.text.I2C_NACKPosition_Enable,"ax",%progbits
+ 793              		.align	2
+ 794              		.global	I2C_NACKPosition_Enable
+ 795              		.thumb
+ 796              		.thumb_func
+ 798              	I2C_NACKPosition_Enable:
+ 799              	.LFB47:
+ 564:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 565:Peripherals/src/gd32f1x0_i2c.c **** }
+ 566:Peripherals/src/gd32f1x0_i2c.c **** 
+ 567:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 568:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_POAP control bit.
+ 569:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 570:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_NACKPosition: the position of NACK.
+ 571:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be one of the following values:
+ 572:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_NACKPOSITION_NEXT: the next byte is the last received byte.
+ 573:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_NACKPOSITION_CURRENT: the current byte is the last received byte.
+ 574:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 575:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 576:Peripherals/src/gd32f1x0_i2c.c **** void I2C_NACKPosition_Enable(I2C_TypeDef* I2Cx, uint16_t I2C_NACKPosition)
+ 577:Peripherals/src/gd32f1x0_i2c.c **** {
+ 800              		.loc 1 577 0
+ 801              		.cfi_startproc
+ 802              		@ args = 0, pretend = 0, frame = 0
+ 803              		@ frame_needed = 0, uses_anonymous_args = 0
+ 804              		@ link register save eliminated.
+ 805              	.LVL75:
+ 578:Peripherals/src/gd32f1x0_i2c.c ****     if (I2C_NACKPosition == I2C_NACKPOSITION_NEXT)
+ 806              		.loc 1 578 0
+ 807 0000 B1F5006F 		cmp	r1, #2048
+ 808 0004 05D1     		bne	.L59
+ 579:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 580:Peripherals/src/gd32f1x0_i2c.c ****         /* Next byte will be the last received byte */
+ 581:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= I2C_NACKPOSITION_NEXT;
+ 809              		.loc 1 581 0
+ 810 0006 0388     		ldrh	r3, [r0]
+ 811 0008 9BB2     		uxth	r3, r3
+ 812 000a 43F40063 		orr	r3, r3, #2048
+ 813 000e 0380     		strh	r3, [r0]	@ movhi
+ 814 0010 7047     		bx	lr
+ 815              	.L59:
+ 582:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 583:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 584:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 585:Peripherals/src/gd32f1x0_i2c.c ****         /* Current byte is the last received byte */
+ 586:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= I2C_NACKPOSITION_CURRENT;
+ 816              		.loc 1 586 0
+ 817 0012 0388     		ldrh	r3, [r0]
+ 818 0014 23F40063 		bic	r3, r3, #2048
+ 819 0018 1B04     		lsls	r3, r3, #16
+ARM GAS  /tmp/ccgzj87C.s 			page 25
+
+
+ 820 001a 1B0C     		lsrs	r3, r3, #16
+ 821 001c 0380     		strh	r3, [r0]	@ movhi
+ 822 001e 7047     		bx	lr
+ 823              		.cfi_endproc
+ 824              	.LFE47:
+ 826              		.section	.text.I2C_SMBusAlertSend_Enable,"ax",%progbits
+ 827              		.align	2
+ 828              		.global	I2C_SMBusAlertSend_Enable
+ 829              		.thumb
+ 830              		.thumb_func
+ 832              	I2C_SMBusAlertSend_Enable:
+ 833              	.LFB48:
+ 587:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 588:Peripherals/src/gd32f1x0_i2c.c **** }
+ 589:Peripherals/src/gd32f1x0_i2c.c **** 
+ 590:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 591:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_SALT control bit.
+ 592:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 593:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C software reset.
+ 594:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 595:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 596:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 597:Peripherals/src/gd32f1x0_i2c.c **** void I2C_SMBusAlertSend_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 598:Peripherals/src/gd32f1x0_i2c.c **** {
+ 834              		.loc 1 598 0
+ 835              		.cfi_startproc
+ 836              		@ args = 0, pretend = 0, frame = 0
+ 837              		@ frame_needed = 0, uses_anonymous_args = 0
+ 838              		@ link register save eliminated.
+ 839              	.LVL76:
+ 599:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 840              		.loc 1 599 0
+ 841 0000 29B1     		cbz	r1, .L62
+ 600:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 601:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_SALT control bit */
+ 602:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_SALT_SET;
+ 842              		.loc 1 602 0
+ 843 0002 0388     		ldrh	r3, [r0]
+ 844 0004 9BB2     		uxth	r3, r3
+ 845 0006 43F40053 		orr	r3, r3, #8192
+ 846 000a 0380     		strh	r3, [r0]	@ movhi
+ 847 000c 7047     		bx	lr
+ 848              	.L62:
+ 603:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 604:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 605:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 606:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_SALT control bit */
+ 607:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_SALT_RESET;
+ 849              		.loc 1 607 0
+ 850 000e 0388     		ldrh	r3, [r0]
+ 851 0010 23F40053 		bic	r3, r3, #8192
+ 852 0014 1B04     		lsls	r3, r3, #16
+ 853 0016 1B0C     		lsrs	r3, r3, #16
+ 854 0018 0380     		strh	r3, [r0]	@ movhi
+ 855 001a 7047     		bx	lr
+ 856              		.cfi_endproc
+ 857              	.LFE48:
+ARM GAS  /tmp/ccgzj87C.s 			page 26
+
+
+ 859              		.section	.text.I2C_PECTransmit_Enable,"ax",%progbits
+ 860              		.align	2
+ 861              		.global	I2C_PECTransmit_Enable
+ 862              		.thumb
+ 863              		.thumb_func
+ 865              	I2C_PECTransmit_Enable:
+ 866              	.LFB49:
+ 608:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 609:Peripherals/src/gd32f1x0_i2c.c **** }
+ 610:Peripherals/src/gd32f1x0_i2c.c **** 
+ 611:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 612:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_PECTRANS control bit.
+ 613:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 614:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2C PEC transmission.
+ 615:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 616:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 617:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 618:Peripherals/src/gd32f1x0_i2c.c **** void I2C_PECTransmit_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 619:Peripherals/src/gd32f1x0_i2c.c **** {
+ 867              		.loc 1 619 0
+ 868              		.cfi_startproc
+ 869              		@ args = 0, pretend = 0, frame = 0
+ 870              		@ frame_needed = 0, uses_anonymous_args = 0
+ 871              		@ link register save eliminated.
+ 872              	.LVL77:
+ 620:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 873              		.loc 1 620 0
+ 874 0000 29B1     		cbz	r1, .L65
+ 621:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 622:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_PECTRANS control bit */
+ 623:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_PECTRANS_SET;
+ 875              		.loc 1 623 0
+ 876 0002 0388     		ldrh	r3, [r0]
+ 877 0004 9BB2     		uxth	r3, r3
+ 878 0006 43F48053 		orr	r3, r3, #4096
+ 879 000a 0380     		strh	r3, [r0]	@ movhi
+ 880 000c 7047     		bx	lr
+ 881              	.L65:
+ 624:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 625:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 626:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 627:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_PECTRANS control bit */
+ 628:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_PECTRANS_RESET;
+ 882              		.loc 1 628 0
+ 883 000e 0388     		ldrh	r3, [r0]
+ 884 0010 23F48053 		bic	r3, r3, #4096
+ 885 0014 1B04     		lsls	r3, r3, #16
+ 886 0016 1B0C     		lsrs	r3, r3, #16
+ 887 0018 0380     		strh	r3, [r0]	@ movhi
+ 888 001a 7047     		bx	lr
+ 889              		.cfi_endproc
+ 890              	.LFE49:
+ 892              		.section	.text.I2C_PECPosition_Enable,"ax",%progbits
+ 893              		.align	2
+ 894              		.global	I2C_PECPosition_Enable
+ 895              		.thumb
+ 896              		.thumb_func
+ARM GAS  /tmp/ccgzj87C.s 			page 27
+
+
+ 898              	I2C_PECPosition_Enable:
+ 899              	.LFB50:
+ 629:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 630:Peripherals/src/gd32f1x0_i2c.c **** }
+ 631:Peripherals/src/gd32f1x0_i2c.c **** 
+ 632:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 633:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_POAP control bit.
+ 634:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 635:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_PECPosition: the position of PEC.
+ 636:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be one of the following values:
+ 637:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PECPOSITION_NEXT: the next byte is PEC.
+ 638:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PECPOSITION_CURRENT: the current byte is PEC.
+ 639:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 640:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 641:Peripherals/src/gd32f1x0_i2c.c **** void I2C_PECPosition_Enable(I2C_TypeDef* I2Cx, uint16_t I2C_PECPosition)
+ 642:Peripherals/src/gd32f1x0_i2c.c **** {
+ 900              		.loc 1 642 0
+ 901              		.cfi_startproc
+ 902              		@ args = 0, pretend = 0, frame = 0
+ 903              		@ frame_needed = 0, uses_anonymous_args = 0
+ 904              		@ link register save eliminated.
+ 905              	.LVL78:
+ 643:Peripherals/src/gd32f1x0_i2c.c ****     if (I2C_PECPosition == I2C_PECPOSITION_NEXT)
+ 906              		.loc 1 643 0
+ 907 0000 B1F5006F 		cmp	r1, #2048
+ 908 0004 05D1     		bne	.L68
+ 644:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 645:Peripherals/src/gd32f1x0_i2c.c ****         /* The next byte is PEC */
+ 646:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= I2C_PECPOSITION_NEXT;
+ 909              		.loc 1 646 0
+ 910 0006 0388     		ldrh	r3, [r0]
+ 911 0008 9BB2     		uxth	r3, r3
+ 912 000a 43F40063 		orr	r3, r3, #2048
+ 913 000e 0380     		strh	r3, [r0]	@ movhi
+ 914 0010 7047     		bx	lr
+ 915              	.L68:
+ 647:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 648:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 649:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 650:Peripherals/src/gd32f1x0_i2c.c ****         /* The current byte is PEC */
+ 651:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= I2C_PECPOSITION_CURRENT;
+ 916              		.loc 1 651 0
+ 917 0012 0388     		ldrh	r3, [r0]
+ 918 0014 23F40063 		bic	r3, r3, #2048
+ 919 0018 1B04     		lsls	r3, r3, #16
+ 920 001a 1B0C     		lsrs	r3, r3, #16
+ 921 001c 0380     		strh	r3, [r0]	@ movhi
+ 922 001e 7047     		bx	lr
+ 923              		.cfi_endproc
+ 924              	.LFE50:
+ 926              		.section	.text.I2C_PEC_Enable,"ax",%progbits
+ 927              		.align	2
+ 928              		.global	I2C_PEC_Enable
+ 929              		.thumb
+ 930              		.thumb_func
+ 932              	I2C_PEC_Enable:
+ 933              	.LFB51:
+ARM GAS  /tmp/ccgzj87C.s 			page 28
+
+
+ 652:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 653:Peripherals/src/gd32f1x0_i2c.c **** }
+ 654:Peripherals/src/gd32f1x0_i2c.c **** 
+ 655:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 656:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_PECEN control bit.
+ 657:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 658:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2Cx PEC value calculation.
+ 659:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 660:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 661:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 662:Peripherals/src/gd32f1x0_i2c.c **** void I2C_PEC_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 663:Peripherals/src/gd32f1x0_i2c.c **** {
+ 934              		.loc 1 663 0
+ 935              		.cfi_startproc
+ 936              		@ args = 0, pretend = 0, frame = 0
+ 937              		@ frame_needed = 0, uses_anonymous_args = 0
+ 938              		@ link register save eliminated.
+ 939              	.LVL79:
+ 664:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 940              		.loc 1 664 0
+ 941 0000 29B1     		cbz	r1, .L71
+ 665:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 666:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_PECEN control bit */
+ 667:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_PECEN_SET;
+ 942              		.loc 1 667 0
+ 943 0002 0388     		ldrh	r3, [r0]
+ 944 0004 9BB2     		uxth	r3, r3
+ 945 0006 43F02003 		orr	r3, r3, #32
+ 946 000a 0380     		strh	r3, [r0]	@ movhi
+ 947 000c 7047     		bx	lr
+ 948              	.L71:
+ 668:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 669:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 670:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 671:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_PECEN control bit */
+ 672:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_PECEN_RESET;
+ 949              		.loc 1 672 0
+ 950 000e 0388     		ldrh	r3, [r0]
+ 951 0010 23F02003 		bic	r3, r3, #32
+ 952 0014 1B04     		lsls	r3, r3, #16
+ 953 0016 1B0C     		lsrs	r3, r3, #16
+ 954 0018 0380     		strh	r3, [r0]	@ movhi
+ 955 001a 7047     		bx	lr
+ 956              		.cfi_endproc
+ 957              	.LFE51:
+ 959              		.section	.text.I2C_GetPECValue,"ax",%progbits
+ 960              		.align	2
+ 961              		.global	I2C_GetPECValue
+ 962              		.thumb
+ 963              		.thumb_func
+ 965              	I2C_GetPECValue:
+ 966              	.LFB52:
+ 673:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 674:Peripherals/src/gd32f1x0_i2c.c **** }
+ 675:Peripherals/src/gd32f1x0_i2c.c **** 
+ 676:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 677:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  The Packet Error Checking value
+ARM GAS  /tmp/ccgzj87C.s 			page 29
+
+
+ 678:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 679:Peripherals/src/gd32f1x0_i2c.c ****   * @retval The PEC value.
+ 680:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 681:Peripherals/src/gd32f1x0_i2c.c **** uint8_t I2C_GetPECValue(I2C_TypeDef* I2Cx)
+ 682:Peripherals/src/gd32f1x0_i2c.c **** {
+ 967              		.loc 1 682 0
+ 968              		.cfi_startproc
+ 969              		@ args = 0, pretend = 0, frame = 0
+ 970              		@ frame_needed = 0, uses_anonymous_args = 0
+ 971              		@ link register save eliminated.
+ 972              	.LVL80:
+ 683:Peripherals/src/gd32f1x0_i2c.c ****     /* I2C_STR2_ECV */
+ 684:Peripherals/src/gd32f1x0_i2c.c ****     return ((I2Cx->STR2) >> 8);
+ 973              		.loc 1 684 0
+ 974 0000 008B     		ldrh	r0, [r0, #24]
+ 975              	.LVL81:
+ 685:Peripherals/src/gd32f1x0_i2c.c **** }
+ 976              		.loc 1 685 0
+ 977 0002 C0F30720 		ubfx	r0, r0, #8, #8
+ 978 0006 7047     		bx	lr
+ 979              		.cfi_endproc
+ 980              	.LFE52:
+ 982              		.section	.text.I2C_ARP_Enable,"ax",%progbits
+ 983              		.align	2
+ 984              		.global	I2C_ARP_Enable
+ 985              		.thumb
+ 986              		.thumb_func
+ 988              	I2C_ARP_Enable:
+ 989              	.LFB53:
+ 686:Peripherals/src/gd32f1x0_i2c.c **** 
+ 687:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 688:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_ARPEN control bit.
+ 689:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 690:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2Cx ARP. 
+ 691:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 692:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 693:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 694:Peripherals/src/gd32f1x0_i2c.c **** void I2C_ARP_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 695:Peripherals/src/gd32f1x0_i2c.c **** {
+ 990              		.loc 1 695 0
+ 991              		.cfi_startproc
+ 992              		@ args = 0, pretend = 0, frame = 0
+ 993              		@ frame_needed = 0, uses_anonymous_args = 0
+ 994              		@ link register save eliminated.
+ 995              	.LVL82:
+ 696:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue != DISABLE)
+ 996              		.loc 1 696 0
+ 997 0000 29B1     		cbz	r1, .L75
+ 697:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 698:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_ARPEN control bit */
+ 699:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_ARPEN_SET;
+ 998              		.loc 1 699 0
+ 999 0002 0388     		ldrh	r3, [r0]
+ 1000 0004 9BB2     		uxth	r3, r3
+ 1001 0006 43F01003 		orr	r3, r3, #16
+ 1002 000a 0380     		strh	r3, [r0]	@ movhi
+ 1003 000c 7047     		bx	lr
+ARM GAS  /tmp/ccgzj87C.s 			page 30
+
+
+ 1004              	.L75:
+ 700:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 701:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 702:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 703:Peripherals/src/gd32f1x0_i2c.c ****         /* Disable I2C_CTLR1_ARPEN control bit */
+ 704:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_ARPEN_RESET;
+ 1005              		.loc 1 704 0
+ 1006 000e 0388     		ldrh	r3, [r0]
+ 1007 0010 23F01003 		bic	r3, r3, #16
+ 1008 0014 1B04     		lsls	r3, r3, #16
+ 1009 0016 1B0C     		lsrs	r3, r3, #16
+ 1010 0018 0380     		strh	r3, [r0]	@ movhi
+ 1011 001a 7047     		bx	lr
+ 1012              		.cfi_endproc
+ 1013              	.LFE53:
+ 1015              		.section	.text.I2C_StretchClock_Enable,"ax",%progbits
+ 1016              		.align	2
+ 1017              		.global	I2C_StretchClock_Enable
+ 1018              		.thumb
+ 1019              		.thumb_func
+ 1021              	I2C_StretchClock_Enable:
+ 1022              	.LFB54:
+ 705:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 706:Peripherals/src/gd32f1x0_i2c.c **** }
+ 707:Peripherals/src/gd32f1x0_i2c.c **** 
+ 708:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 709:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CTLR1_DISSTRC control bit.
+ 710:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 711:Peripherals/src/gd32f1x0_i2c.c ****   * @param  NewValue: new value of the I2Cx Clock stretching.
+ 712:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 713:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 714:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 715:Peripherals/src/gd32f1x0_i2c.c **** void I2C_StretchClock_Enable(I2C_TypeDef* I2Cx, TypeState NewValue)
+ 716:Peripherals/src/gd32f1x0_i2c.c **** {
+ 1023              		.loc 1 716 0
+ 1024              		.cfi_startproc
+ 1025              		@ args = 0, pretend = 0, frame = 0
+ 1026              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1027              		@ link register save eliminated.
+ 1028              	.LVL83:
+ 717:Peripherals/src/gd32f1x0_i2c.c ****     if (NewValue == DISABLE)
+ 1029              		.loc 1 717 0
+ 1030 0000 29B9     		cbnz	r1, .L78
+ 718:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 719:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_DISSTRC control bit */
+ 720:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 |= CTLR1_DISSTRC_SET;
+ 1031              		.loc 1 720 0
+ 1032 0002 0388     		ldrh	r3, [r0]
+ 1033 0004 9BB2     		uxth	r3, r3
+ 1034 0006 43F08003 		orr	r3, r3, #128
+ 1035 000a 0380     		strh	r3, [r0]	@ movhi
+ 1036 000c 7047     		bx	lr
+ 1037              	.L78:
+ 721:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 722:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 723:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 724:Peripherals/src/gd32f1x0_i2c.c ****         /* Enable I2C_CTLR1_DISSTRC control bit */
+ARM GAS  /tmp/ccgzj87C.s 			page 31
+
+
+ 725:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CTLR1 &= CTLR1_DISSTRC_RESET;
+ 1038              		.loc 1 725 0
+ 1039 000e 0388     		ldrh	r3, [r0]
+ 1040 0010 23F08003 		bic	r3, r3, #128
+ 1041 0014 1B04     		lsls	r3, r3, #16
+ 1042 0016 1B0C     		lsrs	r3, r3, #16
+ 1043 0018 0380     		strh	r3, [r0]	@ movhi
+ 1044 001a 7047     		bx	lr
+ 1045              		.cfi_endproc
+ 1046              	.LFE54:
+ 1048              		.section	.text.I2C_FastModeDutyCycle,"ax",%progbits
+ 1049              		.align	2
+ 1050              		.global	I2C_FastModeDutyCycle
+ 1051              		.thumb
+ 1052              		.thumb_func
+ 1054              	I2C_FastModeDutyCycle:
+ 1055              	.LFB55:
+ 726:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 727:Peripherals/src/gd32f1x0_i2c.c **** }
+ 728:Peripherals/src/gd32f1x0_i2c.c **** 
+ 729:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 730:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Enable or disable the I2C_CLKR_DTCY control bit.
+ 731:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 732:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_DutyCycle: the duty cycle in fast mode.
+ 733:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be one of the following values:
+ 734:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_DUTYCYCLE_2: I2C fast mode Tlow/Thigh = 2
+ 735:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_DUTYCYCLE_16_9: I2C fast mode Tlow/Thigh = 16/9
+ 736:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 737:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 738:Peripherals/src/gd32f1x0_i2c.c **** void I2C_FastModeDutyCycle(I2C_TypeDef* I2Cx, uint16_t I2C_DutyCycle)
+ 739:Peripherals/src/gd32f1x0_i2c.c **** {
+ 1056              		.loc 1 739 0
+ 1057              		.cfi_startproc
+ 1058              		@ args = 0, pretend = 0, frame = 0
+ 1059              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1060              		@ link register save eliminated.
+ 1061              	.LVL84:
+ 740:Peripherals/src/gd32f1x0_i2c.c ****     if (I2C_DutyCycle != I2C_DUTYCYCLE_16_9)
+ 1062              		.loc 1 740 0
+ 1063 0000 B1F5804F 		cmp	r1, #16384
+ 1064 0004 06D0     		beq	.L81
+ 741:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 742:Peripherals/src/gd32f1x0_i2c.c ****         /* DutyCycle=2:1 */
+ 743:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CLKR &= I2C_DUTYCYCLE_2;
+ 1065              		.loc 1 743 0
+ 1066 0006 838B     		ldrh	r3, [r0, #28]
+ 1067 0008 23F48043 		bic	r3, r3, #16384
+ 1068 000c 1B04     		lsls	r3, r3, #16
+ 1069 000e 1B0C     		lsrs	r3, r3, #16
+ 1070 0010 8383     		strh	r3, [r0, #28]	@ movhi
+ 1071 0012 7047     		bx	lr
+ 1072              	.L81:
+ 744:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 745:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 746:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 747:Peripherals/src/gd32f1x0_i2c.c ****         /* DutyCycle=16:9 */
+ 748:Peripherals/src/gd32f1x0_i2c.c ****         I2Cx->CLKR |= I2C_DUTYCYCLE_16_9;
+ARM GAS  /tmp/ccgzj87C.s 			page 32
+
+
+ 1073              		.loc 1 748 0
+ 1074 0014 838B     		ldrh	r3, [r0, #28]
+ 1075 0016 9BB2     		uxth	r3, r3
+ 1076 0018 43F48043 		orr	r3, r3, #16384
+ 1077 001c 8383     		strh	r3, [r0, #28]	@ movhi
+ 1078 001e 7047     		bx	lr
+ 1079              		.cfi_endproc
+ 1080              	.LFE55:
+ 1082              		.section	.text.I2C_StateDetect,"ax",%progbits
+ 1083              		.align	2
+ 1084              		.global	I2C_StateDetect
+ 1085              		.thumb
+ 1086              		.thumb_func
+ 1088              	I2C_StateDetect:
+ 1089              	.LFB56:
+ 749:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 750:Peripherals/src/gd32f1x0_i2c.c **** }
+ 751:Peripherals/src/gd32f1x0_i2c.c **** 
+ 752:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 753:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Detect I2Cx State Machine.
+ 754:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 755:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_State: I2Cx State Machine. 
+ 756:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be one of the following values:
+ 757:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_TRANSMITTER_ADDSEND
+ 758:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_RECEIVER_ADDSEND
+ 759:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_TRANSMITTER_SECONDADDRESS_SELECTED
+ 760:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_RECEIVER_SECONDADDRESS_SELECTED
+ 761:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_GENERALCALLADDRESS_SELECTED
+ 762:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_BYTE_RECEIVED
+ 763:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg (I2C_PROGRAMMINGMODE_SLAVE_BYTE_RECEIVED | I2C_FLAG_DUMODF)
+ 764:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg (I2C_PROGRAMMINGMODE_SLAVE_BYTE_RECEIVED | I2C_FLAG_RXGC)
+ 765:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_BYTE_TRANSMITTED
+ 766:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg (I2C_PROGRAMMINGMODE_SLAVE_BYTE_TRANSMITTED | I2C_FLAG_DUMODF)
+ 767:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg (I2C_PROGRAMMINGMODE_SLAVE_BYTE_TRANSMITTED | I2C_FLAG_RXGC)
+ 768:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_ACK_FAILURE
+ 769:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_SLAVE_STOP_DETECTED
+ 770:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_MASTER_SBSEND
+ 771:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_MASTER_TRANSMITTER_ADDSEND
+ 772:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_MASTER_RECEIVER_ADDSEND
+ 773:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_MASTER_BYTE_RECEIVED
+ 774:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTING
+ 775:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_MASTER_BYTE_TRANSMITTED
+ 776:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_PROGRAMMINGMODE_MASTER_ADD10SEND
+ 777:Peripherals/src/gd32f1x0_i2c.c ****   *     
+ 778:Peripherals/src/gd32f1x0_i2c.c ****   * @retval The detected result(SUCCESS or ERROR)
+ 779:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 780:Peripherals/src/gd32f1x0_i2c.c **** TypeState I2C_StateDetect(I2C_TypeDef* I2Cx, uint32_t I2C_State)
+ 781:Peripherals/src/gd32f1x0_i2c.c **** {
+ 1090              		.loc 1 781 0
+ 1091              		.cfi_startproc
+ 1092              		@ args = 0, pretend = 0, frame = 0
+ 1093              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1094              		@ link register save eliminated.
+ 1095              	.LVL85:
+ 782:Peripherals/src/gd32f1x0_i2c.c ****     uint32_t currentstate = 0;
+ 783:Peripherals/src/gd32f1x0_i2c.c ****     uint32_t flag1 = 0, flag2 = 0;
+ 784:Peripherals/src/gd32f1x0_i2c.c ****     TypeState state = ERROR;
+ARM GAS  /tmp/ccgzj87C.s 			page 33
+
+
+ 785:Peripherals/src/gd32f1x0_i2c.c ****     
+ 786:Peripherals/src/gd32f1x0_i2c.c ****     /* Read the I2Cx status register */
+ 787:Peripherals/src/gd32f1x0_i2c.c ****     flag1 = I2Cx->STR1;
+ 1096              		.loc 1 787 0
+ 1097 0000 838A     		ldrh	r3, [r0, #20]
+ 1098 0002 9BB2     		uxth	r3, r3
+ 1099              	.LVL86:
+ 788:Peripherals/src/gd32f1x0_i2c.c ****     flag2 = I2Cx->STR2;
+ 1100              		.loc 1 788 0
+ 1101 0004 028B     		ldrh	r2, [r0, #24]
+ 1102              	.LVL87:
+ 789:Peripherals/src/gd32f1x0_i2c.c ****     flag2 = flag2 << 16;
+ 790:Peripherals/src/gd32f1x0_i2c.c ****     
+ 791:Peripherals/src/gd32f1x0_i2c.c ****     /* Get the state value from I2C status register */
+ 792:Peripherals/src/gd32f1x0_i2c.c ****     currentstate = (flag1 | flag2) & STR_FLAG_MASK;
+ 1103              		.loc 1 792 0
+ 1104 0006 43EA0243 		orr	r3, r3, r2, lsl #16
+ 1105              	.LVL88:
+ 1106 000a 23F07F43 		bic	r3, r3, #-16777216
+ 1107              	.LVL89:
+ 793:Peripherals/src/gd32f1x0_i2c.c ****     
+ 794:Peripherals/src/gd32f1x0_i2c.c ****     if ((currentstate & I2C_State) == I2C_State)
+ 1108              		.loc 1 794 0
+ 1109 000e 0B40     		ands	r3, r3, r1
+ 1110              	.LVL90:
+ 1111 0010 8B42     		cmp	r3, r1
+ 1112 0012 03D1     		bne	.L85
+ 1113              	.LVL91:
+ 795:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 796:Peripherals/src/gd32f1x0_i2c.c ****         /* I2C_State is detected. */
+ 797:Peripherals/src/gd32f1x0_i2c.c ****         state = SUCCESS;
+ 798:Peripherals/src/gd32f1x0_i2c.c **** 
+ 799:Peripherals/src/gd32f1x0_i2c.c ****         /* 2014-03-20 Fix BTC BUG */
+ 800:Peripherals/src/gd32f1x0_i2c.c ****         flag1 = I2Cx->STR1;
+ 1114              		.loc 1 800 0
+ 1115 0014 838A     		ldrh	r3, [r0, #20]
+ 801:Peripherals/src/gd32f1x0_i2c.c ****         flag2 = I2Cx->STR2;
+ 1116              		.loc 1 801 0
+ 1117 0016 038B     		ldrh	r3, [r0, #24]
+ 1118              	.LVL92:
+ 797:Peripherals/src/gd32f1x0_i2c.c ****         state = SUCCESS;
+ 1119              		.loc 1 797 0
+ 1120 0018 0120     		movs	r0, #1
+ 1121              	.LVL93:
+ 1122 001a 7047     		bx	lr
+ 1123              	.LVL94:
+ 1124              	.L85:
+ 802:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 803:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 804:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 805:Peripherals/src/gd32f1x0_i2c.c ****         /* I2C_State is not detected */
+ 806:Peripherals/src/gd32f1x0_i2c.c ****         state = ERROR;
+ 1125              		.loc 1 806 0
+ 1126 001c 0020     		movs	r0, #0
+ 1127              	.LVL95:
+ 807:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 808:Peripherals/src/gd32f1x0_i2c.c ****     return state;
+ARM GAS  /tmp/ccgzj87C.s 			page 34
+
+
+ 809:Peripherals/src/gd32f1x0_i2c.c **** }
+ 1128              		.loc 1 809 0
+ 1129 001e 7047     		bx	lr
+ 1130              		.cfi_endproc
+ 1131              	.LFE56:
+ 1133              		.section	.text.I2C_GetCurrentState,"ax",%progbits
+ 1134              		.align	2
+ 1135              		.global	I2C_GetCurrentState
+ 1136              		.thumb
+ 1137              		.thumb_func
+ 1139              	I2C_GetCurrentState:
+ 1140              	.LFB57:
+ 810:Peripherals/src/gd32f1x0_i2c.c **** 
+ 811:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 812:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Get the I2Cx Current State.
+ 813:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 814:Peripherals/src/gd32f1x0_i2c.c ****   * @retval The current state.
+ 815:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 816:Peripherals/src/gd32f1x0_i2c.c **** uint32_t I2C_GetCurrentState(I2C_TypeDef* I2Cx)
+ 817:Peripherals/src/gd32f1x0_i2c.c **** {
+ 1141              		.loc 1 817 0
+ 1142              		.cfi_startproc
+ 1143              		@ args = 0, pretend = 0, frame = 0
+ 1144              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1145              		@ link register save eliminated.
+ 1146              	.LVL96:
+ 818:Peripherals/src/gd32f1x0_i2c.c ****     uint32_t currentstate = 0;
+ 819:Peripherals/src/gd32f1x0_i2c.c ****     uint32_t flag1 = 0, flag2 = 0;
+ 820:Peripherals/src/gd32f1x0_i2c.c ****     
+ 821:Peripherals/src/gd32f1x0_i2c.c ****     /* Read the I2Cx status register */
+ 822:Peripherals/src/gd32f1x0_i2c.c ****     flag1 = I2Cx->STR1;
+ 1147              		.loc 1 822 0
+ 1148 0000 838A     		ldrh	r3, [r0, #20]
+ 1149 0002 9BB2     		uxth	r3, r3
+ 1150              	.LVL97:
+ 823:Peripherals/src/gd32f1x0_i2c.c ****     flag2 = I2Cx->STR2;
+ 1151              		.loc 1 823 0
+ 1152 0004 008B     		ldrh	r0, [r0, #24]
+ 1153              	.LVL98:
+ 824:Peripherals/src/gd32f1x0_i2c.c ****     flag2 = flag2 << 16;
+ 825:Peripherals/src/gd32f1x0_i2c.c ****     
+ 826:Peripherals/src/gd32f1x0_i2c.c ****     /* Get the last event value from I2C status register */
+ 827:Peripherals/src/gd32f1x0_i2c.c ****     currentstate = (flag1 | flag2) & STR_FLAG_MASK;
+ 1154              		.loc 1 827 0
+ 1155 0006 43EA0040 		orr	r0, r3, r0, lsl #16
+ 1156              	.LVL99:
+ 828:Peripherals/src/gd32f1x0_i2c.c ****     
+ 829:Peripherals/src/gd32f1x0_i2c.c ****     return currentstate;
+ 830:Peripherals/src/gd32f1x0_i2c.c **** }
+ 1157              		.loc 1 830 0
+ 1158 000a 20F07F40 		bic	r0, r0, #-16777216
+ 1159              	.LVL100:
+ 1160 000e 7047     		bx	lr
+ 1161              		.cfi_endproc
+ 1162              	.LFE57:
+ 1164              		.section	.text.I2C_GetBitState,"ax",%progbits
+ 1165              		.align	2
+ARM GAS  /tmp/ccgzj87C.s 			page 35
+
+
+ 1166              		.global	I2C_GetBitState
+ 1167              		.thumb
+ 1168              		.thumb_func
+ 1170              	I2C_GetBitState:
+ 1171              	.LFB58:
+ 831:Peripherals/src/gd32f1x0_i2c.c **** 
+ 832:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 833:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Get the bit flag of STRx registers.
+ 834:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 835:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_FLAG: the flag of STRx registers.
+ 836:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be one of the following values:
+ 837:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_DUMODF: Dual flag (Slave mode)
+ 838:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_HSTSMB: SMBus host header (Slave mode)
+ 839:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_DEFSMB: SMBus default header (Slave mode)
+ 840:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_RXGC: General call header flag (Slave mode)
+ 841:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_TRS: Transmitter or Receiver flag
+ 842:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_I2CBSY: Bus busy flag
+ 843:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_MASTER: Master or Slave flag
+ 844:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_SMBALTS: SMBus Alert flag
+ 845:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_SMBTO: Timeout or Tlow error flag
+ 846:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_PECE: PEC error in reception flag
+ 847:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_RXORE: Overrun or Underrun flag (Slave mode)
+ 848:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_AE: Acknowledge failure flag
+ 849:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_LOSTARB: Arbitration lost flag (Master mode)
+ 850:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_BE: Bus error flag
+ 851:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_TBE: Data register empty flag (Transmitter)
+ 852:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_RBNE: Data register not empty (Receiver) flag
+ 853:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_STPSEND: Stop detection flag (Slave mode)
+ 854:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_ADD10SEND: 10-bit header sent flag (Master mode)
+ 855:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_BTC: Byte transfer finished flag
+ 856:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_ADDSEND: Address sent flag (Master mode) or
+ 857:Peripherals/src/gd32f1x0_i2c.c ****   *   Address matched flag (Slave mode)
+ 858:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_SBSEND: Start bit flag (Master mode)
+ 859:Peripherals/src/gd32f1x0_i2c.c ****   * @retval The new value of I2C_FLAG (SET or RESET).
+ 860:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 861:Peripherals/src/gd32f1x0_i2c.c **** TypeState I2C_GetBitState(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG)
+ 862:Peripherals/src/gd32f1x0_i2c.c **** {
+ 1172              		.loc 1 862 0
+ 1173              		.cfi_startproc
+ 1174              		@ args = 0, pretend = 0, frame = 8
+ 1175              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1176              		@ link register save eliminated.
+ 1177              	.LVL101:
+ 1178 0000 82B0     		sub	sp, sp, #8
+ 1179              	.LCFI4:
+ 1180              		.cfi_def_cfa_offset 8
+ 863:Peripherals/src/gd32f1x0_i2c.c ****     __IO uint32_t i2creg = 0, i2cxbase = 0;
+ 1181              		.loc 1 863 0
+ 1182 0002 0023     		movs	r3, #0
+ 1183 0004 0193     		str	r3, [sp, #4]
+ 1184 0006 0093     		str	r3, [sp]
+ 864:Peripherals/src/gd32f1x0_i2c.c ****     
+ 865:Peripherals/src/gd32f1x0_i2c.c ****     /* Get the I2Cx peripheral base address */
+ 866:Peripherals/src/gd32f1x0_i2c.c ****     i2cxbase = (uint32_t)I2Cx;
+ 1185              		.loc 1 866 0
+ 1186 0008 0090     		str	r0, [sp]
+ 867:Peripherals/src/gd32f1x0_i2c.c ****     
+ARM GAS  /tmp/ccgzj87C.s 			page 36
+
+
+ 868:Peripherals/src/gd32f1x0_i2c.c ****     /* Read flag register index */
+ 869:Peripherals/src/gd32f1x0_i2c.c ****     i2creg = I2C_FLAG >> 28;
+ 1187              		.loc 1 869 0
+ 1188 000a 0B0F     		lsrs	r3, r1, #28
+ 1189 000c 0193     		str	r3, [sp, #4]
+ 870:Peripherals/src/gd32f1x0_i2c.c ****     
+ 871:Peripherals/src/gd32f1x0_i2c.c ****     /* Get bit[23:0] of the flag */
+ 872:Peripherals/src/gd32f1x0_i2c.c ****     I2C_FLAG &= STR_FLAG_MASK;
+ 1190              		.loc 1 872 0
+ 1191 000e 21F07F41 		bic	r1, r1, #-16777216
+ 1192              	.LVL102:
+ 873:Peripherals/src/gd32f1x0_i2c.c ****     
+ 874:Peripherals/src/gd32f1x0_i2c.c ****     if(i2creg != 0)
+ 1193              		.loc 1 874 0
+ 1194 0012 019B     		ldr	r3, [sp, #4]
+ 1195 0014 1BB1     		cbz	r3, .L88
+ 875:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 876:Peripherals/src/gd32f1x0_i2c.c ****         /* Flag in I2Cx STR1 register */
+ 877:Peripherals/src/gd32f1x0_i2c.c ****         i2cxbase += 0x14;
+ 1196              		.loc 1 877 0
+ 1197 0016 009B     		ldr	r3, [sp]
+ 1198 0018 1433     		adds	r3, r3, #20
+ 1199 001a 0093     		str	r3, [sp]
+ 1200 001c 03E0     		b	.L89
+ 1201              	.L88:
+ 878:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 879:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 880:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 881:Peripherals/src/gd32f1x0_i2c.c ****         /* Flag in I2Cx STR2 Register */
+ 882:Peripherals/src/gd32f1x0_i2c.c ****         I2C_FLAG = (uint32_t)(I2C_FLAG >> 16);
+ 1202              		.loc 1 882 0
+ 1203 001e 090C     		lsrs	r1, r1, #16
+ 1204              	.LVL103:
+ 883:Peripherals/src/gd32f1x0_i2c.c ****         /* Get the I2Cx STR2 register address */
+ 884:Peripherals/src/gd32f1x0_i2c.c ****         i2cxbase += 0x18;
+ 1205              		.loc 1 884 0
+ 1206 0020 009B     		ldr	r3, [sp]
+ 1207 0022 1833     		adds	r3, r3, #24
+ 1208 0024 0093     		str	r3, [sp]
+ 1209              	.L89:
+ 885:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 886:Peripherals/src/gd32f1x0_i2c.c ****     
+ 887:Peripherals/src/gd32f1x0_i2c.c ****     if(((*(__IO uint32_t *)i2cxbase) & I2C_FLAG) != (uint32_t)RESET)
+ 1210              		.loc 1 887 0
+ 1211 0026 009B     		ldr	r3, [sp]
+ 1212 0028 1B68     		ldr	r3, [r3]
+ 1213 002a 0B42     		tst	r3, r1
+ 1214 002c 01D0     		beq	.L91
+ 888:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 889:Peripherals/src/gd32f1x0_i2c.c ****         /* I2C_FLAG is set */
+ 890:Peripherals/src/gd32f1x0_i2c.c ****         return SET;
+ 1215              		.loc 1 890 0
+ 1216 002e 0120     		movs	r0, #1
+ 1217              	.LVL104:
+ 1218 0030 00E0     		b	.L90
+ 1219              	.LVL105:
+ 1220              	.L91:
+ARM GAS  /tmp/ccgzj87C.s 			page 37
+
+
+ 891:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 892:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 893:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 894:Peripherals/src/gd32f1x0_i2c.c ****         /* I2C_FLAG is reset */
+ 895:Peripherals/src/gd32f1x0_i2c.c ****         return RESET;
+ 1221              		.loc 1 895 0
+ 1222 0032 0020     		movs	r0, #0
+ 1223              	.LVL106:
+ 1224              	.L90:
+ 896:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 897:Peripherals/src/gd32f1x0_i2c.c **** }
+ 1225              		.loc 1 897 0
+ 1226 0034 02B0     		add	sp, sp, #8
+ 1227              		@ sp needed
+ 1228 0036 7047     		bx	lr
+ 1229              		.cfi_endproc
+ 1230              	.LFE58:
+ 1232              		.section	.text.I2C_ClearBitState,"ax",%progbits
+ 1233              		.align	2
+ 1234              		.global	I2C_ClearBitState
+ 1235              		.thumb
+ 1236              		.thumb_func
+ 1238              	I2C_ClearBitState:
+ 1239              	.LFB59:
+ 898:Peripherals/src/gd32f1x0_i2c.c **** 
+ 899:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 900:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Clear the bit flag of STRx registers.
+ 901:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 902:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_FLAG: the flag of STRx registers.
+ 903:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be any combination of the following values:
+ 904:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_SMBALTS: SMBus Alert flag
+ 905:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_SMBTO: Timeout or Tlow error flag
+ 906:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_PECE: PEC error in reception flag
+ 907:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_RXORE: Overrun or Underrun flag (Slave mode)
+ 908:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_AE: Acknowledge failure flag
+ 909:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_LOSTARB: Arbitration lost flag (Master mode)
+ 910:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_FLAG_BE: Bus error flag
+ 911:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 912:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 913:Peripherals/src/gd32f1x0_i2c.c **** void I2C_ClearBitState(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG)
+ 914:Peripherals/src/gd32f1x0_i2c.c **** {
+ 1240              		.loc 1 914 0
+ 1241              		.cfi_startproc
+ 1242              		@ args = 0, pretend = 0, frame = 0
+ 1243              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1244              		@ link register save eliminated.
+ 1245              	.LVL107:
+ 915:Peripherals/src/gd32f1x0_i2c.c ****     uint32_t flagpos = 0;
+ 916:Peripherals/src/gd32f1x0_i2c.c **** 
+ 917:Peripherals/src/gd32f1x0_i2c.c ****     /* Get the I2C flag position */
+ 918:Peripherals/src/gd32f1x0_i2c.c ****     flagpos = I2C_FLAG & STR_FLAG_MASK;
+ 919:Peripherals/src/gd32f1x0_i2c.c ****     /* Clear the selected I2C flag */
+ 920:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->STR1 = (uint16_t)~flagpos;
+ 1246              		.loc 1 920 0
+ 1247 0000 C943     		mvns	r1, r1
+ 1248              	.LVL108:
+ 1249 0002 89B2     		uxth	r1, r1
+ARM GAS  /tmp/ccgzj87C.s 			page 38
+
+
+ 1250              	.LVL109:
+ 1251 0004 8182     		strh	r1, [r0, #20]	@ movhi
+ 1252 0006 7047     		bx	lr
+ 1253              		.cfi_endproc
+ 1254              	.LFE59:
+ 1256              		.section	.text.I2C_GetIntBitState,"ax",%progbits
+ 1257              		.align	2
+ 1258              		.global	I2C_GetIntBitState
+ 1259              		.thumb
+ 1260              		.thumb_func
+ 1262              	I2C_GetIntBitState:
+ 1263              	.LFB60:
+ 921:Peripherals/src/gd32f1x0_i2c.c **** }
+ 922:Peripherals/src/gd32f1x0_i2c.c **** 
+ 923:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 924:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Get the interrupt bit flag.
+ 925:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 926:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_INT: the interrupt bit flag.
+ 927:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be one of the following values:
+ 928:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_SMBALTS: SMBus Alert flag
+ 929:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_SMBTO: Timeout or Tlow error flag
+ 930:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_PECE: PEC error in reception flag
+ 931:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_RXORE: Overrun/Underrun flag (Slave mode)
+ 932:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_AE: Acknowledge failure flag
+ 933:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_LOSTARB: Arbitration lost flag (Master mode)
+ 934:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_BE: Bus error flag
+ 935:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_TBE: Data register empty flag (Transmitter)
+ 936:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_RBNE: Data register not empty (Receiver) flag
+ 937:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_STPSEND: Stop detection flag (Slave mode)
+ 938:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_ADD10SEND: 10-bit header sent flag (Master mode)
+ 939:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_BTC: Byte transfer finished flag
+ 940:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_ADDSEND: Address sent flag (Master mode) or
+ 941:Peripherals/src/gd32f1x0_i2c.c ****   *                           Address matched flag (Slave mode)
+ 942:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_SBSEND: Start bit flag (Master mode)
+ 943:Peripherals/src/gd32f1x0_i2c.c ****   * @retval The new value of I2C_INT (SET or RESET).
+ 944:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 945:Peripherals/src/gd32f1x0_i2c.c **** TypeState I2C_GetIntBitState(I2C_TypeDef* I2Cx, uint32_t I2C_INT)
+ 946:Peripherals/src/gd32f1x0_i2c.c **** {
+ 1264              		.loc 1 946 0
+ 1265              		.cfi_startproc
+ 1266              		@ args = 0, pretend = 0, frame = 0
+ 1267              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1268              		@ link register save eliminated.
+ 1269              	.LVL110:
+ 947:Peripherals/src/gd32f1x0_i2c.c ****     uint32_t enablestatus = 0;
+ 948:Peripherals/src/gd32f1x0_i2c.c ****     
+ 949:Peripherals/src/gd32f1x0_i2c.c ****     /* Check if the interrupt source is enabled or not */
+ 950:Peripherals/src/gd32f1x0_i2c.c ****     enablestatus = (uint32_t)(((I2C_INT & INTEN_MASK) >> 16) & (I2Cx->CTLR2)) ;
+ 1270              		.loc 1 950 0
+ 1271 0000 01F0E062 		and	r2, r1, #117440512
+ 1272 0004 8388     		ldrh	r3, [r0, #4]
+ 1273 0006 03EA1242 		and	r2, r3, r2, lsr #16
+ 1274              	.LVL111:
+ 951:Peripherals/src/gd32f1x0_i2c.c ****     
+ 952:Peripherals/src/gd32f1x0_i2c.c ****     /* Get bit[23:0] of the flag */
+ 953:Peripherals/src/gd32f1x0_i2c.c ****     I2C_INT &= STR_FLAG_MASK;
+ 954:Peripherals/src/gd32f1x0_i2c.c ****     
+ARM GAS  /tmp/ccgzj87C.s 			page 39
+
+
+ 955:Peripherals/src/gd32f1x0_i2c.c ****     if (((I2Cx->STR1 & I2C_INT) != (uint32_t)RESET) && enablestatus)
+ 1275              		.loc 1 955 0
+ 1276 000a 838A     		ldrh	r3, [r0, #20]
+ 1277 000c 9BB2     		uxth	r3, r3
+ 1278 000e 1942     		tst	r1, r3
+ 1279 0010 02D0     		beq	.L95
+ 1280              		.loc 1 955 0 is_stmt 0 discriminator 1
+ 1281 0012 1AB9     		cbnz	r2, .L96
+ 956:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 957:Peripherals/src/gd32f1x0_i2c.c ****         /* I2C_INT is set */
+ 958:Peripherals/src/gd32f1x0_i2c.c ****         return SET;
+ 959:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 960:Peripherals/src/gd32f1x0_i2c.c ****     else
+ 961:Peripherals/src/gd32f1x0_i2c.c ****     {
+ 962:Peripherals/src/gd32f1x0_i2c.c ****         /* I2C_INT is reset */
+ 963:Peripherals/src/gd32f1x0_i2c.c ****         return RESET;
+ 1282              		.loc 1 963 0 is_stmt 1
+ 1283 0014 0020     		movs	r0, #0
+ 1284              	.LVL112:
+ 1285 0016 7047     		bx	lr
+ 1286              	.LVL113:
+ 1287              	.L95:
+ 1288 0018 0020     		movs	r0, #0
+ 1289              	.LVL114:
+ 1290 001a 7047     		bx	lr
+ 1291              	.LVL115:
+ 1292              	.L96:
+ 958:Peripherals/src/gd32f1x0_i2c.c ****         return SET;
+ 1293              		.loc 1 958 0
+ 1294 001c 0120     		movs	r0, #1
+ 1295              	.LVL116:
+ 964:Peripherals/src/gd32f1x0_i2c.c ****     }
+ 965:Peripherals/src/gd32f1x0_i2c.c **** }
+ 1296              		.loc 1 965 0
+ 1297 001e 7047     		bx	lr
+ 1298              		.cfi_endproc
+ 1299              	.LFE60:
+ 1301              		.section	.text.I2C_ClearIntBitState,"ax",%progbits
+ 1302              		.align	2
+ 1303              		.global	I2C_ClearIntBitState
+ 1304              		.thumb
+ 1305              		.thumb_func
+ 1307              	I2C_ClearIntBitState:
+ 1308              	.LFB61:
+ 966:Peripherals/src/gd32f1x0_i2c.c **** 
+ 967:Peripherals/src/gd32f1x0_i2c.c **** /**
+ 968:Peripherals/src/gd32f1x0_i2c.c ****   * @brief  Clear the interrupt bit flag.
+ 969:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2Cx: the I2C interface where x can be 1..3.
+ 970:Peripherals/src/gd32f1x0_i2c.c ****   * @param  I2C_INT: the interrupt bit flag.
+ 971:Peripherals/src/gd32f1x0_i2c.c ****   *   This parameter can be any combination of the following values:
+ 972:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_SMBALTS: SMBus Alert interrupt
+ 973:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_SMBTO: Timeout or Tlow error interrupt
+ 974:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_PECE: PEC error in reception  interrupt
+ 975:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_RXORE: Overrun or Underrun interrupt (Slave mode)
+ 976:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_AE: Acknowledge failure interrupt
+ 977:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_LOSTARB: Arbitration lost interrupt (Master mode)
+ 978:Peripherals/src/gd32f1x0_i2c.c ****   *     @arg I2C_INT_BE: Bus error interrupt
+ARM GAS  /tmp/ccgzj87C.s 			page 40
+
+
+ 979:Peripherals/src/gd32f1x0_i2c.c ****   * @retval None
+ 980:Peripherals/src/gd32f1x0_i2c.c ****   */
+ 981:Peripherals/src/gd32f1x0_i2c.c **** void I2C_ClearIntBitState(I2C_TypeDef* I2Cx, uint32_t I2C_INT)
+ 982:Peripherals/src/gd32f1x0_i2c.c **** {
+ 1309              		.loc 1 982 0
+ 1310              		.cfi_startproc
+ 1311              		@ args = 0, pretend = 0, frame = 0
+ 1312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1313              		@ link register save eliminated.
+ 1314              	.LVL117:
+ 983:Peripherals/src/gd32f1x0_i2c.c ****     uint32_t flagpos = 0;
+ 984:Peripherals/src/gd32f1x0_i2c.c **** 
+ 985:Peripherals/src/gd32f1x0_i2c.c ****     /* Get the I2C flag position */
+ 986:Peripherals/src/gd32f1x0_i2c.c ****     flagpos = I2C_INT & STR_FLAG_MASK;
+ 987:Peripherals/src/gd32f1x0_i2c.c ****     /* Clear the selected I2C flag */
+ 988:Peripherals/src/gd32f1x0_i2c.c ****     I2Cx->STR1 = (uint16_t)~flagpos;
+ 1315              		.loc 1 988 0
+ 1316 0000 C943     		mvns	r1, r1
+ 1317              	.LVL118:
+ 1318 0002 89B2     		uxth	r1, r1
+ 1319              	.LVL119:
+ 1320 0004 8182     		strh	r1, [r0, #20]	@ movhi
+ 1321 0006 7047     		bx	lr
+ 1322              		.cfi_endproc
+ 1323              	.LFE61:
+ 1325              		.text
+ 1326              	.Letext0:
+ 1327              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 1328              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 1329              		.file 4 "CMSIS/gd32f1x0.h"
+ 1330              		.file 5 "Peripherals/inc/gd32f1x0_rcc.h"
+ 1331              		.file 6 "Peripherals/inc/gd32f1x0_i2c.h"
+ 1332              		.file 7 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccgzj87C.s 			page 41
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 gd32f1x0_i2c.c
+     /tmp/ccgzj87C.s:17     .text.I2C_DeInit:00000000 $t
+     /tmp/ccgzj87C.s:22     .text.I2C_DeInit:00000000 I2C_DeInit
+     /tmp/ccgzj87C.s:86     .text.I2C_DeInit:0000004c $d
+     /tmp/ccgzj87C.s:92     .text.I2C_Init:00000000 $t
+     /tmp/ccgzj87C.s:97     .text.I2C_Init:00000000 I2C_Init
+     /tmp/ccgzj87C.s:274    .text.I2C_Init:000000d4 $d
+     /tmp/ccgzj87C.s:281    .text.I2C_ParaInit:00000000 $t
+     /tmp/ccgzj87C.s:286    .text.I2C_ParaInit:00000000 I2C_ParaInit
+     /tmp/ccgzj87C.s:314    .text.I2C_Enable:00000000 $t
+     /tmp/ccgzj87C.s:319    .text.I2C_Enable:00000000 I2C_Enable
+     /tmp/ccgzj87C.s:347    .text.I2C_DMA_Enable:00000000 $t
+     /tmp/ccgzj87C.s:352    .text.I2C_DMA_Enable:00000000 I2C_DMA_Enable
+     /tmp/ccgzj87C.s:380    .text.I2C_DMALastTransfer_Enable:00000000 $t
+     /tmp/ccgzj87C.s:385    .text.I2C_DMALastTransfer_Enable:00000000 I2C_DMALastTransfer_Enable
+     /tmp/ccgzj87C.s:413    .text.I2C_StartOnBus_Enable:00000000 $t
+     /tmp/ccgzj87C.s:418    .text.I2C_StartOnBus_Enable:00000000 I2C_StartOnBus_Enable
+     /tmp/ccgzj87C.s:446    .text.I2C_StopOnBus_Enable:00000000 $t
+     /tmp/ccgzj87C.s:451    .text.I2C_StopOnBus_Enable:00000000 I2C_StopOnBus_Enable
+     /tmp/ccgzj87C.s:479    .text.I2C_Acknowledge_Enable:00000000 $t
+     /tmp/ccgzj87C.s:484    .text.I2C_Acknowledge_Enable:00000000 I2C_Acknowledge_Enable
+     /tmp/ccgzj87C.s:512    .text.I2C_OwnAddress2:00000000 $t
+     /tmp/ccgzj87C.s:517    .text.I2C_OwnAddress2:00000000 I2C_OwnAddress2
+     /tmp/ccgzj87C.s:546    .text.I2C_DualAddress_Enable:00000000 $t
+     /tmp/ccgzj87C.s:551    .text.I2C_DualAddress_Enable:00000000 I2C_DualAddress_Enable
+     /tmp/ccgzj87C.s:579    .text.I2C_GeneralCall_Enable:00000000 $t
+     /tmp/ccgzj87C.s:584    .text.I2C_GeneralCall_Enable:00000000 I2C_GeneralCall_Enable
+     /tmp/ccgzj87C.s:612    .text.I2C_INTConfig:00000000 $t
+     /tmp/ccgzj87C.s:617    .text.I2C_INTConfig:00000000 I2C_INTConfig
+     /tmp/ccgzj87C.s:648    .text.I2C_SendData:00000000 $t
+     /tmp/ccgzj87C.s:653    .text.I2C_SendData:00000000 I2C_SendData
+     /tmp/ccgzj87C.s:668    .text.I2C_ReceiveData:00000000 $t
+     /tmp/ccgzj87C.s:673    .text.I2C_ReceiveData:00000000 I2C_ReceiveData
+     /tmp/ccgzj87C.s:691    .text.I2C_AddressingDevice_7bit:00000000 $t
+     /tmp/ccgzj87C.s:696    .text.I2C_AddressingDevice_7bit:00000000 I2C_AddressingDevice_7bit
+     /tmp/ccgzj87C.s:722    .text.I2C_ReadRegister:00000000 $t
+     /tmp/ccgzj87C.s:727    .text.I2C_ReadRegister:00000000 I2C_ReadRegister
+     /tmp/ccgzj87C.s:761    .text.I2C_SoftwareReset_Enable:00000000 $t
+     /tmp/ccgzj87C.s:766    .text.I2C_SoftwareReset_Enable:00000000 I2C_SoftwareReset_Enable
+     /tmp/ccgzj87C.s:793    .text.I2C_NACKPosition_Enable:00000000 $t
+     /tmp/ccgzj87C.s:798    .text.I2C_NACKPosition_Enable:00000000 I2C_NACKPosition_Enable
+     /tmp/ccgzj87C.s:827    .text.I2C_SMBusAlertSend_Enable:00000000 $t
+     /tmp/ccgzj87C.s:832    .text.I2C_SMBusAlertSend_Enable:00000000 I2C_SMBusAlertSend_Enable
+     /tmp/ccgzj87C.s:860    .text.I2C_PECTransmit_Enable:00000000 $t
+     /tmp/ccgzj87C.s:865    .text.I2C_PECTransmit_Enable:00000000 I2C_PECTransmit_Enable
+     /tmp/ccgzj87C.s:893    .text.I2C_PECPosition_Enable:00000000 $t
+     /tmp/ccgzj87C.s:898    .text.I2C_PECPosition_Enable:00000000 I2C_PECPosition_Enable
+     /tmp/ccgzj87C.s:927    .text.I2C_PEC_Enable:00000000 $t
+     /tmp/ccgzj87C.s:932    .text.I2C_PEC_Enable:00000000 I2C_PEC_Enable
+     /tmp/ccgzj87C.s:960    .text.I2C_GetPECValue:00000000 $t
+     /tmp/ccgzj87C.s:965    .text.I2C_GetPECValue:00000000 I2C_GetPECValue
+     /tmp/ccgzj87C.s:983    .text.I2C_ARP_Enable:00000000 $t
+     /tmp/ccgzj87C.s:988    .text.I2C_ARP_Enable:00000000 I2C_ARP_Enable
+     /tmp/ccgzj87C.s:1016   .text.I2C_StretchClock_Enable:00000000 $t
+     /tmp/ccgzj87C.s:1021   .text.I2C_StretchClock_Enable:00000000 I2C_StretchClock_Enable
+     /tmp/ccgzj87C.s:1049   .text.I2C_FastModeDutyCycle:00000000 $t
+ARM GAS  /tmp/ccgzj87C.s 			page 42
+
+
+     /tmp/ccgzj87C.s:1054   .text.I2C_FastModeDutyCycle:00000000 I2C_FastModeDutyCycle
+     /tmp/ccgzj87C.s:1083   .text.I2C_StateDetect:00000000 $t
+     /tmp/ccgzj87C.s:1088   .text.I2C_StateDetect:00000000 I2C_StateDetect
+     /tmp/ccgzj87C.s:1134   .text.I2C_GetCurrentState:00000000 $t
+     /tmp/ccgzj87C.s:1139   .text.I2C_GetCurrentState:00000000 I2C_GetCurrentState
+     /tmp/ccgzj87C.s:1165   .text.I2C_GetBitState:00000000 $t
+     /tmp/ccgzj87C.s:1170   .text.I2C_GetBitState:00000000 I2C_GetBitState
+     /tmp/ccgzj87C.s:1233   .text.I2C_ClearBitState:00000000 $t
+     /tmp/ccgzj87C.s:1238   .text.I2C_ClearBitState:00000000 I2C_ClearBitState
+     /tmp/ccgzj87C.s:1257   .text.I2C_GetIntBitState:00000000 $t
+     /tmp/ccgzj87C.s:1262   .text.I2C_GetIntBitState:00000000 I2C_GetIntBitState
+     /tmp/ccgzj87C.s:1302   .text.I2C_ClearIntBitState:00000000 $t
+     /tmp/ccgzj87C.s:1307   .text.I2C_ClearIntBitState:00000000 I2C_ClearIntBitState
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphReset_Enable
+RCC_GetClocksFreq

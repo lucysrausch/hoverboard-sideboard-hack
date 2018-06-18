@@ -1,0 +1,1433 @@
+ARM GAS  /tmp/ccbO0K1u.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"sixaxis.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.sixaxis_init,"ax",%progbits
+  17              		.align	2
+  18              		.global	sixaxis_init
+  19              		.thumb
+  20              		.thumb_func
+  22              	sixaxis_init:
+  23              	.LFB29:
+  24              		.file 1 "Src/sixaxis.c"
+   1:Src/sixaxis.c **** /*
+   2:Src/sixaxis.c **** The MIT License (MIT)
+   3:Src/sixaxis.c **** 
+   4:Src/sixaxis.c **** Copyright (c) 2015 silverx
+   5:Src/sixaxis.c **** 
+   6:Src/sixaxis.c **** Permission is hereby granted, free of charge, to any person obtaining a copy
+   7:Src/sixaxis.c **** of this software and associated documentation files (the "Software"), to deal
+   8:Src/sixaxis.c **** in the Software without restriction, including without limitation the rights
+   9:Src/sixaxis.c **** to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  10:Src/sixaxis.c **** copies of the Software, and to permit persons to whom the Software is
+  11:Src/sixaxis.c **** furnished to do so, subject to the following conditions:
+  12:Src/sixaxis.c **** 
+  13:Src/sixaxis.c **** The above copyright notice and this permission notice shall be included in
+  14:Src/sixaxis.c **** all copies or substantial portions of the Software.
+  15:Src/sixaxis.c **** 
+  16:Src/sixaxis.c **** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  17:Src/sixaxis.c **** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  18:Src/sixaxis.c **** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  19:Src/sixaxis.c **** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  20:Src/sixaxis.c **** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  21:Src/sixaxis.c **** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  22:Src/sixaxis.c **** THE SOFTWARE.
+  23:Src/sixaxis.c **** */
+  24:Src/sixaxis.c **** 
+  25:Src/sixaxis.c **** 
+  26:Src/sixaxis.c **** #include <inttypes.h>
+  27:Src/sixaxis.c **** #include "sixaxis.h"
+  28:Src/sixaxis.c **** #include "drv_time.h"
+  29:Src/sixaxis.c **** #include "gd32f1x0.h"
+  30:Src/sixaxis.c **** //#include "drv_softi2c.h"
+  31:Src/sixaxis.c **** #include "util.h"
+  32:Src/sixaxis.c **** #include "defines.h"
+  33:Src/sixaxis.c **** 
+  34:Src/sixaxis.c **** #include "drv_serial.h"
+ARM GAS  /tmp/ccbO0K1u.s 			page 2
+
+
+  35:Src/sixaxis.c **** 
+  36:Src/sixaxis.c **** #include "drv_i2c.h"
+  37:Src/sixaxis.c **** 
+  38:Src/sixaxis.c **** #include <math.h>
+  39:Src/sixaxis.c **** 
+  40:Src/sixaxis.c **** #ifdef DEBUG
+  41:Src/sixaxis.c **** int gyroid;
+  42:Src/sixaxis.c **** #endif
+  43:Src/sixaxis.c **** // Gyro LPF filter frequency
+  44:Src/sixaxis.c **** // gyro filter 0 = 260hz
+  45:Src/sixaxis.c **** // gyro filter 1 = 184hz
+  46:Src/sixaxis.c **** // gyro filter 2 = 94hz
+  47:Src/sixaxis.c **** // gyro filter 3 = 42hz
+  48:Src/sixaxis.c **** // 4 , 5, 6
+  49:Src/sixaxis.c **** #define GYRO_LOW_PASS_FILTER 3
+  50:Src/sixaxis.c **** 
+  51:Src/sixaxis.c **** 
+  52:Src/sixaxis.c **** void sixaxis_init( void)
+  53:Src/sixaxis.c **** {
+  25              		.loc 1 53 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29 0000 08B5     		push	{r3, lr}
+  30              	.LCFI0:
+  31              		.cfi_def_cfa_offset 8
+  32              		.cfi_offset 3, -8
+  33              		.cfi_offset 14, -4
+  54:Src/sixaxis.c **** // gyro soft reset
+  55:Src/sixaxis.c **** 
+  56:Src/sixaxis.c ****  i2c_writereg(0x7F, 0);
+  34              		.loc 1 56 0
+  35 0002 7F20     		movs	r0, #127
+  36 0004 0021     		movs	r1, #0
+  37 0006 FFF7FEFF 		bl	i2c_writereg
+  38              	.LVL0:
+  57:Src/sixaxis.c ****  i2c_writereg(0x06, 0x80);
+  39              		.loc 1 57 0
+  40 000a 0620     		movs	r0, #6
+  41 000c 8021     		movs	r1, #128
+  42 000e FFF7FEFF 		bl	i2c_writereg
+  43              	.LVL1:
+  58:Src/sixaxis.c ****  i2c_writereg(0x05, 0x30);
+  44              		.loc 1 58 0
+  45 0012 0520     		movs	r0, #5
+  46 0014 3021     		movs	r1, #48
+  47 0016 FFF7FEFF 		bl	i2c_writereg
+  48              	.LVL2:
+  59:Src/sixaxis.c ****  i2c_writereg(0x06, 0x05);
+  49              		.loc 1 59 0
+  50 001a 0620     		movs	r0, #6
+  51 001c 0521     		movs	r1, #5
+  52 001e FFF7FEFF 		bl	i2c_writereg
+  53              	.LVL3:
+  60:Src/sixaxis.c ****  i2c_writereg(0x07, 0x00);
+  54              		.loc 1 60 0
+  55 0022 0720     		movs	r0, #7
+ARM GAS  /tmp/ccbO0K1u.s 			page 3
+
+
+  56 0024 0021     		movs	r1, #0
+  57 0026 FFF7FEFF 		bl	i2c_writereg
+  58              	.LVL4:
+  61:Src/sixaxis.c ****  i2c_writereg(0x7F, 0x20);
+  59              		.loc 1 61 0
+  60 002a 7F20     		movs	r0, #127
+  61 002c 2021     		movs	r1, #32
+  62 002e FFF7FEFF 		bl	i2c_writereg
+  63              	.LVL5:
+  62:Src/sixaxis.c ****  i2c_writereg(0x00, 0x00);
+  64              		.loc 1 62 0
+  65 0032 0020     		movs	r0, #0
+  66 0034 0146     		mov	r1, r0
+  67 0036 FFF7FEFF 		bl	i2c_writereg
+  68              	.LVL6:
+  63:Src/sixaxis.c ****  i2c_writereg(0x01, 0x3D);
+  69              		.loc 1 63 0
+  70 003a 0120     		movs	r0, #1
+  71 003c 3D21     		movs	r1, #61
+  72 003e FFF7FEFF 		bl	i2c_writereg
+  73              	.LVL7:
+  64:Src/sixaxis.c ****  i2c_writereg(0x02, 0x00);
+  74              		.loc 1 64 0
+  75 0042 0220     		movs	r0, #2
+  76 0044 0021     		movs	r1, #0
+  77 0046 FFF7FEFF 		bl	i2c_writereg
+  78              	.LVL8:
+  65:Src/sixaxis.c ****  i2c_writereg(0x10, 0x00);
+  79              		.loc 1 65 0
+  80 004a 1020     		movs	r0, #16
+  81 004c 0021     		movs	r1, #0
+  82 004e FFF7FEFF 		bl	i2c_writereg
+  83              	.LVL9:
+  66:Src/sixaxis.c ****  i2c_writereg(0x11, 0x00);
+  84              		.loc 1 66 0
+  85 0052 1120     		movs	r0, #17
+  86 0054 0021     		movs	r1, #0
+  87 0056 FFF7FEFF 		bl	i2c_writereg
+  88              	.LVL10:
+  67:Src/sixaxis.c ****  i2c_writereg(0x14, 0x39);
+  89              		.loc 1 67 0
+  90 005a 1420     		movs	r0, #20
+  91 005c 3921     		movs	r1, #57
+  92 005e FFF7FEFF 		bl	i2c_writereg
+  93              	.LVL11:
+  68:Src/sixaxis.c ****  i2c_writereg(0x15, 0x00);
+  94              		.loc 1 68 0
+  95 0062 1520     		movs	r0, #21
+  96 0064 0021     		movs	r1, #0
+  97 0066 FFF7FEFF 		bl	i2c_writereg
+  98              	.LVL12:
+  69:Src/sixaxis.c **** 
+  70:Src/sixaxis.c ****  delay(40000);
+  99              		.loc 1 70 0
+ 100 006a 49F64040 		movw	r0, #40000
+ 101 006e FFF7FEFF 		bl	delay
+ 102              	.LVL13:
+ARM GAS  /tmp/ccbO0K1u.s 			page 4
+
+
+ 103 0072 08BD     		pop	{r3, pc}
+ 104              		.cfi_endproc
+ 105              	.LFE29:
+ 107              		.section	.text.sixaxis_check,"ax",%progbits
+ 108              		.align	2
+ 109              		.global	sixaxis_check
+ 110              		.thumb
+ 111              		.thumb_func
+ 113              	sixaxis_check:
+ 114              	.LFB30:
+  71:Src/sixaxis.c **** 
+  72:Src/sixaxis.c **** // clear sleep bit on old type gyro (mpu-6050)
+  73:Src/sixaxis.c **** //i2c_writereg( 107 , 0);
+  74:Src/sixaxis.c **** 
+  75:Src/sixaxis.c **** // gyro scale 2000 deg (FS =3)
+  76:Src/sixaxis.c **** //i2c_writereg( 27 , 24);
+  77:Src/sixaxis.c **** 
+  78:Src/sixaxis.c **** // Gyro DLPF low pass filter
+  79:Src/sixaxis.c **** //i2c_writereg( 26 , GYRO_LOW_PASS_FILTER);
+  80:Src/sixaxis.c **** 
+  81:Src/sixaxis.c **** }
+  82:Src/sixaxis.c **** 
+  83:Src/sixaxis.c **** 
+  84:Src/sixaxis.c **** int sixaxis_check( void)
+  85:Src/sixaxis.c **** {
+ 115              		.loc 1 85 0
+ 116              		.cfi_startproc
+ 117              		@ args = 0, pretend = 0, frame = 0
+ 118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119 0000 08B5     		push	{r3, lr}
+ 120              	.LCFI1:
+ 121              		.cfi_def_cfa_offset 8
+ 122              		.cfi_offset 3, -8
+ 123              		.cfi_offset 14, -4
+  86:Src/sixaxis.c **** 	// read "who am I" register
+  87:Src/sixaxis.c **** 	int id = i2c_readreg( 0 );
+ 124              		.loc 1 87 0
+ 125 0002 0020     		movs	r0, #0
+ 126 0004 FFF7FEFF 		bl	i2c_readreg
+ 127              	.LVL14:
+  88:Src/sixaxis.c **** 
+  89:Src/sixaxis.c **** 	return ( id == 0xA0 );
+  90:Src/sixaxis.c **** }
+ 128              		.loc 1 90 0
+ 129 0008 A028     		cmp	r0, #160
+ 130 000a 14BF     		ite	ne
+ 131 000c 0020     		movne	r0, #0
+ 132              	.LVL15:
+ 133 000e 0120     		moveq	r0, #1
+ 134 0010 08BD     		pop	{r3, pc}
+ 135              		.cfi_endproc
+ 136              	.LFE30:
+ 138              		.global	__aeabi_i2f
+ 139              		.global	__aeabi_fmul
+ 140              		.global	__aeabi_fadd
+ 141              		.global	__aeabi_f2d
+ 142              		.global	__aeabi_ddiv
+ARM GAS  /tmp/ccbO0K1u.s 			page 5
+
+
+ 143              		.global	__aeabi_dmul
+ 144              		.global	__aeabi_d2f
+ 145              		.global	__aeabi_ui2f
+ 146              		.global	__aeabi_fsub
+ 147              		.global	__aeabi_dadd
+ 148              		.global	__aeabi_fcmplt
+ 149              		.global	__aeabi_fcmpgt
+ 150 0012 00BF     		.section	.text.gyro_read,"ax",%progbits
+ 151              		.align	2
+ 152              		.global	gyro_read
+ 153              		.thumb
+ 154              		.thumb_func
+ 156              	gyro_read:
+ 157              	.LFB31:
+  91:Src/sixaxis.c **** 
+  92:Src/sixaxis.c **** 
+  93:Src/sixaxis.c **** 
+  94:Src/sixaxis.c **** float accel[3];
+  95:Src/sixaxis.c **** float gyro[3];
+  96:Src/sixaxis.c **** 
+  97:Src/sixaxis.c **** float gyrocal[3];
+  98:Src/sixaxis.c **** 
+  99:Src/sixaxis.c **** 
+ 100:Src/sixaxis.c **** float gyroXangle, gyroYangle; // Angle calculate using the gyro only
+ 101:Src/sixaxis.c **** unsigned long timer = 0;
+ 102:Src/sixaxis.c **** 
+ 103:Src/sixaxis.c **** typedef union _data {
+ 104:Src/sixaxis.c ****   float f;
+ 105:Src/sixaxis.c ****   char  s[4];
+ 106:Src/sixaxis.c **** } floatToByte;
+ 107:Src/sixaxis.c **** 
+ 108:Src/sixaxis.c **** floatToByte compAngleX;
+ 109:Src/sixaxis.c **** floatToByte compAngleY;
+ 110:Src/sixaxis.c **** 
+ 111:Src/sixaxis.c **** void gyro_read( void)
+ 112:Src/sixaxis.c **** {
+ 158              		.loc 1 112 0
+ 159              		.cfi_startproc
+ 160              		@ args = 0, pretend = 0, frame = 72
+ 161              		@ frame_needed = 0, uses_anonymous_args = 0
+ 162 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 163              	.LCFI2:
+ 164              		.cfi_def_cfa_offset 36
+ 165              		.cfi_offset 4, -36
+ 166              		.cfi_offset 5, -32
+ 167              		.cfi_offset 6, -28
+ 168              		.cfi_offset 7, -24
+ 169              		.cfi_offset 8, -20
+ 170              		.cfi_offset 9, -16
+ 171              		.cfi_offset 10, -12
+ 172              		.cfi_offset 11, -8
+ 173              		.cfi_offset 14, -4
+ 174 0004 93B0     		sub	sp, sp, #76
+ 175              	.LCFI3:
+ 176              		.cfi_def_cfa_offset 112
+ 113:Src/sixaxis.c **** 	int data[14];
+ 114:Src/sixaxis.c **** 
+ARM GAS  /tmp/ccbO0K1u.s 			page 6
+
+
+ 115:Src/sixaxis.c **** 	i2c_writereg(0x7F, 0x00);
+ 177              		.loc 1 115 0
+ 178 0006 7F20     		movs	r0, #127
+ 179 0008 0021     		movs	r1, #0
+ 180 000a FFF7FEFF 		bl	i2c_writereg
+ 181              	.LVL16:
+ 116:Src/sixaxis.c **** 	i2c_readdata(0x2D , data, 14 );
+ 182              		.loc 1 116 0
+ 183 000e 2D20     		movs	r0, #45
+ 184 0010 04A9     		add	r1, sp, #16
+ 185 0012 0E22     		movs	r2, #14
+ 186 0014 FFF7FEFF 		bl	i2c_readdata
+ 187              	.LVL17:
+ 117:Src/sixaxis.c **** 
+ 118:Src/sixaxis.c **** 	float gyronew[3];
+ 119:Src/sixaxis.c **** 
+ 120:Src/sixaxis.c **** 
+ 121:Src/sixaxis.c **** 	gyronew[1] = (int16_t) ((data[0]<<8) + data[1]);
+ 188              		.loc 1 121 0
+ 189 0018 059B     		ldr	r3, [sp, #20]
+ 190 001a 049A     		ldr	r2, [sp, #16]
+ 191 001c 03EB0220 		add	r0, r3, r2, lsl #8
+ 192 0020 00B2     		sxth	r0, r0
+ 193 0022 FFF7FEFF 		bl	__aeabi_i2f
+ 194              	.LVL18:
+ 195 0026 0290     		str	r0, [sp, #8]	@ float
+ 122:Src/sixaxis.c **** 	gyronew[0] = (int16_t) ((data[2]<<8) + data[3]);
+ 196              		.loc 1 122 0
+ 197 0028 079B     		ldr	r3, [sp, #28]
+ 198 002a 069A     		ldr	r2, [sp, #24]
+ 199 002c 03EB0220 		add	r0, r3, r2, lsl #8
+ 200 0030 00B2     		sxth	r0, r0
+ 201 0032 FFF7FEFF 		bl	__aeabi_i2f
+ 202              	.LVL19:
+ 203 0036 0190     		str	r0, [sp, #4]	@ float
+ 123:Src/sixaxis.c **** 	gyronew[2] = (int16_t) ((data[4]<<8) + data[5]);
+ 204              		.loc 1 123 0
+ 205 0038 099B     		ldr	r3, [sp, #36]
+ 206 003a 089A     		ldr	r2, [sp, #32]
+ 207 003c 03EB0220 		add	r0, r3, r2, lsl #8
+ 208 0040 00B2     		sxth	r0, r0
+ 209 0042 FFF7FEFF 		bl	__aeabi_i2f
+ 210              	.LVL20:
+ 211 0046 0390     		str	r0, [sp, #12]	@ float
+ 212              	.LVL21:
+ 213              	.LBB2:
+ 124:Src/sixaxis.c **** 
+ 125:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 214              		.loc 1 125 0
+ 215 0048 0023     		movs	r3, #0
+ 126:Src/sixaxis.c **** 	{
+ 127:Src/sixaxis.c **** 		//gyronew[i] = gyronew[i] *  0.033035156f * 0.017453292f ;
+ 128:Src/sixaxis.c **** 
+ 129:Src/sixaxis.c **** 		accel[i] = gyronew[i];
+ 216              		.loc 1 129 0
+ 217 004a 1449     		ldr	r1, .L14
+ 125:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ARM GAS  /tmp/ccbO0K1u.s 			page 7
+
+
+ 218              		.loc 1 125 0
+ 219 004c 07E0     		b	.L4
+ 220              	.LVL22:
+ 221              	.L5:
+ 222              		.loc 1 129 0 discriminator 2
+ 223 004e 12A8     		add	r0, sp, #72
+ 224 0050 00EB8302 		add	r2, r0, r3, lsl #2
+ 225 0054 52F8442C 		ldr	r2, [r2, #-68]	@ float
+ 226 0058 41F82320 		str	r2, [r1, r3, lsl #2]	@ float
+ 125:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 227              		.loc 1 125 0 discriminator 2
+ 228 005c 0133     		adds	r3, r3, #1
+ 229              	.LVL23:
+ 230              	.L4:
+ 125:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 231              		.loc 1 125 0 is_stmt 0 discriminator 1
+ 232 005e 022B     		cmp	r3, #2
+ 233 0060 F5DD     		ble	.L5
+ 234              	.LBE2:
+ 130:Src/sixaxis.c **** 
+ 131:Src/sixaxis.c **** 	}
+ 132:Src/sixaxis.c **** 
+ 133:Src/sixaxis.c **** 	gyronew[1] = (int16_t) ((data[6]<<8) + data[7]);
+ 235              		.loc 1 133 0 is_stmt 1
+ 236 0062 0B9B     		ldr	r3, [sp, #44]
+ 237              	.LVL24:
+ 238 0064 0A9A     		ldr	r2, [sp, #40]
+ 239 0066 03EB0220 		add	r0, r3, r2, lsl #8
+ 240 006a 00B2     		sxth	r0, r0
+ 241 006c FFF7FEFF 		bl	__aeabi_i2f
+ 242              	.LVL25:
+ 243 0070 0290     		str	r0, [sp, #8]	@ float
+ 134:Src/sixaxis.c **** 	gyronew[0] = (int16_t) ((data[8]<<8) + data[9]);
+ 244              		.loc 1 134 0
+ 245 0072 0D9B     		ldr	r3, [sp, #52]
+ 246 0074 0C9A     		ldr	r2, [sp, #48]
+ 247 0076 03EB0220 		add	r0, r3, r2, lsl #8
+ 248 007a 00B2     		sxth	r0, r0
+ 249 007c FFF7FEFF 		bl	__aeabi_i2f
+ 250              	.LVL26:
+ 251 0080 0190     		str	r0, [sp, #4]	@ float
+ 135:Src/sixaxis.c **** 	gyronew[2] = (int16_t) ((data[10]<<8) + data[11]);
+ 252              		.loc 1 135 0
+ 253 0082 0F9B     		ldr	r3, [sp, #60]
+ 254 0084 0E9A     		ldr	r2, [sp, #56]
+ 255 0086 03EB0220 		add	r0, r3, r2, lsl #8
+ 256 008a 00B2     		sxth	r0, r0
+ 257 008c FFF7FEFF 		bl	__aeabi_i2f
+ 258              	.LVL27:
+ 259 0090 0390     		str	r0, [sp, #12]	@ float
+ 260              	.LVL28:
+ 261              	.LBB3:
+ 136:Src/sixaxis.c **** 
+ 137:Src/sixaxis.c **** 
+ 138:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 262              		.loc 1 138 0
+ 263 0092 0024     		movs	r4, #0
+ARM GAS  /tmp/ccbO0K1u.s 			page 8
+
+
+ 139:Src/sixaxis.c **** 	{
+ 140:Src/sixaxis.c **** 		gyronew[i] = gyronew[i] *  0.061035156f * 0.017453292f ;
+ 264              		.loc 1 140 0
+ 265 0094 024F     		ldr	r7, .L14+4
+ 141:Src/sixaxis.c **** 
+ 142:Src/sixaxis.c **** 		gyro[i] = gyronew[i];
+ 266              		.loc 1 142 0
+ 267 0096 034E     		ldr	r6, .L14+8
+ 138:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 268              		.loc 1 138 0
+ 269 0098 13E0     		b	.L6
+ 270              	.L15:
+ 271 009a 00BF     		.align	2
+ 272              	.L14:
+ 273 009c 00000000 		.word	accel
+ 274 00a0 58A08B3A 		.word	982229080
+ 275 00a4 00000000 		.word	gyro
+ 276              	.LVL29:
+ 277              	.L7:
+ 140:Src/sixaxis.c **** 		gyronew[i] = gyronew[i] *  0.061035156f * 0.017453292f ;
+ 278              		.loc 1 140 0 discriminator 2
+ 279 00a8 12AB     		add	r3, sp, #72
+ 280 00aa 03EB8405 		add	r5, r3, r4, lsl #2
+ 281 00ae 55F8440C 		ldr	r0, [r5, #-68]	@ float
+ 282 00b2 3946     		mov	r1, r7
+ 283 00b4 FFF7FEFF 		bl	__aeabi_fmul
+ 284              	.LVL30:
+ 285 00b8 45F8440C 		str	r0, [r5, #-68]	@ float
+ 286              		.loc 1 142 0 discriminator 2
+ 287 00bc 46F82400 		str	r0, [r6, r4, lsl #2]	@ float
+ 138:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 288              		.loc 1 138 0 discriminator 2
+ 289 00c0 0134     		adds	r4, r4, #1
+ 290              	.LVL31:
+ 291              	.L6:
+ 138:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 292              		.loc 1 138 0 is_stmt 0 discriminator 1
+ 293 00c2 022C     		cmp	r4, #2
+ 294 00c4 F0DD     		ble	.L7
+ 295              	.LBE3:
+ 143:Src/sixaxis.c **** 
+ 144:Src/sixaxis.c **** 	}
+ 145:Src/sixaxis.c **** 
+ 146:Src/sixaxis.c **** 	#define RAD_TO_DEG 57.29578f
+ 147:Src/sixaxis.c **** 
+ 148:Src/sixaxis.c **** 	float roll  = atan(accel[1] / sqrt(accel[0]  * accel[0] + accel[2] * accel[2])) * RAD_TO_DEG;
+ 296              		.loc 1 148 0 is_stmt 1
+ 297 00c6 A44C     		ldr	r4, .L16+32
+ 298              	.LVL32:
+ 299 00c8 D4F80480 		ldr	r8, [r4, #4]	@ float
+ 300 00cc 2768     		ldr	r7, [r4]	@ float
+ 301 00ce 3846     		mov	r0, r7
+ 302 00d0 3946     		mov	r1, r7
+ 303 00d2 FFF7FEFF 		bl	__aeabi_fmul
+ 304              	.LVL33:
+ 305 00d6 0546     		mov	r5, r0
+ 306 00d8 A668     		ldr	r6, [r4, #8]	@ float
+ARM GAS  /tmp/ccbO0K1u.s 			page 9
+
+
+ 307 00da 3046     		mov	r0, r6
+ 308 00dc 3146     		mov	r1, r6
+ 309 00de FFF7FEFF 		bl	__aeabi_fmul
+ 310              	.LVL34:
+ 311 00e2 0146     		mov	r1, r0
+ 312 00e4 2846     		mov	r0, r5
+ 313 00e6 FFF7FEFF 		bl	__aeabi_fadd
+ 314              	.LVL35:
+ 315 00ea 0446     		mov	r4, r0
+ 316 00ec 2046     		mov	r0, r4
+ 317 00ee FFF7FEFF 		bl	__aeabi_f2d
+ 318              	.LVL36:
+ 319 00f2 FFF7FEFF 		bl	sqrt
+ 320              	.LVL37:
+ 321 00f6 0446     		mov	r4, r0
+ 322 00f8 0D46     		mov	r5, r1
+ 323 00fa 4046     		mov	r0, r8
+ 324 00fc FFF7FEFF 		bl	__aeabi_f2d
+ 325              	.LVL38:
+ 326 0100 2246     		mov	r2, r4
+ 327 0102 2B46     		mov	r3, r5
+ 328 0104 FFF7FEFF 		bl	__aeabi_ddiv
+ 329              	.LVL39:
+ 330 0108 FFF7FEFF 		bl	atan
+ 331              	.LVL40:
+ 332 010c 8AA3     		adr	r3, .L16
+ 333 010e D3E90023 		ldrd	r2, [r3]
+ 334 0112 FFF7FEFF 		bl	__aeabi_dmul
+ 335              	.LVL41:
+ 336 0116 FFF7FEFF 		bl	__aeabi_d2f
+ 337              	.LVL42:
+ 338 011a 8146     		mov	r9, r0
+ 339              	.LVL43:
+ 149:Src/sixaxis.c **** 	float pitch = atan2(-accel[0], accel[2]) * RAD_TO_DEG;
+ 340              		.loc 1 149 0
+ 341 011c 07F10040 		add	r0, r7, #-2147483648
+ 342              	.LVL44:
+ 343 0120 FFF7FEFF 		bl	__aeabi_f2d
+ 344              	.LVL45:
+ 345 0124 0446     		mov	r4, r0
+ 346 0126 0D46     		mov	r5, r1
+ 347 0128 3046     		mov	r0, r6
+ 348 012a FFF7FEFF 		bl	__aeabi_f2d
+ 349              	.LVL46:
+ 350 012e 0246     		mov	r2, r0
+ 351 0130 0B46     		mov	r3, r1
+ 352 0132 2046     		mov	r0, r4
+ 353 0134 2946     		mov	r1, r5
+ 354 0136 FFF7FEFF 		bl	atan2
+ 355              	.LVL47:
+ 356 013a 7FA3     		adr	r3, .L16
+ 357 013c D3E90023 		ldrd	r2, [r3]
+ 358 0140 FFF7FEFF 		bl	__aeabi_dmul
+ 359              	.LVL48:
+ 360 0144 FFF7FEFF 		bl	__aeabi_d2f
+ 361              	.LVL49:
+ 362 0148 8046     		mov	r8, r0
+ARM GAS  /tmp/ccbO0K1u.s 			page 10
+
+
+ 363              	.LVL50:
+ 150:Src/sixaxis.c **** 
+ 151:Src/sixaxis.c **** 	float gyroXrate = gyro[0] / 131.0; // Convert to deg/s
+ 364              		.loc 1 151 0
+ 365 014a 844C     		ldr	r4, .L16+36
+ 366 014c 2068     		ldr	r0, [r4]	@ float
+ 367              	.LVL51:
+ 368 014e FFF7FEFF 		bl	__aeabi_f2d
+ 369              	.LVL52:
+ 370 0152 7BA3     		adr	r3, .L16+8
+ 371 0154 D3E90023 		ldrd	r2, [r3]
+ 372 0158 FFF7FEFF 		bl	__aeabi_dmul
+ 373              	.LVL53:
+ 374 015c FFF7FEFF 		bl	__aeabi_d2f
+ 375              	.LVL54:
+ 376 0160 0646     		mov	r6, r0
+ 377              	.LVL55:
+ 152:Src/sixaxis.c ****   float gyroYrate = gyro[1] / 131.0; // Convert to deg/s
+ 378              		.loc 1 152 0
+ 379 0162 6068     		ldr	r0, [r4, #4]	@ float
+ 380              	.LVL56:
+ 381 0164 FFF7FEFF 		bl	__aeabi_f2d
+ 382              	.LVL57:
+ 383 0168 75A3     		adr	r3, .L16+8
+ 384 016a D3E90023 		ldrd	r2, [r3]
+ 385 016e FFF7FEFF 		bl	__aeabi_dmul
+ 386              	.LVL58:
+ 387 0172 FFF7FEFF 		bl	__aeabi_d2f
+ 388              	.LVL59:
+ 389 0176 8246     		mov	r10, r0
+ 390              	.LVL60:
+ 153:Src/sixaxis.c **** 
+ 154:Src/sixaxis.c **** 	float dt = ((float)gettime() - timer) / 1000.0f;
+ 391              		.loc 1 154 0
+ 392 0178 FFF7FEFF 		bl	gettime
+ 393              	.LVL61:
+ 394 017c FFF7FEFF 		bl	__aeabi_ui2f
+ 395              	.LVL62:
+ 396 0180 0446     		mov	r4, r0
+ 397 0182 774D     		ldr	r5, .L16+40
+ 398 0184 2868     		ldr	r0, [r5]
+ 399 0186 FFF7FEFF 		bl	__aeabi_ui2f
+ 400              	.LVL63:
+ 401 018a 0146     		mov	r1, r0
+ 402 018c 2046     		mov	r0, r4
+ 403 018e FFF7FEFF 		bl	__aeabi_fsub
+ 404              	.LVL64:
+ 405 0192 7449     		ldr	r1, .L16+44
+ 406 0194 FFF7FEFF 		bl	__aeabi_fmul
+ 407              	.LVL65:
+ 408 0198 0446     		mov	r4, r0
+ 409              	.LVL66:
+ 155:Src/sixaxis.c **** 	timer = gettime();
+ 410              		.loc 1 155 0
+ 411 019a FFF7FEFF 		bl	gettime
+ 412              	.LVL67:
+ 413 019e 2860     		str	r0, [r5]
+ARM GAS  /tmp/ccbO0K1u.s 			page 11
+
+
+ 156:Src/sixaxis.c **** 
+ 157:Src/sixaxis.c **** 	gyroXangle += gyroXrate * dt; // Calculate gyro angle without any filter
+ 414              		.loc 1 157 0
+ 415 01a0 3046     		mov	r0, r6
+ 416 01a2 2146     		mov	r1, r4
+ 417 01a4 FFF7FEFF 		bl	__aeabi_fmul
+ 418              	.LVL68:
+ 419 01a8 0546     		mov	r5, r0
+ 420 01aa 6F4E     		ldr	r6, .L16+48
+ 421              	.LVL69:
+ 422 01ac 3168     		ldr	r1, [r6]	@ float
+ 423 01ae FFF7FEFF 		bl	__aeabi_fadd
+ 424              	.LVL70:
+ 425 01b2 0746     		mov	r7, r0
+ 426 01b4 3060     		str	r0, [r6]	@ float
+ 158:Src/sixaxis.c ****   gyroYangle += gyroYrate * dt;
+ 427              		.loc 1 158 0
+ 428 01b6 5046     		mov	r0, r10
+ 429 01b8 2146     		mov	r1, r4
+ 430 01ba FFF7FEFF 		bl	__aeabi_fmul
+ 431              	.LVL71:
+ 432 01be 8346     		mov	fp, r0
+ 433 01c0 6A4C     		ldr	r4, .L16+52
+ 434              	.LVL72:
+ 435 01c2 2168     		ldr	r1, [r4]	@ float
+ 436 01c4 FFF7FEFF 		bl	__aeabi_fadd
+ 437              	.LVL73:
+ 438 01c8 0646     		mov	r6, r0
+ 439 01ca 2060     		str	r0, [r4]	@ float
+ 159:Src/sixaxis.c **** 
+ 160:Src/sixaxis.c ****   compAngleX.f = 0.9 * (compAngleX.f + gyroXrate * dt) + 0.1 * roll; // Calculate the angle using a
+ 440              		.loc 1 160 0
+ 441 01cc DFF8B0A1 		ldr	r10, .L16+72
+ 442              	.LVL74:
+ 443 01d0 2846     		mov	r0, r5
+ 444 01d2 DAF80010 		ldr	r1, [r10]	@ float
+ 445 01d6 FFF7FEFF 		bl	__aeabi_fadd
+ 446              	.LVL75:
+ 447 01da FFF7FEFF 		bl	__aeabi_f2d
+ 448              	.LVL76:
+ 449 01de 5AA3     		adr	r3, .L16+16
+ 450 01e0 D3E90023 		ldrd	r2, [r3]
+ 451 01e4 FFF7FEFF 		bl	__aeabi_dmul
+ 452              	.LVL77:
+ 453 01e8 0446     		mov	r4, r0
+ 454 01ea 0D46     		mov	r5, r1
+ 455 01ec 4846     		mov	r0, r9
+ 456 01ee FFF7FEFF 		bl	__aeabi_f2d
+ 457              	.LVL78:
+ 458 01f2 57A3     		adr	r3, .L16+24
+ 459 01f4 D3E90023 		ldrd	r2, [r3]
+ 460 01f8 FFF7FEFF 		bl	__aeabi_dmul
+ 461              	.LVL79:
+ 462 01fc 0246     		mov	r2, r0
+ 463 01fe 0B46     		mov	r3, r1
+ 464 0200 2046     		mov	r0, r4
+ 465 0202 2946     		mov	r1, r5
+ARM GAS  /tmp/ccbO0K1u.s 			page 12
+
+
+ 466 0204 FFF7FEFF 		bl	__aeabi_dadd
+ 467              	.LVL80:
+ 468 0208 FFF7FEFF 		bl	__aeabi_d2f
+ 469              	.LVL81:
+ 470 020c 8146     		mov	r9, r0
+ 471              	.LVL82:
+ 472 020e CAF80000 		str	r0, [r10]	@ float
+ 161:Src/sixaxis.c **** 	compAngleY.f = 0.9 * (compAngleY.f + gyroYrate * dt) + 0.1 * pitch;
+ 473              		.loc 1 161 0
+ 474 0212 DFF870A1 		ldr	r10, .L16+76
+ 475 0216 5846     		mov	r0, fp
+ 476 0218 DAF80010 		ldr	r1, [r10]	@ float
+ 477 021c FFF7FEFF 		bl	__aeabi_fadd
+ 478              	.LVL83:
+ 479 0220 FFF7FEFF 		bl	__aeabi_f2d
+ 480              	.LVL84:
+ 481 0224 48A3     		adr	r3, .L16+16
+ 482 0226 D3E90023 		ldrd	r2, [r3]
+ 483 022a FFF7FEFF 		bl	__aeabi_dmul
+ 484              	.LVL85:
+ 485 022e 0446     		mov	r4, r0
+ 486 0230 0D46     		mov	r5, r1
+ 487 0232 4046     		mov	r0, r8
+ 488 0234 FFF7FEFF 		bl	__aeabi_f2d
+ 489              	.LVL86:
+ 490 0238 45A3     		adr	r3, .L16+24
+ 491 023a D3E90023 		ldrd	r2, [r3]
+ 492 023e FFF7FEFF 		bl	__aeabi_dmul
+ 493              	.LVL87:
+ 494 0242 0246     		mov	r2, r0
+ 495 0244 0B46     		mov	r3, r1
+ 496 0246 2046     		mov	r0, r4
+ 497 0248 2946     		mov	r1, r5
+ 498 024a FFF7FEFF 		bl	__aeabi_dadd
+ 499              	.LVL88:
+ 500 024e FFF7FEFF 		bl	__aeabi_d2f
+ 501              	.LVL89:
+ 502 0252 0446     		mov	r4, r0
+ 503 0254 CAF80000 		str	r0, [r10]	@ float
+ 162:Src/sixaxis.c **** 
+ 163:Src/sixaxis.c **** 	// Reset the gyro angle when it has drifted too much
+ 164:Src/sixaxis.c **** 	if (gyroXangle < -180 || gyroXangle > 180)
+ 504              		.loc 1 164 0
+ 505 0258 3846     		mov	r0, r7
+ 506 025a 4549     		ldr	r1, .L16+56
+ 507 025c FFF7FEFF 		bl	__aeabi_fcmplt
+ 508              	.LVL90:
+ 509 0260 20B9     		cbnz	r0, .L8
+ 510              		.loc 1 164 0 is_stmt 0 discriminator 1
+ 511 0262 3846     		mov	r0, r7
+ 512 0264 4349     		ldr	r1, .L16+60
+ 513 0266 FFF7FEFF 		bl	__aeabi_fcmpgt
+ 514              	.LVL91:
+ 515 026a 10B1     		cbz	r0, .L9
+ 516              	.L8:
+ 165:Src/sixaxis.c **** 		gyroXangle = compAngleX.f;
+ 517              		.loc 1 165 0 is_stmt 1
+ARM GAS  /tmp/ccbO0K1u.s 			page 13
+
+
+ 518 026c 3E4B     		ldr	r3, .L16+48
+ 519 026e C3F80090 		str	r9, [r3]	@ float
+ 520              	.L9:
+ 166:Src/sixaxis.c **** 	if (gyroYangle < -180 || gyroYangle > 180)
+ 521              		.loc 1 166 0
+ 522 0272 3046     		mov	r0, r6
+ 523 0274 3E49     		ldr	r1, .L16+56
+ 524 0276 FFF7FEFF 		bl	__aeabi_fcmplt
+ 525              	.LVL92:
+ 526 027a 20B9     		cbnz	r0, .L11
+ 527              		.loc 1 166 0 is_stmt 0 discriminator 1
+ 528 027c 3046     		mov	r0, r6
+ 529 027e 3D49     		ldr	r1, .L16+60
+ 530 0280 FFF7FEFF 		bl	__aeabi_fcmpgt
+ 531              	.LVL93:
+ 532 0284 08B1     		cbz	r0, .L12
+ 533              	.L11:
+ 167:Src/sixaxis.c **** 		gyroYangle = compAngleY.f;
+ 534              		.loc 1 167 0 is_stmt 1
+ 535 0286 394B     		ldr	r3, .L16+52
+ 536 0288 1C60     		str	r4, [r3]	@ float
+ 537              	.L12:
+ 538              	.LVL94:
+ 168:Src/sixaxis.c **** 
+ 169:Src/sixaxis.c **** 	uint8_t status = 0;
+ 170:Src/sixaxis.c **** 	status =  GPIO_ReadInputBit(SENSOR1_GPIO_Port, SENSOR1_Pin) | GPIO_ReadInputBit(SENSOR2_GPIO_Port,
+ 539              		.loc 1 170 0
+ 540 028a 4FF09040 		mov	r0, #1207959552
+ 541 028e 1021     		movs	r1, #16
+ 542 0290 FFF7FEFF 		bl	GPIO_ReadInputBit
+ 543              	.LVL95:
+ 544 0294 0646     		mov	r6, r0
+ 545 0296 3848     		ldr	r0, .L16+64
+ 546 0298 4FF48041 		mov	r1, #16384
+ 547 029c FFF7FEFF 		bl	GPIO_ReadInputBit
+ 548              	.LVL96:
+ 549 02a0 46EA4000 		orr	r0, r6, r0, lsl #1
+ 550 02a4 C6B2     		uxtb	r6, r0
+ 551              	.LVL97:
+ 171:Src/sixaxis.c **** 
+ 172:Src/sixaxis.c **** 
+ 173:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) 0x0F);
+ 552              		.loc 1 173 0
+ 553 02a6 354C     		ldr	r4, .L16+68
+ 554 02a8 2046     		mov	r0, r4
+ 555              	.LVL98:
+ 556 02aa 0F21     		movs	r1, #15
+ 557 02ac FFF7FEFF 		bl	USART_DataSend
+ 558              	.LVL99:
+ 174:Src/sixaxis.c **** 	waitForTxReady();
+ 559              		.loc 1 174 0
+ 560 02b0 FFF7FEFF 		bl	waitForTxReady
+ 561              	.LVL100:
+ 175:Src/sixaxis.c **** 
+ 176:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) compAngleX.s[0]);
+ 562              		.loc 1 176 0
+ 563 02b4 324D     		ldr	r5, .L16+72
+ARM GAS  /tmp/ccbO0K1u.s 			page 14
+
+
+ 564 02b6 2046     		mov	r0, r4
+ 565 02b8 2978     		ldrb	r1, [r5]	@ zero_extendqisi2
+ 566 02ba FFF7FEFF 		bl	USART_DataSend
+ 567              	.LVL101:
+ 177:Src/sixaxis.c **** 	waitForTxReady();
+ 568              		.loc 1 177 0
+ 569 02be FFF7FEFF 		bl	waitForTxReady
+ 570              	.LVL102:
+ 178:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) compAngleX.s[1]);
+ 571              		.loc 1 178 0
+ 572 02c2 2046     		mov	r0, r4
+ 573 02c4 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
+ 574 02c6 FFF7FEFF 		bl	USART_DataSend
+ 575              	.LVL103:
+ 179:Src/sixaxis.c **** 	waitForTxReady();
+ 576              		.loc 1 179 0
+ 577 02ca FFF7FEFF 		bl	waitForTxReady
+ 578              	.LVL104:
+ 180:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) compAngleX.s[2]);
+ 579              		.loc 1 180 0
+ 580 02ce 2046     		mov	r0, r4
+ 581 02d0 A978     		ldrb	r1, [r5, #2]	@ zero_extendqisi2
+ 582 02d2 FFF7FEFF 		bl	USART_DataSend
+ 583              	.LVL105:
+ 181:Src/sixaxis.c **** 	waitForTxReady();
+ 584              		.loc 1 181 0
+ 585 02d6 FFF7FEFF 		bl	waitForTxReady
+ 586              	.LVL106:
+ 182:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) compAngleX.s[3]);
+ 587              		.loc 1 182 0
+ 588 02da 2046     		mov	r0, r4
+ 589 02dc E978     		ldrb	r1, [r5, #3]	@ zero_extendqisi2
+ 590 02de FFF7FEFF 		bl	USART_DataSend
+ 591              	.LVL107:
+ 183:Src/sixaxis.c **** 	waitForTxReady();
+ 592              		.loc 1 183 0
+ 593 02e2 FFF7FEFF 		bl	waitForTxReady
+ 594              	.LVL108:
+ 184:Src/sixaxis.c **** 
+ 185:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) compAngleY.s[0]);
+ 595              		.loc 1 185 0
+ 596 02e6 274D     		ldr	r5, .L16+76
+ 597 02e8 2046     		mov	r0, r4
+ 598 02ea 2978     		ldrb	r1, [r5]	@ zero_extendqisi2
+ 599 02ec FFF7FEFF 		bl	USART_DataSend
+ 600              	.LVL109:
+ 186:Src/sixaxis.c **** 	waitForTxReady();
+ 601              		.loc 1 186 0
+ 602 02f0 FFF7FEFF 		bl	waitForTxReady
+ 603              	.LVL110:
+ 187:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) compAngleY.s[1]);
+ 604              		.loc 1 187 0
+ 605 02f4 2046     		mov	r0, r4
+ 606 02f6 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
+ 607 02f8 FFF7FEFF 		bl	USART_DataSend
+ 608              	.LVL111:
+ 188:Src/sixaxis.c **** 	waitForTxReady();
+ARM GAS  /tmp/ccbO0K1u.s 			page 15
+
+
+ 609              		.loc 1 188 0
+ 610 02fc FFF7FEFF 		bl	waitForTxReady
+ 611              	.LVL112:
+ 189:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) compAngleY.s[2]);
+ 612              		.loc 1 189 0
+ 613 0300 2046     		mov	r0, r4
+ 614 0302 A978     		ldrb	r1, [r5, #2]	@ zero_extendqisi2
+ 615 0304 FFF7FEFF 		bl	USART_DataSend
+ 616              	.LVL113:
+ 190:Src/sixaxis.c **** 	waitForTxReady();
+ 617              		.loc 1 190 0
+ 618 0308 FFF7FEFF 		bl	waitForTxReady
+ 619              	.LVL114:
+ 191:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) compAngleY.s[3]);
+ 620              		.loc 1 191 0
+ 621 030c 2046     		mov	r0, r4
+ 622 030e E978     		ldrb	r1, [r5, #3]	@ zero_extendqisi2
+ 623 0310 FFF7FEFF 		bl	USART_DataSend
+ 624              	.LVL115:
+ 192:Src/sixaxis.c **** 	waitForTxReady();
+ 625              		.loc 1 192 0
+ 626 0314 FFF7FEFF 		bl	waitForTxReady
+ 627              	.LVL116:
+ 193:Src/sixaxis.c **** 
+ 194:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) status);
+ 628              		.loc 1 194 0
+ 629 0318 2046     		mov	r0, r4
+ 630 031a 3146     		mov	r1, r6
+ 631 031c FFF7FEFF 		bl	USART_DataSend
+ 632              	.LVL117:
+ 195:Src/sixaxis.c **** 	waitForTxReady();
+ 633              		.loc 1 195 0
+ 634 0320 FFF7FEFF 		bl	waitForTxReady
+ 635              	.LVL118:
+ 196:Src/sixaxis.c **** 
+ 197:Src/sixaxis.c **** 	USART_DataSend(USART2 , (uint8_t) 0x00);
+ 636              		.loc 1 197 0
+ 637 0324 2046     		mov	r0, r4
+ 638 0326 0021     		movs	r1, #0
+ 639 0328 FFF7FEFF 		bl	USART_DataSend
+ 640              	.LVL119:
+ 198:Src/sixaxis.c **** 	waitForTxReady();
+ 641              		.loc 1 198 0
+ 642 032c FFF7FEFF 		bl	waitForTxReady
+ 643              	.LVL120:
+ 199:Src/sixaxis.c **** }
+ 644              		.loc 1 199 0
+ 645 0330 13B0     		add	sp, sp, #76
+ 646              		@ sp needed
+ 647 0332 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 648              	.LVL121:
+ 649              	.L17:
+ 650 0336 00BF     		.align	3
+ 651              	.L16:
+ 652 0338 00000020 		.word	536870912
+ 653 033c DCA54C40 		.word	1078765020
+ 654 0340 71424A9E 		.word	-1639300495
+ARM GAS  /tmp/ccbO0K1u.s 			page 16
+
+
+ 655 0344 65447F3F 		.word	1065305189
+ 656 0348 CDCCCCCC 		.word	-858993459
+ 657 034c CCCCEC3F 		.word	1072483532
+ 658 0350 9A999999 		.word	-1717986918
+ 659 0354 9999B93F 		.word	1069128089
+ 660 0358 00000000 		.word	accel
+ 661 035c 00000000 		.word	gyro
+ 662 0360 00000000 		.word	.LANCHOR0
+ 663 0364 6F12833A 		.word	981668463
+ 664 0368 00000000 		.word	gyroXangle
+ 665 036c 00000000 		.word	gyroYangle
+ 666 0370 000034C3 		.word	-1020002304
+ 667 0374 00003443 		.word	1127481344
+ 668 0378 00080048 		.word	1207961600
+ 669 037c 00440040 		.word	1073759232
+ 670 0380 00000000 		.word	compAngleX
+ 671 0384 00000000 		.word	compAngleY
+ 672              		.cfi_endproc
+ 673              	.LFE31:
+ 675              		.global	__aeabi_dcmpgt
+ 676              		.global	__aeabi_ui2d
+ 677              		.global	__aeabi_dcmplt
+ 678              		.section	.text.gyro_cal,"ax",%progbits
+ 679              		.align	2
+ 680              		.global	gyro_cal
+ 681              		.thumb
+ 682              		.thumb_func
+ 684              	gyro_cal:
+ 685              	.LFB32:
+ 200:Src/sixaxis.c **** 
+ 201:Src/sixaxis.c **** 
+ 202:Src/sixaxis.c **** #define CAL_TIME 2e6
+ 203:Src/sixaxis.c **** 
+ 204:Src/sixaxis.c **** void gyro_cal(void)
+ 205:Src/sixaxis.c **** {
+ 686              		.loc 1 205 0
+ 687              		.cfi_startproc
+ 688              		@ args = 0, pretend = 0, frame = 56
+ 689              		@ frame_needed = 0, uses_anonymous_args = 0
+ 690 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 691              	.LCFI4:
+ 692              		.cfi_def_cfa_offset 36
+ 693              		.cfi_offset 4, -36
+ 694              		.cfi_offset 5, -32
+ 695              		.cfi_offset 6, -28
+ 696              		.cfi_offset 7, -24
+ 697              		.cfi_offset 8, -20
+ 698              		.cfi_offset 9, -16
+ 699              		.cfi_offset 10, -12
+ 700              		.cfi_offset 11, -8
+ 701              		.cfi_offset 14, -4
+ 702 0004 8FB0     		sub	sp, sp, #60
+ 703              	.LCFI5:
+ 704              		.cfi_def_cfa_offset 96
+ 206:Src/sixaxis.c **** int data[6];
+ 207:Src/sixaxis.c **** 
+ 208:Src/sixaxis.c **** unsigned long time = gettime();
+ARM GAS  /tmp/ccbO0K1u.s 			page 17
+
+
+ 705              		.loc 1 208 0
+ 706 0006 FFF7FEFF 		bl	gettime
+ 707              	.LVL122:
+ 708 000a 0190     		str	r0, [sp, #4]
+ 709              	.LVL123:
+ 710              	.LBB4:
+ 209:Src/sixaxis.c **** unsigned long timestart = time;
+ 210:Src/sixaxis.c **** unsigned long timemax = time;
+ 211:Src/sixaxis.c **** unsigned long lastlooptime = time;
+ 212:Src/sixaxis.c **** 
+ 213:Src/sixaxis.c **** float gyro[3];
+ 214:Src/sixaxis.c **** float limit[3];
+ 215:Src/sixaxis.c **** 
+ 216:Src/sixaxis.c ****  for ( int i = 0 ; i < 3 ; i++)
+ 711              		.loc 1 216 0
+ 712 000c 0023     		movs	r3, #0
+ 217:Src/sixaxis.c **** 			{
+ 218:Src/sixaxis.c **** 			limit[i] = gyrocal[i];
+ 713              		.loc 1 218 0
+ 714 000e 6C48     		ldr	r0, .L49+16
+ 715              	.LVL124:
+ 216:Src/sixaxis.c ****  for ( int i = 0 ; i < 3 ; i++)
+ 716              		.loc 1 216 0
+ 717 0010 07E0     		b	.L19
+ 718              	.LVL125:
+ 719              	.L20:
+ 720              		.loc 1 218 0 discriminator 2
+ 721 0012 50F82310 		ldr	r1, [r0, r3, lsl #2]	@ float
+ 722 0016 0EAC     		add	r4, sp, #56
+ 723 0018 04EB8302 		add	r2, r4, r3, lsl #2
+ 724 001c 42F8301C 		str	r1, [r2, #-48]	@ float
+ 216:Src/sixaxis.c ****  for ( int i = 0 ; i < 3 ; i++)
+ 725              		.loc 1 216 0 discriminator 2
+ 726 0020 0133     		adds	r3, r3, #1
+ 727              	.LVL126:
+ 728              	.L19:
+ 216:Src/sixaxis.c ****  for ( int i = 0 ; i < 3 ; i++)
+ 729              		.loc 1 216 0 is_stmt 0 discriminator 1
+ 730 0022 022B     		cmp	r3, #2
+ 731 0024 F5DD     		ble	.L20
+ 732 0026 019E     		ldr	r6, [sp, #4]
+ 733 0028 0096     		str	r6, [sp]
+ 734 002a 3746     		mov	r7, r6
+ 735 002c B346     		mov	fp, r6
+ 736 002e 91E0     		b	.L21
+ 737              	.LVL127:
+ 738              	.L36:
+ 739              	.LBE4:
+ 740              	.LBB5:
+ 219:Src/sixaxis.c **** 			}
+ 220:Src/sixaxis.c **** 
+ 221:Src/sixaxis.c **** // 2 and 15 seconds
+ 222:Src/sixaxis.c **** while ( time - timestart < CAL_TIME  &&  time - timemax < 15e6 )
+ 223:Src/sixaxis.c **** 	{
+ 224:Src/sixaxis.c **** 
+ 225:Src/sixaxis.c **** 		unsigned long looptime;
+ 226:Src/sixaxis.c **** 		looptime = time - lastlooptime;
+ARM GAS  /tmp/ccbO0K1u.s 			page 18
+
+
+ 227:Src/sixaxis.c **** 		lastlooptime = time;
+ 228:Src/sixaxis.c **** 		if ( looptime == 0 ) looptime = 1;
+ 741              		.loc 1 228 0 is_stmt 1
+ 742 0030 B7EB0B0B 		subs	fp, r7, fp
+ 743              	.LVL128:
+ 744 0034 01D1     		bne	.L22
+ 745 0036 4FF0010B 		mov	fp, #1
+ 746              	.LVL129:
+ 747              	.L22:
+ 229:Src/sixaxis.c **** 
+ 230:Src/sixaxis.c **** 	i2c_readdata( 67 , data, 6 );
+ 748              		.loc 1 230 0
+ 749 003a 4320     		movs	r0, #67
+ 750 003c 08A9     		add	r1, sp, #32
+ 751 003e 0622     		movs	r2, #6
+ 752 0040 FFF7FEFF 		bl	i2c_readdata
+ 753              	.LVL130:
+ 231:Src/sixaxis.c **** 
+ 232:Src/sixaxis.c **** 		gyro[0] = (int16_t) ((data[2]<<8) + data[3]);
+ 754              		.loc 1 232 0
+ 755 0044 0B9B     		ldr	r3, [sp, #44]
+ 756 0046 0A9A     		ldr	r2, [sp, #40]
+ 757 0048 03EB0220 		add	r0, r3, r2, lsl #8
+ 758 004c 00B2     		sxth	r0, r0
+ 759 004e FFF7FEFF 		bl	__aeabi_i2f
+ 760              	.LVL131:
+ 761 0052 0590     		str	r0, [sp, #20]	@ float
+ 233:Src/sixaxis.c **** 		gyro[1] = (int16_t) ((data[0]<<8) + data[1]);
+ 762              		.loc 1 233 0
+ 763 0054 099B     		ldr	r3, [sp, #36]
+ 764 0056 089A     		ldr	r2, [sp, #32]
+ 765 0058 03EB0220 		add	r0, r3, r2, lsl #8
+ 766 005c 00B2     		sxth	r0, r0
+ 767 005e FFF7FEFF 		bl	__aeabi_i2f
+ 768              	.LVL132:
+ 769 0062 0690     		str	r0, [sp, #24]	@ float
+ 234:Src/sixaxis.c **** 		gyro[2] = (int16_t) ((data[4]<<8) + data[5]);
+ 770              		.loc 1 234 0
+ 771 0064 0D9B     		ldr	r3, [sp, #52]
+ 772 0066 0C9A     		ldr	r2, [sp, #48]
+ 773 0068 03EB0220 		add	r0, r3, r2, lsl #8
+ 774 006c 00B2     		sxth	r0, r0
+ 775 006e FFF7FEFF 		bl	__aeabi_i2f
+ 776              	.LVL133:
+ 777 0072 0790     		str	r0, [sp, #28]	@ float
+ 778              	.LVL134:
+ 779              	.LBB6:
+ 235:Src/sixaxis.c **** 
+ 236:Src/sixaxis.c **** 
+ 237:Src/sixaxis.c **** 
+ 238:Src/sixaxis.c **** 		 for ( int i = 0 ; i < 3 ; i++)
+ 780              		.loc 1 238 0
+ 781 0074 0026     		movs	r6, #0
+ 239:Src/sixaxis.c **** 			{
+ 240:Src/sixaxis.c **** 
+ 241:Src/sixaxis.c **** 					if ( gyro[i] > limit[i] )  limit[i] += 0.1f; // 100 gyro bias / second change
+ 782              		.loc 1 241 0
+ARM GAS  /tmp/ccbO0K1u.s 			page 19
+
+
+ 783 0076 DFF858A1 		ldr	r10, .L49+32
+ 238:Src/sixaxis.c **** 		 for ( int i = 0 ; i < 3 ; i++)
+ 784              		.loc 1 238 0
+ 785 007a 59E0     		b	.L23
+ 786              	.LVL135:
+ 787              	.L31:
+ 788              		.loc 1 241 0
+ 789 007c 0EAA     		add	r2, sp, #56
+ 790 007e 02EB8603 		add	r3, r2, r6, lsl #2
+ 791 0082 53F8248C 		ldr	r8, [r3, #-36]	@ float
+ 792 0086 53F8304C 		ldr	r4, [r3, #-48]	@ float
+ 793 008a 4046     		mov	r0, r8
+ 794 008c 2146     		mov	r1, r4
+ 795 008e FFF7FEFF 		bl	__aeabi_fcmpgt
+ 796              	.LVL136:
+ 797 0092 40B1     		cbz	r0, .L24
+ 798              		.loc 1 241 0 is_stmt 0 discriminator 1
+ 799 0094 2046     		mov	r0, r4
+ 800 0096 5146     		mov	r1, r10
+ 801 0098 FFF7FEFF 		bl	__aeabi_fadd
+ 802              	.LVL137:
+ 803 009c 0EAC     		add	r4, sp, #56
+ 804 009e 04EB8603 		add	r3, r4, r6, lsl #2
+ 805 00a2 43F8300C 		str	r0, [r3, #-48]	@ float
+ 806              	.L24:
+ 242:Src/sixaxis.c **** 					if ( gyro[i] < limit[i] )  limit[i] -= 0.1f;
+ 807              		.loc 1 242 0 is_stmt 1
+ 808 00a6 0EAA     		add	r2, sp, #56
+ 809 00a8 02EB8603 		add	r3, r2, r6, lsl #2
+ 810 00ac 53F8304C 		ldr	r4, [r3, #-48]	@ float
+ 811 00b0 4046     		mov	r0, r8
+ 812 00b2 2146     		mov	r1, r4
+ 813 00b4 FFF7FEFF 		bl	__aeabi_fcmplt
+ 814              	.LVL138:
+ 815 00b8 40B1     		cbz	r0, .L26
+ 816              		.loc 1 242 0 is_stmt 0 discriminator 1
+ 817 00ba 2046     		mov	r0, r4
+ 818 00bc 5146     		mov	r1, r10
+ 819 00be FFF7FEFF 		bl	__aeabi_fsub
+ 820              	.LVL139:
+ 821 00c2 0EAC     		add	r4, sp, #56
+ 822 00c4 04EB8603 		add	r3, r4, r6, lsl #2
+ 823 00c8 43F8300C 		str	r0, [r3, #-48]	@ float
+ 824              	.L26:
+ 243:Src/sixaxis.c **** 
+ 244:Src/sixaxis.c **** 					limitf( &limit[i] , 800);
+ 825              		.loc 1 244 0 is_stmt 1
+ 826 00cc 4FEA8609 		lsl	r9, r6, #2
+ 827 00d0 02A8     		add	r0, sp, #8
+ 828 00d2 4844     		add	r0, r0, r9
+ 829 00d4 3B49     		ldr	r1, .L49+20
+ 830 00d6 FFF7FEFF 		bl	limitf
+ 831              	.LVL140:
+ 245:Src/sixaxis.c **** 
+ 246:Src/sixaxis.c **** 					if ( fabs(gyro[i]) > 100+ fabs(limit[i]) )
+ 832              		.loc 1 246 0
+ 833 00da 28F00040 		bic	r0, r8, #-2147483648
+ARM GAS  /tmp/ccbO0K1u.s 			page 20
+
+
+ 834 00de FFF7FEFF 		bl	__aeabi_f2d
+ 835              	.LVL141:
+ 836 00e2 0446     		mov	r4, r0
+ 837 00e4 0D46     		mov	r5, r1
+ 838 00e6 0EAA     		add	r2, sp, #56
+ 839 00e8 9144     		add	r9, r9, r2
+ 840 00ea 59F8300C 		ldr	r0, [r9, #-48]	@ float
+ 841 00ee 20F00040 		bic	r0, r0, #-2147483648
+ 842 00f2 FFF7FEFF 		bl	__aeabi_f2d
+ 843              	.LVL142:
+ 844 00f6 0022     		movs	r2, #0
+ 845 00f8 334B     		ldr	r3, .L49+24
+ 846 00fa FFF7FEFF 		bl	__aeabi_dadd
+ 847              	.LVL143:
+ 848 00fe 0246     		mov	r2, r0
+ 849 0100 0B46     		mov	r3, r1
+ 850 0102 2046     		mov	r0, r4
+ 851 0104 2946     		mov	r1, r5
+ 852 0106 FFF7FEFF 		bl	__aeabi_dcmpgt
+ 853              	.LVL144:
+ 854 010a 18B1     		cbz	r0, .L46
+ 247:Src/sixaxis.c **** 					{
+ 248:Src/sixaxis.c **** 						timestart = gettime();
+ 855              		.loc 1 248 0
+ 856 010c FFF7FEFF 		bl	gettime
+ 857              	.LVL145:
+ 858 0110 0090     		str	r0, [sp]
+ 859              	.LVL146:
+ 860 0112 0CE0     		b	.L30
+ 861              	.LVL147:
+ 862              	.L46:
+ 249:Src/sixaxis.c **** 					}
+ 250:Src/sixaxis.c **** 					else
+ 251:Src/sixaxis.c **** 					{
+ 252:Src/sixaxis.c **** 					lpf( &gyrocal[i] , gyro[i], lpfcalc( (float) looptime , 0.5 * 1e6) );
+ 863              		.loc 1 252 0
+ 864 0114 5846     		mov	r0, fp
+ 865 0116 FFF7FEFF 		bl	__aeabi_ui2f
+ 866              	.LVL148:
+ 867 011a 2C49     		ldr	r1, .L49+28
+ 868 011c FFF7FEFF 		bl	lpfcalc
+ 869              	.LVL149:
+ 870 0120 0246     		mov	r2, r0
+ 871 0122 274B     		ldr	r3, .L49+16
+ 872 0124 03EB8600 		add	r0, r3, r6, lsl #2
+ 873 0128 4146     		mov	r1, r8
+ 874 012a FFF7FEFF 		bl	lpf
+ 875              	.LVL150:
+ 876              	.L30:
+ 238:Src/sixaxis.c **** 		 for ( int i = 0 ; i < 3 ; i++)
+ 877              		.loc 1 238 0
+ 878 012e 0136     		adds	r6, r6, #1
+ 879              	.LVL151:
+ 880              	.L23:
+ 238:Src/sixaxis.c **** 		 for ( int i = 0 ; i < 3 ; i++)
+ 881              		.loc 1 238 0 is_stmt 0 discriminator 1
+ 882 0130 022E     		cmp	r6, #2
+ARM GAS  /tmp/ccbO0K1u.s 			page 21
+
+
+ 883 0132 A3DD     		ble	.L31
+ 884 0134 03E0     		b	.L47
+ 885              	.L33:
+ 886              	.LBE6:
+ 253:Src/sixaxis.c **** 
+ 254:Src/sixaxis.c **** 					}
+ 255:Src/sixaxis.c **** 
+ 256:Src/sixaxis.c **** 			}
+ 257:Src/sixaxis.c **** 
+ 258:Src/sixaxis.c **** while ( (gettime() - time) < 1000 ) delay(10);
+ 887              		.loc 1 258 0 is_stmt 1 discriminator 2
+ 888 0136 2046     		mov	r0, r4
+ 889 0138 FFF7FEFF 		bl	delay
+ 890              	.LVL152:
+ 891 013c 00E0     		b	.L48
+ 892              	.L47:
+ 893              		.loc 1 258 0 is_stmt 0 discriminator 1
+ 894 013e 0A24     		movs	r4, #10
+ 895              	.L48:
+ 896 0140 FFF7FEFF 		bl	gettime
+ 897              	.LVL153:
+ 898 0144 C01B     		subs	r0, r0, r7
+ 899 0146 B0F57A7F 		cmp	r0, #1000
+ 900 014a F4D3     		bcc	.L33
+ 259:Src/sixaxis.c **** time = gettime();
+ 901              		.loc 1 259 0 is_stmt 1
+ 902 014c FFF7FEFF 		bl	gettime
+ 903              	.LVL154:
+ 227:Src/sixaxis.c **** 		lastlooptime = time;
+ 904              		.loc 1 227 0
+ 905 0150 BB46     		mov	fp, r7
+ 906              	.LVL155:
+ 907              		.loc 1 259 0
+ 908 0152 0746     		mov	r7, r0
+ 909              	.LVL156:
+ 910              	.L21:
+ 911              	.LBE5:
+ 222:Src/sixaxis.c **** while ( time - timestart < CAL_TIME  &&  time - timemax < 15e6 )
+ 912              		.loc 1 222 0 discriminator 1
+ 913 0154 009C     		ldr	r4, [sp]
+ 914 0156 381B     		subs	r0, r7, r4
+ 915 0158 FFF7FEFF 		bl	__aeabi_ui2d
+ 916              	.LVL157:
+ 917 015c 0446     		mov	r4, r0
+ 918 015e 0D46     		mov	r5, r1
+ 919 0160 13A3     		adr	r3, .L49
+ 920 0162 D3E90023 		ldrd	r2, [r3]
+ 921 0166 FFF7FEFF 		bl	__aeabi_dcmplt
+ 922              	.LVL158:
+ 923 016a 58B1     		cbz	r0, .L34
+ 222:Src/sixaxis.c **** while ( time - timestart < CAL_TIME  &&  time - timemax < 15e6 )
+ 924              		.loc 1 222 0 is_stmt 0 discriminator 2
+ 925 016c 019A     		ldr	r2, [sp, #4]
+ 926 016e B81A     		subs	r0, r7, r2
+ 927 0170 FFF7FEFF 		bl	__aeabi_ui2d
+ 928              	.LVL159:
+ 929 0174 10A3     		adr	r3, .L49+8
+ARM GAS  /tmp/ccbO0K1u.s 			page 22
+
+
+ 930 0176 D3E90023 		ldrd	r2, [r3]
+ 931 017a FFF7FEFF 		bl	__aeabi_dcmplt
+ 932              	.LVL160:
+ 933 017e 0028     		cmp	r0, #0
+ 934 0180 7FF456AF 		bne	.L36
+ 935              	.L34:
+ 260:Src/sixaxis.c **** 
+ 261:Src/sixaxis.c **** 	}
+ 262:Src/sixaxis.c **** 
+ 263:Src/sixaxis.c **** 
+ 264:Src/sixaxis.c **** 
+ 265:Src/sixaxis.c **** if ( time - timestart < CAL_TIME )
+ 936              		.loc 1 265 0 is_stmt 1
+ 937 0184 2046     		mov	r0, r4
+ 938 0186 2946     		mov	r1, r5
+ 939 0188 09A3     		adr	r3, .L49
+ 940 018a D3E90023 		ldrd	r2, [r3]
+ 941 018e FFF7FEFF 		bl	__aeabi_dcmplt
+ 942              	.LVL161:
+ 943 0192 20B9     		cbnz	r0, .L41
+ 944              	.LBB7:
+ 945 0194 08E0     		b	.L18
+ 946              	.LVL162:
+ 947              	.L39:
+ 266:Src/sixaxis.c **** {
+ 267:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 268:Src/sixaxis.c **** 	{
+ 269:Src/sixaxis.c **** 	gyrocal[i] = 0;
+ 948              		.loc 1 269 0 discriminator 2
+ 949 0196 41F82320 		str	r2, [r1, r3, lsl #2]	@ float
+ 267:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 950              		.loc 1 267 0 discriminator 2
+ 951 019a 0133     		adds	r3, r3, #1
+ 952              	.LVL163:
+ 953 019c 02E0     		b	.L37
+ 954              	.LVL164:
+ 955              	.L41:
+ 956              	.LBE7:
+ 957 019e 0023     		movs	r3, #0
+ 958              	.LBB8:
+ 959              		.loc 1 269 0
+ 960 01a0 0749     		ldr	r1, .L49+16
+ 961 01a2 0022     		movs	r2, #0
+ 962              	.L37:
+ 963              	.LVL165:
+ 267:Src/sixaxis.c **** 	for ( int i = 0 ; i < 3; i++)
+ 964              		.loc 1 267 0 discriminator 1
+ 965 01a4 022B     		cmp	r3, #2
+ 966 01a6 F6DD     		ble	.L39
+ 967              	.LVL166:
+ 968              	.L18:
+ 969              	.LBE8:
+ 270:Src/sixaxis.c **** 
+ 271:Src/sixaxis.c **** 	}
+ 272:Src/sixaxis.c **** 
+ 273:Src/sixaxis.c **** }
+ 274:Src/sixaxis.c **** 
+ARM GAS  /tmp/ccbO0K1u.s 			page 23
+
+
+ 275:Src/sixaxis.c **** 
+ 276:Src/sixaxis.c **** #ifdef SERIAL
+ 277:Src/sixaxis.c **** printf("gyro calibration  %f %f %f \n "   , gyrocal[0] , gyrocal[1] , gyrocal[2]);
+ 278:Src/sixaxis.c **** #endif
+ 279:Src/sixaxis.c **** 
+ 280:Src/sixaxis.c **** }
+ 970              		.loc 1 280 0
+ 971 01a8 0FB0     		add	sp, sp, #60
+ 972              	.LVL167:
+ 973              		@ sp needed
+ 974 01aa BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 975              	.LVL168:
+ 976              	.L50:
+ 977 01ae 00BF     		.align	3
+ 978              	.L49:
+ 979 01b0 00000000 		.word	0
+ 980 01b4 80843E41 		.word	1094616192
+ 981 01b8 00000000 		.word	0
+ 982 01bc 389C6C41 		.word	1097636920
+ 983 01c0 00000000 		.word	gyrocal
+ 984 01c4 00004844 		.word	1145569280
+ 985 01c8 00005940 		.word	1079574528
+ 986 01cc 0024F448 		.word	1223959552
+ 987 01d0 CDCCCC3D 		.word	1036831949
+ 988              		.cfi_endproc
+ 989              	.LFE32:
+ 991              		.comm	compAngleY,4,4
+ 992              		.comm	compAngleX,4,4
+ 993              		.global	timer
+ 994              		.comm	gyroYangle,4,4
+ 995              		.comm	gyroXangle,4,4
+ 996              		.comm	gyrocal,12,4
+ 997              		.comm	gyro,12,4
+ 998              		.comm	accel,12,4
+ 999 01d4 AFF30080 		.section	.bss.timer,"aw",%nobits
+ 1000              		.align	2
+ 1001              		.set	.LANCHOR0,. + 0
+ 1004              	timer:
+ 1005 0000 00000000 		.space	4
+ 1006              		.text
+ 1007              	.Letext0:
+ 1008              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 1009              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 1010              		.file 4 "CMSIS/gd32f1x0.h"
+ 1011              		.file 5 "CMSIS/core_cm3.h"
+ 1012              		.file 6 "Src/drv_i2c.h"
+ 1013              		.file 7 "Src/drv_time.h"
+ 1014              		.file 8 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/math.h"
+ 1015              		.file 9 "Peripherals/inc/gd32f1x0_gpio.h"
+ 1016              		.file 10 "Peripherals/inc/gd32f1x0_usart.h"
+ 1017              		.file 11 "Src/util.h"
+ARM GAS  /tmp/ccbO0K1u.s 			page 24
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sixaxis.c
+     /tmp/ccbO0K1u.s:17     .text.sixaxis_init:00000000 $t
+     /tmp/ccbO0K1u.s:22     .text.sixaxis_init:00000000 sixaxis_init
+     /tmp/ccbO0K1u.s:108    .text.sixaxis_check:00000000 $t
+     /tmp/ccbO0K1u.s:113    .text.sixaxis_check:00000000 sixaxis_check
+     /tmp/ccbO0K1u.s:151    .text.gyro_read:00000000 $t
+     /tmp/ccbO0K1u.s:156    .text.gyro_read:00000000 gyro_read
+     /tmp/ccbO0K1u.s:273    .text.gyro_read:0000009c $d
+                            *COM*:0000000c accel
+                            *COM*:0000000c gyro
+     /tmp/ccbO0K1u.s:279    .text.gyro_read:000000a8 $t
+     /tmp/ccbO0K1u.s:652    .text.gyro_read:00000338 $d
+                            *COM*:00000004 gyroXangle
+                            *COM*:00000004 gyroYangle
+                            *COM*:00000004 compAngleX
+                            *COM*:00000004 compAngleY
+     /tmp/ccbO0K1u.s:679    .text.gyro_cal:00000000 $t
+     /tmp/ccbO0K1u.s:684    .text.gyro_cal:00000000 gyro_cal
+     /tmp/ccbO0K1u.s:979    .text.gyro_cal:000001b0 $d
+                            *COM*:0000000c gyrocal
+     /tmp/ccbO0K1u.s:1004   .bss.timer:00000000 timer
+     /tmp/ccbO0K1u.s:1000   .bss.timer:00000000 $d
+                     .debug_frame:00000010 $d
+     /tmp/ccbO0K1u.s:999    .text.gyro_cal:000001d4 $t
+
+UNDEFINED SYMBOLS
+i2c_writereg
+delay
+i2c_readreg
+__aeabi_i2f
+__aeabi_fmul
+__aeabi_fadd
+__aeabi_f2d
+__aeabi_ddiv
+__aeabi_dmul
+__aeabi_d2f
+__aeabi_ui2f
+__aeabi_fsub
+__aeabi_dadd
+__aeabi_fcmplt
+__aeabi_fcmpgt
+i2c_readdata
+sqrt
+atan
+atan2
+gettime
+GPIO_ReadInputBit
+USART_DataSend
+waitForTxReady
+__aeabi_dcmpgt
+__aeabi_ui2d
+__aeabi_dcmplt
+limitf
+lpfcalc
+lpf

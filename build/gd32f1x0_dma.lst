@@ -1,0 +1,1007 @@
+ARM GAS  /tmp/ccMhb3qn.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"gd32f1x0_dma.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.DMA_DeInit,"ax",%progbits
+  17              		.align	2
+  18              		.global	DMA_DeInit
+  19              		.thumb
+  20              		.thumb_func
+  22              	DMA_DeInit:
+  23              	.LFB29:
+  24              		.file 1 "Peripherals/src/gd32f1x0_dma.c"
+   1:Peripherals/src/gd32f1x0_dma.c **** /**
+   2:Peripherals/src/gd32f1x0_dma.c ****   ******************************************************************************
+   3:Peripherals/src/gd32f1x0_dma.c ****   * @file    gd32f1x0_dma.c
+   4:Peripherals/src/gd32f1x0_dma.c ****   * @author  MCU SD
+   5:Peripherals/src/gd32f1x0_dma.c ****   * @version V1.0.1
+   6:Peripherals/src/gd32f1x0_dma.c ****   * @date    6-Sep-2014
+   7:Peripherals/src/gd32f1x0_dma.c ****   * @brief   DMA functions of the firmware library.
+   8:Peripherals/src/gd32f1x0_dma.c ****   ******************************************************************************
+   9:Peripherals/src/gd32f1x0_dma.c ****   */
+  10:Peripherals/src/gd32f1x0_dma.c **** 
+  11:Peripherals/src/gd32f1x0_dma.c **** /* Includes ------------------------------------------------------------------*/
+  12:Peripherals/src/gd32f1x0_dma.c **** #include "gd32f1x0_dma.h"
+  13:Peripherals/src/gd32f1x0_dma.c **** 
+  14:Peripherals/src/gd32f1x0_dma.c **** /** @addtogroup GD32F1x0_Firmware
+  15:Peripherals/src/gd32f1x0_dma.c ****   * @{
+  16:Peripherals/src/gd32f1x0_dma.c ****   */
+  17:Peripherals/src/gd32f1x0_dma.c **** 
+  18:Peripherals/src/gd32f1x0_dma.c **** /** @defgroup DMA 
+  19:Peripherals/src/gd32f1x0_dma.c ****   * @brief DMA driver modules
+  20:Peripherals/src/gd32f1x0_dma.c ****   * @{
+  21:Peripherals/src/gd32f1x0_dma.c ****   */ 
+  22:Peripherals/src/gd32f1x0_dma.c **** 
+  23:Peripherals/src/gd32f1x0_dma.c **** /** @defgroup DMA_Private_Defines
+  24:Peripherals/src/gd32f1x0_dma.c ****   * @{
+  25:Peripherals/src/gd32f1x0_dma.c ****   */
+  26:Peripherals/src/gd32f1x0_dma.c **** 
+  27:Peripherals/src/gd32f1x0_dma.c **** /* DMA Channel config registers Masks */
+  28:Peripherals/src/gd32f1x0_dma.c **** #define CTLRx_CLEAR_MASK                ((uint32_t)0xFFFF800F) 
+  29:Peripherals/src/gd32f1x0_dma.c **** 
+  30:Peripherals/src/gd32f1x0_dma.c **** /* DMA Reset registers mask */
+  31:Peripherals/src/gd32f1x0_dma.c **** #define  DMA_REGISTERS_RESET            ((uint32_t)0x00000000)
+  32:Peripherals/src/gd32f1x0_dma.c **** 
+  33:Peripherals/src/gd32f1x0_dma.c **** /* DMA Reset registers mask */
+  34:Peripherals/src/gd32f1x0_dma.c **** #define  DMA_INIT_RESET                 ((uint32_t)0x00000000)
+ARM GAS  /tmp/ccMhb3qn.s 			page 2
+
+
+  35:Peripherals/src/gd32f1x0_dma.c **** 
+  36:Peripherals/src/gd32f1x0_dma.c **** /* DMA1 Channelx interrupt  bit masks */
+  37:Peripherals/src/gd32f1x0_dma.c **** #define DMA1_CHANNEL1_INT_MASK          ((uint32_t)(DMA_IFR_GIF1 | DMA_IFR_TCIF1 | DMA_IFR_HTIF1 | 
+  38:Peripherals/src/gd32f1x0_dma.c **** #define DMA1_CHANNEL2_INT_MASK          ((uint32_t)(DMA_IFR_GIF2 | DMA_IFR_TCIF2 | DMA_IFR_HTIF2 | 
+  39:Peripherals/src/gd32f1x0_dma.c **** #define DMA1_CHANNEL3_INT_MASK          ((uint32_t)(DMA_IFR_GIF3 | DMA_IFR_TCIF3 | DMA_IFR_HTIF3 | 
+  40:Peripherals/src/gd32f1x0_dma.c **** #define DMA1_CHANNEL4_INT_MASK          ((uint32_t)(DMA_IFR_GIF4 | DMA_IFR_TCIF4 | DMA_IFR_HTIF4 | 
+  41:Peripherals/src/gd32f1x0_dma.c **** #define DMA1_CHANNEL5_INT_MASK          ((uint32_t)(DMA_IFR_GIF5 | DMA_IFR_TCIF5 | DMA_IFR_HTIF5 | 
+  42:Peripherals/src/gd32f1x0_dma.c **** #define DMA1_CHANNEL6_INT_MASK          ((uint32_t)(DMA_IFR_GIF6 | DMA_IFR_TCIF6 | DMA_IFR_HTIF6 | 
+  43:Peripherals/src/gd32f1x0_dma.c **** #define DMA1_CHANNEL7_INT_MASK          ((uint32_t)(DMA_IFR_GIF7 | DMA_IFR_TCIF7 | DMA_IFR_HTIF7 | 
+  44:Peripherals/src/gd32f1x0_dma.c **** 
+  45:Peripherals/src/gd32f1x0_dma.c **** /**
+  46:Peripherals/src/gd32f1x0_dma.c ****   * @}
+  47:Peripherals/src/gd32f1x0_dma.c ****   */
+  48:Peripherals/src/gd32f1x0_dma.c **** 
+  49:Peripherals/src/gd32f1x0_dma.c **** /** @defgroup DMA_Private_Functions 
+  50:Peripherals/src/gd32f1x0_dma.c ****   * @{
+  51:Peripherals/src/gd32f1x0_dma.c ****   */
+  52:Peripherals/src/gd32f1x0_dma.c **** 
+  53:Peripherals/src/gd32f1x0_dma.c **** /** @defgroup DMA_Group1 Initialization and Configuration functions
+  54:Peripherals/src/gd32f1x0_dma.c ****   * @brief    Initialization and Configuration functions
+  55:Peripherals/src/gd32f1x0_dma.c ****   * @{
+  56:Peripherals/src/gd32f1x0_dma.c ****   */
+  57:Peripherals/src/gd32f1x0_dma.c **** 
+  58:Peripherals/src/gd32f1x0_dma.c **** /**
+  59:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Deinitialize the DMAy Channelx registers
+  60:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMAy_Channelx: where y:[1] to select the DMA and x:[1,7] to select the DMA Channel.
+  61:Peripherals/src/gd32f1x0_dma.c ****   * @retval None
+  62:Peripherals/src/gd32f1x0_dma.c ****   */
+  63:Peripherals/src/gd32f1x0_dma.c **** void DMA_DeInit(DMA_Channel_TypeDef* DMAy_Channelx)
+  64:Peripherals/src/gd32f1x0_dma.c **** {
+  25              		.loc 1 64 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  30              	.LVL0:
+  65:Peripherals/src/gd32f1x0_dma.c ****     /* Disable the selected DMAy Channelx */
+  66:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->CTLRx &= (uint16_t)(~DMA_CTLRx_CHEN);
+  31              		.loc 1 66 0
+  32 0000 0368     		ldr	r3, [r0]
+  33 0002 23F00103 		bic	r3, r3, #1
+  34 0006 1B04     		lsls	r3, r3, #16
+  35 0008 1B0C     		lsrs	r3, r3, #16
+  36 000a 0360     		str	r3, [r0]
+  67:Peripherals/src/gd32f1x0_dma.c ****     
+  68:Peripherals/src/gd32f1x0_dma.c ****     /* Reset DMAy Channelx control register */
+  69:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->CTLRx  = DMA_REGISTERS_RESET;
+  37              		.loc 1 69 0
+  38 000c 0023     		movs	r3, #0
+  39 000e 0360     		str	r3, [r0]
+  70:Peripherals/src/gd32f1x0_dma.c ****     
+  71:Peripherals/src/gd32f1x0_dma.c ****     /* Reset DMAy Channelx remaining bytes register */
+  72:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->RCNTx = DMA_REGISTERS_RESET;
+  40              		.loc 1 72 0
+  41 0010 4360     		str	r3, [r0, #4]
+  73:Peripherals/src/gd32f1x0_dma.c ****     
+  74:Peripherals/src/gd32f1x0_dma.c ****     /* Reset DMAy Channelx peripheral address register */
+ARM GAS  /tmp/ccMhb3qn.s 			page 3
+
+
+  75:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->PBARx  = DMA_REGISTERS_RESET;
+  42              		.loc 1 75 0
+  43 0012 8360     		str	r3, [r0, #8]
+  76:Peripherals/src/gd32f1x0_dma.c ****     
+  77:Peripherals/src/gd32f1x0_dma.c ****     /* Reset DMAy Channelx memory address register */
+  78:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->MBARx = DMA_REGISTERS_RESET;
+  44              		.loc 1 78 0
+  45 0014 C360     		str	r3, [r0, #12]
+  79:Peripherals/src/gd32f1x0_dma.c ****     
+  80:Peripherals/src/gd32f1x0_dma.c ****     if (DMAy_Channelx == DMA1_CHANNEL1)
+  46              		.loc 1 80 0
+  47 0016 1F4B     		ldr	r3, .L9
+  48 0018 9842     		cmp	r0, r3
+  49 001a 05D1     		bne	.L2
+  81:Peripherals/src/gd32f1x0_dma.c ****     {
+  82:Peripherals/src/gd32f1x0_dma.c ****         /* Clear interrupt bits of DMA1 Channel1 */
+  83:Peripherals/src/gd32f1x0_dma.c ****         DMA1->ICR |= DMA1_CHANNEL1_INT_MASK;
+  50              		.loc 1 83 0
+  51 001c 083B     		subs	r3, r3, #8
+  52 001e 5A68     		ldr	r2, [r3, #4]
+  53 0020 42F00F02 		orr	r2, r2, #15
+  54 0024 5A60     		str	r2, [r3, #4]
+  55 0026 7047     		bx	lr
+  56              	.L2:
+  84:Peripherals/src/gd32f1x0_dma.c ****     }
+  85:Peripherals/src/gd32f1x0_dma.c ****     else if (DMAy_Channelx == DMA1_CHANNEL2)
+  57              		.loc 1 85 0
+  58 0028 1B4B     		ldr	r3, .L9+4
+  59 002a 9842     		cmp	r0, r3
+  60 002c 05D1     		bne	.L4
+  86:Peripherals/src/gd32f1x0_dma.c ****     {
+  87:Peripherals/src/gd32f1x0_dma.c ****         /* Clear interrupt bits of DMA1 Channel2 */
+  88:Peripherals/src/gd32f1x0_dma.c ****         DMA1->ICR |= DMA1_CHANNEL2_INT_MASK;
+  61              		.loc 1 88 0
+  62 002e 1C3B     		subs	r3, r3, #28
+  63 0030 5A68     		ldr	r2, [r3, #4]
+  64 0032 42F0F002 		orr	r2, r2, #240
+  65 0036 5A60     		str	r2, [r3, #4]
+  66 0038 7047     		bx	lr
+  67              	.L4:
+  89:Peripherals/src/gd32f1x0_dma.c ****     }
+  90:Peripherals/src/gd32f1x0_dma.c ****     else if (DMAy_Channelx == DMA1_CHANNEL3)
+  68              		.loc 1 90 0
+  69 003a 184B     		ldr	r3, .L9+8
+  70 003c 9842     		cmp	r0, r3
+  71 003e 05D1     		bne	.L5
+  91:Peripherals/src/gd32f1x0_dma.c ****     {
+  92:Peripherals/src/gd32f1x0_dma.c ****         /* Clear interrupt bits of DMA1 Channel3 */
+  93:Peripherals/src/gd32f1x0_dma.c ****         DMA1->ICR |= DMA1_CHANNEL3_INT_MASK;
+  72              		.loc 1 93 0
+  73 0040 303B     		subs	r3, r3, #48
+  74 0042 5A68     		ldr	r2, [r3, #4]
+  75 0044 42F47062 		orr	r2, r2, #3840
+  76 0048 5A60     		str	r2, [r3, #4]
+  77 004a 7047     		bx	lr
+  78              	.L5:
+  94:Peripherals/src/gd32f1x0_dma.c ****     }
+ARM GAS  /tmp/ccMhb3qn.s 			page 4
+
+
+  95:Peripherals/src/gd32f1x0_dma.c ****     else if (DMAy_Channelx == DMA1_CHANNEL4)
+  79              		.loc 1 95 0
+  80 004c 144B     		ldr	r3, .L9+12
+  81 004e 9842     		cmp	r0, r3
+  82 0050 05D1     		bne	.L6
+  96:Peripherals/src/gd32f1x0_dma.c ****     {
+  97:Peripherals/src/gd32f1x0_dma.c ****         /* Clear interrupt bits of DMA1 Channel4 */
+  98:Peripherals/src/gd32f1x0_dma.c ****         DMA1->ICR |= DMA1_CHANNEL4_INT_MASK;
+  83              		.loc 1 98 0
+  84 0052 443B     		subs	r3, r3, #68
+  85 0054 5A68     		ldr	r2, [r3, #4]
+  86 0056 42F47042 		orr	r2, r2, #61440
+  87 005a 5A60     		str	r2, [r3, #4]
+  88 005c 7047     		bx	lr
+  89              	.L6:
+  99:Peripherals/src/gd32f1x0_dma.c ****     }
+ 100:Peripherals/src/gd32f1x0_dma.c ****     else if (DMAy_Channelx == DMA1_CHANNEL5) 
+  90              		.loc 1 100 0
+  91 005e 114B     		ldr	r3, .L9+16
+  92 0060 9842     		cmp	r0, r3
+  93 0062 05D1     		bne	.L7
+ 101:Peripherals/src/gd32f1x0_dma.c ****     {
+ 102:Peripherals/src/gd32f1x0_dma.c ****         /* Clear interrupt bits of DMA1 Channel5 */
+ 103:Peripherals/src/gd32f1x0_dma.c ****         DMA1->ICR |= DMA1_CHANNEL5_INT_MASK;
+  94              		.loc 1 103 0
+  95 0064 583B     		subs	r3, r3, #88
+  96 0066 5A68     		ldr	r2, [r3, #4]
+  97 0068 42F47022 		orr	r2, r2, #983040
+  98 006c 5A60     		str	r2, [r3, #4]
+  99 006e 7047     		bx	lr
+ 100              	.L7:
+ 104:Peripherals/src/gd32f1x0_dma.c ****     }
+ 105:Peripherals/src/gd32f1x0_dma.c ****     else if (DMAy_Channelx == DMA1_CHANNEL6) 
+ 101              		.loc 1 105 0
+ 102 0070 0D4B     		ldr	r3, .L9+20
+ 103 0072 9842     		cmp	r0, r3
+ 104 0074 05D1     		bne	.L8
+ 106:Peripherals/src/gd32f1x0_dma.c ****     {
+ 107:Peripherals/src/gd32f1x0_dma.c ****         /* Clear interrupt bits of DMA1 Channel6 */
+ 108:Peripherals/src/gd32f1x0_dma.c ****         DMA1->ICR |= DMA1_CHANNEL6_INT_MASK;
+ 105              		.loc 1 108 0
+ 106 0076 6C3B     		subs	r3, r3, #108
+ 107 0078 5A68     		ldr	r2, [r3, #4]
+ 108 007a 42F47002 		orr	r2, r2, #15728640
+ 109 007e 5A60     		str	r2, [r3, #4]
+ 110 0080 7047     		bx	lr
+ 111              	.L8:
+ 109:Peripherals/src/gd32f1x0_dma.c ****     }
+ 110:Peripherals/src/gd32f1x0_dma.c ****     
+ 111:Peripherals/src/gd32f1x0_dma.c ****     else if(DMAy_Channelx == DMA1_CHANNEL7) 
+ 112              		.loc 1 111 0
+ 113 0082 0A4B     		ldr	r3, .L9+24
+ 114 0084 9842     		cmp	r0, r3
+ 115 0086 04D1     		bne	.L1
+ 112:Peripherals/src/gd32f1x0_dma.c ****     {
+ 113:Peripherals/src/gd32f1x0_dma.c ****         /* Clear interrupt bits of DMA1 Channel7 */
+ 114:Peripherals/src/gd32f1x0_dma.c ****         DMA1->ICR |= DMA1_CHANNEL7_INT_MASK;
+ARM GAS  /tmp/ccMhb3qn.s 			page 5
+
+
+ 116              		.loc 1 114 0
+ 117 0088 803B     		subs	r3, r3, #128
+ 118 008a 5A68     		ldr	r2, [r3, #4]
+ 119 008c 42F07062 		orr	r2, r2, #251658240
+ 120 0090 5A60     		str	r2, [r3, #4]
+ 121              	.L1:
+ 122 0092 7047     		bx	lr
+ 123              	.L10:
+ 124              		.align	2
+ 125              	.L9:
+ 126 0094 08000240 		.word	1073872904
+ 127 0098 1C000240 		.word	1073872924
+ 128 009c 30000240 		.word	1073872944
+ 129 00a0 44000240 		.word	1073872964
+ 130 00a4 58000240 		.word	1073872984
+ 131 00a8 6C000240 		.word	1073873004
+ 132 00ac 80000240 		.word	1073873024
+ 133              		.cfi_endproc
+ 134              	.LFE29:
+ 136              		.section	.text.DMA_Init,"ax",%progbits
+ 137              		.align	2
+ 138              		.global	DMA_Init
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	DMA_Init:
+ 143              	.LFB30:
+ 115:Peripherals/src/gd32f1x0_dma.c ****     }
+ 116:Peripherals/src/gd32f1x0_dma.c **** }
+ 117:Peripherals/src/gd32f1x0_dma.c **** 
+ 118:Peripherals/src/gd32f1x0_dma.c **** /**
+ 119:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Initialize the DMAy Channelx according to the DMA_InitParaStruct.
+ 120:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMAy_Channelx: where y:[1] to select the DMA and x:[1,7] to select the DMA Channel.
+ 121:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMA_InitParaStruct: contain the configuration information for the specified DMA Channel
+ 122:Peripherals/src/gd32f1x0_dma.c ****   * @retval None
+ 123:Peripherals/src/gd32f1x0_dma.c ****   */
+ 124:Peripherals/src/gd32f1x0_dma.c **** void DMA_Init(DMA_Channel_TypeDef* DMAy_Channelx, DMA_InitPara* DMA_InitParaStruct)
+ 125:Peripherals/src/gd32f1x0_dma.c **** {
+ 144              		.loc 1 125 0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 0
+ 147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148              		@ link register save eliminated.
+ 149              	.LVL1:
+ 150 0000 10B4     		push	{r4}
+ 151              	.LCFI0:
+ 152              		.cfi_def_cfa_offset 4
+ 153              		.cfi_offset 4, -4
+ 154              	.LVL2:
+ 126:Peripherals/src/gd32f1x0_dma.c ****     uint32_t temp = 0;
+ 127:Peripherals/src/gd32f1x0_dma.c ****     
+ 128:Peripherals/src/gd32f1x0_dma.c ****     /* Get the DMAy_Channelx CTLRx value */
+ 129:Peripherals/src/gd32f1x0_dma.c ****     temp = DMAy_Channelx->CTLRx;
+ 155              		.loc 1 129 0
+ 156 0002 0368     		ldr	r3, [r0]
+ 157              	.LVL3:
+ 130:Peripherals/src/gd32f1x0_dma.c ****     
+ 131:Peripherals/src/gd32f1x0_dma.c ****     /* Clear MEMTOMEM, PRIO, MSIZE, PSIZE, MNAGA, PNAGA, CIRC and DIR bits */
+ARM GAS  /tmp/ccMhb3qn.s 			page 6
+
+
+ 132:Peripherals/src/gd32f1x0_dma.c ****     temp &= CTLRx_CLEAR_MASK;
+ 158              		.loc 1 132 0
+ 159 0004 23F4FF43 		bic	r3, r3, #32640
+ 160              	.LVL4:
+ 161 0008 23F07003 		bic	r3, r3, #112
+ 162              	.LVL5:
+ 133:Peripherals/src/gd32f1x0_dma.c ****     
+ 134:Peripherals/src/gd32f1x0_dma.c ****     /* Configure DMAy Channelx: data transfer, data size, priority level and mode */
+ 135:Peripherals/src/gd32f1x0_dma.c ****     /* Set MEMTOMEM, PRIO, MSIZE, PSIZE, MNAGA, PNAGA, CIRC and DIR bits according to DMA_InitParaS
+ 136:Peripherals/src/gd32f1x0_dma.c ****     temp |= DMA_InitParaStruct->DMA_DIR | DMA_InitParaStruct->DMA_Mode |
+ 163              		.loc 1 136 0
+ 164 000c 8C68     		ldr	r4, [r1, #8]
+ 165 000e 0A6A     		ldr	r2, [r1, #32]
+ 166 0010 1443     		orrs	r4, r4, r2
+ 137:Peripherals/src/gd32f1x0_dma.c ****             DMA_InitParaStruct->DMA_PeripheralInc | DMA_InitParaStruct->DMA_MemoryInc |
+ 167              		.loc 1 137 0
+ 168 0012 0A69     		ldr	r2, [r1, #16]
+ 136:Peripherals/src/gd32f1x0_dma.c ****     temp |= DMA_InitParaStruct->DMA_DIR | DMA_InitParaStruct->DMA_Mode |
+ 169              		.loc 1 136 0
+ 170 0014 1443     		orrs	r4, r4, r2
+ 171              		.loc 1 137 0
+ 172 0016 4A69     		ldr	r2, [r1, #20]
+ 173 0018 1443     		orrs	r4, r4, r2
+ 138:Peripherals/src/gd32f1x0_dma.c ****             DMA_InitParaStruct->DMA_PeripheralDataSize | DMA_InitParaStruct->DMA_MemoryDataSize |
+ 174              		.loc 1 138 0
+ 175 001a 8A69     		ldr	r2, [r1, #24]
+ 137:Peripherals/src/gd32f1x0_dma.c ****             DMA_InitParaStruct->DMA_PeripheralInc | DMA_InitParaStruct->DMA_MemoryInc |
+ 176              		.loc 1 137 0
+ 177 001c 1443     		orrs	r4, r4, r2
+ 178              		.loc 1 138 0
+ 179 001e CA69     		ldr	r2, [r1, #28]
+ 180 0020 1443     		orrs	r4, r4, r2
+ 139:Peripherals/src/gd32f1x0_dma.c ****             DMA_InitParaStruct->DMA_Priority | DMA_InitParaStruct->DMA_MTOM;
+ 181              		.loc 1 139 0
+ 182 0022 4A6A     		ldr	r2, [r1, #36]
+ 138:Peripherals/src/gd32f1x0_dma.c ****             DMA_InitParaStruct->DMA_PeripheralDataSize | DMA_InitParaStruct->DMA_MemoryDataSize |
+ 183              		.loc 1 138 0
+ 184 0024 1443     		orrs	r4, r4, r2
+ 185              		.loc 1 139 0
+ 186 0026 8A6A     		ldr	r2, [r1, #40]
+ 187 0028 2243     		orrs	r2, r2, r4
+ 136:Peripherals/src/gd32f1x0_dma.c ****     temp |= DMA_InitParaStruct->DMA_DIR | DMA_InitParaStruct->DMA_Mode |
+ 188              		.loc 1 136 0
+ 189 002a 1343     		orrs	r3, r3, r2
+ 190              	.LVL6:
+ 140:Peripherals/src/gd32f1x0_dma.c **** 
+ 141:Peripherals/src/gd32f1x0_dma.c ****     /* Write to DMAy Channelx CTLRx */
+ 142:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->CTLRx = temp;
+ 191              		.loc 1 142 0
+ 192 002c 0360     		str	r3, [r0]
+ 143:Peripherals/src/gd32f1x0_dma.c ****     
+ 144:Peripherals/src/gd32f1x0_dma.c ****     /* Write to DMAy Channelx RCNTx */
+ 145:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->RCNTx = DMA_InitParaStruct->DMA_BufferSize;
+ 193              		.loc 1 145 0
+ 194 002e CB68     		ldr	r3, [r1, #12]
+ 195              	.LVL7:
+ 196 0030 4360     		str	r3, [r0, #4]
+ARM GAS  /tmp/ccMhb3qn.s 			page 7
+
+
+ 197              	.LVL8:
+ 146:Peripherals/src/gd32f1x0_dma.c ****     
+ 147:Peripherals/src/gd32f1x0_dma.c ****     /* Write to DMAy Channelx PBARx */
+ 148:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->PBARx = DMA_InitParaStruct->DMA_PeripheralBaseAddr;
+ 198              		.loc 1 148 0
+ 199 0032 0B68     		ldr	r3, [r1]
+ 200 0034 8360     		str	r3, [r0, #8]
+ 149:Peripherals/src/gd32f1x0_dma.c ****     
+ 150:Peripherals/src/gd32f1x0_dma.c ****     /* Write to DMAy Channelx MBARx */
+ 151:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->MBARx = DMA_InitParaStruct->DMA_MemoryBaseAddr;
+ 201              		.loc 1 151 0
+ 202 0036 4B68     		ldr	r3, [r1, #4]
+ 203 0038 C360     		str	r3, [r0, #12]
+ 152:Peripherals/src/gd32f1x0_dma.c **** }
+ 204              		.loc 1 152 0
+ 205 003a 5DF8044B 		ldr	r4, [sp], #4
+ 206 003e 7047     		bx	lr
+ 207              		.cfi_endproc
+ 208              	.LFE30:
+ 210              		.section	.text.DMA_ParaInit,"ax",%progbits
+ 211              		.align	2
+ 212              		.global	DMA_ParaInit
+ 213              		.thumb
+ 214              		.thumb_func
+ 216              	DMA_ParaInit:
+ 217              	.LFB31:
+ 153:Peripherals/src/gd32f1x0_dma.c **** 
+ 154:Peripherals/src/gd32f1x0_dma.c **** /**
+ 155:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Set each DMA_InitParaStruct member to its default value.
+ 156:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMA_InitParaStruct: The structure pointer to DMA_InitParaStruct will be initialized.
+ 157:Peripherals/src/gd32f1x0_dma.c ****   * @retval None
+ 158:Peripherals/src/gd32f1x0_dma.c ****   */
+ 159:Peripherals/src/gd32f1x0_dma.c **** void DMA_ParaInit(DMA_InitPara* DMA_InitParaStruct)
+ 160:Peripherals/src/gd32f1x0_dma.c **** {
+ 218              		.loc 1 160 0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 0
+ 221              		@ frame_needed = 0, uses_anonymous_args = 0
+ 222              		@ link register save eliminated.
+ 223              	.LVL9:
+ 161:Peripherals/src/gd32f1x0_dma.c ****     /*-------------- Reset DMA init structure parameters values ------------------*/
+ 162:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_PeripheralBaseAddr = DMA_INIT_RESET;
+ 224              		.loc 1 162 0
+ 225 0000 0023     		movs	r3, #0
+ 226 0002 0360     		str	r3, [r0]
+ 163:Peripherals/src/gd32f1x0_dma.c ****     
+ 164:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_MemoryBaseAddr = DMA_INIT_RESET;
+ 227              		.loc 1 164 0
+ 228 0004 4360     		str	r3, [r0, #4]
+ 165:Peripherals/src/gd32f1x0_dma.c ****     
+ 166:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_DIR = DMA_DIR_PERIPHERALSRC;
+ 229              		.loc 1 166 0
+ 230 0006 8360     		str	r3, [r0, #8]
+ 167:Peripherals/src/gd32f1x0_dma.c ****     
+ 168:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_BufferSize = DMA_INIT_RESET;
+ 231              		.loc 1 168 0
+ 232 0008 C360     		str	r3, [r0, #12]
+ARM GAS  /tmp/ccMhb3qn.s 			page 8
+
+
+ 169:Peripherals/src/gd32f1x0_dma.c ****     
+ 170:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_PeripheralInc = DMA_PERIPHERALINC_DISABLE;
+ 233              		.loc 1 170 0
+ 234 000a 0361     		str	r3, [r0, #16]
+ 171:Peripherals/src/gd32f1x0_dma.c ****     
+ 172:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_MemoryInc = DMA_MEMORYINC_DISABLE;
+ 235              		.loc 1 172 0
+ 236 000c 4361     		str	r3, [r0, #20]
+ 173:Peripherals/src/gd32f1x0_dma.c ****     
+ 174:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_PeripheralDataSize = DMA_PERIPHERALDATASIZE_BYTE;
+ 237              		.loc 1 174 0
+ 238 000e 8361     		str	r3, [r0, #24]
+ 175:Peripherals/src/gd32f1x0_dma.c ****     
+ 176:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_MemoryDataSize = DMA_MEMORYDATASIZE_BYTE;
+ 239              		.loc 1 176 0
+ 240 0010 C361     		str	r3, [r0, #28]
+ 177:Peripherals/src/gd32f1x0_dma.c ****     
+ 178:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_Mode = DMA_MODE_NORMAL;
+ 241              		.loc 1 178 0
+ 242 0012 0362     		str	r3, [r0, #32]
+ 179:Peripherals/src/gd32f1x0_dma.c ****     
+ 180:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_Priority = DMA_PRIORITY_LOW;
+ 243              		.loc 1 180 0
+ 244 0014 4362     		str	r3, [r0, #36]
+ 181:Peripherals/src/gd32f1x0_dma.c ****     
+ 182:Peripherals/src/gd32f1x0_dma.c ****     DMA_InitParaStruct->DMA_MTOM = DMA_MEMTOMEM_DISABLE;
+ 245              		.loc 1 182 0
+ 246 0016 8362     		str	r3, [r0, #40]
+ 247 0018 7047     		bx	lr
+ 248              		.cfi_endproc
+ 249              	.LFE31:
+ 251 001a 00BF     		.section	.text.DMA_Enable,"ax",%progbits
+ 252              		.align	2
+ 253              		.global	DMA_Enable
+ 254              		.thumb
+ 255              		.thumb_func
+ 257              	DMA_Enable:
+ 258              	.LFB32:
+ 183:Peripherals/src/gd32f1x0_dma.c **** }
+ 184:Peripherals/src/gd32f1x0_dma.c **** 
+ 185:Peripherals/src/gd32f1x0_dma.c **** /**
+ 186:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Enable or disable the DMAy Channelx.
+ 187:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMAy_Channelx: where y:[1] to select the DMA and x:[1,7] to select the DMA Channel.
+ 188:Peripherals/src/gd32f1x0_dma.c ****   * @param  NewValue: new state of the DMAy Channelx. 
+ 189:Peripherals/src/gd32f1x0_dma.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 190:Peripherals/src/gd32f1x0_dma.c ****   * @retval None
+ 191:Peripherals/src/gd32f1x0_dma.c ****   */
+ 192:Peripherals/src/gd32f1x0_dma.c **** void DMA_Enable(DMA_Channel_TypeDef* DMAy_Channelx, TypeState NewValue)
+ 193:Peripherals/src/gd32f1x0_dma.c **** {
+ 259              		.loc 1 193 0
+ 260              		.cfi_startproc
+ 261              		@ args = 0, pretend = 0, frame = 0
+ 262              		@ frame_needed = 0, uses_anonymous_args = 0
+ 263              		@ link register save eliminated.
+ 264              	.LVL10:
+ 194:Peripherals/src/gd32f1x0_dma.c ****     if (NewValue != DISABLE)
+ 265              		.loc 1 194 0
+ARM GAS  /tmp/ccMhb3qn.s 			page 9
+
+
+ 266 0000 21B1     		cbz	r1, .L14
+ 195:Peripherals/src/gd32f1x0_dma.c ****     {
+ 196:Peripherals/src/gd32f1x0_dma.c ****         /* Enable the DMAy Channelx */
+ 197:Peripherals/src/gd32f1x0_dma.c ****         DMAy_Channelx->CTLRx |= DMA_CTLRx_CHEN;
+ 267              		.loc 1 197 0
+ 268 0002 0368     		ldr	r3, [r0]
+ 269 0004 43F00103 		orr	r3, r3, #1
+ 270 0008 0360     		str	r3, [r0]
+ 271 000a 7047     		bx	lr
+ 272              	.L14:
+ 198:Peripherals/src/gd32f1x0_dma.c ****     }
+ 199:Peripherals/src/gd32f1x0_dma.c ****     else
+ 200:Peripherals/src/gd32f1x0_dma.c ****     {
+ 201:Peripherals/src/gd32f1x0_dma.c ****         /* Disable the DMAy Channelx */
+ 202:Peripherals/src/gd32f1x0_dma.c ****         DMAy_Channelx->CTLRx &= (uint16_t)(~DMA_CTLRx_CHEN);
+ 273              		.loc 1 202 0
+ 274 000c 0368     		ldr	r3, [r0]
+ 275 000e 23F00103 		bic	r3, r3, #1
+ 276 0012 1B04     		lsls	r3, r3, #16
+ 277 0014 1B0C     		lsrs	r3, r3, #16
+ 278 0016 0360     		str	r3, [r0]
+ 279 0018 7047     		bx	lr
+ 280              		.cfi_endproc
+ 281              	.LFE32:
+ 283 001a 00BF     		.section	.text.DMA_SetCurrDataCounter,"ax",%progbits
+ 284              		.align	2
+ 285              		.global	DMA_SetCurrDataCounter
+ 286              		.thumb
+ 287              		.thumb_func
+ 289              	DMA_SetCurrDataCounter:
+ 290              	.LFB33:
+ 203:Peripherals/src/gd32f1x0_dma.c ****     }
+ 204:Peripherals/src/gd32f1x0_dma.c **** }
+ 205:Peripherals/src/gd32f1x0_dma.c **** 
+ 206:Peripherals/src/gd32f1x0_dma.c **** /**
+ 207:Peripherals/src/gd32f1x0_dma.c ****   * @}
+ 208:Peripherals/src/gd32f1x0_dma.c ****   */
+ 209:Peripherals/src/gd32f1x0_dma.c **** 
+ 210:Peripherals/src/gd32f1x0_dma.c **** /** @defgroup DMA_Group2 The Remaining Counter functions       
+ 211:Peripherals/src/gd32f1x0_dma.c ****  *  @brief   Remaining Counter functions 
+ 212:Peripherals/src/gd32f1x0_dma.c ****  *
+ 213:Peripherals/src/gd32f1x0_dma.c ****   * @{
+ 214:Peripherals/src/gd32f1x0_dma.c ****   */
+ 215:Peripherals/src/gd32f1x0_dma.c **** 
+ 216:Peripherals/src/gd32f1x0_dma.c **** /**
+ 217:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Set the number of the remaining counter in the current DMAy Channelx transfer.
+ 218:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMAy_Channelx: where y:[1] to select the DMA and x:[1,7] to select the DMA Channel.
+ 219:Peripherals/src/gd32f1x0_dma.c ****   * @param  DataNumber: The number of the remaining counter in the current DMAy Channelx transfer.
+ 220:Peripherals/src/gd32f1x0_dma.c ****   * @retval None.
+ 221:Peripherals/src/gd32f1x0_dma.c ****   */
+ 222:Peripherals/src/gd32f1x0_dma.c **** void DMA_SetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx, uint16_t DataNumber)
+ 223:Peripherals/src/gd32f1x0_dma.c **** {
+ 291              		.loc 1 223 0
+ 292              		.cfi_startproc
+ 293              		@ args = 0, pretend = 0, frame = 0
+ 294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295              		@ link register save eliminated.
+ARM GAS  /tmp/ccMhb3qn.s 			page 10
+
+
+ 296              	.LVL11:
+ 224:Peripherals/src/gd32f1x0_dma.c ****     /* Write to DMAy Channelx RCNTx */
+ 225:Peripherals/src/gd32f1x0_dma.c ****     DMAy_Channelx->RCNTx = DataNumber;
+ 297              		.loc 1 225 0
+ 298 0000 4160     		str	r1, [r0, #4]
+ 299 0002 7047     		bx	lr
+ 300              		.cfi_endproc
+ 301              	.LFE33:
+ 303              		.section	.text.DMA_GetCurrDataCounter,"ax",%progbits
+ 304              		.align	2
+ 305              		.global	DMA_GetCurrDataCounter
+ 306              		.thumb
+ 307              		.thumb_func
+ 309              	DMA_GetCurrDataCounter:
+ 310              	.LFB34:
+ 226:Peripherals/src/gd32f1x0_dma.c **** }
+ 227:Peripherals/src/gd32f1x0_dma.c **** 
+ 228:Peripherals/src/gd32f1x0_dma.c **** /**
+ 229:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Return the number of remaining counter in the current DMAy Channelx transfer.
+ 230:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMAy_Channelx: where y:[1] to select the DMA and x:[1,7] to select the DMA Channel.
+ 231:Peripherals/src/gd32f1x0_dma.c ****   * @retval The number of remaining counter in the current DMAy Channelx transfer.
+ 232:Peripherals/src/gd32f1x0_dma.c ****   */
+ 233:Peripherals/src/gd32f1x0_dma.c **** uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx)
+ 234:Peripherals/src/gd32f1x0_dma.c **** {
+ 311              		.loc 1 234 0
+ 312              		.cfi_startproc
+ 313              		@ args = 0, pretend = 0, frame = 0
+ 314              		@ frame_needed = 0, uses_anonymous_args = 0
+ 315              		@ link register save eliminated.
+ 316              	.LVL12:
+ 235:Peripherals/src/gd32f1x0_dma.c ****     /* Return the number of remaining counter for DMAy Channelx */
+ 236:Peripherals/src/gd32f1x0_dma.c ****     return ((uint16_t)(DMAy_Channelx->RCNTx));
+ 317              		.loc 1 236 0
+ 318 0000 4068     		ldr	r0, [r0, #4]
+ 319              	.LVL13:
+ 237:Peripherals/src/gd32f1x0_dma.c **** }
+ 320              		.loc 1 237 0
+ 321 0002 80B2     		uxth	r0, r0
+ 322 0004 7047     		bx	lr
+ 323              		.cfi_endproc
+ 324              	.LFE34:
+ 326 0006 00BF     		.section	.text.DMA_INTConfig,"ax",%progbits
+ 327              		.align	2
+ 328              		.global	DMA_INTConfig
+ 329              		.thumb
+ 330              		.thumb_func
+ 332              	DMA_INTConfig:
+ 333              	.LFB35:
+ 238:Peripherals/src/gd32f1x0_dma.c **** 
+ 239:Peripherals/src/gd32f1x0_dma.c **** /**
+ 240:Peripherals/src/gd32f1x0_dma.c ****   * @}
+ 241:Peripherals/src/gd32f1x0_dma.c ****   */
+ 242:Peripherals/src/gd32f1x0_dma.c **** 
+ 243:Peripherals/src/gd32f1x0_dma.c **** /** @defgroup DMA_Group3 Interrupts and flags management functions
+ 244:Peripherals/src/gd32f1x0_dma.c ****   * @brief   Interrupts and flags management functions 
+ 245:Peripherals/src/gd32f1x0_dma.c ****   * @{
+ 246:Peripherals/src/gd32f1x0_dma.c ****   */
+ARM GAS  /tmp/ccMhb3qn.s 			page 11
+
+
+ 247:Peripherals/src/gd32f1x0_dma.c **** 
+ 248:Peripherals/src/gd32f1x0_dma.c **** /**
+ 249:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Enable or disable the DMAy Channelx interrupts.
+ 250:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMAy_Channelx: where y:[1] to select the DMA and x:[1,7] to select the DMA Channel.
+ 251:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMA_INT: specify the DMA interrupts sources to be enabled or disabled. 
+ 252:Peripherals/src/gd32f1x0_dma.c ****   *   This parameter can be any combination of the following values:
+ 253:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA_INT_TC:  Transfer complete interrupt mask
+ 254:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA_INT_HT:  Half transfer interrupt mask
+ 255:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA_INT_ERR: Transfer error interrupt mask
+ 256:Peripherals/src/gd32f1x0_dma.c ****   * @param  NewValue: new state of the DMA interrupts.
+ 257:Peripherals/src/gd32f1x0_dma.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 258:Peripherals/src/gd32f1x0_dma.c ****   * @retval None
+ 259:Peripherals/src/gd32f1x0_dma.c ****   */
+ 260:Peripherals/src/gd32f1x0_dma.c **** void DMA_INTConfig(DMA_Channel_TypeDef* DMAy_Channelx, uint32_t DMA_INT, TypeState NewValue)
+ 261:Peripherals/src/gd32f1x0_dma.c **** {
+ 334              		.loc 1 261 0
+ 335              		.cfi_startproc
+ 336              		@ args = 0, pretend = 0, frame = 0
+ 337              		@ frame_needed = 0, uses_anonymous_args = 0
+ 338              		@ link register save eliminated.
+ 339              	.LVL14:
+ 262:Peripherals/src/gd32f1x0_dma.c ****     if (NewValue != DISABLE)
+ 340              		.loc 1 262 0
+ 341 0000 1AB1     		cbz	r2, .L19
+ 263:Peripherals/src/gd32f1x0_dma.c ****     {
+ 264:Peripherals/src/gd32f1x0_dma.c ****         /* Enable the DMA interrupts */
+ 265:Peripherals/src/gd32f1x0_dma.c ****         DMAy_Channelx->CTLRx |= DMA_INT;
+ 342              		.loc 1 265 0
+ 343 0002 0368     		ldr	r3, [r0]
+ 344 0004 1943     		orrs	r1, r1, r3
+ 345              	.LVL15:
+ 346 0006 0160     		str	r1, [r0]
+ 347 0008 7047     		bx	lr
+ 348              	.LVL16:
+ 349              	.L19:
+ 266:Peripherals/src/gd32f1x0_dma.c ****     }
+ 267:Peripherals/src/gd32f1x0_dma.c ****     else
+ 268:Peripherals/src/gd32f1x0_dma.c ****     {
+ 269:Peripherals/src/gd32f1x0_dma.c ****         /* Disable the DMA interrupts */
+ 270:Peripherals/src/gd32f1x0_dma.c ****         DMAy_Channelx->CTLRx &= ~DMA_INT;
+ 350              		.loc 1 270 0
+ 351 000a 0368     		ldr	r3, [r0]
+ 352 000c 23EA0101 		bic	r1, r3, r1
+ 353              	.LVL17:
+ 354 0010 0160     		str	r1, [r0]
+ 355 0012 7047     		bx	lr
+ 356              		.cfi_endproc
+ 357              	.LFE35:
+ 359              		.section	.text.DMA_GetBitState,"ax",%progbits
+ 360              		.align	2
+ 361              		.global	DMA_GetBitState
+ 362              		.thumb
+ 363              		.thumb_func
+ 365              	DMA_GetBitState:
+ 366              	.LFB36:
+ 271:Peripherals/src/gd32f1x0_dma.c ****     }
+ 272:Peripherals/src/gd32f1x0_dma.c **** }
+ARM GAS  /tmp/ccMhb3qn.s 			page 12
+
+
+ 273:Peripherals/src/gd32f1x0_dma.c **** 
+ 274:Peripherals/src/gd32f1x0_dma.c **** /**
+ 275:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Check whether the DMAy Channelx flag is set or not.
+ 276:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMA_FLAG: specify the flag to check.
+ 277:Peripherals/src/gd32f1x0_dma.c ****   *   This parameter can be one of the following values:
+ 278:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL1:  DMA1 Channel1 global flag.
+ 279:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC1:  DMA1 Channel1 transfer complete flag.
+ 280:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT1:  DMA1 Channel1 half transfer flag.
+ 281:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR1: DMA1 Channel1 transfer error flag.
+ 282:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL2:  DMA1 Channel2 global flag.
+ 283:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC2:  DMA1 Channel2 transfer complete flag.
+ 284:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT2:  DMA1 Channel2 half transfer flag.
+ 285:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR2: DMA1 Channel2 transfer error flag.
+ 286:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL3:  DMA1 Channel3 global flag.
+ 287:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC3:  DMA1 Channel3 transfer complete flag.
+ 288:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT3:  DMA1 Channel3 half transfer flag.
+ 289:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR3: DMA1 Channel3 transfer error flag.
+ 290:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL4:  DMA1 Channel4 global flag.
+ 291:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC4:  DMA1 Channel4 transfer complete flag.
+ 292:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT4:  DMA1 Channel4 half transfer flag.
+ 293:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR4: DMA1 Channel4 transfer error flag.
+ 294:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL5:  DMA1 Channel5 global flag.
+ 295:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC5:  DMA1 Channel5 transfer complete flag.
+ 296:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT5:  DMA1 Channel5 half transfer flag.
+ 297:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR5: DMA1 Channel5 transfer error flag.
+ 298:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL6:  DMA1 Channel6 global flag.
+ 299:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC6:  DMA1 Channel6 transfer complete flag.
+ 300:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT6:  DMA1 Channel6 half transfer flag.
+ 301:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR6: DMA1 Channel6 transfer error flag.
+ 302:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL7:  DMA1 Channel7 global flag.
+ 303:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC7:  DMA1 Channel7 transfer complete flag.
+ 304:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT7:  DMA1 Channel7 half transfer flag.
+ 305:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR7: DMA1 Channel7 transfer error flag.      
+ 306:Peripherals/src/gd32f1x0_dma.c ****   * @retval The new value of DMA_FLAG (SET or RESET).
+ 307:Peripherals/src/gd32f1x0_dma.c ****   */
+ 308:Peripherals/src/gd32f1x0_dma.c **** TypeState DMA_GetBitState(uint32_t DMA_FLAG)
+ 309:Peripherals/src/gd32f1x0_dma.c **** {
+ 367              		.loc 1 309 0
+ 368              		.cfi_startproc
+ 369              		@ args = 0, pretend = 0, frame = 0
+ 370              		@ frame_needed = 0, uses_anonymous_args = 0
+ 371              		@ link register save eliminated.
+ 372              	.LVL18:
+ 310:Peripherals/src/gd32f1x0_dma.c ****     /* Check the status of the DMA flag */
+ 311:Peripherals/src/gd32f1x0_dma.c ****     if ((DMA1->IFR & DMA_FLAG) != (uint32_t)RESET)
+ 373              		.loc 1 311 0
+ 374 0000 034B     		ldr	r3, .L24
+ 375 0002 1B68     		ldr	r3, [r3]
+ 376 0004 0342     		tst	r3, r0
+ 377 0006 01D0     		beq	.L23
+ 312:Peripherals/src/gd32f1x0_dma.c ****     {
+ 313:Peripherals/src/gd32f1x0_dma.c ****         /* DMA_FLAG is set */
+ 314:Peripherals/src/gd32f1x0_dma.c ****         return SET;
+ 378              		.loc 1 314 0
+ 379 0008 0120     		movs	r0, #1
+ 380              	.LVL19:
+ 381 000a 7047     		bx	lr
+ARM GAS  /tmp/ccMhb3qn.s 			page 13
+
+
+ 382              	.LVL20:
+ 383              	.L23:
+ 315:Peripherals/src/gd32f1x0_dma.c ****     }
+ 316:Peripherals/src/gd32f1x0_dma.c ****     else
+ 317:Peripherals/src/gd32f1x0_dma.c ****     {
+ 318:Peripherals/src/gd32f1x0_dma.c ****         /* DMA_FLAG is reset */
+ 319:Peripherals/src/gd32f1x0_dma.c ****         return RESET;
+ 384              		.loc 1 319 0
+ 385 000c 0020     		movs	r0, #0
+ 386              	.LVL21:
+ 320:Peripherals/src/gd32f1x0_dma.c ****     }
+ 321:Peripherals/src/gd32f1x0_dma.c **** 
+ 322:Peripherals/src/gd32f1x0_dma.c **** }
+ 387              		.loc 1 322 0
+ 388 000e 7047     		bx	lr
+ 389              	.L25:
+ 390              		.align	2
+ 391              	.L24:
+ 392 0010 00000240 		.word	1073872896
+ 393              		.cfi_endproc
+ 394              	.LFE36:
+ 396              		.section	.text.DMA_ClearBitState,"ax",%progbits
+ 397              		.align	2
+ 398              		.global	DMA_ClearBitState
+ 399              		.thumb
+ 400              		.thumb_func
+ 402              	DMA_ClearBitState:
+ 403              	.LFB37:
+ 323:Peripherals/src/gd32f1x0_dma.c **** 
+ 324:Peripherals/src/gd32f1x0_dma.c **** /**
+ 325:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Clear the DMAy Channelx's bit flags.
+ 326:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMA_FLAG: specify the flag to clear.
+ 327:Peripherals/src/gd32f1x0_dma.c ****   *   This parameter can be any combination (for the same DMA) of the following values:
+ 328:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL1:  DMA1 Channel1 global flag.
+ 329:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC1:  DMA1 Channel1 transfer complete flag.
+ 330:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT1:  DMA1 Channel1 half transfer flag.
+ 331:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR1: DMA1 Channel1 transfer error flag.
+ 332:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL2:  DMA1 Channel2 global flag.
+ 333:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC2:  DMA1 Channel2 transfer complete flag.
+ 334:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT2:  DMA1 Channel2 half transfer flag.
+ 335:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR2: DMA1 Channel2 transfer error flag.
+ 336:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL3:  DMA1 Channel3 global flag.
+ 337:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC3:  DMA1 Channel3 transfer complete flag.
+ 338:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT3:  DMA1 Channel3 half transfer flag.
+ 339:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR3: DMA1 Channel3 transfer error flag.
+ 340:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL4:  DMA1 Channel4 global flag.
+ 341:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC4:  DMA1 Channel4 transfer complete flag.
+ 342:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT4:  DMA1 Channel4 half transfer flag.
+ 343:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR4: DMA1 Channel4 transfer error flag.
+ 344:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL5:  DMA1 Channel5 global flag.
+ 345:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC5:  DMA1 Channel5 transfer complete flag.
+ 346:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT5:  DMA1 Channel5 half transfer flag.
+ 347:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR5: DMA1 Channel5 transfer error flag.
+ 348:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL6:  DMA1 Channel6 global flag.
+ 349:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC6:  DMA1 Channel6 transfer complete flag.
+ 350:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT6:  DMA1 Channel6 half transfer flag.
+ 351:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR6: DMA1 Channel6 transfer error flag.
+ARM GAS  /tmp/ccMhb3qn.s 			page 14
+
+
+ 352:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_GL7:  DMA1 Channel7 global flag.
+ 353:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_TC7:  DMA1 Channel7 transfer complete flag.
+ 354:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_HT7:  DMA1 Channel7 half transfer flag.
+ 355:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_FLAG_ERR7: DMA1 Channel7 transfer error flag.
+ 356:Peripherals/src/gd32f1x0_dma.c ****   * @retval None
+ 357:Peripherals/src/gd32f1x0_dma.c ****   */
+ 358:Peripherals/src/gd32f1x0_dma.c **** void DMA_ClearBitState(uint32_t DMA_FLAG)
+ 359:Peripherals/src/gd32f1x0_dma.c **** {
+ 404              		.loc 1 359 0
+ 405              		.cfi_startproc
+ 406              		@ args = 0, pretend = 0, frame = 0
+ 407              		@ frame_needed = 0, uses_anonymous_args = 0
+ 408              		@ link register save eliminated.
+ 409              	.LVL22:
+ 360:Peripherals/src/gd32f1x0_dma.c ****     /* Clear the DMA flags */
+ 361:Peripherals/src/gd32f1x0_dma.c ****     DMA1->ICR = DMA_FLAG;
+ 410              		.loc 1 361 0
+ 411 0000 014B     		ldr	r3, .L27
+ 412 0002 5860     		str	r0, [r3, #4]
+ 413 0004 7047     		bx	lr
+ 414              	.L28:
+ 415 0006 00BF     		.align	2
+ 416              	.L27:
+ 417 0008 00000240 		.word	1073872896
+ 418              		.cfi_endproc
+ 419              	.LFE37:
+ 421              		.section	.text.DMA_GetIntBitState,"ax",%progbits
+ 422              		.align	2
+ 423              		.global	DMA_GetIntBitState
+ 424              		.thumb
+ 425              		.thumb_func
+ 427              	DMA_GetIntBitState:
+ 428              	.LFB38:
+ 362:Peripherals/src/gd32f1x0_dma.c **** }
+ 363:Peripherals/src/gd32f1x0_dma.c **** 
+ 364:Peripherals/src/gd32f1x0_dma.c **** /**
+ 365:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Check whether the DMAy Channelx interrupt has occurred or not.
+ 366:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMA_INT: specifies the DMA interrupt source to check. 
+ 367:Peripherals/src/gd32f1x0_dma.c ****   *   This parameter can be one of the following values:
+ 368:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL1:  DMA1 Channel1 global interrupt.
+ 369:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC1:  DMA1 Channel1 transfer complete interrupt.
+ 370:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT1:  DMA1 Channel1 half transfer interrupt.
+ 371:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR1: DMA1 Channel1 transfer error interrupt.
+ 372:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL2:  DMA1 Channel2 global interrupt.
+ 373:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC2:  DMA1 Channel2 transfer complete interrupt.
+ 374:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT2:  DMA1 Channel2 half transfer interrupt.
+ 375:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR2: DMA1 Channel2 transfer error interrupt.
+ 376:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL3:  DMA1 Channel3 global interrupt.
+ 377:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC3:  DMA1 Channel3 transfer complete interrupt.
+ 378:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT3:  DMA1 Channel3 half transfer interrupt.
+ 379:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR3: DMA1 Channel3 transfer error interrupt.
+ 380:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL4:  DMA1 Channel4 global interrupt.
+ 381:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC4:  DMA1 Channel4 transfer complete interrupt.
+ 382:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT4:  DMA1 Channel4 half transfer interrupt.
+ 383:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR4: DMA1 Channel4 transfer error interrupt.
+ 384:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL5:  DMA1 Channel5 global interrupt.
+ 385:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC5:  DMA1 Channel5 transfer complete interrupt.
+ARM GAS  /tmp/ccMhb3qn.s 			page 15
+
+
+ 386:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT5:  DMA1 Channel5 half transfer interrupt.
+ 387:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR5: DMA1 Channel5 transfer error interrupt.
+ 388:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL6:  DMA1 Channel6 global interrupt.
+ 389:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC6:  DMA1 Channel6 transfer complete interrupt.
+ 390:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT6:  DMA1 Channel6 half transfer interrupt.
+ 391:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR6: DMA1 Channel6 transfer error interrupt.
+ 392:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL7:  DMA1 Channel7 global interrupt.
+ 393:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC7:  DMA1 Channel7 transfer complete interrupt.
+ 394:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT7:  DMA1 Channel7 half transfer interrupt.
+ 395:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR7: DMA1 Channel7 transfer error interrupt.
+ 396:Peripherals/src/gd32f1x0_dma.c ****   * @retval The new value of DMA_INT (SET or RESET).
+ 397:Peripherals/src/gd32f1x0_dma.c ****   */
+ 398:Peripherals/src/gd32f1x0_dma.c **** TypeState DMA_GetIntBitState(uint32_t DMA_INT)
+ 399:Peripherals/src/gd32f1x0_dma.c **** {
+ 429              		.loc 1 399 0
+ 430              		.cfi_startproc
+ 431              		@ args = 0, pretend = 0, frame = 0
+ 432              		@ frame_needed = 0, uses_anonymous_args = 0
+ 433              		@ link register save eliminated.
+ 434              	.LVL23:
+ 400:Peripherals/src/gd32f1x0_dma.c ****     /* Check the status of the DMA interrupt */
+ 401:Peripherals/src/gd32f1x0_dma.c ****     if((DMA1->IFR & DMA_INT) != (uint32_t)RESET)
+ 435              		.loc 1 401 0
+ 436 0000 034B     		ldr	r3, .L32
+ 437 0002 1B68     		ldr	r3, [r3]
+ 438 0004 0342     		tst	r3, r0
+ 439 0006 01D0     		beq	.L31
+ 402:Peripherals/src/gd32f1x0_dma.c ****     {
+ 403:Peripherals/src/gd32f1x0_dma.c ****         /* DMA_INT is set */
+ 404:Peripherals/src/gd32f1x0_dma.c ****         return SET;
+ 440              		.loc 1 404 0
+ 441 0008 0120     		movs	r0, #1
+ 442              	.LVL24:
+ 443 000a 7047     		bx	lr
+ 444              	.LVL25:
+ 445              	.L31:
+ 405:Peripherals/src/gd32f1x0_dma.c ****     }
+ 406:Peripherals/src/gd32f1x0_dma.c ****     else
+ 407:Peripherals/src/gd32f1x0_dma.c ****     {
+ 408:Peripherals/src/gd32f1x0_dma.c ****         /* DMA_INT is reset */
+ 409:Peripherals/src/gd32f1x0_dma.c ****         return RESET;
+ 446              		.loc 1 409 0
+ 447 000c 0020     		movs	r0, #0
+ 448              	.LVL26:
+ 410:Peripherals/src/gd32f1x0_dma.c ****     }
+ 411:Peripherals/src/gd32f1x0_dma.c **** }
+ 449              		.loc 1 411 0
+ 450 000e 7047     		bx	lr
+ 451              	.L33:
+ 452              		.align	2
+ 453              	.L32:
+ 454 0010 00000240 		.word	1073872896
+ 455              		.cfi_endproc
+ 456              	.LFE38:
+ 458              		.section	.text.DMA_ClearIntBitState,"ax",%progbits
+ 459              		.align	2
+ 460              		.global	DMA_ClearIntBitState
+ARM GAS  /tmp/ccMhb3qn.s 			page 16
+
+
+ 461              		.thumb
+ 462              		.thumb_func
+ 464              	DMA_ClearIntBitState:
+ 465              	.LFB39:
+ 412:Peripherals/src/gd32f1x0_dma.c **** 
+ 413:Peripherals/src/gd32f1x0_dma.c **** /**
+ 414:Peripherals/src/gd32f1x0_dma.c ****   * @brief  Clear the DMAy Channelx's interrupt bits.
+ 415:Peripherals/src/gd32f1x0_dma.c ****   * @param  DMA_INT: specify the DMA interrupt bit to clear.
+ 416:Peripherals/src/gd32f1x0_dma.c ****   *   This parameter can be any combination (for the same DMA) of the following values:
+ 417:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL1:  DMA1 Channel1 global interrupt.
+ 418:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC1:  DMA1 Channel1 transfer complete interrupt.
+ 419:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT1:  DMA1 Channel1 half transfer interrupt.
+ 420:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR1: DMA1 Channel1 transfer error interrupt.
+ 421:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL2:  DMA1 Channel2 global interrupt.
+ 422:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC2:  DMA1 Channel2 transfer complete interrupt.
+ 423:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT2:  DMA1 Channel2 half transfer interrupt.
+ 424:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR2: DMA1 Channel2 transfer error interrupt.
+ 425:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL3:  DMA1 Channel3 global interrupt.
+ 426:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC3:  DMA1 Channel3 transfer complete interrupt.
+ 427:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT3:  DMA1 Channel3 half transfer interrupt.
+ 428:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR3: DMA1 Channel3 transfer error interrupt.
+ 429:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL4:  DMA1 Channel4 global interrupt.
+ 430:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC4:  DMA1 Channel4 transfer complete interrupt.
+ 431:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT4:  DMA1 Channel4 half transfer interrupt.
+ 432:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR4: DMA1 Channel4 transfer error interrupt.
+ 433:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL5:  DMA1 Channel5 global interrupt.
+ 434:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC5:  DMA1 Channel5 transfer complete interrupt.
+ 435:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT5:  DMA1 Channel5 half transfer interrupt.
+ 436:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR5: DMA1 Channel5 transfer error interrupt.
+ 437:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL6:  DMA1 Channel6 global interrupt.
+ 438:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC6:  DMA1 Channel6 transfer complete interrupt.
+ 439:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT6:  DMA1 Channel6 half transfer interrupt.
+ 440:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR6: DMA1 Channel6 transfer error interrupt.
+ 441:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_GL7:  DMA1 Channel7 global interrupt.
+ 442:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_TC7:  DMA1 Channel7 transfer complete interrupt.
+ 443:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_HT7:  DMA1 Channel7 half transfer interrupt.
+ 444:Peripherals/src/gd32f1x0_dma.c ****   *     @arg DMA1_INT_ERR7: DMA1 Channel7 transfer error interrupt.     
+ 445:Peripherals/src/gd32f1x0_dma.c ****   * @retval None
+ 446:Peripherals/src/gd32f1x0_dma.c ****   */
+ 447:Peripherals/src/gd32f1x0_dma.c **** void DMA_ClearIntBitState(uint32_t DMA_INT)
+ 448:Peripherals/src/gd32f1x0_dma.c **** {
+ 466              		.loc 1 448 0
+ 467              		.cfi_startproc
+ 468              		@ args = 0, pretend = 0, frame = 0
+ 469              		@ frame_needed = 0, uses_anonymous_args = 0
+ 470              		@ link register save eliminated.
+ 471              	.LVL27:
+ 449:Peripherals/src/gd32f1x0_dma.c ****     /* Clear the DMA interrupt bits */
+ 450:Peripherals/src/gd32f1x0_dma.c ****     DMA1->ICR = DMA_INT;
+ 472              		.loc 1 450 0
+ 473 0000 014B     		ldr	r3, .L35
+ 474 0002 5860     		str	r0, [r3, #4]
+ 475 0004 7047     		bx	lr
+ 476              	.L36:
+ 477 0006 00BF     		.align	2
+ 478              	.L35:
+ 479 0008 00000240 		.word	1073872896
+ARM GAS  /tmp/ccMhb3qn.s 			page 17
+
+
+ 480              		.cfi_endproc
+ 481              	.LFE39:
+ 483              		.text
+ 484              	.Letext0:
+ 485              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 486              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 487              		.file 4 "CMSIS/gd32f1x0.h"
+ 488              		.file 5 "Peripherals/inc/gd32f1x0_dma.h"
+ 489              		.file 6 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccMhb3qn.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 gd32f1x0_dma.c
+     /tmp/ccMhb3qn.s:17     .text.DMA_DeInit:00000000 $t
+     /tmp/ccMhb3qn.s:22     .text.DMA_DeInit:00000000 DMA_DeInit
+     /tmp/ccMhb3qn.s:126    .text.DMA_DeInit:00000094 $d
+     /tmp/ccMhb3qn.s:137    .text.DMA_Init:00000000 $t
+     /tmp/ccMhb3qn.s:142    .text.DMA_Init:00000000 DMA_Init
+     /tmp/ccMhb3qn.s:211    .text.DMA_ParaInit:00000000 $t
+     /tmp/ccMhb3qn.s:216    .text.DMA_ParaInit:00000000 DMA_ParaInit
+     /tmp/ccMhb3qn.s:252    .text.DMA_Enable:00000000 $t
+     /tmp/ccMhb3qn.s:257    .text.DMA_Enable:00000000 DMA_Enable
+     /tmp/ccMhb3qn.s:284    .text.DMA_SetCurrDataCounter:00000000 $t
+     /tmp/ccMhb3qn.s:289    .text.DMA_SetCurrDataCounter:00000000 DMA_SetCurrDataCounter
+     /tmp/ccMhb3qn.s:304    .text.DMA_GetCurrDataCounter:00000000 $t
+     /tmp/ccMhb3qn.s:309    .text.DMA_GetCurrDataCounter:00000000 DMA_GetCurrDataCounter
+     /tmp/ccMhb3qn.s:327    .text.DMA_INTConfig:00000000 $t
+     /tmp/ccMhb3qn.s:332    .text.DMA_INTConfig:00000000 DMA_INTConfig
+     /tmp/ccMhb3qn.s:360    .text.DMA_GetBitState:00000000 $t
+     /tmp/ccMhb3qn.s:365    .text.DMA_GetBitState:00000000 DMA_GetBitState
+     /tmp/ccMhb3qn.s:392    .text.DMA_GetBitState:00000010 $d
+     /tmp/ccMhb3qn.s:397    .text.DMA_ClearBitState:00000000 $t
+     /tmp/ccMhb3qn.s:402    .text.DMA_ClearBitState:00000000 DMA_ClearBitState
+     /tmp/ccMhb3qn.s:417    .text.DMA_ClearBitState:00000008 $d
+     /tmp/ccMhb3qn.s:422    .text.DMA_GetIntBitState:00000000 $t
+     /tmp/ccMhb3qn.s:427    .text.DMA_GetIntBitState:00000000 DMA_GetIntBitState
+     /tmp/ccMhb3qn.s:454    .text.DMA_GetIntBitState:00000010 $d
+     /tmp/ccMhb3qn.s:459    .text.DMA_ClearIntBitState:00000000 $t
+     /tmp/ccMhb3qn.s:464    .text.DMA_ClearIntBitState:00000000 DMA_ClearIntBitState
+     /tmp/ccMhb3qn.s:479    .text.DMA_ClearIntBitState:00000008 $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

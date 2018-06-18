@@ -1,0 +1,2392 @@
+ARM GAS  /tmp/ccYrUlHs.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"gd32f1x0_fmc.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.FMC_Unlock,"ax",%progbits
+  17              		.align	2
+  18              		.global	FMC_Unlock
+  19              		.thumb
+  20              		.thumb_func
+  22              	FMC_Unlock:
+  23              	.LFB29:
+  24              		.file 1 "Peripherals/src/gd32f1x0_fmc.c"
+   1:Peripherals/src/gd32f1x0_fmc.c **** /**
+   2:Peripherals/src/gd32f1x0_fmc.c ****   ******************************************************************************
+   3:Peripherals/src/gd32f1x0_fmc.c ****   * @file    gd32f1x0_FMC.c
+   4:Peripherals/src/gd32f1x0_fmc.c ****   * @author  MCU SD
+   5:Peripherals/src/gd32f1x0_fmc.c ****   * @version V1.0.1
+   6:Peripherals/src/gd32f1x0_fmc.c ****   * @date    6-Sep-2014
+   7:Peripherals/src/gd32f1x0_fmc.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:Peripherals/src/gd32f1x0_fmc.c ****   *          functionalities of the FMC peripheral:
+   9:Peripherals/src/gd32f1x0_fmc.c ****   *            - FMC Memory Programming
+  10:Peripherals/src/gd32f1x0_fmc.c ****   *            - Option Bytes Programming
+  11:Peripherals/src/gd32f1x0_fmc.c ****   *            - Interrupts and flags management  
+  12:Peripherals/src/gd32f1x0_fmc.c ****   ******************************************************************************/
+  13:Peripherals/src/gd32f1x0_fmc.c **** 
+  14:Peripherals/src/gd32f1x0_fmc.c **** /* Includes ------------------------------------------------------------------*/
+  15:Peripherals/src/gd32f1x0_fmc.c **** #include "gd32f1x0_fmc.h"
+  16:Peripherals/src/gd32f1x0_fmc.c **** 
+  17:Peripherals/src/gd32f1x0_fmc.c **** /** @addtogroup GD32F1x0_Firmware
+  18:Peripherals/src/gd32f1x0_fmc.c ****   * @{
+  19:Peripherals/src/gd32f1x0_fmc.c ****   */
+  20:Peripherals/src/gd32f1x0_fmc.c **** 
+  21:Peripherals/src/gd32f1x0_fmc.c **** /** @defgroup FMC 
+  22:Peripherals/src/gd32f1x0_fmc.c ****   * @brief FMC driver modules
+  23:Peripherals/src/gd32f1x0_fmc.c ****   * @{
+  24:Peripherals/src/gd32f1x0_fmc.c ****   */ 
+  25:Peripherals/src/gd32f1x0_fmc.c ****  
+  26:Peripherals/src/gd32f1x0_fmc.c **** /** @defgroup FMC_Private_Functions
+  27:Peripherals/src/gd32f1x0_fmc.c ****   * @{
+  28:Peripherals/src/gd32f1x0_fmc.c ****   */ 
+  29:Peripherals/src/gd32f1x0_fmc.c **** 
+  30:Peripherals/src/gd32f1x0_fmc.c **** /** @defgroup FMC_Group1 FMC Memory Programming functions
+  31:Peripherals/src/gd32f1x0_fmc.c ****  *  @brief    FMC Memory Programming functions
+  32:Peripherals/src/gd32f1x0_fmc.c ****  *
+  33:Peripherals/src/gd32f1x0_fmc.c **** @verbatim   
+  34:Peripherals/src/gd32f1x0_fmc.c ****  ===============================================================================
+ARM GAS  /tmp/ccYrUlHs.s 			page 2
+
+
+  35:Peripherals/src/gd32f1x0_fmc.c ****                 ##### FMC Memory Programming functions #####
+  36:Peripherals/src/gd32f1x0_fmc.c ****  ===============================================================================
+  37:Peripherals/src/gd32f1x0_fmc.c **** 
+  38:Peripherals/src/gd32f1x0_fmc.c ****     [..] The FMC Memory Programming functions, includes the following functions:
+  39:Peripherals/src/gd32f1x0_fmc.c ****        (+) void FMC_Unlock(void);
+  40:Peripherals/src/gd32f1x0_fmc.c ****        (+) void FMC_Lock(void);
+  41:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_ErasePage(uint32_t Page_Address);
+  42:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_MassErase(void);
+  43:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_ProgramWord(uint32_t Address, uint32_t Data);
+  44:Peripherals/src/gd32f1x0_fmc.c **** 
+  45:Peripherals/src/gd32f1x0_fmc.c ****     [..] Any operation of erase or program should follow these steps:
+  46:Peripherals/src/gd32f1x0_fmc.c ****        
+  47:Peripherals/src/gd32f1x0_fmc.c ****        (#) Call the FMC_Unlock() function to unlock the FMC operation
+  48:Peripherals/src/gd32f1x0_fmc.c ****        (#) Call erase or program data
+  49:Peripherals/src/gd32f1x0_fmc.c ****        (#) Call the FMC_Lock() to lock the FMC operation
+  50:Peripherals/src/gd32f1x0_fmc.c **** 
+  51:Peripherals/src/gd32f1x0_fmc.c **** @endverbatim
+  52:Peripherals/src/gd32f1x0_fmc.c ****   * @{
+  53:Peripherals/src/gd32f1x0_fmc.c ****   */
+  54:Peripherals/src/gd32f1x0_fmc.c **** 
+  55:Peripherals/src/gd32f1x0_fmc.c **** /**
+  56:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Unlock the main FMC operation.
+  57:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+  58:Peripherals/src/gd32f1x0_fmc.c ****   * @retval None
+  59:Peripherals/src/gd32f1x0_fmc.c ****   */
+  60:Peripherals/src/gd32f1x0_fmc.c **** void FMC_Unlock(void)
+  61:Peripherals/src/gd32f1x0_fmc.c **** {
+  25              		.loc 1 61 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  62:Peripherals/src/gd32f1x0_fmc.c ****     if((FMC->CMR & FMC_CMR_LK) != RESET)
+  30              		.loc 1 62 0
+  31 0000 054B     		ldr	r3, .L3
+  32 0002 1B69     		ldr	r3, [r3, #16]
+  33 0004 13F0800F 		tst	r3, #128
+  34 0008 05D0     		beq	.L1
+  63:Peripherals/src/gd32f1x0_fmc.c ****     {
+  64:Peripherals/src/gd32f1x0_fmc.c ****         /* Write the FMC key */
+  65:Peripherals/src/gd32f1x0_fmc.c ****         FMC->UKEYR = FMC_KEY1;
+  35              		.loc 1 65 0
+  36 000a 034B     		ldr	r3, .L3
+  37 000c 034A     		ldr	r2, .L3+4
+  38 000e 5A60     		str	r2, [r3, #4]
+  66:Peripherals/src/gd32f1x0_fmc.c ****         FMC->UKEYR = FMC_KEY2;
+  39              		.loc 1 66 0
+  40 0010 02F18832 		add	r2, r2, #-2004318072
+  41 0014 5A60     		str	r2, [r3, #4]
+  42              	.L1:
+  43 0016 7047     		bx	lr
+  44              	.L4:
+  45              		.align	2
+  46              	.L3:
+  47 0018 00200240 		.word	1073881088
+  48 001c 23016745 		.word	1164378403
+  49              		.cfi_endproc
+ARM GAS  /tmp/ccYrUlHs.s 			page 3
+
+
+  50              	.LFE29:
+  52              		.section	.text.FMC_Lock,"ax",%progbits
+  53              		.align	2
+  54              		.global	FMC_Lock
+  55              		.thumb
+  56              		.thumb_func
+  58              	FMC_Lock:
+  59              	.LFB30:
+  67:Peripherals/src/gd32f1x0_fmc.c ****     }
+  68:Peripherals/src/gd32f1x0_fmc.c **** }
+  69:Peripherals/src/gd32f1x0_fmc.c **** 
+  70:Peripherals/src/gd32f1x0_fmc.c **** /**
+  71:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Lock the main FMC operation.
+  72:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+  73:Peripherals/src/gd32f1x0_fmc.c ****   * @retval None
+  74:Peripherals/src/gd32f1x0_fmc.c ****   */
+  75:Peripherals/src/gd32f1x0_fmc.c **** void FMC_Lock(void)
+  76:Peripherals/src/gd32f1x0_fmc.c **** {
+  60              		.loc 1 76 0
+  61              		.cfi_startproc
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64              		@ link register save eliminated.
+  77:Peripherals/src/gd32f1x0_fmc.c ****     /* Set the LOCK bit*/
+  78:Peripherals/src/gd32f1x0_fmc.c ****     FMC->CMR |= FMC_CMR_LK;
+  65              		.loc 1 78 0
+  66 0000 024B     		ldr	r3, .L6
+  67 0002 1A69     		ldr	r2, [r3, #16]
+  68 0004 42F08002 		orr	r2, r2, #128
+  69 0008 1A61     		str	r2, [r3, #16]
+  70 000a 7047     		bx	lr
+  71              	.L7:
+  72              		.align	2
+  73              	.L6:
+  74 000c 00200240 		.word	1073881088
+  75              		.cfi_endproc
+  76              	.LFE30:
+  78              		.section	.text.FMC_OB_Unlock,"ax",%progbits
+  79              		.align	2
+  80              		.global	FMC_OB_Unlock
+  81              		.thumb
+  82              		.thumb_func
+  84              	FMC_OB_Unlock:
+  85              	.LFB34:
+  79:Peripherals/src/gd32f1x0_fmc.c **** }
+  80:Peripherals/src/gd32f1x0_fmc.c **** 
+  81:Peripherals/src/gd32f1x0_fmc.c **** /**
+  82:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Erase a page.
+  83:Peripherals/src/gd32f1x0_fmc.c ****   * @param  Page_Address: The page address to be erased.
+  84:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+  85:Peripherals/src/gd32f1x0_fmc.c ****   */
+  86:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_ErasePage(uint32_t Page_Address)
+  87:Peripherals/src/gd32f1x0_fmc.c **** {
+  88:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+  89:Peripherals/src/gd32f1x0_fmc.c ****   
+  90:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+  91:Peripherals/src/gd32f1x0_fmc.c ****     { 
+ARM GAS  /tmp/ccYrUlHs.s 			page 4
+
+
+  92:Peripherals/src/gd32f1x0_fmc.c ****         /* Start page erase */
+  93:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_PE;
+  94:Peripherals/src/gd32f1x0_fmc.c ****         FMC->AR  = Page_Address;
+  95:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_START;
+  96:Peripherals/src/gd32f1x0_fmc.c ****     
+  97:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+  98:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+  99:Peripherals/src/gd32f1x0_fmc.c ****     
+ 100:Peripherals/src/gd32f1x0_fmc.c ****         /* Reset the PE bit */
+ 101:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR &= ~FMC_CMR_PE;
+ 102:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 103:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state  */
+ 104:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 105:Peripherals/src/gd32f1x0_fmc.c **** }
+ 106:Peripherals/src/gd32f1x0_fmc.c **** 
+ 107:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 108:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Erase all main FMC.
+ 109:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 110:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 111:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 112:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_MassErase(void)
+ 113:Peripherals/src/gd32f1x0_fmc.c **** {
+ 114:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 115:Peripherals/src/gd32f1x0_fmc.c ****   
+ 116:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 117:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 118:Peripherals/src/gd32f1x0_fmc.c ****         /* Start chip erase */
+ 119:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_ME;
+ 120:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_START;    
+ 121:Peripherals/src/gd32f1x0_fmc.c ****     
+ 122:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 123:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 124:Peripherals/src/gd32f1x0_fmc.c **** 
+ 125:Peripherals/src/gd32f1x0_fmc.c ****         /* Reset the MER bit */
+ 126:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR &= ~FMC_CMR_ME;
+ 127:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 128:Peripherals/src/gd32f1x0_fmc.c **** 
+ 129:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state  */
+ 130:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 131:Peripherals/src/gd32f1x0_fmc.c **** }
+ 132:Peripherals/src/gd32f1x0_fmc.c **** 
+ 133:Peripherals/src/gd32f1x0_fmc.c **** 
+ 134:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 135:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Program a word at the corresponding address.
+ 136:Peripherals/src/gd32f1x0_fmc.c ****   * @param  Address: The address to be programmed.
+ 137:Peripherals/src/gd32f1x0_fmc.c ****   * @param  Data: The data to be programmed.
+ 138:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 139:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 140:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_ProgramWord(uint32_t Address, uint32_t Data)
+ 141:Peripherals/src/gd32f1x0_fmc.c **** {
+ 142:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 143:Peripherals/src/gd32f1x0_fmc.c ****   
+ 144:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 145:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 146:Peripherals/src/gd32f1x0_fmc.c ****         /* Set the PG bit to start program */
+ 147:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_PG;
+ 148:Peripherals/src/gd32f1x0_fmc.c ****   
+ARM GAS  /tmp/ccYrUlHs.s 			page 5
+
+
+ 149:Peripherals/src/gd32f1x0_fmc.c ****         *(__IO uint32_t*)Address = Data;
+ 150:Peripherals/src/gd32f1x0_fmc.c **** 
+ 151:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 152:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 153:Peripherals/src/gd32f1x0_fmc.c ****     
+ 154:Peripherals/src/gd32f1x0_fmc.c ****         /* Reset the PG bit */
+ 155:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR &= ~FMC_CMR_PG;
+ 156:Peripherals/src/gd32f1x0_fmc.c ****     } 
+ 157:Peripherals/src/gd32f1x0_fmc.c ****   
+ 158:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 159:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 160:Peripherals/src/gd32f1x0_fmc.c **** }
+ 161:Peripherals/src/gd32f1x0_fmc.c **** 
+ 162:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 163:Peripherals/src/gd32f1x0_fmc.c ****   * @}
+ 164:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 165:Peripherals/src/gd32f1x0_fmc.c ****   
+ 166:Peripherals/src/gd32f1x0_fmc.c **** /** @defgroup FMC_Group2 Option Bytes Programming functions
+ 167:Peripherals/src/gd32f1x0_fmc.c ****  *  @brief   Option Bytes Programming functions 
+ 168:Peripherals/src/gd32f1x0_fmc.c ****  *
+ 169:Peripherals/src/gd32f1x0_fmc.c **** @verbatim   
+ 170:Peripherals/src/gd32f1x0_fmc.c ****  ===============================================================================
+ 171:Peripherals/src/gd32f1x0_fmc.c ****                 ##### Option Bytes Programming functions #####
+ 172:Peripherals/src/gd32f1x0_fmc.c ****  ===============================================================================
+ 173:Peripherals/src/gd32f1x0_fmc.c **** 
+ 174:Peripherals/src/gd32f1x0_fmc.c ****     [..] The FMC_Option Bytes Programming_functions, includes the following functions:
+ 175:Peripherals/src/gd32f1x0_fmc.c ****        (+) void FMC_OB_Unlock(void);
+ 176:Peripherals/src/gd32f1x0_fmc.c ****        (+) void FMC_OB_Lock(void);
+ 177:Peripherals/src/gd32f1x0_fmc.c ****        (+) void FMC_OB_Reset(void);
+ 178:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_OB_Erase(void);
+ 179:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState);
+ 180:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_OB_RDPConfig(uint8_t OB_RDP);
+ 181:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_DEEPSLEEP, uint8_t OB_STDBY);
+ 182:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_OB_BOOTConfig(uint8_t OB_BOOT1);
+ 183:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG);
+ 184:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_State FMC_OB_WriteUser(uint8_t OB_USER);
+ 185:Peripherals/src/gd32f1x0_fmc.c ****        (+) FMC_ProgramOptionByteData(uint32_t Address, uint8_t Data);
+ 186:Peripherals/src/gd32f1x0_fmc.c ****        (+) uint8_t FMC_OB_GetUser(void);
+ 187:Peripherals/src/gd32f1x0_fmc.c ****        (+) uint32_t FMC_OB_GetWRP(void);
+ 188:Peripherals/src/gd32f1x0_fmc.c ****        (+) FlagStatus FMC_OB_GetRDP(void);
+ 189:Peripherals/src/gd32f1x0_fmc.c **** 
+ 190:Peripherals/src/gd32f1x0_fmc.c ****     [..] Any operation of erase or program should follow these steps:
+ 191:Peripherals/src/gd32f1x0_fmc.c **** 
+ 192:Peripherals/src/gd32f1x0_fmc.c ****    (#) Call the FMC_OB_Unlock() function to enable the Option Bytes registers access
+ 193:Peripherals/src/gd32f1x0_fmc.c **** 
+ 194:Peripherals/src/gd32f1x0_fmc.c ****    (#) Call one or several functions to program the desired option bytes 
+ 195:Peripherals/src/gd32f1x0_fmc.c ****       (++) FMC_State FMC_OB_RDPConfig(uint8_t OB_RDP) => to set the desired read Protection Level
+ 196:Peripherals/src/gd32f1x0_fmc.c ****       (++) FMC_State FMC_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState) 
+ 197:Peripherals/src/gd32f1x0_fmc.c ****            => to Enable/Disable the desired sector write protection
+ 198:Peripherals/src/gd32f1x0_fmc.c ****       (++) FMC_State FMC_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_DEEPSLEEP, uint8_t OB_STDBY) 
+ 199:Peripherals/src/gd32f1x0_fmc.c ****            => to configure the user option Bytes: IWDG, DEEPSLEEP and the Standby.
+ 200:Peripherals/src/gd32f1x0_fmc.c ****       (++) FMC_State FMC_OB_BOOTConfig(uint8_t OB_BOOT1)
+ 201:Peripherals/src/gd32f1x0_fmc.c ****            => to set or reset BOOT1 
+ 202:Peripherals/src/gd32f1x0_fmc.c ****       (++) FMC_State FMC_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG) 
+ 203:Peripherals/src/gd32f1x0_fmc.c ****            => to enable or disable the VDDA Analog Monitoring 			 
+ 204:Peripherals/src/gd32f1x0_fmc.c ****       (++) You can write all User Options bytes at once using a single function
+ 205:Peripherals/src/gd32f1x0_fmc.c ****            by calling FMC_State FMC_OB_WriteUser(uint8_t OB_USER)
+ARM GAS  /tmp/ccYrUlHs.s 			page 6
+
+
+ 206:Peripherals/src/gd32f1x0_fmc.c ****       (++) FMC_ProgramOptionByteData(uint32_t Address, uint8_t Data) to program the 
+ 207:Peripherals/src/gd32f1x0_fmc.c ****            two half word in the option bytes
+ 208:Peripherals/src/gd32f1x0_fmc.c **** 
+ 209:Peripherals/src/gd32f1x0_fmc.c ****    (#) Once all needed option bytes to be programmed are correctly written, call the
+ 210:Peripherals/src/gd32f1x0_fmc.c ****       FMC_OB_Launch(void) function to launch the Option Bytes programming process.
+ 211:Peripherals/src/gd32f1x0_fmc.c **** 
+ 212:Peripherals/src/gd32f1x0_fmc.c ****    (#) Call the FMC_OB_Lock() to disable the Option Bytes registers access (recommended
+ 213:Peripherals/src/gd32f1x0_fmc.c ****       to protect the option Bytes against possible unwanted operations)
+ 214:Peripherals/src/gd32f1x0_fmc.c **** 
+ 215:Peripherals/src/gd32f1x0_fmc.c **** @endverbatim
+ 216:Peripherals/src/gd32f1x0_fmc.c ****   * @{
+ 217:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 218:Peripherals/src/gd32f1x0_fmc.c **** 
+ 219:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 220:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Unlock the option byte operation
+ 221:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 222:Peripherals/src/gd32f1x0_fmc.c ****   * @retval None
+ 223:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 224:Peripherals/src/gd32f1x0_fmc.c **** void FMC_OB_Unlock(void)
+ 225:Peripherals/src/gd32f1x0_fmc.c **** {
+  86              		.loc 1 225 0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              		@ link register save eliminated.
+ 226:Peripherals/src/gd32f1x0_fmc.c ****     if((FMC->CMR & FMC_CMR_OBWE) == RESET)
+  91              		.loc 1 226 0
+  92 0000 054B     		ldr	r3, .L10
+  93 0002 1B69     		ldr	r3, [r3, #16]
+  94 0004 13F4007F 		tst	r3, #512
+  95 0008 05D1     		bne	.L8
+ 227:Peripherals/src/gd32f1x0_fmc.c ****     { 
+ 228:Peripherals/src/gd32f1x0_fmc.c ****         /* Write the FMC key */
+ 229:Peripherals/src/gd32f1x0_fmc.c ****         FMC->OBKEYR = FMC_KEY1;
+  96              		.loc 1 229 0
+  97 000a 034B     		ldr	r3, .L10
+  98 000c 034A     		ldr	r2, .L10+4
+  99 000e 9A60     		str	r2, [r3, #8]
+ 230:Peripherals/src/gd32f1x0_fmc.c ****         FMC->OBKEYR = FMC_KEY2;
+ 100              		.loc 1 230 0
+ 101 0010 02F18832 		add	r2, r2, #-2004318072
+ 102 0014 9A60     		str	r2, [r3, #8]
+ 103              	.L8:
+ 104 0016 7047     		bx	lr
+ 105              	.L11:
+ 106              		.align	2
+ 107              	.L10:
+ 108 0018 00200240 		.word	1073881088
+ 109 001c 23016745 		.word	1164378403
+ 110              		.cfi_endproc
+ 111              	.LFE34:
+ 113              		.section	.text.FMC_OB_Lock,"ax",%progbits
+ 114              		.align	2
+ 115              		.global	FMC_OB_Lock
+ 116              		.thumb
+ 117              		.thumb_func
+ 119              	FMC_OB_Lock:
+ARM GAS  /tmp/ccYrUlHs.s 			page 7
+
+
+ 120              	.LFB35:
+ 231:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 232:Peripherals/src/gd32f1x0_fmc.c **** }
+ 233:Peripherals/src/gd32f1x0_fmc.c **** 
+ 234:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 235:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Lock the option byte operation.
+ 236:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 237:Peripherals/src/gd32f1x0_fmc.c ****   * @retval None
+ 238:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 239:Peripherals/src/gd32f1x0_fmc.c **** void FMC_OB_Lock(void)
+ 240:Peripherals/src/gd32f1x0_fmc.c **** {
+ 121              		.loc 1 240 0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125              		@ link register save eliminated.
+ 241:Peripherals/src/gd32f1x0_fmc.c ****     /* Reset the OBWE bit */
+ 242:Peripherals/src/gd32f1x0_fmc.c ****     FMC->CMR &= ~FMC_CMR_OBWE;
+ 126              		.loc 1 242 0
+ 127 0000 024B     		ldr	r3, .L13
+ 128 0002 1A69     		ldr	r2, [r3, #16]
+ 129 0004 22F40072 		bic	r2, r2, #512
+ 130 0008 1A61     		str	r2, [r3, #16]
+ 131 000a 7047     		bx	lr
+ 132              	.L14:
+ 133              		.align	2
+ 134              	.L13:
+ 135 000c 00200240 		.word	1073881088
+ 136              		.cfi_endproc
+ 137              	.LFE35:
+ 139              		.section	.text.FMC_OB_Reset,"ax",%progbits
+ 140              		.align	2
+ 141              		.global	FMC_OB_Reset
+ 142              		.thumb
+ 143              		.thumb_func
+ 145              	FMC_OB_Reset:
+ 146              	.LFB36:
+ 243:Peripherals/src/gd32f1x0_fmc.c **** }
+ 244:Peripherals/src/gd32f1x0_fmc.c **** 
+ 245:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 246:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Generate a system reset to reload the option byte.
+ 247:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 248:Peripherals/src/gd32f1x0_fmc.c ****   * @retval None
+ 249:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 250:Peripherals/src/gd32f1x0_fmc.c **** void FMC_OB_Reset(void)
+ 251:Peripherals/src/gd32f1x0_fmc.c **** {
+ 147              		.loc 1 251 0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151              		@ link register save eliminated.
+ 252:Peripherals/src/gd32f1x0_fmc.c ****     /* Set the OPTR bit */
+ 253:Peripherals/src/gd32f1x0_fmc.c ****     FMC->CMR |= FMC_CMR_OPTR;
+ 152              		.loc 1 253 0
+ 153 0000 024B     		ldr	r3, .L16
+ 154 0002 1A69     		ldr	r2, [r3, #16]
+ 155 0004 42F40052 		orr	r2, r2, #8192
+ARM GAS  /tmp/ccYrUlHs.s 			page 8
+
+
+ 156 0008 1A61     		str	r2, [r3, #16]
+ 157 000a 7047     		bx	lr
+ 158              	.L17:
+ 159              		.align	2
+ 160              	.L16:
+ 161 000c 00200240 		.word	1073881088
+ 162              		.cfi_endproc
+ 163              	.LFE36:
+ 165              		.section	.text.FMC_OB_GetUser,"ax",%progbits
+ 166              		.align	2
+ 167              		.global	FMC_OB_GetUser
+ 168              		.thumb
+ 169              		.thumb_func
+ 171              	FMC_OB_GetUser:
+ 172              	.LFB46:
+ 254:Peripherals/src/gd32f1x0_fmc.c **** }
+ 255:Peripherals/src/gd32f1x0_fmc.c **** 
+ 256:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 257:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Erase the FMC option byte.
+ 258:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 259:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 260:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 261:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_OB_Erase(void)
+ 262:Peripherals/src/gd32f1x0_fmc.c **** {
+ 263:Peripherals/src/gd32f1x0_fmc.c ****     uint16_t temp_rdp = RDP_Level_0;
+ 264:Peripherals/src/gd32f1x0_fmc.c **** 
+ 265:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 266:Peripherals/src/gd32f1x0_fmc.c **** 
+ 267:Peripherals/src/gd32f1x0_fmc.c ****     /* Check the ReadOut Protection Option Byte */
+ 268:Peripherals/src/gd32f1x0_fmc.c ****     if(FMC_OB_GetRDP() != RESET)
+ 269:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 270:Peripherals/src/gd32f1x0_fmc.c ****         temp_rdp = 0x00;  
+ 271:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 272:Peripherals/src/gd32f1x0_fmc.c **** 
+ 273:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 274:Peripherals/src/gd32f1x0_fmc.c ****     {   
+ 275:Peripherals/src/gd32f1x0_fmc.c ****         /* Start erase the option byte */
+ 276:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBER;
+ 277:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_START;
+ 278:Peripherals/src/gd32f1x0_fmc.c **** 
+ 279:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 280:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 281:Peripherals/src/gd32f1x0_fmc.c ****     
+ 282:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state == FMC_READY)
+ 283:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 284:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OPER bit */
+ 285:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBER;
+ 286:Peripherals/src/gd32f1x0_fmc.c ****        
+ 287:Peripherals/src/gd32f1x0_fmc.c ****             /* Set the OBPG bit */
+ 288:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR |= FMC_CMR_OBPG;
+ 289:Peripherals/src/gd32f1x0_fmc.c **** 
+ 290:Peripherals/src/gd32f1x0_fmc.c ****             /* Set default RDP level */
+ 291:Peripherals/src/gd32f1x0_fmc.c ****             OB->RDP = (uint16_t)temp_rdp; 
+ 292:Peripherals/src/gd32f1x0_fmc.c **** 
+ 293:Peripherals/src/gd32f1x0_fmc.c ****             /* Wait for the FMC ready */
+ 294:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 295:Peripherals/src/gd32f1x0_fmc.c ****  
+ARM GAS  /tmp/ccYrUlHs.s 			page 9
+
+
+ 296:Peripherals/src/gd32f1x0_fmc.c ****             if(temp_state != FMC_TIMEOUT_ERR)
+ 297:Peripherals/src/gd32f1x0_fmc.c ****             {
+ 298:Peripherals/src/gd32f1x0_fmc.c ****                 /* Reset the OBPG bit */
+ 299:Peripherals/src/gd32f1x0_fmc.c ****                 FMC->CSR &= ~FMC_CMR_OBPG;
+ 300:Peripherals/src/gd32f1x0_fmc.c ****             }
+ 301:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 302:Peripherals/src/gd32f1x0_fmc.c ****         else
+ 303:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 304:Peripherals/src/gd32f1x0_fmc.c ****             if (temp_state != FMC_TIMEOUT_ERR)
+ 305:Peripherals/src/gd32f1x0_fmc.c ****             {
+ 306:Peripherals/src/gd32f1x0_fmc.c ****                 /* Reset the OBPG bit */
+ 307:Peripherals/src/gd32f1x0_fmc.c ****                 FMC->CMR &= ~FMC_CMR_OBPG;
+ 308:Peripherals/src/gd32f1x0_fmc.c ****             }
+ 309:Peripherals/src/gd32f1x0_fmc.c ****         }  
+ 310:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 311:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 312:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 313:Peripherals/src/gd32f1x0_fmc.c **** }
+ 314:Peripherals/src/gd32f1x0_fmc.c **** 
+ 315:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 316:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Program Write protect Byte
+ 317:Peripherals/src/gd32f1x0_fmc.c ****   * @param  OB_WRP: specify the address of the pages to be write protected.
+ 318:Peripherals/src/gd32f1x0_fmc.c ****   *   The legal parameter can be:
+ 319:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg WRP_sector0 ... WRP_sector15
+ 320:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg WRP_Allsectors
+ 321:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 322:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 323:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_OB_EnableWRP(uint32_t OB_WRP)
+ 324:Peripherals/src/gd32f1x0_fmc.c **** {
+ 325:Peripherals/src/gd32f1x0_fmc.c ****     uint16_t temp_WRP0, temp_WRP1;
+ 326:Peripherals/src/gd32f1x0_fmc.c **** 
+ 327:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 328:Peripherals/src/gd32f1x0_fmc.c **** 
+ 329:Peripherals/src/gd32f1x0_fmc.c ****     OB_WRP = (uint32_t)(~OB_WRP);
+ 330:Peripherals/src/gd32f1x0_fmc.c ****     temp_WRP0 = (uint16_t)(OB_WRP & OB_WRP0_WRP0);
+ 331:Peripherals/src/gd32f1x0_fmc.c ****     temp_WRP1 = (uint16_t)((OB_WRP & OB_WRP0_nWRP0) >> 8);
+ 332:Peripherals/src/gd32f1x0_fmc.c **** 
+ 333:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 334:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 335:Peripherals/src/gd32f1x0_fmc.c ****         /* Set the OBPG bit*/
+ 336:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG;
+ 337:Peripherals/src/gd32f1x0_fmc.c **** 
+ 338:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_WRP0 != 0xFF)
+ 339:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 340:Peripherals/src/gd32f1x0_fmc.c ****             OB->WRP0 = temp_WRP0;
+ 341:Peripherals/src/gd32f1x0_fmc.c ****       
+ 342:Peripherals/src/gd32f1x0_fmc.c ****             /* Wait for the FMC ready */
+ 343:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 344:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 345:Peripherals/src/gd32f1x0_fmc.c ****         if((temp_state == FMC_READY) && (temp_WRP1 != 0xFF))
+ 346:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 347:Peripherals/src/gd32f1x0_fmc.c ****             OB->WRP1 = temp_WRP1;
+ 348:Peripherals/src/gd32f1x0_fmc.c ****       
+ 349:Peripherals/src/gd32f1x0_fmc.c ****             /* Wait for the FMC ready */
+ 350:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 351:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 352:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ARM GAS  /tmp/ccYrUlHs.s 			page 10
+
+
+ 353:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 354:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OBPG bit */
+ 355:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 356:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 357:Peripherals/src/gd32f1x0_fmc.c ****     } 
+ 358:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 359:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 360:Peripherals/src/gd32f1x0_fmc.c **** }
+ 361:Peripherals/src/gd32f1x0_fmc.c **** 
+ 362:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 363:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Config the Read Out Protection bit.
+ 364:Peripherals/src/gd32f1x0_fmc.c ****   * @param  FMC_ReadProtection_Level: The Read Out Protection level.
+ 365:Peripherals/src/gd32f1x0_fmc.c ****   *   This parameter can be:
+ 366:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg RDP_Level_0: No protection
+ 367:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg RDP_Level_1: Read Outprotection of the memory
+ 368:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg RDP_Level_2: Chip protection
+ 369:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 370:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 371:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_OB_RDPConfig(uint8_t OB_RDP)
+ 372:Peripherals/src/gd32f1x0_fmc.c **** {
+ 373:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 374:Peripherals/src/gd32f1x0_fmc.c **** 
+ 375:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 376:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 377:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBER;
+ 378:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_START;
+ 379:Peripherals/src/gd32f1x0_fmc.c ****     
+ 380:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 381:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 382:Peripherals/src/gd32f1x0_fmc.c ****     
+ 383:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state == FMC_READY)
+ 384:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 385:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OBER bit */
+ 386:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBER;
+ 387:Peripherals/src/gd32f1x0_fmc.c ****       
+ 388:Peripherals/src/gd32f1x0_fmc.c ****             /* Enable the Option Bytes Programming */
+ 389:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR |= FMC_CMR_OBPG;
+ 390:Peripherals/src/gd32f1x0_fmc.c ****        
+ 391:Peripherals/src/gd32f1x0_fmc.c ****             OB->RDP = OB_RDP;
+ 392:Peripherals/src/gd32f1x0_fmc.c **** 
+ 393:Peripherals/src/gd32f1x0_fmc.c ****             /* Wait for the FMC ready */
+ 394:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT); 
+ 395:Peripherals/src/gd32f1x0_fmc.c ****     
+ 396:Peripherals/src/gd32f1x0_fmc.c ****             if(temp_state != FMC_TIMEOUT_ERR)
+ 397:Peripherals/src/gd32f1x0_fmc.c ****             {
+ 398:Peripherals/src/gd32f1x0_fmc.c ****                 /* Reset the OBPG bit */
+ 399:Peripherals/src/gd32f1x0_fmc.c ****                 FMC->CMR &= ~FMC_CMR_OBPG;
+ 400:Peripherals/src/gd32f1x0_fmc.c ****             }
+ 401:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 402:Peripherals/src/gd32f1x0_fmc.c ****         else
+ 403:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 404:Peripherals/src/gd32f1x0_fmc.c ****             if(temp_state != FMC_TIMEOUT_ERR)
+ 405:Peripherals/src/gd32f1x0_fmc.c ****             {
+ 406:Peripherals/src/gd32f1x0_fmc.c ****                 /* Reset the OBER Bit */
+ 407:Peripherals/src/gd32f1x0_fmc.c ****                 FMC->CMR &= ~FMC_CMR_OBER;
+ 408:Peripherals/src/gd32f1x0_fmc.c ****             }
+ 409:Peripherals/src/gd32f1x0_fmc.c ****         }
+ARM GAS  /tmp/ccYrUlHs.s 			page 11
+
+
+ 410:Peripherals/src/gd32f1x0_fmc.c ****     }  
+ 411:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 412:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 413:Peripherals/src/gd32f1x0_fmc.c **** }
+ 414:Peripherals/src/gd32f1x0_fmc.c **** 
+ 415:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 416:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Program the FMC User Option Byte: IWDG_SW / RST_DEEPSLEEP / RST_STDBY.
+ 417:Peripherals/src/gd32f1x0_fmc.c ****   * @param  OB_IWDG: Config the WDG mode
+ 418:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_IWDG_SW: Software WDG selected
+ 419:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_IWDG_HW: Hardware WDG selected
+ 420:Peripherals/src/gd32f1x0_fmc.c ****   * @param  OB_DEEPSLEEP: Config Reset event when entering DEEPSLEEP mode.
+ 421:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_DEEPSLEEP_NoRST: No reset generated when entering in DEEPSLEEP
+ 422:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_DEEPSLEEP_RST: Reset generated when entering in DEEPSLEEP
+ 423:Peripherals/src/gd32f1x0_fmc.c ****   * @param  OB_STDBY: Config Reset event when entering Standby mode.
+ 424:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_STDBY_NoRST: No reset generated when entering in STANDBY
+ 425:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_STDBY_RST: Reset generated when entering in STANDBY
+ 426:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 427:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 428:Peripherals/src/gd32f1x0_fmc.c **** FMC_State  FMC_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_DEEPSLEEP, uint8_t OB_STDBY)
+ 429:Peripherals/src/gd32f1x0_fmc.c **** {
+ 430:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 431:Peripherals/src/gd32f1x0_fmc.c ****   
+ 432:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 433:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 434:Peripherals/src/gd32f1x0_fmc.c ****         /* Set the OBPG bit*/
+ 435:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 436:Peripherals/src/gd32f1x0_fmc.c **** 
+ 437:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = (uint16_t)((uint16_t)(OB_IWDG | OB_DEEPSLEEP) | (uint16_t)(OB_STDBY | 0xF8));
+ 438:Peripherals/src/gd32f1x0_fmc.c ****     
+ 439:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 440:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 441:Peripherals/src/gd32f1x0_fmc.c **** 
+ 442:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 443:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 444:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OBPG bit */
+ 445:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 446:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 447:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 448:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 449:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 450:Peripherals/src/gd32f1x0_fmc.c **** }
+ 451:Peripherals/src/gd32f1x0_fmc.c **** 
+ 452:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 453:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Program the BOOT1 option bit.
+ 454:Peripherals/src/gd32f1x0_fmc.c ****   * @param  OB_BOOT1: The legal parameter can be one of the following value:
+ 455:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_BOOT1_RESET
+ 456:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_BOOT1_SET
+ 457:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 458:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 459:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_OB_BOOTConfig(uint8_t OB_BOOT1)
+ 460:Peripherals/src/gd32f1x0_fmc.c **** {
+ 461:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 462:Peripherals/src/gd32f1x0_fmc.c ****   
+ 463:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 464:Peripherals/src/gd32f1x0_fmc.c ****     {  
+ 465:Peripherals/src/gd32f1x0_fmc.c ****         /* Set the OBPG bit*/
+ 466:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG;
+ARM GAS  /tmp/ccYrUlHs.s 			page 12
+
+
+ 467:Peripherals/src/gd32f1x0_fmc.c **** 
+ 468:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = OB_BOOT1 | 0xEF;
+ 469:Peripherals/src/gd32f1x0_fmc.c ****   
+ 470:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 471:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 472:Peripherals/src/gd32f1x0_fmc.c **** 
+ 473:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 474:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 475:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OBPG bit */
+ 476:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 477:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 478:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 479:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 480:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 481:Peripherals/src/gd32f1x0_fmc.c **** }
+ 482:Peripherals/src/gd32f1x0_fmc.c **** 
+ 483:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 484:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Program the VDDA Power source bit.
+ 485:Peripherals/src/gd32f1x0_fmc.c ****   * @param  OB_VDDA_ANALOG: Selects the analog monitoring on VDDA Power source.
+ 486:Peripherals/src/gd32f1x0_fmc.c ****   *   This parameter can be one of the following values:
+ 487:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_VDDA_ANALOG_ON: Analog monitoring on VDDA Power source ON
+ 488:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_VDDA_ANALOG_OFF: Analog monitoring on VDDA Power source OFF
+ 489:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 490:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 491:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG)
+ 492:Peripherals/src/gd32f1x0_fmc.c **** {
+ 493:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 494:Peripherals/src/gd32f1x0_fmc.c ****   
+ 495:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 496:Peripherals/src/gd32f1x0_fmc.c ****     {  
+ 497:Peripherals/src/gd32f1x0_fmc.c ****         /* Set the OBPG bit*/
+ 498:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 499:Peripherals/src/gd32f1x0_fmc.c **** 
+ 500:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = OB_VDDA_ANALOG | 0xDF;
+ 501:Peripherals/src/gd32f1x0_fmc.c ****   
+ 502:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 503:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 504:Peripherals/src/gd32f1x0_fmc.c **** 
+ 505:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 506:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 507:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OBPG bit */
+ 508:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 509:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 510:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 511:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 512:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 513:Peripherals/src/gd32f1x0_fmc.c **** }
+ 514:Peripherals/src/gd32f1x0_fmc.c **** 
+ 515:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 516:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Program the SRAM parity bit.
+ 517:Peripherals/src/gd32f1x0_fmc.c ****   * @param  OB_SRAM_Parity: Set or Reset the SRAM parity bit.
+ 518:Peripherals/src/gd32f1x0_fmc.c ****   *   This legal parameter can be :
+ 519:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_SRAM_PARITY_SET: Set SRAM parity.
+ 520:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_SRAM_PARITY_RESET: Reset SRAM parity.
+ 521:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 522:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 523:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_OB_SRAMParityConfig(uint8_t OB_SRAM_Parity)
+ARM GAS  /tmp/ccYrUlHs.s 			page 13
+
+
+ 524:Peripherals/src/gd32f1x0_fmc.c **** {
+ 525:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 526:Peripherals/src/gd32f1x0_fmc.c ****   
+ 527:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 528:Peripherals/src/gd32f1x0_fmc.c ****     {  
+ 529:Peripherals/src/gd32f1x0_fmc.c ****         /* Set the OBPG bit*/
+ 530:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 531:Peripherals/src/gd32f1x0_fmc.c **** 
+ 532:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = OB_SRAM_Parity | 0xBF;
+ 533:Peripherals/src/gd32f1x0_fmc.c ****   
+ 534:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 535:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 536:Peripherals/src/gd32f1x0_fmc.c **** 
+ 537:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 538:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 539:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OBPG bit */
+ 540:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 541:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 542:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 543:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 544:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 545:Peripherals/src/gd32f1x0_fmc.c **** }
+ 546:Peripherals/src/gd32f1x0_fmc.c **** 
+ 547:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 548:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Program the FMC User Option Byte.
+ 549:Peripherals/src/gd32f1x0_fmc.c ****   * @param  OB_USER: Select all user option byte
+ 550:Peripherals/src/gd32f1x0_fmc.c ****   *   The legal parameter is a combination of the following values:
+ 551:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_IWDG_SW / OB_IWDG_HW
+ 552:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_DEEPSLEEP_NoRST / OB_DEEPSLEEP_RST
+ 553:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_STDBY_NoRST / OB_STDBY_RST
+ 554:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_BOOT1_RESET / OB_BOOT1_SET
+ 555:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_VDDA_ANALOG_ON / OB_VDDA_ANALOG_OFF 
+ 556:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg OB_SRAM_PARITY_SET / OB_SRAM_PARITY_RESET 
+ 557:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 558:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 559:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_OB_WriteUser(uint8_t OB_USER)
+ 560:Peripherals/src/gd32f1x0_fmc.c **** {
+ 561:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 562:Peripherals/src/gd32f1x0_fmc.c ****   
+ 563:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 564:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 565:Peripherals/src/gd32f1x0_fmc.c ****         /* Set the OBPG bit */
+ 566:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 567:Peripherals/src/gd32f1x0_fmc.c **** 
+ 568:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = OB_USER | 0x88;
+ 569:Peripherals/src/gd32f1x0_fmc.c ****   
+ 570:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 571:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 572:Peripherals/src/gd32f1x0_fmc.c **** 
+ 573:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 574:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 575:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OBPG bit */
+ 576:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 577:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 578:Peripherals/src/gd32f1x0_fmc.c ****     }    
+ 579:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 580:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ARM GAS  /tmp/ccYrUlHs.s 			page 14
+
+
+ 581:Peripherals/src/gd32f1x0_fmc.c **** 
+ 582:Peripherals/src/gd32f1x0_fmc.c **** }
+ 583:Peripherals/src/gd32f1x0_fmc.c **** 
+ 584:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 585:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Program Option Byte Data.
+ 586:Peripherals/src/gd32f1x0_fmc.c ****   * @param  Address: The Option Byte address to be programmed.
+ 587:Peripherals/src/gd32f1x0_fmc.c ****   *   The legal parameter can be 0x1FFFF804 or 0x1FFFF806. 
+ 588:Peripherals/src/gd32f1x0_fmc.c ****   * @param  Data: The Byte to be programmed.
+ 589:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 590:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 591:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_ProgramOptionByteData(uint32_t Address, uint8_t Data)
+ 592:Peripherals/src/gd32f1x0_fmc.c **** {
+ 593:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 594:Peripherals/src/gd32f1x0_fmc.c **** 
+ 595:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 596:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 597:Peripherals/src/gd32f1x0_fmc.c ****         /* SET the OPTPG bit */
+ 598:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 599:Peripherals/src/gd32f1x0_fmc.c ****         *(__IO uint16_t*)Address = Data;
+ 600:Peripherals/src/gd32f1x0_fmc.c ****     
+ 601:Peripherals/src/gd32f1x0_fmc.c ****         /* Wait for the FMC ready */
+ 602:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 603:Peripherals/src/gd32f1x0_fmc.c ****     
+ 604:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 605:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 606:Peripherals/src/gd32f1x0_fmc.c ****             /* Reset the OPTPG bit */
+ 607:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 608:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 609:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 610:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 611:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 612:Peripherals/src/gd32f1x0_fmc.c **** }
+ 613:Peripherals/src/gd32f1x0_fmc.c **** 
+ 614:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 615:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Get the FMC User Option Byte.
+ 616:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 617:Peripherals/src/gd32f1x0_fmc.c ****   * @retval The FMC User Option Byte.
+ 618:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 619:Peripherals/src/gd32f1x0_fmc.c **** uint8_t FMC_OB_GetUser(void)
+ 620:Peripherals/src/gd32f1x0_fmc.c **** {
+ 173              		.loc 1 620 0
+ 174              		.cfi_startproc
+ 175              		@ args = 0, pretend = 0, frame = 0
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 177              		@ link register save eliminated.
+ 621:Peripherals/src/gd32f1x0_fmc.c ****     return (uint8_t)(FMC->OPTR >> 8);
+ 178              		.loc 1 621 0
+ 179 0000 024B     		ldr	r3, .L19
+ 180 0002 D869     		ldr	r0, [r3, #28]
+ 622:Peripherals/src/gd32f1x0_fmc.c **** }
+ 181              		.loc 1 622 0
+ 182 0004 C0F30720 		ubfx	r0, r0, #8, #8
+ 183 0008 7047     		bx	lr
+ 184              	.L20:
+ 185 000a 00BF     		.align	2
+ 186              	.L19:
+ 187 000c 00200240 		.word	1073881088
+ARM GAS  /tmp/ccYrUlHs.s 			page 15
+
+
+ 188              		.cfi_endproc
+ 189              	.LFE46:
+ 191              		.section	.text.FMC_OB_GetWRP,"ax",%progbits
+ 192              		.align	2
+ 193              		.global	FMC_OB_GetWRP
+ 194              		.thumb
+ 195              		.thumb_func
+ 197              	FMC_OB_GetWRP:
+ 198              	.LFB47:
+ 623:Peripherals/src/gd32f1x0_fmc.c **** 
+ 624:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 625:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Get the FMC Write Protection Option Byte.
+ 626:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 627:Peripherals/src/gd32f1x0_fmc.c ****   * @retval The FMC Write Protection Option Byte
+ 628:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 629:Peripherals/src/gd32f1x0_fmc.c **** uint32_t FMC_OB_GetWRP(void)
+ 630:Peripherals/src/gd32f1x0_fmc.c **** {
+ 199              		.loc 1 630 0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203              		@ link register save eliminated.
+ 631:Peripherals/src/gd32f1x0_fmc.c ****     return (uint32_t)(FMC->WPR);
+ 204              		.loc 1 631 0
+ 205 0000 014B     		ldr	r3, .L22
+ 206 0002 186A     		ldr	r0, [r3, #32]
+ 632:Peripherals/src/gd32f1x0_fmc.c **** }
+ 207              		.loc 1 632 0
+ 208 0004 7047     		bx	lr
+ 209              	.L23:
+ 210 0006 00BF     		.align	2
+ 211              	.L22:
+ 212 0008 00200240 		.word	1073881088
+ 213              		.cfi_endproc
+ 214              	.LFE47:
+ 216              		.section	.text.FMC_OB_GetRDP,"ax",%progbits
+ 217              		.align	2
+ 218              		.global	FMC_OB_GetRDP
+ 219              		.thumb
+ 220              		.thumb_func
+ 222              	FMC_OB_GetRDP:
+ 223              	.LFB48:
+ 633:Peripherals/src/gd32f1x0_fmc.c **** 
+ 634:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 635:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Check whether the FMC Read out Protection Status is SET or RESET.
+ 636:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 637:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC ReadOut Protection state
+ 638:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 639:Peripherals/src/gd32f1x0_fmc.c **** TypeState FMC_OB_GetRDP(void)
+ 640:Peripherals/src/gd32f1x0_fmc.c **** {
+ 224              		.loc 1 640 0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 228              		@ link register save eliminated.
+ 229              	.LVL0:
+ 641:Peripherals/src/gd32f1x0_fmc.c ****     TypeState RDPState = RESET;
+ARM GAS  /tmp/ccYrUlHs.s 			page 16
+
+
+ 642:Peripherals/src/gd32f1x0_fmc.c ****   
+ 643:Peripherals/src/gd32f1x0_fmc.c ****     if ((uint8_t)(FMC->OPTR & (FMC_OPTR_PLEVEL1 | FMC_OPTR_PLEVEL2)) != RESET)
+ 230              		.loc 1 643 0
+ 231 0000 044B     		ldr	r3, .L27
+ 232 0002 DB69     		ldr	r3, [r3, #28]
+ 233 0004 13F0060F 		tst	r3, #6
+ 234 0008 01D0     		beq	.L26
+ 644:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 645:Peripherals/src/gd32f1x0_fmc.c ****         RDPState = SET;
+ 235              		.loc 1 645 0
+ 236 000a 0120     		movs	r0, #1
+ 237 000c 7047     		bx	lr
+ 238              	.L26:
+ 646:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 647:Peripherals/src/gd32f1x0_fmc.c ****     else
+ 648:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 649:Peripherals/src/gd32f1x0_fmc.c ****         RDPState = RESET;
+ 239              		.loc 1 649 0
+ 240 000e 0020     		movs	r0, #0
+ 241              	.LVL1:
+ 650:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 651:Peripherals/src/gd32f1x0_fmc.c ****     return RDPState;
+ 652:Peripherals/src/gd32f1x0_fmc.c **** }
+ 242              		.loc 1 652 0
+ 243 0010 7047     		bx	lr
+ 244              	.L28:
+ 245 0012 00BF     		.align	2
+ 246              	.L27:
+ 247 0014 00200240 		.word	1073881088
+ 248              		.cfi_endproc
+ 249              	.LFE48:
+ 251              		.section	.text.FMC_INTConfig,"ax",%progbits
+ 252              		.align	2
+ 253              		.global	FMC_INTConfig
+ 254              		.thumb
+ 255              		.thumb_func
+ 257              	FMC_INTConfig:
+ 258              	.LFB49:
+ 653:Peripherals/src/gd32f1x0_fmc.c **** 
+ 654:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 655:Peripherals/src/gd32f1x0_fmc.c ****   * @}
+ 656:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 657:Peripherals/src/gd32f1x0_fmc.c **** 
+ 658:Peripherals/src/gd32f1x0_fmc.c **** /** @defgroup FMC_Group3 Interrupts and flags management functions
+ 659:Peripherals/src/gd32f1x0_fmc.c ****  *  @brief   Interrupts and flags management functions
+ 660:Peripherals/src/gd32f1x0_fmc.c ****  *
+ 661:Peripherals/src/gd32f1x0_fmc.c **** @verbatim   
+ 662:Peripherals/src/gd32f1x0_fmc.c ****  ===============================================================================
+ 663:Peripherals/src/gd32f1x0_fmc.c ****              ##### Interrupts and flags management functions #####
+ 664:Peripherals/src/gd32f1x0_fmc.c ****  ===============================================================================  
+ 665:Peripherals/src/gd32f1x0_fmc.c **** 
+ 666:Peripherals/src/gd32f1x0_fmc.c **** @endverbatim
+ 667:Peripherals/src/gd32f1x0_fmc.c ****   * @{
+ 668:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 669:Peripherals/src/gd32f1x0_fmc.c **** 
+ 670:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 671:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Enable or disable the corresponding FMC interrupt source.
+ARM GAS  /tmp/ccYrUlHs.s 			page 17
+
+
+ 672:Peripherals/src/gd32f1x0_fmc.c ****   * @param  FMC_INT: The FMC interrupt source to be enabled or disabled.
+ 673:Peripherals/src/gd32f1x0_fmc.c ****   *   This parameter can be any combination of the following values:
+ 674:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_INT_EOP: FMC end of programming Interrupt
+ 675:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_INT_ERR: FMC Error Interrupt
+ 676:Peripherals/src/gd32f1x0_fmc.c ****   * @param  NewValue: ENABLE or DISABLE.
+ 677:Peripherals/src/gd32f1x0_fmc.c ****   * @retval None 
+ 678:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 679:Peripherals/src/gd32f1x0_fmc.c **** void FMC_INTConfig(uint32_t FMC_INT, TypeState NewValue)
+ 680:Peripherals/src/gd32f1x0_fmc.c **** {
+ 259              		.loc 1 680 0
+ 260              		.cfi_startproc
+ 261              		@ args = 0, pretend = 0, frame = 0
+ 262              		@ frame_needed = 0, uses_anonymous_args = 0
+ 263              		@ link register save eliminated.
+ 264              	.LVL2:
+ 681:Peripherals/src/gd32f1x0_fmc.c ****     if(NewValue != DISABLE)
+ 265              		.loc 1 681 0
+ 266 0000 21B1     		cbz	r1, .L30
+ 682:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 683:Peripherals/src/gd32f1x0_fmc.c ****         /* Enable the interrupt sources */
+ 684:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_INT;
+ 267              		.loc 1 684 0
+ 268 0002 054B     		ldr	r3, .L32
+ 269 0004 1A69     		ldr	r2, [r3, #16]
+ 270 0006 1043     		orrs	r0, r0, r2
+ 271              	.LVL3:
+ 272 0008 1861     		str	r0, [r3, #16]
+ 273 000a 7047     		bx	lr
+ 274              	.LVL4:
+ 275              	.L30:
+ 685:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 686:Peripherals/src/gd32f1x0_fmc.c ****     else
+ 687:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 688:Peripherals/src/gd32f1x0_fmc.c ****         /* Disable the interrupt sources */
+ 689:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR &= ~(uint32_t)FMC_INT;
+ 276              		.loc 1 689 0
+ 277 000c 024B     		ldr	r3, .L32
+ 278 000e 1A69     		ldr	r2, [r3, #16]
+ 279 0010 22EA0000 		bic	r0, r2, r0
+ 280              	.LVL5:
+ 281 0014 1861     		str	r0, [r3, #16]
+ 282 0016 7047     		bx	lr
+ 283              	.L33:
+ 284              		.align	2
+ 285              	.L32:
+ 286 0018 00200240 		.word	1073881088
+ 287              		.cfi_endproc
+ 288              	.LFE49:
+ 290              		.section	.text.FMC_GetBitState,"ax",%progbits
+ 291              		.align	2
+ 292              		.global	FMC_GetBitState
+ 293              		.thumb
+ 294              		.thumb_func
+ 296              	FMC_GetBitState:
+ 297              	.LFB50:
+ 690:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 691:Peripherals/src/gd32f1x0_fmc.c **** }
+ARM GAS  /tmp/ccYrUlHs.s 			page 18
+
+
+ 692:Peripherals/src/gd32f1x0_fmc.c **** 
+ 693:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 694:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Check whether the FMC flag is SET or RESET.
+ 695:Peripherals/src/gd32f1x0_fmc.c ****   * @param  FMC_FLAG: the corresponding FMC flag.
+ 696:Peripherals/src/gd32f1x0_fmc.c ****   *   The legal parameter can be:
+ 697:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_FLAG_BSY:  FMC BUSY flag
+ 698:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_FLAG_PERR: FMC Programming error flag flag
+ 699:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_FLAG_WERR: FMC Write protection error flag
+ 700:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_FLAG_EOP:  FMC End of Programming flag
+ 701:Peripherals/src/gd32f1x0_fmc.c ****   * @retval The state of the FMC flag.
+ 702:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 703:Peripherals/src/gd32f1x0_fmc.c **** TypeState FMC_GetBitState(uint32_t FMC_FLAG)
+ 704:Peripherals/src/gd32f1x0_fmc.c **** {
+ 298              		.loc 1 704 0
+ 299              		.cfi_startproc
+ 300              		@ args = 0, pretend = 0, frame = 0
+ 301              		@ frame_needed = 0, uses_anonymous_args = 0
+ 302              		@ link register save eliminated.
+ 303              	.LVL6:
+ 705:Peripherals/src/gd32f1x0_fmc.c ****     if((FMC->CSR & FMC_FLAG) != (uint32_t)RESET)
+ 304              		.loc 1 705 0
+ 305 0000 034B     		ldr	r3, .L37
+ 306 0002 DB68     		ldr	r3, [r3, #12]
+ 307 0004 0342     		tst	r3, r0
+ 308 0006 01D0     		beq	.L36
+ 706:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 707:Peripherals/src/gd32f1x0_fmc.c ****         return  SET;
+ 309              		.loc 1 707 0
+ 310 0008 0120     		movs	r0, #1
+ 311              	.LVL7:
+ 312 000a 7047     		bx	lr
+ 313              	.LVL8:
+ 314              	.L36:
+ 708:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 709:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the state of corresponding FMC flag */
+ 710:Peripherals/src/gd32f1x0_fmc.c ****     return RESET; 
+ 315              		.loc 1 710 0
+ 316 000c 0020     		movs	r0, #0
+ 317              	.LVL9:
+ 711:Peripherals/src/gd32f1x0_fmc.c **** }
+ 318              		.loc 1 711 0
+ 319 000e 7047     		bx	lr
+ 320              	.L38:
+ 321              		.align	2
+ 322              	.L37:
+ 323 0010 00200240 		.word	1073881088
+ 324              		.cfi_endproc
+ 325              	.LFE50:
+ 327              		.section	.text.FMC_ClearBitState,"ax",%progbits
+ 328              		.align	2
+ 329              		.global	FMC_ClearBitState
+ 330              		.thumb
+ 331              		.thumb_func
+ 333              	FMC_ClearBitState:
+ 334              	.LFB51:
+ 712:Peripherals/src/gd32f1x0_fmc.c **** 
+ 713:Peripherals/src/gd32f1x0_fmc.c **** /**
+ARM GAS  /tmp/ccYrUlHs.s 			page 19
+
+
+ 714:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Clear the FMC pending flag.
+ 715:Peripherals/src/gd32f1x0_fmc.c ****   * @param  FMC_FLAG: clear the corresponding FMC flag.
+ 716:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_FLAG_PERR: Programming error flag flag
+ 717:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_FLAG_WERR: Write protection error flag
+ 718:Peripherals/src/gd32f1x0_fmc.c ****   *     @arg FMC_FLAG_EOP:  End of Programming flag
+ 719:Peripherals/src/gd32f1x0_fmc.c ****   * @retval None
+ 720:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 721:Peripherals/src/gd32f1x0_fmc.c **** void FMC_ClearBitState(uint32_t FMC_FLAG)
+ 722:Peripherals/src/gd32f1x0_fmc.c **** {
+ 335              		.loc 1 722 0
+ 336              		.cfi_startproc
+ 337              		@ args = 0, pretend = 0, frame = 0
+ 338              		@ frame_needed = 0, uses_anonymous_args = 0
+ 339              		@ link register save eliminated.
+ 340              	.LVL10:
+ 723:Peripherals/src/gd32f1x0_fmc.c ****     /* Clear the flags */
+ 724:Peripherals/src/gd32f1x0_fmc.c ****     FMC->CSR = FMC_FLAG;
+ 341              		.loc 1 724 0
+ 342 0000 014B     		ldr	r3, .L40
+ 343 0002 D860     		str	r0, [r3, #12]
+ 344 0004 7047     		bx	lr
+ 345              	.L41:
+ 346 0006 00BF     		.align	2
+ 347              	.L40:
+ 348 0008 00200240 		.word	1073881088
+ 349              		.cfi_endproc
+ 350              	.LFE51:
+ 352              		.section	.text.FMC_GetState,"ax",%progbits
+ 353              		.align	2
+ 354              		.global	FMC_GetState
+ 355              		.thumb
+ 356              		.thumb_func
+ 358              	FMC_GetState:
+ 359              	.LFB52:
+ 725:Peripherals/src/gd32f1x0_fmc.c **** }
+ 726:Peripherals/src/gd32f1x0_fmc.c **** 
+ 727:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 728:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Return the FMC state.
+ 729:Peripherals/src/gd32f1x0_fmc.c ****   * @param  None
+ 730:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY,  FMC_BSY,  FMC_WRPERR, or FMC_PGERR
+ 731:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 732:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_GetState(void)
+ 733:Peripherals/src/gd32f1x0_fmc.c **** {
+ 360              		.loc 1 733 0
+ 361              		.cfi_startproc
+ 362              		@ args = 0, pretend = 0, frame = 0
+ 363              		@ frame_needed = 0, uses_anonymous_args = 0
+ 364              		@ link register save eliminated.
+ 365              	.LVL11:
+ 734:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_READY;
+ 735:Peripherals/src/gd32f1x0_fmc.c ****   
+ 736:Peripherals/src/gd32f1x0_fmc.c ****     if((FMC->CSR & FMC_CSR_BUSY) == FMC_CSR_BUSY) 
+ 366              		.loc 1 736 0
+ 367 0000 0B4B     		ldr	r3, .L47
+ 368 0002 DB68     		ldr	r3, [r3, #12]
+ 369 0004 13F0010F 		tst	r3, #1
+ 370 0008 0BD1     		bne	.L44
+ARM GAS  /tmp/ccYrUlHs.s 			page 20
+
+
+ 737:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 738:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_BSY;
+ 739:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 740:Peripherals/src/gd32f1x0_fmc.c ****     else 
+ 741:Peripherals/src/gd32f1x0_fmc.c ****     {  
+ 742:Peripherals/src/gd32f1x0_fmc.c ****         if((FMC->CSR & (uint32_t)FMC_CSR_WPEF)!= (uint32_t)0x00)
+ 371              		.loc 1 742 0
+ 372 000a 094B     		ldr	r3, .L47
+ 373 000c DB68     		ldr	r3, [r3, #12]
+ 374 000e 13F0100F 		tst	r3, #16
+ 375 0012 08D1     		bne	.L45
+ 743:Peripherals/src/gd32f1x0_fmc.c ****         { 
+ 744:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WRPERR;
+ 745:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 746:Peripherals/src/gd32f1x0_fmc.c ****         else 
+ 747:Peripherals/src/gd32f1x0_fmc.c ****         {
+ 748:Peripherals/src/gd32f1x0_fmc.c ****             if((FMC->CSR & (uint32_t)(FMC_CSR_PGEF)) != (uint32_t)0x00)
+ 376              		.loc 1 748 0
+ 377 0014 064B     		ldr	r3, .L47
+ 378 0016 DB68     		ldr	r3, [r3, #12]
+ 379 0018 13F0040F 		tst	r3, #4
+ 380 001c 05D1     		bne	.L46
+ 734:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_READY;
+ 381              		.loc 1 734 0
+ 382 001e 0020     		movs	r0, #0
+ 383 0020 7047     		bx	lr
+ 384              	.L44:
+ 738:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_BSY;
+ 385              		.loc 1 738 0
+ 386 0022 0120     		movs	r0, #1
+ 387 0024 7047     		bx	lr
+ 388              	.L45:
+ 744:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WRPERR;
+ 389              		.loc 1 744 0
+ 390 0026 0220     		movs	r0, #2
+ 391 0028 7047     		bx	lr
+ 392              	.L46:
+ 749:Peripherals/src/gd32f1x0_fmc.c ****             {
+ 750:Peripherals/src/gd32f1x0_fmc.c ****                 temp_state = FMC_PGERR; 
+ 393              		.loc 1 750 0
+ 394 002a 0320     		movs	r0, #3
+ 395              	.LVL12:
+ 751:Peripherals/src/gd32f1x0_fmc.c ****             }
+ 752:Peripherals/src/gd32f1x0_fmc.c ****         }
+ 753:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 754:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 755:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 756:Peripherals/src/gd32f1x0_fmc.c **** }
+ 396              		.loc 1 756 0
+ 397 002c 7047     		bx	lr
+ 398              	.L48:
+ 399 002e 00BF     		.align	2
+ 400              	.L47:
+ 401 0030 00200240 		.word	1073881088
+ 402              		.cfi_endproc
+ 403              	.LFE52:
+ 405              		.section	.text.FMC_WaitReady,"ax",%progbits
+ARM GAS  /tmp/ccYrUlHs.s 			page 21
+
+
+ 406              		.align	2
+ 407              		.global	FMC_WaitReady
+ 408              		.thumb
+ 409              		.thumb_func
+ 411              	FMC_WaitReady:
+ 412              	.LFB53:
+ 757:Peripherals/src/gd32f1x0_fmc.c **** 
+ 758:Peripherals/src/gd32f1x0_fmc.c **** /**
+ 759:Peripherals/src/gd32f1x0_fmc.c ****   * @brief  Check whether FMC is ready or not.
+ 760:Peripherals/src/gd32f1x0_fmc.c ****   * @param  Timeout: Count of loop
+ 761:Peripherals/src/gd32f1x0_fmc.c ****   * @retval FMC state: FMC_READY, FMC_BSY, FMC_WRPERR, FMC_PGERR or FMC_TIMEOUT_ERR.
+ 762:Peripherals/src/gd32f1x0_fmc.c ****   */
+ 763:Peripherals/src/gd32f1x0_fmc.c **** FMC_State FMC_WaitReady(uint32_t uCount)
+ 764:Peripherals/src/gd32f1x0_fmc.c **** { 
+ 413              		.loc 1 764 0
+ 414              		.cfi_startproc
+ 415              		@ args = 0, pretend = 0, frame = 0
+ 416              		@ frame_needed = 0, uses_anonymous_args = 0
+ 417              	.LVL13:
+ 418 0000 10B5     		push	{r4, lr}
+ 419              	.LCFI0:
+ 420              		.cfi_def_cfa_offset 8
+ 421              		.cfi_offset 4, -8
+ 422              		.cfi_offset 14, -4
+ 423 0002 0446     		mov	r4, r0
+ 424              	.LVL14:
+ 425              	.L51:
+ 765:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_BSY;
+ 766:Peripherals/src/gd32f1x0_fmc.c ****   
+ 767:Peripherals/src/gd32f1x0_fmc.c ****     /* Wait for FMC ready */
+ 768:Peripherals/src/gd32f1x0_fmc.c ****     do
+ 769:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 770:Peripherals/src/gd32f1x0_fmc.c ****         /* Get FMC state */
+ 771:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_GetState();
+ 426              		.loc 1 771 0 discriminator 1
+ 427 0004 FFF7FEFF 		bl	FMC_GetState
+ 428              	.LVL15:
+ 772:Peripherals/src/gd32f1x0_fmc.c ****         uCount--;
+ 429              		.loc 1 772 0 discriminator 1
+ 430 0008 013C     		subs	r4, r4, #1
+ 431              	.LVL16:
+ 773:Peripherals/src/gd32f1x0_fmc.c ****     }while((temp_state == FMC_BSY) && (uCount != 0x00));
+ 432              		.loc 1 773 0 discriminator 1
+ 433 000a 0128     		cmp	r0, #1
+ 434 000c 01D1     		bne	.L50
+ 435 000e 002C     		cmp	r4, #0
+ 436 0010 F8D1     		bne	.L51
+ 437              	.L50:
+ 774:Peripherals/src/gd32f1x0_fmc.c ****   
+ 775:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_BSY)
+ 438              		.loc 1 775 0
+ 439 0012 0128     		cmp	r0, #1
+ 440 0014 00D1     		bne	.L52
+ 776:Peripherals/src/gd32f1x0_fmc.c ****     {
+ 777:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_TIMEOUT_ERR;
+ 441              		.loc 1 777 0
+ 442 0016 0420     		movs	r0, #4
+ARM GAS  /tmp/ccYrUlHs.s 			page 22
+
+
+ 443              	.LVL17:
+ 444              	.L52:
+ 778:Peripherals/src/gd32f1x0_fmc.c ****     }
+ 779:Peripherals/src/gd32f1x0_fmc.c ****     /* Return the FMC state */
+ 780:Peripherals/src/gd32f1x0_fmc.c ****     return temp_state;
+ 781:Peripherals/src/gd32f1x0_fmc.c **** }
+ 445              		.loc 1 781 0
+ 446 0018 10BD     		pop	{r4, pc}
+ 447              		.cfi_endproc
+ 448              	.LFE53:
+ 450 001a 00BF     		.section	.text.FMC_ErasePage,"ax",%progbits
+ 451              		.align	2
+ 452              		.global	FMC_ErasePage
+ 453              		.thumb
+ 454              		.thumb_func
+ 456              	FMC_ErasePage:
+ 457              	.LFB31:
+  87:Peripherals/src/gd32f1x0_fmc.c **** {
+ 458              		.loc 1 87 0
+ 459              		.cfi_startproc
+ 460              		@ args = 0, pretend = 0, frame = 0
+ 461              		@ frame_needed = 0, uses_anonymous_args = 0
+ 462              	.LVL18:
+ 463 0000 38B5     		push	{r3, r4, r5, lr}
+ 464              	.LCFI1:
+ 465              		.cfi_def_cfa_offset 16
+ 466              		.cfi_offset 3, -16
+ 467              		.cfi_offset 4, -12
+ 468              		.cfi_offset 5, -8
+ 469              		.cfi_offset 14, -4
+ 470 0002 0546     		mov	r5, r0
+  88:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 471              		.loc 1 88 0
+ 472 0004 4FF47020 		mov	r0, #983040
+ 473              	.LVL19:
+ 474 0008 FFF7FEFF 		bl	FMC_WaitReady
+ 475              	.LVL20:
+  90:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 476              		.loc 1 90 0
+ 477 000c 0346     		mov	r3, r0
+ 478 000e 90B9     		cbnz	r0, .L56
+  93:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_PE;
+ 479              		.loc 1 93 0
+ 480 0010 0A4C     		ldr	r4, .L57
+ 481 0012 2369     		ldr	r3, [r4, #16]
+ 482 0014 43F00203 		orr	r3, r3, #2
+ 483 0018 2361     		str	r3, [r4, #16]
+  94:Peripherals/src/gd32f1x0_fmc.c ****         FMC->AR  = Page_Address;
+ 484              		.loc 1 94 0
+ 485 001a 6561     		str	r5, [r4, #20]
+  95:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_START;
+ 486              		.loc 1 95 0
+ 487 001c 2369     		ldr	r3, [r4, #16]
+ 488 001e 43F04003 		orr	r3, r3, #64
+ 489 0022 2361     		str	r3, [r4, #16]
+  98:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 490              		.loc 1 98 0
+ARM GAS  /tmp/ccYrUlHs.s 			page 23
+
+
+ 491 0024 4FF47020 		mov	r0, #983040
+ 492              	.LVL21:
+ 493 0028 FFF7FEFF 		bl	FMC_WaitReady
+ 494              	.LVL22:
+ 495 002c 0346     		mov	r3, r0
+ 496              	.LVL23:
+ 101:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR &= ~FMC_CMR_PE;
+ 497              		.loc 1 101 0
+ 498 002e 2269     		ldr	r2, [r4, #16]
+ 499 0030 22F00202 		bic	r2, r2, #2
+ 500 0034 2261     		str	r2, [r4, #16]
+ 501              	.LVL24:
+ 502              	.L56:
+ 105:Peripherals/src/gd32f1x0_fmc.c **** }
+ 503              		.loc 1 105 0
+ 504 0036 1846     		mov	r0, r3
+ 505 0038 38BD     		pop	{r3, r4, r5, pc}
+ 506              	.LVL25:
+ 507              	.L58:
+ 508 003a 00BF     		.align	2
+ 509              	.L57:
+ 510 003c 00200240 		.word	1073881088
+ 511              		.cfi_endproc
+ 512              	.LFE31:
+ 514              		.section	.text.FMC_MassErase,"ax",%progbits
+ 515              		.align	2
+ 516              		.global	FMC_MassErase
+ 517              		.thumb
+ 518              		.thumb_func
+ 520              	FMC_MassErase:
+ 521              	.LFB32:
+ 113:Peripherals/src/gd32f1x0_fmc.c **** {
+ 522              		.loc 1 113 0
+ 523              		.cfi_startproc
+ 524              		@ args = 0, pretend = 0, frame = 0
+ 525              		@ frame_needed = 0, uses_anonymous_args = 0
+ 526 0000 10B5     		push	{r4, lr}
+ 527              	.LCFI2:
+ 528              		.cfi_def_cfa_offset 8
+ 529              		.cfi_offset 4, -8
+ 530              		.cfi_offset 14, -4
+ 114:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 531              		.loc 1 114 0
+ 532 0002 4FF47020 		mov	r0, #983040
+ 533 0006 FFF7FEFF 		bl	FMC_WaitReady
+ 534              	.LVL26:
+ 116:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 535              		.loc 1 116 0
+ 536 000a 0346     		mov	r3, r0
+ 537 000c 88B9     		cbnz	r0, .L60
+ 119:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_ME;
+ 538              		.loc 1 119 0
+ 539 000e 0A4C     		ldr	r4, .L61
+ 540 0010 2369     		ldr	r3, [r4, #16]
+ 541 0012 43F00403 		orr	r3, r3, #4
+ 542 0016 2361     		str	r3, [r4, #16]
+ 120:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_START;    
+ARM GAS  /tmp/ccYrUlHs.s 			page 24
+
+
+ 543              		.loc 1 120 0
+ 544 0018 2369     		ldr	r3, [r4, #16]
+ 545 001a 43F04003 		orr	r3, r3, #64
+ 546 001e 2361     		str	r3, [r4, #16]
+ 123:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 547              		.loc 1 123 0
+ 548 0020 4FF47020 		mov	r0, #983040
+ 549              	.LVL27:
+ 550 0024 FFF7FEFF 		bl	FMC_WaitReady
+ 551              	.LVL28:
+ 552 0028 0346     		mov	r3, r0
+ 553              	.LVL29:
+ 126:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR &= ~FMC_CMR_ME;
+ 554              		.loc 1 126 0
+ 555 002a 2269     		ldr	r2, [r4, #16]
+ 556 002c 22F00402 		bic	r2, r2, #4
+ 557 0030 2261     		str	r2, [r4, #16]
+ 558              	.LVL30:
+ 559              	.L60:
+ 131:Peripherals/src/gd32f1x0_fmc.c **** }
+ 560              		.loc 1 131 0
+ 561 0032 1846     		mov	r0, r3
+ 562 0034 10BD     		pop	{r4, pc}
+ 563              	.L62:
+ 564 0036 00BF     		.align	2
+ 565              	.L61:
+ 566 0038 00200240 		.word	1073881088
+ 567              		.cfi_endproc
+ 568              	.LFE32:
+ 570              		.section	.text.FMC_ProgramWord,"ax",%progbits
+ 571              		.align	2
+ 572              		.global	FMC_ProgramWord
+ 573              		.thumb
+ 574              		.thumb_func
+ 576              	FMC_ProgramWord:
+ 577              	.LFB33:
+ 141:Peripherals/src/gd32f1x0_fmc.c **** {
+ 578              		.loc 1 141 0
+ 579              		.cfi_startproc
+ 580              		@ args = 0, pretend = 0, frame = 0
+ 581              		@ frame_needed = 0, uses_anonymous_args = 0
+ 582              	.LVL31:
+ 583 0000 70B5     		push	{r4, r5, r6, lr}
+ 584              	.LCFI3:
+ 585              		.cfi_def_cfa_offset 16
+ 586              		.cfi_offset 4, -16
+ 587              		.cfi_offset 5, -12
+ 588              		.cfi_offset 6, -8
+ 589              		.cfi_offset 14, -4
+ 590 0002 0546     		mov	r5, r0
+ 591 0004 0E46     		mov	r6, r1
+ 142:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 592              		.loc 1 142 0
+ 593 0006 4FF47020 		mov	r0, #983040
+ 594              	.LVL32:
+ 595 000a FFF7FEFF 		bl	FMC_WaitReady
+ 596              	.LVL33:
+ARM GAS  /tmp/ccYrUlHs.s 			page 25
+
+
+ 144:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 597              		.loc 1 144 0
+ 598 000e 0346     		mov	r3, r0
+ 599 0010 70B9     		cbnz	r0, .L64
+ 147:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_PG;
+ 600              		.loc 1 147 0
+ 601 0012 084C     		ldr	r4, .L65
+ 602 0014 2369     		ldr	r3, [r4, #16]
+ 603 0016 43F00103 		orr	r3, r3, #1
+ 604 001a 2361     		str	r3, [r4, #16]
+ 149:Peripherals/src/gd32f1x0_fmc.c ****         *(__IO uint32_t*)Address = Data;
+ 605              		.loc 1 149 0
+ 606 001c 2E60     		str	r6, [r5]
+ 152:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 607              		.loc 1 152 0
+ 608 001e 4FF47020 		mov	r0, #983040
+ 609              	.LVL34:
+ 610 0022 FFF7FEFF 		bl	FMC_WaitReady
+ 611              	.LVL35:
+ 612 0026 0346     		mov	r3, r0
+ 613              	.LVL36:
+ 155:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR &= ~FMC_CMR_PG;
+ 614              		.loc 1 155 0
+ 615 0028 2269     		ldr	r2, [r4, #16]
+ 616 002a 22F00102 		bic	r2, r2, #1
+ 617 002e 2261     		str	r2, [r4, #16]
+ 618              	.LVL37:
+ 619              	.L64:
+ 160:Peripherals/src/gd32f1x0_fmc.c **** }
+ 620              		.loc 1 160 0
+ 621 0030 1846     		mov	r0, r3
+ 622 0032 70BD     		pop	{r4, r5, r6, pc}
+ 623              	.LVL38:
+ 624              	.L66:
+ 625              		.align	2
+ 626              	.L65:
+ 627 0034 00200240 		.word	1073881088
+ 628              		.cfi_endproc
+ 629              	.LFE33:
+ 631              		.section	.text.FMC_OB_Erase,"ax",%progbits
+ 632              		.align	2
+ 633              		.global	FMC_OB_Erase
+ 634              		.thumb
+ 635              		.thumb_func
+ 637              	FMC_OB_Erase:
+ 638              	.LFB37:
+ 262:Peripherals/src/gd32f1x0_fmc.c **** {
+ 639              		.loc 1 262 0
+ 640              		.cfi_startproc
+ 641              		@ args = 0, pretend = 0, frame = 0
+ 642              		@ frame_needed = 0, uses_anonymous_args = 0
+ 643 0000 38B5     		push	{r3, r4, r5, lr}
+ 644              	.LCFI4:
+ 645              		.cfi_def_cfa_offset 16
+ 646              		.cfi_offset 3, -16
+ 647              		.cfi_offset 4, -12
+ 648              		.cfi_offset 5, -8
+ARM GAS  /tmp/ccYrUlHs.s 			page 26
+
+
+ 649              		.cfi_offset 14, -4
+ 650              	.LVL39:
+ 265:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 651              		.loc 1 265 0
+ 652 0002 4FF47020 		mov	r0, #983040
+ 653 0006 FFF7FEFF 		bl	FMC_WaitReady
+ 654              	.LVL40:
+ 655 000a 0446     		mov	r4, r0
+ 656              	.LVL41:
+ 268:Peripherals/src/gd32f1x0_fmc.c ****     if(FMC_OB_GetRDP() != RESET)
+ 657              		.loc 1 268 0
+ 658 000c FFF7FEFF 		bl	FMC_OB_GetRDP
+ 659              	.LVL42:
+ 660 0010 08B9     		cbnz	r0, .L71
+ 263:Peripherals/src/gd32f1x0_fmc.c ****     uint16_t temp_rdp = RDP_Level_0;
+ 661              		.loc 1 263 0
+ 662 0012 A525     		movs	r5, #165
+ 663 0014 00E0     		b	.L68
+ 664              	.L71:
+ 270:Peripherals/src/gd32f1x0_fmc.c ****         temp_rdp = 0x00;  
+ 665              		.loc 1 270 0
+ 666 0016 0025     		movs	r5, #0
+ 667              	.L68:
+ 668              	.LVL43:
+ 273:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 669              		.loc 1 273 0
+ 670 0018 002C     		cmp	r4, #0
+ 671 001a 2DD1     		bne	.L69
+ 276:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBER;
+ 672              		.loc 1 276 0
+ 673 001c 174B     		ldr	r3, .L72
+ 674 001e 1A69     		ldr	r2, [r3, #16]
+ 675 0020 42F02002 		orr	r2, r2, #32
+ 676 0024 1A61     		str	r2, [r3, #16]
+ 277:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_START;
+ 677              		.loc 1 277 0
+ 678 0026 1A69     		ldr	r2, [r3, #16]
+ 679 0028 42F04002 		orr	r2, r2, #64
+ 680 002c 1A61     		str	r2, [r3, #16]
+ 280:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 681              		.loc 1 280 0
+ 682 002e 4FF47020 		mov	r0, #983040
+ 683 0032 FFF7FEFF 		bl	FMC_WaitReady
+ 684              	.LVL44:
+ 282:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state == FMC_READY)
+ 685              		.loc 1 282 0
+ 686 0036 0446     		mov	r4, r0
+ 687 0038 B8B9     		cbnz	r0, .L70
+ 285:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBER;
+ 688              		.loc 1 285 0
+ 689 003a 104B     		ldr	r3, .L72
+ 690 003c 1A69     		ldr	r2, [r3, #16]
+ 691 003e 22F02002 		bic	r2, r2, #32
+ 692 0042 1A61     		str	r2, [r3, #16]
+ 288:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR |= FMC_CMR_OBPG;
+ 693              		.loc 1 288 0
+ 694 0044 1A69     		ldr	r2, [r3, #16]
+ARM GAS  /tmp/ccYrUlHs.s 			page 27
+
+
+ 695 0046 42F01002 		orr	r2, r2, #16
+ 696 004a 1A61     		str	r2, [r3, #16]
+ 291:Peripherals/src/gd32f1x0_fmc.c ****             OB->RDP = (uint16_t)temp_rdp; 
+ 697              		.loc 1 291 0
+ 698 004c 0C4B     		ldr	r3, .L72+4
+ 699 004e 1D80     		strh	r5, [r3]	@ movhi
+ 294:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 700              		.loc 1 294 0
+ 701 0050 4FF47020 		mov	r0, #983040
+ 702              	.LVL45:
+ 703 0054 FFF7FEFF 		bl	FMC_WaitReady
+ 704              	.LVL46:
+ 705 0058 0446     		mov	r4, r0
+ 706              	.LVL47:
+ 296:Peripherals/src/gd32f1x0_fmc.c ****             if(temp_state != FMC_TIMEOUT_ERR)
+ 707              		.loc 1 296 0
+ 708 005a 0428     		cmp	r0, #4
+ 709 005c 0CD0     		beq	.L69
+ 299:Peripherals/src/gd32f1x0_fmc.c ****                 FMC->CSR &= ~FMC_CMR_OBPG;
+ 710              		.loc 1 299 0
+ 711 005e 074B     		ldr	r3, .L72
+ 712 0060 DA68     		ldr	r2, [r3, #12]
+ 713 0062 22F01002 		bic	r2, r2, #16
+ 714 0066 DA60     		str	r2, [r3, #12]
+ 715 0068 06E0     		b	.L69
+ 716              	.L70:
+ 304:Peripherals/src/gd32f1x0_fmc.c ****             if (temp_state != FMC_TIMEOUT_ERR)
+ 717              		.loc 1 304 0
+ 718 006a 0428     		cmp	r0, #4
+ 719 006c 04D0     		beq	.L69
+ 307:Peripherals/src/gd32f1x0_fmc.c ****                 FMC->CMR &= ~FMC_CMR_OBPG;
+ 720              		.loc 1 307 0
+ 721 006e 034B     		ldr	r3, .L72
+ 722 0070 1A69     		ldr	r2, [r3, #16]
+ 723 0072 22F01002 		bic	r2, r2, #16
+ 724 0076 1A61     		str	r2, [r3, #16]
+ 725              	.LVL48:
+ 726              	.L69:
+ 313:Peripherals/src/gd32f1x0_fmc.c **** }
+ 727              		.loc 1 313 0
+ 728 0078 2046     		mov	r0, r4
+ 729 007a 38BD     		pop	{r3, r4, r5, pc}
+ 730              	.LVL49:
+ 731              	.L73:
+ 732              		.align	2
+ 733              	.L72:
+ 734 007c 00200240 		.word	1073881088
+ 735 0080 00F8FF1F 		.word	536868864
+ 736              		.cfi_endproc
+ 737              	.LFE37:
+ 739              		.section	.text.FMC_OB_EnableWRP,"ax",%progbits
+ 740              		.align	2
+ 741              		.global	FMC_OB_EnableWRP
+ 742              		.thumb
+ 743              		.thumb_func
+ 745              	FMC_OB_EnableWRP:
+ 746              	.LFB38:
+ARM GAS  /tmp/ccYrUlHs.s 			page 28
+
+
+ 324:Peripherals/src/gd32f1x0_fmc.c **** {
+ 747              		.loc 1 324 0
+ 748              		.cfi_startproc
+ 749              		@ args = 0, pretend = 0, frame = 0
+ 750              		@ frame_needed = 0, uses_anonymous_args = 0
+ 751              	.LVL50:
+ 752 0000 10B5     		push	{r4, lr}
+ 753              	.LCFI5:
+ 754              		.cfi_def_cfa_offset 8
+ 755              		.cfi_offset 4, -8
+ 756              		.cfi_offset 14, -4
+ 757 0002 0446     		mov	r4, r0
+ 327:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 758              		.loc 1 327 0
+ 759 0004 4FF47020 		mov	r0, #983040
+ 760              	.LVL51:
+ 761 0008 FFF7FEFF 		bl	FMC_WaitReady
+ 762              	.LVL52:
+ 329:Peripherals/src/gd32f1x0_fmc.c ****     OB_WRP = (uint32_t)(~OB_WRP);
+ 763              		.loc 1 329 0
+ 764 000c E343     		mvns	r3, r4
+ 765              	.LVL53:
+ 330:Peripherals/src/gd32f1x0_fmc.c ****     temp_WRP0 = (uint16_t)(OB_WRP & OB_WRP0_WRP0);
+ 766              		.loc 1 330 0
+ 767 000e DAB2     		uxtb	r2, r3
+ 768              	.LVL54:
+ 331:Peripherals/src/gd32f1x0_fmc.c ****     temp_WRP1 = (uint16_t)((OB_WRP & OB_WRP0_nWRP0) >> 8);
+ 769              		.loc 1 331 0
+ 770 0010 C3F30724 		ubfx	r4, r3, #8, #8
+ 771              	.LVL55:
+ 333:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 772              		.loc 1 333 0
+ 773 0014 0346     		mov	r3, r0
+ 774              	.LVL56:
+ 775 0016 F0B9     		cbnz	r0, .L75
+ 336:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG;
+ 776              		.loc 1 336 0
+ 777 0018 1049     		ldr	r1, .L78
+ 778 001a 0869     		ldr	r0, [r1, #16]
+ 779              	.LVL57:
+ 780 001c 40F01000 		orr	r0, r0, #16
+ 781 0020 0861     		str	r0, [r1, #16]
+ 338:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_WRP0 != 0xFF)
+ 782              		.loc 1 338 0
+ 783 0022 FF2A     		cmp	r2, #255
+ 784 0024 06D0     		beq	.L76
+ 340:Peripherals/src/gd32f1x0_fmc.c ****             OB->WRP0 = temp_WRP0;
+ 785              		.loc 1 340 0
+ 786 0026 0E4B     		ldr	r3, .L78+4
+ 787 0028 1A81     		strh	r2, [r3, #8]	@ movhi
+ 343:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 788              		.loc 1 343 0
+ 789 002a 4FF47020 		mov	r0, #983040
+ 790 002e FFF7FEFF 		bl	FMC_WaitReady
+ 791              	.LVL58:
+ 792 0032 0346     		mov	r3, r0
+ 793              	.LVL59:
+ARM GAS  /tmp/ccYrUlHs.s 			page 29
+
+
+ 794              	.L76:
+ 345:Peripherals/src/gd32f1x0_fmc.c ****         if((temp_state == FMC_READY) && (temp_WRP1 != 0xFF))
+ 795              		.loc 1 345 0
+ 796 0034 43B9     		cbnz	r3, .L77
+ 345:Peripherals/src/gd32f1x0_fmc.c ****         if((temp_state == FMC_READY) && (temp_WRP1 != 0xFF))
+ 797              		.loc 1 345 0 is_stmt 0 discriminator 1
+ 798 0036 FF2C     		cmp	r4, #255
+ 799 0038 06D0     		beq	.L77
+ 347:Peripherals/src/gd32f1x0_fmc.c ****             OB->WRP1 = temp_WRP1;
+ 800              		.loc 1 347 0 is_stmt 1
+ 801 003a 094B     		ldr	r3, .L78+4
+ 802              	.LVL60:
+ 803 003c 5C81     		strh	r4, [r3, #10]	@ movhi
+ 350:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 804              		.loc 1 350 0
+ 805 003e 4FF47020 		mov	r0, #983040
+ 806 0042 FFF7FEFF 		bl	FMC_WaitReady
+ 807              	.LVL61:
+ 808 0046 0346     		mov	r3, r0
+ 809              	.LVL62:
+ 810              	.L77:
+ 352:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 811              		.loc 1 352 0
+ 812 0048 042B     		cmp	r3, #4
+ 813 004a 04D0     		beq	.L75
+ 355:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 814              		.loc 1 355 0
+ 815 004c 034A     		ldr	r2, .L78
+ 816 004e 1169     		ldr	r1, [r2, #16]
+ 817 0050 21F01001 		bic	r1, r1, #16
+ 818 0054 1161     		str	r1, [r2, #16]
+ 819              	.LVL63:
+ 820              	.L75:
+ 360:Peripherals/src/gd32f1x0_fmc.c **** }
+ 821              		.loc 1 360 0
+ 822 0056 1846     		mov	r0, r3
+ 823 0058 10BD     		pop	{r4, pc}
+ 824              	.LVL64:
+ 825              	.L79:
+ 826 005a 00BF     		.align	2
+ 827              	.L78:
+ 828 005c 00200240 		.word	1073881088
+ 829 0060 00F8FF1F 		.word	536868864
+ 830              		.cfi_endproc
+ 831              	.LFE38:
+ 833              		.section	.text.FMC_OB_RDPConfig,"ax",%progbits
+ 834              		.align	2
+ 835              		.global	FMC_OB_RDPConfig
+ 836              		.thumb
+ 837              		.thumb_func
+ 839              	FMC_OB_RDPConfig:
+ 840              	.LFB39:
+ 372:Peripherals/src/gd32f1x0_fmc.c **** {
+ 841              		.loc 1 372 0
+ 842              		.cfi_startproc
+ 843              		@ args = 0, pretend = 0, frame = 0
+ 844              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccYrUlHs.s 			page 30
+
+
+ 845              	.LVL65:
+ 846 0000 10B5     		push	{r4, lr}
+ 847              	.LCFI6:
+ 848              		.cfi_def_cfa_offset 8
+ 849              		.cfi_offset 4, -8
+ 850              		.cfi_offset 14, -4
+ 851 0002 0446     		mov	r4, r0
+ 373:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 852              		.loc 1 373 0
+ 853 0004 4FF47020 		mov	r0, #983040
+ 854              	.LVL66:
+ 855 0008 FFF7FEFF 		bl	FMC_WaitReady
+ 856              	.LVL67:
+ 375:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 857              		.loc 1 375 0
+ 858 000c 0346     		mov	r3, r0
+ 859 000e 0028     		cmp	r0, #0
+ 860 0010 2DD1     		bne	.L81
+ 377:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBER;
+ 861              		.loc 1 377 0
+ 862 0012 184B     		ldr	r3, .L83
+ 863 0014 1A69     		ldr	r2, [r3, #16]
+ 864 0016 42F02002 		orr	r2, r2, #32
+ 865 001a 1A61     		str	r2, [r3, #16]
+ 378:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_START;
+ 866              		.loc 1 378 0
+ 867 001c 1A69     		ldr	r2, [r3, #16]
+ 868 001e 42F04002 		orr	r2, r2, #64
+ 869 0022 1A61     		str	r2, [r3, #16]
+ 381:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 870              		.loc 1 381 0
+ 871 0024 4FF47020 		mov	r0, #983040
+ 872              	.LVL68:
+ 873 0028 FFF7FEFF 		bl	FMC_WaitReady
+ 874              	.LVL69:
+ 383:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state == FMC_READY)
+ 875              		.loc 1 383 0
+ 876 002c 0346     		mov	r3, r0
+ 877 002e B8B9     		cbnz	r0, .L82
+ 386:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBER;
+ 878              		.loc 1 386 0
+ 879 0030 104B     		ldr	r3, .L83
+ 880 0032 1A69     		ldr	r2, [r3, #16]
+ 881 0034 22F02002 		bic	r2, r2, #32
+ 882 0038 1A61     		str	r2, [r3, #16]
+ 389:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR |= FMC_CMR_OBPG;
+ 883              		.loc 1 389 0
+ 884 003a 1A69     		ldr	r2, [r3, #16]
+ 885 003c 42F01002 		orr	r2, r2, #16
+ 886 0040 1A61     		str	r2, [r3, #16]
+ 391:Peripherals/src/gd32f1x0_fmc.c ****             OB->RDP = OB_RDP;
+ 887              		.loc 1 391 0
+ 888 0042 0D4B     		ldr	r3, .L83+4
+ 889 0044 1C80     		strh	r4, [r3]	@ movhi
+ 394:Peripherals/src/gd32f1x0_fmc.c ****             temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT); 
+ 890              		.loc 1 394 0
+ 891 0046 4FF47020 		mov	r0, #983040
+ARM GAS  /tmp/ccYrUlHs.s 			page 31
+
+
+ 892              	.LVL70:
+ 893 004a FFF7FEFF 		bl	FMC_WaitReady
+ 894              	.LVL71:
+ 895 004e 0346     		mov	r3, r0
+ 896              	.LVL72:
+ 396:Peripherals/src/gd32f1x0_fmc.c ****             if(temp_state != FMC_TIMEOUT_ERR)
+ 897              		.loc 1 396 0
+ 898 0050 0428     		cmp	r0, #4
+ 899 0052 0CD0     		beq	.L81
+ 399:Peripherals/src/gd32f1x0_fmc.c ****                 FMC->CMR &= ~FMC_CMR_OBPG;
+ 900              		.loc 1 399 0
+ 901 0054 074A     		ldr	r2, .L83
+ 902 0056 1169     		ldr	r1, [r2, #16]
+ 903 0058 21F01001 		bic	r1, r1, #16
+ 904 005c 1161     		str	r1, [r2, #16]
+ 905 005e 06E0     		b	.L81
+ 906              	.L82:
+ 404:Peripherals/src/gd32f1x0_fmc.c ****             if(temp_state != FMC_TIMEOUT_ERR)
+ 907              		.loc 1 404 0
+ 908 0060 0428     		cmp	r0, #4
+ 909 0062 04D0     		beq	.L81
+ 407:Peripherals/src/gd32f1x0_fmc.c ****                 FMC->CMR &= ~FMC_CMR_OBER;
+ 910              		.loc 1 407 0
+ 911 0064 034A     		ldr	r2, .L83
+ 912 0066 1169     		ldr	r1, [r2, #16]
+ 913 0068 21F02001 		bic	r1, r1, #32
+ 914 006c 1161     		str	r1, [r2, #16]
+ 915              	.LVL73:
+ 916              	.L81:
+ 413:Peripherals/src/gd32f1x0_fmc.c **** }
+ 917              		.loc 1 413 0
+ 918 006e 1846     		mov	r0, r3
+ 919 0070 10BD     		pop	{r4, pc}
+ 920              	.L84:
+ 921 0072 00BF     		.align	2
+ 922              	.L83:
+ 923 0074 00200240 		.word	1073881088
+ 924 0078 00F8FF1F 		.word	536868864
+ 925              		.cfi_endproc
+ 926              	.LFE39:
+ 928              		.section	.text.FMC_OB_UserConfig,"ax",%progbits
+ 929              		.align	2
+ 930              		.global	FMC_OB_UserConfig
+ 931              		.thumb
+ 932              		.thumb_func
+ 934              	FMC_OB_UserConfig:
+ 935              	.LFB40:
+ 429:Peripherals/src/gd32f1x0_fmc.c **** {
+ 936              		.loc 1 429 0
+ 937              		.cfi_startproc
+ 938              		@ args = 0, pretend = 0, frame = 0
+ 939              		@ frame_needed = 0, uses_anonymous_args = 0
+ 940              	.LVL74:
+ 941 0000 70B5     		push	{r4, r5, r6, lr}
+ 942              	.LCFI7:
+ 943              		.cfi_def_cfa_offset 16
+ 944              		.cfi_offset 4, -16
+ARM GAS  /tmp/ccYrUlHs.s 			page 32
+
+
+ 945              		.cfi_offset 5, -12
+ 946              		.cfi_offset 6, -8
+ 947              		.cfi_offset 14, -4
+ 948 0002 0646     		mov	r6, r0
+ 949 0004 0D46     		mov	r5, r1
+ 950 0006 1446     		mov	r4, r2
+ 430:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 951              		.loc 1 430 0
+ 952 0008 4FF47020 		mov	r0, #983040
+ 953              	.LVL75:
+ 954 000c FFF7FEFF 		bl	FMC_WaitReady
+ 955              	.LVL76:
+ 432:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 956              		.loc 1 432 0
+ 957 0010 0346     		mov	r3, r0
+ 958 0012 B0B9     		cbnz	r0, .L86
+ 435:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 959              		.loc 1 435 0
+ 960 0014 0C4B     		ldr	r3, .L87
+ 961 0016 1A69     		ldr	r2, [r3, #16]
+ 962 0018 42F01002 		orr	r2, r2, #16
+ 963 001c 1A61     		str	r2, [r3, #16]
+ 437:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = (uint16_t)((uint16_t)(OB_IWDG | OB_DEEPSLEEP) | (uint16_t)(OB_STDBY | 0xF8));
+ 964              		.loc 1 437 0
+ 965 001e 3543     		orrs	r5, r5, r6
+ 966 0020 2C43     		orrs	r4, r4, r5
+ 967 0022 44F0F804 		orr	r4, r4, #248
+ 968 0026 094B     		ldr	r3, .L87+4
+ 969 0028 5C80     		strh	r4, [r3, #2]	@ movhi
+ 440:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 970              		.loc 1 440 0
+ 971 002a 4FF47020 		mov	r0, #983040
+ 972              	.LVL77:
+ 973 002e FFF7FEFF 		bl	FMC_WaitReady
+ 974              	.LVL78:
+ 975 0032 0346     		mov	r3, r0
+ 976              	.LVL79:
+ 442:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 977              		.loc 1 442 0
+ 978 0034 0428     		cmp	r0, #4
+ 979 0036 04D0     		beq	.L86
+ 445:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 980              		.loc 1 445 0
+ 981 0038 034A     		ldr	r2, .L87
+ 982 003a 1169     		ldr	r1, [r2, #16]
+ 983 003c 21F01001 		bic	r1, r1, #16
+ 984 0040 1161     		str	r1, [r2, #16]
+ 985              	.LVL80:
+ 986              	.L86:
+ 450:Peripherals/src/gd32f1x0_fmc.c **** }
+ 987              		.loc 1 450 0
+ 988 0042 1846     		mov	r0, r3
+ 989 0044 70BD     		pop	{r4, r5, r6, pc}
+ 990              	.L88:
+ 991 0046 00BF     		.align	2
+ 992              	.L87:
+ 993 0048 00200240 		.word	1073881088
+ARM GAS  /tmp/ccYrUlHs.s 			page 33
+
+
+ 994 004c 00F8FF1F 		.word	536868864
+ 995              		.cfi_endproc
+ 996              	.LFE40:
+ 998              		.section	.text.FMC_OB_BOOTConfig,"ax",%progbits
+ 999              		.align	2
+ 1000              		.global	FMC_OB_BOOTConfig
+ 1001              		.thumb
+ 1002              		.thumb_func
+ 1004              	FMC_OB_BOOTConfig:
+ 1005              	.LFB41:
+ 460:Peripherals/src/gd32f1x0_fmc.c **** {
+ 1006              		.loc 1 460 0
+ 1007              		.cfi_startproc
+ 1008              		@ args = 0, pretend = 0, frame = 0
+ 1009              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1010              	.LVL81:
+ 1011 0000 10B5     		push	{r4, lr}
+ 1012              	.LCFI8:
+ 1013              		.cfi_def_cfa_offset 8
+ 1014              		.cfi_offset 4, -8
+ 1015              		.cfi_offset 14, -4
+ 1016 0002 0446     		mov	r4, r0
+ 461:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1017              		.loc 1 461 0
+ 1018 0004 4FF47020 		mov	r0, #983040
+ 1019              	.LVL82:
+ 1020 0008 FFF7FEFF 		bl	FMC_WaitReady
+ 1021              	.LVL83:
+ 463:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 1022              		.loc 1 463 0
+ 1023 000c 0346     		mov	r3, r0
+ 1024 000e A0B9     		cbnz	r0, .L90
+ 466:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG;
+ 1025              		.loc 1 466 0
+ 1026 0010 0B4B     		ldr	r3, .L91
+ 1027 0012 1A69     		ldr	r2, [r3, #16]
+ 1028 0014 42F01002 		orr	r2, r2, #16
+ 1029 0018 1A61     		str	r2, [r3, #16]
+ 468:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = OB_BOOT1 | 0xEF;
+ 1030              		.loc 1 468 0
+ 1031 001a 44F0EF04 		orr	r4, r4, #239
+ 1032 001e 094B     		ldr	r3, .L91+4
+ 1033 0020 5C80     		strh	r4, [r3, #2]	@ movhi
+ 471:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1034              		.loc 1 471 0
+ 1035 0022 4FF47020 		mov	r0, #983040
+ 1036              	.LVL84:
+ 1037 0026 FFF7FEFF 		bl	FMC_WaitReady
+ 1038              	.LVL85:
+ 1039 002a 0346     		mov	r3, r0
+ 1040              	.LVL86:
+ 473:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 1041              		.loc 1 473 0
+ 1042 002c 0428     		cmp	r0, #4
+ 1043 002e 04D0     		beq	.L90
+ 476:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 1044              		.loc 1 476 0
+ARM GAS  /tmp/ccYrUlHs.s 			page 34
+
+
+ 1045 0030 034A     		ldr	r2, .L91
+ 1046 0032 1169     		ldr	r1, [r2, #16]
+ 1047 0034 21F01001 		bic	r1, r1, #16
+ 1048 0038 1161     		str	r1, [r2, #16]
+ 1049              	.LVL87:
+ 1050              	.L90:
+ 481:Peripherals/src/gd32f1x0_fmc.c **** }
+ 1051              		.loc 1 481 0
+ 1052 003a 1846     		mov	r0, r3
+ 1053 003c 10BD     		pop	{r4, pc}
+ 1054              	.L92:
+ 1055 003e 00BF     		.align	2
+ 1056              	.L91:
+ 1057 0040 00200240 		.word	1073881088
+ 1058 0044 00F8FF1F 		.word	536868864
+ 1059              		.cfi_endproc
+ 1060              	.LFE41:
+ 1062              		.section	.text.FMC_OB_VDDAConfig,"ax",%progbits
+ 1063              		.align	2
+ 1064              		.global	FMC_OB_VDDAConfig
+ 1065              		.thumb
+ 1066              		.thumb_func
+ 1068              	FMC_OB_VDDAConfig:
+ 1069              	.LFB42:
+ 492:Peripherals/src/gd32f1x0_fmc.c **** {
+ 1070              		.loc 1 492 0
+ 1071              		.cfi_startproc
+ 1072              		@ args = 0, pretend = 0, frame = 0
+ 1073              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1074              	.LVL88:
+ 1075 0000 10B5     		push	{r4, lr}
+ 1076              	.LCFI9:
+ 1077              		.cfi_def_cfa_offset 8
+ 1078              		.cfi_offset 4, -8
+ 1079              		.cfi_offset 14, -4
+ 1080 0002 0446     		mov	r4, r0
+ 493:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1081              		.loc 1 493 0
+ 1082 0004 4FF47020 		mov	r0, #983040
+ 1083              	.LVL89:
+ 1084 0008 FFF7FEFF 		bl	FMC_WaitReady
+ 1085              	.LVL90:
+ 495:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 1086              		.loc 1 495 0
+ 1087 000c 0346     		mov	r3, r0
+ 1088 000e A0B9     		cbnz	r0, .L94
+ 498:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 1089              		.loc 1 498 0
+ 1090 0010 0B4B     		ldr	r3, .L95
+ 1091 0012 1A69     		ldr	r2, [r3, #16]
+ 1092 0014 42F01002 		orr	r2, r2, #16
+ 1093 0018 1A61     		str	r2, [r3, #16]
+ 500:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = OB_VDDA_ANALOG | 0xDF;
+ 1094              		.loc 1 500 0
+ 1095 001a 44F0DF04 		orr	r4, r4, #223
+ 1096 001e 094B     		ldr	r3, .L95+4
+ 1097 0020 5C80     		strh	r4, [r3, #2]	@ movhi
+ARM GAS  /tmp/ccYrUlHs.s 			page 35
+
+
+ 503:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1098              		.loc 1 503 0
+ 1099 0022 4FF47020 		mov	r0, #983040
+ 1100              	.LVL91:
+ 1101 0026 FFF7FEFF 		bl	FMC_WaitReady
+ 1102              	.LVL92:
+ 1103 002a 0346     		mov	r3, r0
+ 1104              	.LVL93:
+ 505:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 1105              		.loc 1 505 0
+ 1106 002c 0428     		cmp	r0, #4
+ 1107 002e 04D0     		beq	.L94
+ 508:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 1108              		.loc 1 508 0
+ 1109 0030 034A     		ldr	r2, .L95
+ 1110 0032 1169     		ldr	r1, [r2, #16]
+ 1111 0034 21F01001 		bic	r1, r1, #16
+ 1112 0038 1161     		str	r1, [r2, #16]
+ 1113              	.LVL94:
+ 1114              	.L94:
+ 513:Peripherals/src/gd32f1x0_fmc.c **** }
+ 1115              		.loc 1 513 0
+ 1116 003a 1846     		mov	r0, r3
+ 1117 003c 10BD     		pop	{r4, pc}
+ 1118              	.L96:
+ 1119 003e 00BF     		.align	2
+ 1120              	.L95:
+ 1121 0040 00200240 		.word	1073881088
+ 1122 0044 00F8FF1F 		.word	536868864
+ 1123              		.cfi_endproc
+ 1124              	.LFE42:
+ 1126              		.section	.text.FMC_OB_SRAMParityConfig,"ax",%progbits
+ 1127              		.align	2
+ 1128              		.global	FMC_OB_SRAMParityConfig
+ 1129              		.thumb
+ 1130              		.thumb_func
+ 1132              	FMC_OB_SRAMParityConfig:
+ 1133              	.LFB43:
+ 524:Peripherals/src/gd32f1x0_fmc.c **** {
+ 1134              		.loc 1 524 0
+ 1135              		.cfi_startproc
+ 1136              		@ args = 0, pretend = 0, frame = 0
+ 1137              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1138              	.LVL95:
+ 1139 0000 10B5     		push	{r4, lr}
+ 1140              	.LCFI10:
+ 1141              		.cfi_def_cfa_offset 8
+ 1142              		.cfi_offset 4, -8
+ 1143              		.cfi_offset 14, -4
+ 1144 0002 0446     		mov	r4, r0
+ 525:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1145              		.loc 1 525 0
+ 1146 0004 4FF47020 		mov	r0, #983040
+ 1147              	.LVL96:
+ 1148 0008 FFF7FEFF 		bl	FMC_WaitReady
+ 1149              	.LVL97:
+ 527:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ARM GAS  /tmp/ccYrUlHs.s 			page 36
+
+
+ 1150              		.loc 1 527 0
+ 1151 000c 0346     		mov	r3, r0
+ 1152 000e A0B9     		cbnz	r0, .L98
+ 530:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 1153              		.loc 1 530 0
+ 1154 0010 0B4B     		ldr	r3, .L99
+ 1155 0012 1A69     		ldr	r2, [r3, #16]
+ 1156 0014 42F01002 		orr	r2, r2, #16
+ 1157 0018 1A61     		str	r2, [r3, #16]
+ 532:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = OB_SRAM_Parity | 0xBF;
+ 1158              		.loc 1 532 0
+ 1159 001a 44F0BF04 		orr	r4, r4, #191
+ 1160 001e 094B     		ldr	r3, .L99+4
+ 1161 0020 5C80     		strh	r4, [r3, #2]	@ movhi
+ 535:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1162              		.loc 1 535 0
+ 1163 0022 4FF47020 		mov	r0, #983040
+ 1164              	.LVL98:
+ 1165 0026 FFF7FEFF 		bl	FMC_WaitReady
+ 1166              	.LVL99:
+ 1167 002a 0346     		mov	r3, r0
+ 1168              	.LVL100:
+ 537:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 1169              		.loc 1 537 0
+ 1170 002c 0428     		cmp	r0, #4
+ 1171 002e 04D0     		beq	.L98
+ 540:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 1172              		.loc 1 540 0
+ 1173 0030 034A     		ldr	r2, .L99
+ 1174 0032 1169     		ldr	r1, [r2, #16]
+ 1175 0034 21F01001 		bic	r1, r1, #16
+ 1176 0038 1161     		str	r1, [r2, #16]
+ 1177              	.LVL101:
+ 1178              	.L98:
+ 545:Peripherals/src/gd32f1x0_fmc.c **** }
+ 1179              		.loc 1 545 0
+ 1180 003a 1846     		mov	r0, r3
+ 1181 003c 10BD     		pop	{r4, pc}
+ 1182              	.L100:
+ 1183 003e 00BF     		.align	2
+ 1184              	.L99:
+ 1185 0040 00200240 		.word	1073881088
+ 1186 0044 00F8FF1F 		.word	536868864
+ 1187              		.cfi_endproc
+ 1188              	.LFE43:
+ 1190              		.section	.text.FMC_OB_WriteUser,"ax",%progbits
+ 1191              		.align	2
+ 1192              		.global	FMC_OB_WriteUser
+ 1193              		.thumb
+ 1194              		.thumb_func
+ 1196              	FMC_OB_WriteUser:
+ 1197              	.LFB44:
+ 560:Peripherals/src/gd32f1x0_fmc.c **** {
+ 1198              		.loc 1 560 0
+ 1199              		.cfi_startproc
+ 1200              		@ args = 0, pretend = 0, frame = 0
+ 1201              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccYrUlHs.s 			page 37
+
+
+ 1202              	.LVL102:
+ 1203 0000 10B5     		push	{r4, lr}
+ 1204              	.LCFI11:
+ 1205              		.cfi_def_cfa_offset 8
+ 1206              		.cfi_offset 4, -8
+ 1207              		.cfi_offset 14, -4
+ 1208 0002 0446     		mov	r4, r0
+ 561:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1209              		.loc 1 561 0
+ 1210 0004 4FF47020 		mov	r0, #983040
+ 1211              	.LVL103:
+ 1212 0008 FFF7FEFF 		bl	FMC_WaitReady
+ 1213              	.LVL104:
+ 563:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 1214              		.loc 1 563 0
+ 1215 000c 0346     		mov	r3, r0
+ 1216 000e A0B9     		cbnz	r0, .L102
+ 566:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 1217              		.loc 1 566 0
+ 1218 0010 0B4B     		ldr	r3, .L103
+ 1219 0012 1A69     		ldr	r2, [r3, #16]
+ 1220 0014 42F01002 		orr	r2, r2, #16
+ 1221 0018 1A61     		str	r2, [r3, #16]
+ 568:Peripherals/src/gd32f1x0_fmc.c ****         OB->USER = OB_USER | 0x88;
+ 1222              		.loc 1 568 0
+ 1223 001a 44F08804 		orr	r4, r4, #136
+ 1224 001e 094B     		ldr	r3, .L103+4
+ 1225 0020 5C80     		strh	r4, [r3, #2]	@ movhi
+ 571:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1226              		.loc 1 571 0
+ 1227 0022 4FF47020 		mov	r0, #983040
+ 1228              	.LVL105:
+ 1229 0026 FFF7FEFF 		bl	FMC_WaitReady
+ 1230              	.LVL106:
+ 1231 002a 0346     		mov	r3, r0
+ 1232              	.LVL107:
+ 573:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 1233              		.loc 1 573 0
+ 1234 002c 0428     		cmp	r0, #4
+ 1235 002e 04D0     		beq	.L102
+ 576:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 1236              		.loc 1 576 0
+ 1237 0030 034A     		ldr	r2, .L103
+ 1238 0032 1169     		ldr	r1, [r2, #16]
+ 1239 0034 21F01001 		bic	r1, r1, #16
+ 1240 0038 1161     		str	r1, [r2, #16]
+ 1241              	.LVL108:
+ 1242              	.L102:
+ 582:Peripherals/src/gd32f1x0_fmc.c **** }
+ 1243              		.loc 1 582 0
+ 1244 003a 1846     		mov	r0, r3
+ 1245 003c 10BD     		pop	{r4, pc}
+ 1246              	.L104:
+ 1247 003e 00BF     		.align	2
+ 1248              	.L103:
+ 1249 0040 00200240 		.word	1073881088
+ 1250 0044 00F8FF1F 		.word	536868864
+ARM GAS  /tmp/ccYrUlHs.s 			page 38
+
+
+ 1251              		.cfi_endproc
+ 1252              	.LFE44:
+ 1254              		.section	.text.FMC_ProgramOptionByteData,"ax",%progbits
+ 1255              		.align	2
+ 1256              		.global	FMC_ProgramOptionByteData
+ 1257              		.thumb
+ 1258              		.thumb_func
+ 1260              	FMC_ProgramOptionByteData:
+ 1261              	.LFB45:
+ 592:Peripherals/src/gd32f1x0_fmc.c **** {
+ 1262              		.loc 1 592 0
+ 1263              		.cfi_startproc
+ 1264              		@ args = 0, pretend = 0, frame = 0
+ 1265              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1266              	.LVL109:
+ 1267 0000 38B5     		push	{r3, r4, r5, lr}
+ 1268              	.LCFI12:
+ 1269              		.cfi_def_cfa_offset 16
+ 1270              		.cfi_offset 3, -16
+ 1271              		.cfi_offset 4, -12
+ 1272              		.cfi_offset 5, -8
+ 1273              		.cfi_offset 14, -4
+ 1274 0002 0446     		mov	r4, r0
+ 1275 0004 0D46     		mov	r5, r1
+ 593:Peripherals/src/gd32f1x0_fmc.c ****     FMC_State temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1276              		.loc 1 593 0
+ 1277 0006 4FF47020 		mov	r0, #983040
+ 1278              	.LVL110:
+ 1279 000a FFF7FEFF 		bl	FMC_WaitReady
+ 1280              	.LVL111:
+ 595:Peripherals/src/gd32f1x0_fmc.c ****     if(temp_state == FMC_READY)
+ 1281              		.loc 1 595 0
+ 1282 000e 0346     		mov	r3, r0
+ 1283 0010 88B9     		cbnz	r0, .L106
+ 598:Peripherals/src/gd32f1x0_fmc.c ****         FMC->CMR |= FMC_CMR_OBPG; 
+ 1284              		.loc 1 598 0
+ 1285 0012 0A4B     		ldr	r3, .L107
+ 1286 0014 1A69     		ldr	r2, [r3, #16]
+ 1287 0016 42F01002 		orr	r2, r2, #16
+ 1288 001a 1A61     		str	r2, [r3, #16]
+ 599:Peripherals/src/gd32f1x0_fmc.c ****         *(__IO uint16_t*)Address = Data;
+ 1289              		.loc 1 599 0
+ 1290 001c 2580     		strh	r5, [r4]	@ movhi
+ 602:Peripherals/src/gd32f1x0_fmc.c ****         temp_state = FMC_WaitReady(FMC_TIMEOUT_COUNT);
+ 1291              		.loc 1 602 0
+ 1292 001e 4FF47020 		mov	r0, #983040
+ 1293              	.LVL112:
+ 1294 0022 FFF7FEFF 		bl	FMC_WaitReady
+ 1295              	.LVL113:
+ 1296 0026 0346     		mov	r3, r0
+ 1297              	.LVL114:
+ 604:Peripherals/src/gd32f1x0_fmc.c ****         if(temp_state != FMC_TIMEOUT_ERR)
+ 1298              		.loc 1 604 0
+ 1299 0028 0428     		cmp	r0, #4
+ 1300 002a 04D0     		beq	.L106
+ 607:Peripherals/src/gd32f1x0_fmc.c ****             FMC->CMR &= ~FMC_CMR_OBPG;
+ 1301              		.loc 1 607 0
+ARM GAS  /tmp/ccYrUlHs.s 			page 39
+
+
+ 1302 002c 034A     		ldr	r2, .L107
+ 1303 002e 1169     		ldr	r1, [r2, #16]
+ 1304 0030 21F01001 		bic	r1, r1, #16
+ 1305 0034 1161     		str	r1, [r2, #16]
+ 1306              	.LVL115:
+ 1307              	.L106:
+ 612:Peripherals/src/gd32f1x0_fmc.c **** }
+ 1308              		.loc 1 612 0
+ 1309 0036 1846     		mov	r0, r3
+ 1310 0038 38BD     		pop	{r3, r4, r5, pc}
+ 1311              	.LVL116:
+ 1312              	.L108:
+ 1313 003a 00BF     		.align	2
+ 1314              	.L107:
+ 1315 003c 00200240 		.word	1073881088
+ 1316              		.cfi_endproc
+ 1317              	.LFE45:
+ 1319              		.text
+ 1320              	.Letext0:
+ 1321              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 1322              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 1323              		.file 4 "CMSIS/gd32f1x0.h"
+ 1324              		.file 5 "Peripherals/inc/gd32f1x0_fmc.h"
+ 1325              		.file 6 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccYrUlHs.s 			page 40
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 gd32f1x0_fmc.c
+     /tmp/ccYrUlHs.s:17     .text.FMC_Unlock:00000000 $t
+     /tmp/ccYrUlHs.s:22     .text.FMC_Unlock:00000000 FMC_Unlock
+     /tmp/ccYrUlHs.s:47     .text.FMC_Unlock:00000018 $d
+     /tmp/ccYrUlHs.s:53     .text.FMC_Lock:00000000 $t
+     /tmp/ccYrUlHs.s:58     .text.FMC_Lock:00000000 FMC_Lock
+     /tmp/ccYrUlHs.s:74     .text.FMC_Lock:0000000c $d
+     /tmp/ccYrUlHs.s:79     .text.FMC_OB_Unlock:00000000 $t
+     /tmp/ccYrUlHs.s:84     .text.FMC_OB_Unlock:00000000 FMC_OB_Unlock
+     /tmp/ccYrUlHs.s:108    .text.FMC_OB_Unlock:00000018 $d
+     /tmp/ccYrUlHs.s:114    .text.FMC_OB_Lock:00000000 $t
+     /tmp/ccYrUlHs.s:119    .text.FMC_OB_Lock:00000000 FMC_OB_Lock
+     /tmp/ccYrUlHs.s:135    .text.FMC_OB_Lock:0000000c $d
+     /tmp/ccYrUlHs.s:140    .text.FMC_OB_Reset:00000000 $t
+     /tmp/ccYrUlHs.s:145    .text.FMC_OB_Reset:00000000 FMC_OB_Reset
+     /tmp/ccYrUlHs.s:161    .text.FMC_OB_Reset:0000000c $d
+     /tmp/ccYrUlHs.s:166    .text.FMC_OB_GetUser:00000000 $t
+     /tmp/ccYrUlHs.s:171    .text.FMC_OB_GetUser:00000000 FMC_OB_GetUser
+     /tmp/ccYrUlHs.s:187    .text.FMC_OB_GetUser:0000000c $d
+     /tmp/ccYrUlHs.s:192    .text.FMC_OB_GetWRP:00000000 $t
+     /tmp/ccYrUlHs.s:197    .text.FMC_OB_GetWRP:00000000 FMC_OB_GetWRP
+     /tmp/ccYrUlHs.s:212    .text.FMC_OB_GetWRP:00000008 $d
+     /tmp/ccYrUlHs.s:217    .text.FMC_OB_GetRDP:00000000 $t
+     /tmp/ccYrUlHs.s:222    .text.FMC_OB_GetRDP:00000000 FMC_OB_GetRDP
+     /tmp/ccYrUlHs.s:247    .text.FMC_OB_GetRDP:00000014 $d
+     /tmp/ccYrUlHs.s:252    .text.FMC_INTConfig:00000000 $t
+     /tmp/ccYrUlHs.s:257    .text.FMC_INTConfig:00000000 FMC_INTConfig
+     /tmp/ccYrUlHs.s:286    .text.FMC_INTConfig:00000018 $d
+     /tmp/ccYrUlHs.s:291    .text.FMC_GetBitState:00000000 $t
+     /tmp/ccYrUlHs.s:296    .text.FMC_GetBitState:00000000 FMC_GetBitState
+     /tmp/ccYrUlHs.s:323    .text.FMC_GetBitState:00000010 $d
+     /tmp/ccYrUlHs.s:328    .text.FMC_ClearBitState:00000000 $t
+     /tmp/ccYrUlHs.s:333    .text.FMC_ClearBitState:00000000 FMC_ClearBitState
+     /tmp/ccYrUlHs.s:348    .text.FMC_ClearBitState:00000008 $d
+     /tmp/ccYrUlHs.s:353    .text.FMC_GetState:00000000 $t
+     /tmp/ccYrUlHs.s:358    .text.FMC_GetState:00000000 FMC_GetState
+     /tmp/ccYrUlHs.s:401    .text.FMC_GetState:00000030 $d
+     /tmp/ccYrUlHs.s:406    .text.FMC_WaitReady:00000000 $t
+     /tmp/ccYrUlHs.s:411    .text.FMC_WaitReady:00000000 FMC_WaitReady
+     /tmp/ccYrUlHs.s:451    .text.FMC_ErasePage:00000000 $t
+     /tmp/ccYrUlHs.s:456    .text.FMC_ErasePage:00000000 FMC_ErasePage
+     /tmp/ccYrUlHs.s:510    .text.FMC_ErasePage:0000003c $d
+     /tmp/ccYrUlHs.s:515    .text.FMC_MassErase:00000000 $t
+     /tmp/ccYrUlHs.s:520    .text.FMC_MassErase:00000000 FMC_MassErase
+     /tmp/ccYrUlHs.s:566    .text.FMC_MassErase:00000038 $d
+     /tmp/ccYrUlHs.s:571    .text.FMC_ProgramWord:00000000 $t
+     /tmp/ccYrUlHs.s:576    .text.FMC_ProgramWord:00000000 FMC_ProgramWord
+     /tmp/ccYrUlHs.s:627    .text.FMC_ProgramWord:00000034 $d
+     /tmp/ccYrUlHs.s:632    .text.FMC_OB_Erase:00000000 $t
+     /tmp/ccYrUlHs.s:637    .text.FMC_OB_Erase:00000000 FMC_OB_Erase
+     /tmp/ccYrUlHs.s:734    .text.FMC_OB_Erase:0000007c $d
+     /tmp/ccYrUlHs.s:740    .text.FMC_OB_EnableWRP:00000000 $t
+     /tmp/ccYrUlHs.s:745    .text.FMC_OB_EnableWRP:00000000 FMC_OB_EnableWRP
+     /tmp/ccYrUlHs.s:828    .text.FMC_OB_EnableWRP:0000005c $d
+     /tmp/ccYrUlHs.s:834    .text.FMC_OB_RDPConfig:00000000 $t
+     /tmp/ccYrUlHs.s:839    .text.FMC_OB_RDPConfig:00000000 FMC_OB_RDPConfig
+ARM GAS  /tmp/ccYrUlHs.s 			page 41
+
+
+     /tmp/ccYrUlHs.s:923    .text.FMC_OB_RDPConfig:00000074 $d
+     /tmp/ccYrUlHs.s:929    .text.FMC_OB_UserConfig:00000000 $t
+     /tmp/ccYrUlHs.s:934    .text.FMC_OB_UserConfig:00000000 FMC_OB_UserConfig
+     /tmp/ccYrUlHs.s:993    .text.FMC_OB_UserConfig:00000048 $d
+     /tmp/ccYrUlHs.s:999    .text.FMC_OB_BOOTConfig:00000000 $t
+     /tmp/ccYrUlHs.s:1004   .text.FMC_OB_BOOTConfig:00000000 FMC_OB_BOOTConfig
+     /tmp/ccYrUlHs.s:1057   .text.FMC_OB_BOOTConfig:00000040 $d
+     /tmp/ccYrUlHs.s:1063   .text.FMC_OB_VDDAConfig:00000000 $t
+     /tmp/ccYrUlHs.s:1068   .text.FMC_OB_VDDAConfig:00000000 FMC_OB_VDDAConfig
+     /tmp/ccYrUlHs.s:1121   .text.FMC_OB_VDDAConfig:00000040 $d
+     /tmp/ccYrUlHs.s:1127   .text.FMC_OB_SRAMParityConfig:00000000 $t
+     /tmp/ccYrUlHs.s:1132   .text.FMC_OB_SRAMParityConfig:00000000 FMC_OB_SRAMParityConfig
+     /tmp/ccYrUlHs.s:1185   .text.FMC_OB_SRAMParityConfig:00000040 $d
+     /tmp/ccYrUlHs.s:1191   .text.FMC_OB_WriteUser:00000000 $t
+     /tmp/ccYrUlHs.s:1196   .text.FMC_OB_WriteUser:00000000 FMC_OB_WriteUser
+     /tmp/ccYrUlHs.s:1249   .text.FMC_OB_WriteUser:00000040 $d
+     /tmp/ccYrUlHs.s:1255   .text.FMC_ProgramOptionByteData:00000000 $t
+     /tmp/ccYrUlHs.s:1260   .text.FMC_ProgramOptionByteData:00000000 FMC_ProgramOptionByteData
+     /tmp/ccYrUlHs.s:1315   .text.FMC_ProgramOptionByteData:0000003c $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

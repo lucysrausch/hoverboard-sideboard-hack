@@ -1,0 +1,166 @@
+ARM GAS  /tmp/ccFRHt4D.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"drv_clk.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.clk_init,"ax",%progbits
+  17              		.align	2
+  18              		.global	clk_init
+  19              		.thumb
+  20              		.thumb_func
+  22              	clk_init:
+  23              	.LFB29:
+  24              		.file 1 "Src/drv_clk.c"
+   1:Src/drv_clk.c **** #include "gd32f1x0.h"
+   2:Src/drv_clk.c **** 
+   3:Src/drv_clk.c **** void clk_init(void)
+   4:Src/drv_clk.c **** {
+  25              		.loc 1 4 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29 0000 10B5     		push	{r4, lr}
+  30              	.LCFI0:
+  31              		.cfi_def_cfa_offset 8
+  32              		.cfi_offset 4, -8
+  33              		.cfi_offset 14, -4
+   5:Src/drv_clk.c **** // disable external oscillator so we can use pins PF0 , PF1
+   6:Src/drv_clk.c **** RCC_HSEConfig(RCC_HSE_OFF);
+  34              		.loc 1 6 0
+  35 0002 0020     		movs	r0, #0
+  36 0004 FFF7FEFF 		bl	RCC_HSEConfig
+  37              	.LVL0:
+   7:Src/drv_clk.c **** // this should be enabled already
+   8:Src/drv_clk.c **** RCC_HSI_Enable(ENABLE);
+  38              		.loc 1 8 0
+  39 0008 0120     		movs	r0, #1
+  40 000a FFF7FEFF 		bl	RCC_HSI_Enable
+  41              	.LVL1:
+   9:Src/drv_clk.c **** // wait for HSI to stabilize
+  10:Src/drv_clk.c **** // this is redundant
+  11:Src/drv_clk.c **** while( !RCC_GetBitState(RCC_FLAG_HSISTB) );
+  42              		.loc 1 11 0
+  43 000e 0124     		movs	r4, #1
+  44              	.L2:
+  45              		.loc 1 11 0 is_stmt 0 discriminator 1
+  46 0010 2046     		mov	r0, r4
+  47 0012 FFF7FEFF 		bl	RCC_GetBitState
+ARM GAS  /tmp/ccFRHt4D.s 			page 2
+
+
+  48              	.LVL2:
+  49 0016 0028     		cmp	r0, #0
+  50 0018 FAD0     		beq	.L2
+  12:Src/drv_clk.c **** // this should be enabled already
+  13:Src/drv_clk.c **** RCC_CK_SYSConfig(RCC_SYSCLKSOURCE_HSI);
+  51              		.loc 1 13 0 is_stmt 1
+  52 001a 0020     		movs	r0, #0
+  53 001c FFF7FEFF 		bl	RCC_CK_SYSConfig
+  54              	.LVL3:
+  14:Src/drv_clk.c **** 
+  15:Src/drv_clk.c **** RCC_PLLConfig(RCC_PLLSOURCE_HSI_DIV2 , RCC_PLLMUL_12);
+  55              		.loc 1 15 0
+  56 0020 0020     		movs	r0, #0
+  57 0022 4FF42011 		mov	r1, #2621440
+  58 0026 FFF7FEFF 		bl	RCC_PLLConfig
+  59              	.LVL4:
+  16:Src/drv_clk.c **** RCC_PLL_Enable(ENABLE);
+  60              		.loc 1 16 0
+  61 002a 0120     		movs	r0, #1
+  62 002c FFF7FEFF 		bl	RCC_PLL_Enable
+  63              	.LVL5:
+  17:Src/drv_clk.c **** 
+  18:Src/drv_clk.c **** // wait for pll to stablilize
+  19:Src/drv_clk.c **** // this is redundant
+  20:Src/drv_clk.c **** while( !RCC_GetBitState(RCC_FLAG_PLLSTB) );
+  64              		.loc 1 20 0
+  65 0030 1924     		movs	r4, #25
+  66              	.L3:
+  67              		.loc 1 20 0 is_stmt 0 discriminator 1
+  68 0032 2046     		mov	r0, r4
+  69 0034 FFF7FEFF 		bl	RCC_GetBitState
+  70              	.LVL6:
+  71 0038 0028     		cmp	r0, #0
+  72 003a FAD0     		beq	.L3
+  21:Src/drv_clk.c **** RCC_CK_SYSConfig(RCC_SYSCLKSOURCE_PLLCLK);
+  73              		.loc 1 21 0 is_stmt 1
+  74 003c 0220     		movs	r0, #2
+  75 003e FFF7FEFF 		bl	RCC_CK_SYSConfig
+  76              	.LVL7:
+  22:Src/drv_clk.c **** 
+  23:Src/drv_clk.c **** // wait for clock to change to pll
+  24:Src/drv_clk.c **** while ((RCC->GCFGR & (uint32_t)RCC_GCFGR_SCSS) != (uint32_t)RCC_GCFGR_SCSS_PLL);
+  77              		.loc 1 24 0
+  78 0042 084A     		ldr	r2, .L8
+  79              	.L4:
+  80              		.loc 1 24 0 is_stmt 0 discriminator 1
+  81 0044 5368     		ldr	r3, [r2, #4]
+  82 0046 03F00C03 		and	r3, r3, #12
+  83 004a 082B     		cmp	r3, #8
+  84 004c FAD1     		bne	.L4
+  25:Src/drv_clk.c **** 
+  26:Src/drv_clk.c **** RCC_AHBConfig(RCC_SYSCLK_DIV1); // config ahb clock divider
+  85              		.loc 1 26 0 is_stmt 1
+  86 004e 0020     		movs	r0, #0
+  87 0050 FFF7FEFF 		bl	RCC_AHBConfig
+  88              	.LVL8:
+  27:Src/drv_clk.c **** RCC_APB1Config(RCC_APB1AHB_DIV1);
+ARM GAS  /tmp/ccFRHt4D.s 			page 3
+
+
+  89              		.loc 1 27 0
+  90 0054 0020     		movs	r0, #0
+  91 0056 FFF7FEFF 		bl	RCC_APB1Config
+  92              	.LVL9:
+  28:Src/drv_clk.c **** RCC_APB2Config(RCC_APB2AHB_DIV1);
+  93              		.loc 1 28 0
+  94 005a 0020     		movs	r0, #0
+  95 005c FFF7FEFF 		bl	RCC_APB2Config
+  96              	.LVL10:
+  97 0060 10BD     		pop	{r4, pc}
+  98              	.L9:
+  99 0062 00BF     		.align	2
+ 100              	.L8:
+ 101 0064 00100240 		.word	1073876992
+ 102              		.cfi_endproc
+ 103              	.LFE29:
+ 105              		.text
+ 106              	.Letext0:
+ 107              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 108              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 109              		.file 4 "CMSIS/gd32f1x0.h"
+ 110              		.file 5 "Peripherals/inc/gd32f1x0_rcc.h"
+ 111              		.file 6 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccFRHt4D.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_clk.c
+     /tmp/ccFRHt4D.s:17     .text.clk_init:00000000 $t
+     /tmp/ccFRHt4D.s:22     .text.clk_init:00000000 clk_init
+     /tmp/ccFRHt4D.s:101    .text.clk_init:00000064 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_HSEConfig
+RCC_HSI_Enable
+RCC_GetBitState
+RCC_CK_SYSConfig
+RCC_PLLConfig
+RCC_PLL_Enable
+RCC_AHBConfig
+RCC_APB1Config
+RCC_APB2Config

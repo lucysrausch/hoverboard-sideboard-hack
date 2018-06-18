@@ -1,0 +1,1561 @@
+ARM GAS  /tmp/ccVJwp9O.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"drv_softi2c.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.scllow,"ax",%progbits
+  17              		.align	2
+  18              		.global	scllow
+  19              		.thumb
+  20              		.thumb_func
+  22              	scllow:
+  23              	.LFB31:
+  24              		.file 1 "Src/drv_softi2c.c"
+   1:Src/drv_softi2c.c **** /*
+   2:Src/drv_softi2c.c **** The MIT License (MIT)
+   3:Src/drv_softi2c.c **** 
+   4:Src/drv_softi2c.c **** Copyright (c) 2015 silverx
+   5:Src/drv_softi2c.c **** 
+   6:Src/drv_softi2c.c **** Permission is hereby granted, free of charge, to any person obtaining a copy
+   7:Src/drv_softi2c.c **** of this software and associated documentation files (the "Software"), to deal
+   8:Src/drv_softi2c.c **** in the Software without restriction, including without limitation the rights
+   9:Src/drv_softi2c.c **** to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  10:Src/drv_softi2c.c **** copies of the Software, and to permit persons to whom the Software is
+  11:Src/drv_softi2c.c **** furnished to do so, subject to the following conditions:
+  12:Src/drv_softi2c.c **** 
+  13:Src/drv_softi2c.c **** The above copyright notice and this permission notice shall be included in
+  14:Src/drv_softi2c.c **** all copies or substantial portions of the Software.
+  15:Src/drv_softi2c.c **** 
+  16:Src/drv_softi2c.c **** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  17:Src/drv_softi2c.c **** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  18:Src/drv_softi2c.c **** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  19:Src/drv_softi2c.c **** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  20:Src/drv_softi2c.c **** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  21:Src/drv_softi2c.c **** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  22:Src/drv_softi2c.c **** THE SOFTWARE.
+  23:Src/drv_softi2c.c **** */
+  24:Src/drv_softi2c.c **** 
+  25:Src/drv_softi2c.c **** 
+  26:Src/drv_softi2c.c **** #include "gd32f1x0.h"
+  27:Src/drv_softi2c.c **** #include <stdint.h>
+  28:Src/drv_softi2c.c **** #include <stdio.h>
+  29:Src/drv_softi2c.c **** 
+  30:Src/drv_softi2c.c **** #include "drv_softi2c.h"
+  31:Src/drv_softi2c.c **** 
+  32:Src/drv_softi2c.c **** //#define i2cdebug
+  33:Src/drv_softi2c.c **** 
+  34:Src/drv_softi2c.c **** void delay(int);
+ARM GAS  /tmp/ccVJwp9O.s 			page 2
+
+
+  35:Src/drv_softi2c.c **** 
+  36:Src/drv_softi2c.c **** #define _delay  //delay(1)
+  37:Src/drv_softi2c.c **** #define _delay2 //delay(1)
+  38:Src/drv_softi2c.c **** 
+  39:Src/drv_softi2c.c **** 	#ifdef i2cdebug
+  40:Src/drv_softi2c.c **** 	int debug = 1;   		// prints error info, set in setup()
+  41:Src/drv_softi2c.c **** 	#endif
+  42:Src/drv_softi2c.c **** 	
+  43:Src/drv_softi2c.c **** 	int error1;
+  44:Src/drv_softi2c.c **** 	int sda;
+  45:Src/drv_softi2c.c **** 	int scl;	
+  46:Src/drv_softi2c.c **** 	
+  47:Src/drv_softi2c.c **** 	void _sendstart(void);
+  48:Src/drv_softi2c.c **** 	void _sendstop(void);
+  49:Src/drv_softi2c.c **** 	void sdalow(void);
+  50:Src/drv_softi2c.c **** 	void sdahigh(void);
+  51:Src/drv_softi2c.c **** 	void scllow(void);
+  52:Src/drv_softi2c.c **** 	void sclhigh(void);
+  53:Src/drv_softi2c.c **** 	void _restart(void);	
+  54:Src/drv_softi2c.c **** 	uint8_t _readbyte( uint8_t); 
+  55:Src/drv_softi2c.c **** 	uint8_t _sendbyte( uint8_t);
+  56:Src/drv_softi2c.c **** 	int _readsda(void);
+  57:Src/drv_softi2c.c **** 	
+  58:Src/drv_softi2c.c **** 	int sdaout = 0;
+  59:Src/drv_softi2c.c **** void setoutput(void);
+  60:Src/drv_softi2c.c **** 
+  61:Src/drv_softi2c.c **** ////////////////////////////////
+  62:Src/drv_softi2c.c **** /////////I2C Routines//////////
+  63:Src/drv_softi2c.c **** 
+  64:Src/drv_softi2c.c **** 
+  65:Src/drv_softi2c.c ****  void sdalow()
+  66:Src/drv_softi2c.c **** {
+  67:Src/drv_softi2c.c **** 	if(!sdaout) setoutput();
+  68:Src/drv_softi2c.c **** 	
+  69:Src/drv_softi2c.c **** //	GPIO_WriteBit(GPIOB, GPIO_PIN_7, Bit_RESET);
+  70:Src/drv_softi2c.c ****   GPIOB->BCR = GPIO_PIN_7;
+  71:Src/drv_softi2c.c ****   sda=0;
+  72:Src/drv_softi2c.c **** 	_delay;
+  73:Src/drv_softi2c.c **** }
+  74:Src/drv_softi2c.c **** 
+  75:Src/drv_softi2c.c **** 
+  76:Src/drv_softi2c.c ****   void sdahigh()
+  77:Src/drv_softi2c.c **** {
+  78:Src/drv_softi2c.c **** 	if(!sdaout) setoutput();
+  79:Src/drv_softi2c.c **** 	//GPIO_WriteBit(GPIOB, GPIO_PIN_7, Bit_SET);
+  80:Src/drv_softi2c.c ****    GPIOB->BOR = GPIO_PIN_7;
+  81:Src/drv_softi2c.c **** 	_delay;
+  82:Src/drv_softi2c.c ****   sda = 1; 
+  83:Src/drv_softi2c.c **** }
+  84:Src/drv_softi2c.c **** 
+  85:Src/drv_softi2c.c **** 
+  86:Src/drv_softi2c.c ****   void scllow()
+  87:Src/drv_softi2c.c **** {
+  25              		.loc 1 87 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccVJwp9O.s 			page 3
+
+
+  29              		@ link register save eliminated.
+  88:Src/drv_softi2c.c **** // GPIO_WriteBit(GPIOB, GPIO_PIN_6, Bit_RESET);
+  89:Src/drv_softi2c.c ****  GPIOB->BCR = GPIO_PIN_6;
+  30              		.loc 1 89 0
+  31 0000 4022     		movs	r2, #64
+  32 0002 034B     		ldr	r3, .L2
+  33 0004 1A85     		strh	r2, [r3, #40]	@ movhi
+  90:Src/drv_softi2c.c **** 	_delay;
+  91:Src/drv_softi2c.c ****  scl = 0;
+  34              		.loc 1 91 0
+  35 0006 0022     		movs	r2, #0
+  36 0008 024B     		ldr	r3, .L2+4
+  37 000a 1A60     		str	r2, [r3]
+  38 000c 7047     		bx	lr
+  39              	.L3:
+  40 000e 00BF     		.align	2
+  41              	.L2:
+  42 0010 00040048 		.word	1207960576
+  43 0014 00000000 		.word	scl
+  44              		.cfi_endproc
+  45              	.LFE31:
+  47              		.section	.text.sclhigh,"ax",%progbits
+  48              		.align	2
+  49              		.global	sclhigh
+  50              		.thumb
+  51              		.thumb_func
+  53              	sclhigh:
+  54              	.LFB32:
+  92:Src/drv_softi2c.c **** }
+  93:Src/drv_softi2c.c **** 
+  94:Src/drv_softi2c.c ****   void sclhigh()
+  95:Src/drv_softi2c.c **** {
+  55              		.loc 1 95 0
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 0
+  58              		@ frame_needed = 0, uses_anonymous_args = 0
+  59              		@ link register save eliminated.
+  96:Src/drv_softi2c.c ****  //GPIO_WriteBit(GPIOB, GPIO_PIN_6, Bit_SET);
+  97:Src/drv_softi2c.c ****  GPIOB->BOR = GPIO_PIN_6;
+  60              		.loc 1 97 0
+  61 0000 4022     		movs	r2, #64
+  62 0002 034B     		ldr	r3, .L5
+  63 0004 9A61     		str	r2, [r3, #24]
+  98:Src/drv_softi2c.c **** 	_delay;
+  99:Src/drv_softi2c.c ****  scl = 1; 
+  64              		.loc 1 99 0
+  65 0006 0122     		movs	r2, #1
+  66 0008 024B     		ldr	r3, .L5+4
+  67 000a 1A60     		str	r2, [r3]
+  68 000c 7047     		bx	lr
+  69              	.L6:
+  70 000e 00BF     		.align	2
+  71              	.L5:
+  72 0010 00040048 		.word	1207960576
+  73 0014 00000000 		.word	scl
+  74              		.cfi_endproc
+  75              	.LFE32:
+ARM GAS  /tmp/ccVJwp9O.s 			page 4
+
+
+  77              		.section	.text.sclhighlow,"ax",%progbits
+  78              		.align	2
+  79              		.global	sclhighlow
+  80              		.thumb
+  81              		.thumb_func
+  83              	sclhighlow:
+  84              	.LFB33:
+ 100:Src/drv_softi2c.c **** }
+ 101:Src/drv_softi2c.c **** 
+ 102:Src/drv_softi2c.c ****   void sclhighlow()
+ 103:Src/drv_softi2c.c **** {
+  85              		.loc 1 103 0
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 0, uses_anonymous_args = 0
+  89              		@ link register save eliminated.
+ 104:Src/drv_softi2c.c ****  //GPIO_WriteBit(GPIOB, GPIO_PIN_6, Bit_SET);
+ 105:Src/drv_softi2c.c ****  GPIOB->BOR = GPIO_PIN_6;
+  90              		.loc 1 105 0
+  91 0000 034B     		ldr	r3, .L8
+  92 0002 4022     		movs	r2, #64
+  93 0004 9A61     		str	r2, [r3, #24]
+ 106:Src/drv_softi2c.c **** 	_delay;
+ 107:Src/drv_softi2c.c ****  GPIOB->BCR = GPIO_PIN_6;
+  94              		.loc 1 107 0
+  95 0006 1A85     		strh	r2, [r3, #40]	@ movhi
+ 108:Src/drv_softi2c.c **** _delay;
+ 109:Src/drv_softi2c.c ****  scl = 0;
+  96              		.loc 1 109 0
+  97 0008 0022     		movs	r2, #0
+  98 000a 024B     		ldr	r3, .L8+4
+  99 000c 1A60     		str	r2, [r3]
+ 100 000e 7047     		bx	lr
+ 101              	.L9:
+ 102              		.align	2
+ 103              	.L8:
+ 104 0010 00040048 		.word	1207960576
+ 105 0014 00000000 		.word	scl
+ 106              		.cfi_endproc
+ 107              	.LFE33:
+ 109              		.section	.text.setinput,"ax",%progbits
+ 110              		.align	2
+ 111              		.global	setinput
+ 112              		.thumb
+ 113              		.thumb_func
+ 115              	setinput:
+ 116              	.LFB34:
+ 110:Src/drv_softi2c.c **** }
+ 111:Src/drv_softi2c.c **** 
+ 112:Src/drv_softi2c.c **** void setinput()
+ 113:Src/drv_softi2c.c **** {
+ 117              		.loc 1 113 0
+ 118              		.cfi_startproc
+ 119              		@ args = 0, pretend = 0, frame = 0
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121              		@ link register save eliminated.
+ 114:Src/drv_softi2c.c **** 	sdaout = 0;
+ARM GAS  /tmp/ccVJwp9O.s 			page 5
+
+
+ 122              		.loc 1 114 0
+ 123 0000 0022     		movs	r2, #0
+ 124 0002 054B     		ldr	r3, .L11
+ 125 0004 1A60     		str	r2, [r3]
+ 126              	.LVL0:
+ 115:Src/drv_softi2c.c **** 	uint32_t pin = 0x07;
+ 116:Src/drv_softi2c.c ****   GPIOB->CTLR  &= ~(GPIO_CTLR_CTLR0 << (pin * 2));
+ 127              		.loc 1 116 0
+ 128 0006 054B     		ldr	r3, .L11+4
+ 129 0008 1A68     		ldr	r2, [r3]
+ 130 000a 22F44042 		bic	r2, r2, #49152
+ 131 000e 1A60     		str	r2, [r3]
+ 117:Src/drv_softi2c.c ****   GPIOB->CTLR |= (((uint32_t)GPIO_MODE_IN) << (pin * 2));    
+ 132              		.loc 1 117 0
+ 133 0010 1A68     		ldr	r2, [r3]
+ 134 0012 1A60     		str	r2, [r3]
+ 135 0014 7047     		bx	lr
+ 136              	.L12:
+ 137 0016 00BF     		.align	2
+ 138              	.L11:
+ 139 0018 00000000 		.word	.LANCHOR0
+ 140 001c 00040048 		.word	1207960576
+ 141              		.cfi_endproc
+ 142              	.LFE34:
+ 144              		.section	.text.setoutput,"ax",%progbits
+ 145              		.align	2
+ 146              		.global	setoutput
+ 147              		.thumb
+ 148              		.thumb_func
+ 150              	setoutput:
+ 151              	.LFB35:
+ 118:Src/drv_softi2c.c **** 	_delay2;
+ 119:Src/drv_softi2c.c ****  }
+ 120:Src/drv_softi2c.c **** 
+ 121:Src/drv_softi2c.c **** void setoutput()
+ 122:Src/drv_softi2c.c **** {
+ 152              		.loc 1 122 0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 0
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156              		@ link register save eliminated.
+ 123:Src/drv_softi2c.c **** 	sdaout = 1;
+ 157              		.loc 1 123 0
+ 158 0000 0122     		movs	r2, #1
+ 159 0002 0A4B     		ldr	r3, .L14
+ 160 0004 1A60     		str	r2, [r3]
+ 161              	.LVL1:
+ 124:Src/drv_softi2c.c **** 	uint32_t pin = 0x07;
+ 125:Src/drv_softi2c.c **** 	GPIOB->OMODE &= ~((GPIO_OMODE_OM0) << ((uint16_t)pin));
+ 162              		.loc 1 125 0
+ 163 0006 0A4B     		ldr	r3, .L14+4
+ 164 0008 9A88     		ldrh	r2, [r3, #4]
+ 165 000a 22F08002 		bic	r2, r2, #128
+ 166 000e 1204     		lsls	r2, r2, #16
+ 167 0010 120C     		lsrs	r2, r2, #16
+ 168 0012 9A80     		strh	r2, [r3, #4]	@ movhi
+ 126:Src/drv_softi2c.c **** 	GPIOB->OMODE |= (uint16_t)(((uint16_t) GPIO_OTYPE_PP) << ((uint16_t)pin));
+ARM GAS  /tmp/ccVJwp9O.s 			page 6
+
+
+ 169              		.loc 1 126 0
+ 170 0014 9A88     		ldrh	r2, [r3, #4]
+ 171 0016 92B2     		uxth	r2, r2
+ 172 0018 9A80     		strh	r2, [r3, #4]	@ movhi
+ 127:Src/drv_softi2c.c **** 	GPIOB->CTLR  &= ~(GPIO_CTLR_CTLR0 << (pin * 2));
+ 173              		.loc 1 127 0
+ 174 001a 1A68     		ldr	r2, [r3]
+ 175 001c 22F44042 		bic	r2, r2, #49152
+ 176 0020 1A60     		str	r2, [r3]
+ 128:Src/drv_softi2c.c **** 	GPIOB->CTLR |= (((uint32_t)GPIO_MODE_OUT) << (pin * 2));
+ 177              		.loc 1 128 0
+ 178 0022 1A68     		ldr	r2, [r3]
+ 179 0024 42F48042 		orr	r2, r2, #16384
+ 180 0028 1A60     		str	r2, [r3]
+ 181 002a 7047     		bx	lr
+ 182              	.L15:
+ 183              		.align	2
+ 184              	.L14:
+ 185 002c 00000000 		.word	.LANCHOR0
+ 186 0030 00040048 		.word	1207960576
+ 187              		.cfi_endproc
+ 188              	.LFE35:
+ 190              		.section	.text.sdalow,"ax",%progbits
+ 191              		.align	2
+ 192              		.global	sdalow
+ 193              		.thumb
+ 194              		.thumb_func
+ 196              	sdalow:
+ 197              	.LFB29:
+  66:Src/drv_softi2c.c **** {
+ 198              		.loc 1 66 0
+ 199              		.cfi_startproc
+ 200              		@ args = 0, pretend = 0, frame = 0
+ 201              		@ frame_needed = 0, uses_anonymous_args = 0
+ 202 0000 08B5     		push	{r3, lr}
+ 203              	.LCFI0:
+ 204              		.cfi_def_cfa_offset 8
+ 205              		.cfi_offset 3, -8
+ 206              		.cfi_offset 14, -4
+  67:Src/drv_softi2c.c **** 	if(!sdaout) setoutput();
+ 207              		.loc 1 67 0
+ 208 0002 064B     		ldr	r3, .L18
+ 209 0004 1B68     		ldr	r3, [r3]
+ 210 0006 0BB9     		cbnz	r3, .L17
+  67:Src/drv_softi2c.c **** 	if(!sdaout) setoutput();
+ 211              		.loc 1 67 0 is_stmt 0 discriminator 1
+ 212 0008 FFF7FEFF 		bl	setoutput
+ 213              	.LVL2:
+ 214              	.L17:
+  70:Src/drv_softi2c.c ****   GPIOB->BCR = GPIO_PIN_7;
+ 215              		.loc 1 70 0 is_stmt 1
+ 216 000c 8022     		movs	r2, #128
+ 217 000e 044B     		ldr	r3, .L18+4
+ 218 0010 1A85     		strh	r2, [r3, #40]	@ movhi
+  71:Src/drv_softi2c.c ****   sda=0;
+ 219              		.loc 1 71 0
+ 220 0012 0022     		movs	r2, #0
+ARM GAS  /tmp/ccVJwp9O.s 			page 7
+
+
+ 221 0014 034B     		ldr	r3, .L18+8
+ 222 0016 1A60     		str	r2, [r3]
+ 223 0018 08BD     		pop	{r3, pc}
+ 224              	.L19:
+ 225 001a 00BF     		.align	2
+ 226              	.L18:
+ 227 001c 00000000 		.word	.LANCHOR0
+ 228 0020 00040048 		.word	1207960576
+ 229 0024 00000000 		.word	sda
+ 230              		.cfi_endproc
+ 231              	.LFE29:
+ 233              		.section	.text.sdahigh,"ax",%progbits
+ 234              		.align	2
+ 235              		.global	sdahigh
+ 236              		.thumb
+ 237              		.thumb_func
+ 239              	sdahigh:
+ 240              	.LFB30:
+  77:Src/drv_softi2c.c **** {
+ 241              		.loc 1 77 0
+ 242              		.cfi_startproc
+ 243              		@ args = 0, pretend = 0, frame = 0
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245 0000 08B5     		push	{r3, lr}
+ 246              	.LCFI1:
+ 247              		.cfi_def_cfa_offset 8
+ 248              		.cfi_offset 3, -8
+ 249              		.cfi_offset 14, -4
+  78:Src/drv_softi2c.c **** 	if(!sdaout) setoutput();
+ 250              		.loc 1 78 0
+ 251 0002 064B     		ldr	r3, .L22
+ 252 0004 1B68     		ldr	r3, [r3]
+ 253 0006 0BB9     		cbnz	r3, .L21
+  78:Src/drv_softi2c.c **** 	if(!sdaout) setoutput();
+ 254              		.loc 1 78 0 is_stmt 0 discriminator 1
+ 255 0008 FFF7FEFF 		bl	setoutput
+ 256              	.LVL3:
+ 257              	.L21:
+  80:Src/drv_softi2c.c ****    GPIOB->BOR = GPIO_PIN_7;
+ 258              		.loc 1 80 0 is_stmt 1
+ 259 000c 8022     		movs	r2, #128
+ 260 000e 044B     		ldr	r3, .L22+4
+ 261 0010 9A61     		str	r2, [r3, #24]
+  82:Src/drv_softi2c.c ****   sda = 1; 
+ 262              		.loc 1 82 0
+ 263 0012 0122     		movs	r2, #1
+ 264 0014 034B     		ldr	r3, .L22+8
+ 265 0016 1A60     		str	r2, [r3]
+ 266 0018 08BD     		pop	{r3, pc}
+ 267              	.L23:
+ 268 001a 00BF     		.align	2
+ 269              	.L22:
+ 270 001c 00000000 		.word	.LANCHOR0
+ 271 0020 00040048 		.word	1207960576
+ 272 0024 00000000 		.word	sda
+ 273              		.cfi_endproc
+ 274              	.LFE30:
+ARM GAS  /tmp/ccVJwp9O.s 			page 8
+
+
+ 276              		.section	.text._readsda,"ax",%progbits
+ 277              		.align	2
+ 278              		.global	_readsda
+ 279              		.thumb
+ 280              		.thumb_func
+ 282              	_readsda:
+ 283              	.LFB36:
+ 129:Src/drv_softi2c.c **** 	_delay2;
+ 130:Src/drv_softi2c.c **** }
+ 131:Src/drv_softi2c.c **** 
+ 132:Src/drv_softi2c.c **** int _readsda()
+ 133:Src/drv_softi2c.c **** {
+ 284              		.loc 1 133 0
+ 285              		.cfi_startproc
+ 286              		@ args = 0, pretend = 0, frame = 0
+ 287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288 0000 08B5     		push	{r3, lr}
+ 289              	.LCFI2:
+ 290              		.cfi_def_cfa_offset 8
+ 291              		.cfi_offset 3, -8
+ 292              		.cfi_offset 14, -4
+ 134:Src/drv_softi2c.c **** #ifdef i2cdebug
+ 135:Src/drv_softi2c.c ****   if (!sda)  printf("_readsda: sda low");
+ 136:Src/drv_softi2c.c **** #endif
+ 137:Src/drv_softi2c.c **** if ( sdaout) setinput();	
+ 293              		.loc 1 137 0
+ 294 0002 074B     		ldr	r3, .L26
+ 295 0004 1B68     		ldr	r3, [r3]
+ 296 0006 0BB1     		cbz	r3, .L25
+ 297              		.loc 1 137 0 is_stmt 0 discriminator 1
+ 298 0008 FFF7FEFF 		bl	setinput
+ 299              	.LVL4:
+ 300              	.L25:
+ 138:Src/drv_softi2c.c **** return (Bit_SET == GPIO_ReadInputBit( GPIOB, GPIO_PIN_7) ); 
+ 301              		.loc 1 138 0 is_stmt 1
+ 302 000c 0548     		ldr	r0, .L26+4
+ 303 000e 8021     		movs	r1, #128
+ 304 0010 FFF7FEFF 		bl	GPIO_ReadInputBit
+ 305              	.LVL5:
+ 139:Src/drv_softi2c.c **** }
+ 306              		.loc 1 139 0
+ 307 0014 0128     		cmp	r0, #1
+ 308 0016 14BF     		ite	ne
+ 309 0018 0020     		movne	r0, #0
+ 310 001a 0120     		moveq	r0, #1
+ 311 001c 08BD     		pop	{r3, pc}
+ 312              	.L27:
+ 313 001e 00BF     		.align	2
+ 314              	.L26:
+ 315 0020 00000000 		.word	.LANCHOR0
+ 316 0024 00040048 		.word	1207960576
+ 317              		.cfi_endproc
+ 318              	.LFE36:
+ 320              		.section	.text._sendstart,"ax",%progbits
+ 321              		.align	2
+ 322              		.global	_sendstart
+ 323              		.thumb
+ARM GAS  /tmp/ccVJwp9O.s 			page 9
+
+
+ 324              		.thumb_func
+ 326              	_sendstart:
+ 327              	.LFB37:
+ 140:Src/drv_softi2c.c **** 
+ 141:Src/drv_softi2c.c **** 
+ 142:Src/drv_softi2c.c **** void _sendstart()
+ 143:Src/drv_softi2c.c **** {
+ 328              		.loc 1 143 0
+ 329              		.cfi_startproc
+ 330              		@ args = 0, pretend = 0, frame = 0
+ 331              		@ frame_needed = 0, uses_anonymous_args = 0
+ 332 0000 08B5     		push	{r3, lr}
+ 333              	.LCFI3:
+ 334              		.cfi_def_cfa_offset 8
+ 335              		.cfi_offset 3, -8
+ 336              		.cfi_offset 14, -4
+ 144:Src/drv_softi2c.c ****  if (scl == 0) 
+ 337              		.loc 1 144 0
+ 338 0002 094B     		ldr	r3, .L32
+ 339 0004 1B68     		ldr	r3, [r3]
+ 340 0006 0BB9     		cbnz	r3, .L29
+ 145:Src/drv_softi2c.c ****  {
+ 146:Src/drv_softi2c.c ****  #ifdef i2cdebug
+ 147:Src/drv_softi2c.c ****    printf("_sendstart: scl low"); 
+ 148:Src/drv_softi2c.c ****  #endif
+ 149:Src/drv_softi2c.c ****   sclhigh();
+ 341              		.loc 1 149 0
+ 342 0008 FFF7FEFF 		bl	sclhigh
+ 343              	.LVL6:
+ 344              	.L29:
+ 150:Src/drv_softi2c.c ****  } 
+ 151:Src/drv_softi2c.c ****  if (sda == 1)
+ 345              		.loc 1 151 0
+ 346 000c 074B     		ldr	r3, .L32+4
+ 347 000e 1B68     		ldr	r3, [r3]
+ 348 0010 012B     		cmp	r3, #1
+ 349 0012 07D1     		bne	.L28
+ 152:Src/drv_softi2c.c **** {
+ 153:Src/drv_softi2c.c ****   if(!_readsda())
+ 350              		.loc 1 153 0
+ 351 0014 FFF7FEFF 		bl	_readsda
+ 352              	.LVL7:
+ 353 0018 10B9     		cbnz	r0, .L31
+ 154:Src/drv_softi2c.c **** 	{
+ 155:Src/drv_softi2c.c **** 	#ifdef i2cdebug
+ 156:Src/drv_softi2c.c **** 	printf("_sendstart: sda pulled low by slave"); 
+ 157:Src/drv_softi2c.c **** 	#endif
+ 158:Src/drv_softi2c.c **** 	error1 = 1;
+ 354              		.loc 1 158 0
+ 355 001a 0122     		movs	r2, #1
+ 356 001c 044B     		ldr	r3, .L32+8
+ 357 001e 1A60     		str	r2, [r3]
+ 358              	.L31:
+ 159:Src/drv_softi2c.c **** 	}
+ 160:Src/drv_softi2c.c ****   sdalow();
+ 359              		.loc 1 160 0
+ 360 0020 FFF7FEFF 		bl	sdalow
+ARM GAS  /tmp/ccVJwp9O.s 			page 10
+
+
+ 361              	.LVL8:
+ 362              	.L28:
+ 363 0024 08BD     		pop	{r3, pc}
+ 364              	.L33:
+ 365 0026 00BF     		.align	2
+ 366              	.L32:
+ 367 0028 00000000 		.word	scl
+ 368 002c 00000000 		.word	sda
+ 369 0030 00000000 		.word	error1
+ 370              		.cfi_endproc
+ 371              	.LFE37:
+ 373              		.section	.text._restart,"ax",%progbits
+ 374              		.align	2
+ 375              		.global	_restart
+ 376              		.thumb
+ 377              		.thumb_func
+ 379              	_restart:
+ 380              	.LFB38:
+ 161:Src/drv_softi2c.c **** }
+ 162:Src/drv_softi2c.c ****  else {
+ 163:Src/drv_softi2c.c **** 	  #ifdef i2cdebug
+ 164:Src/drv_softi2c.c ****     printf("_sendstart: sda low"); 
+ 165:Src/drv_softi2c.c **** 	  #endif
+ 166:Src/drv_softi2c.c ****        } 
+ 167:Src/drv_softi2c.c **** }
+ 168:Src/drv_softi2c.c **** 
+ 169:Src/drv_softi2c.c **** 
+ 170:Src/drv_softi2c.c **** void _restart()
+ 171:Src/drv_softi2c.c **** {
+ 381              		.loc 1 171 0
+ 382              		.cfi_startproc
+ 383              		@ args = 0, pretend = 0, frame = 0
+ 384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385 0000 08B5     		push	{r3, lr}
+ 386              	.LCFI4:
+ 387              		.cfi_def_cfa_offset 8
+ 388              		.cfi_offset 3, -8
+ 389              		.cfi_offset 14, -4
+ 172:Src/drv_softi2c.c ****  #ifdef i2cdebug 
+ 173:Src/drv_softi2c.c ****  if (scl == 1) printf("_restart: scl high"); 
+ 174:Src/drv_softi2c.c ****  #endif
+ 175:Src/drv_softi2c.c ****  if (sda == 0) 
+ 390              		.loc 1 175 0
+ 391 0002 054B     		ldr	r3, .L36
+ 392 0004 1B68     		ldr	r3, [r3]
+ 393 0006 0BB9     		cbnz	r3, .L35
+ 176:Src/drv_softi2c.c ****  {
+ 177:Src/drv_softi2c.c ****    sdahigh();
+ 394              		.loc 1 177 0
+ 395 0008 FFF7FEFF 		bl	sdahigh
+ 396              	.LVL9:
+ 397              	.L35:
+ 178:Src/drv_softi2c.c ****  }
+ 179:Src/drv_softi2c.c ****  sclhigh();
+ 398              		.loc 1 179 0
+ 399 000c FFF7FEFF 		bl	sclhigh
+ 400              	.LVL10:
+ARM GAS  /tmp/ccVJwp9O.s 			page 11
+
+
+ 180:Src/drv_softi2c.c ****  sdalow();
+ 401              		.loc 1 180 0
+ 402 0010 FFF7FEFF 		bl	sdalow
+ 403              	.LVL11:
+ 404 0014 08BD     		pop	{r3, pc}
+ 405              	.L37:
+ 406 0016 00BF     		.align	2
+ 407              	.L36:
+ 408 0018 00000000 		.word	sda
+ 409              		.cfi_endproc
+ 410              	.LFE38:
+ 412              		.section	.text._sendstop,"ax",%progbits
+ 413              		.align	2
+ 414              		.global	_sendstop
+ 415              		.thumb
+ 416              		.thumb_func
+ 418              	_sendstop:
+ 419              	.LFB39:
+ 181:Src/drv_softi2c.c **** }
+ 182:Src/drv_softi2c.c **** 
+ 183:Src/drv_softi2c.c **** void _sendstop()
+ 184:Src/drv_softi2c.c **** {
+ 420              		.loc 1 184 0
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424 0000 08B5     		push	{r3, lr}
+ 425              	.LCFI5:
+ 426              		.cfi_def_cfa_offset 8
+ 427              		.cfi_offset 3, -8
+ 428              		.cfi_offset 14, -4
+ 185:Src/drv_softi2c.c ****   
+ 186:Src/drv_softi2c.c ****   if (sda == 1) 
+ 429              		.loc 1 186 0
+ 430 0002 084B     		ldr	r3, .L41
+ 431 0004 1B68     		ldr	r3, [r3]
+ 432 0006 012B     		cmp	r3, #1
+ 433 0008 04D1     		bne	.L39
+ 187:Src/drv_softi2c.c ****   {
+ 188:Src/drv_softi2c.c ****     if (!scl) sdalow(); else 
+ 434              		.loc 1 188 0
+ 435 000a 074B     		ldr	r3, .L41+4
+ 436 000c 1B68     		ldr	r3, [r3]
+ 437 000e 0BB9     		cbnz	r3, .L39
+ 438              		.loc 1 188 0 is_stmt 0 discriminator 1
+ 439 0010 FFF7FEFF 		bl	sdalow
+ 440              	.LVL12:
+ 441              	.L39:
+ 189:Src/drv_softi2c.c **** 		{
+ 190:Src/drv_softi2c.c **** 		#ifdef i2cdebug
+ 191:Src/drv_softi2c.c **** 		printf("stop: error");
+ 192:Src/drv_softi2c.c **** 		#endif
+ 193:Src/drv_softi2c.c **** 		}
+ 194:Src/drv_softi2c.c ****   }
+ 195:Src/drv_softi2c.c ****   if (scl == 0) sclhigh();
+ 442              		.loc 1 195 0 is_stmt 1
+ 443 0014 044B     		ldr	r3, .L41+4
+ARM GAS  /tmp/ccVJwp9O.s 			page 12
+
+
+ 444 0016 1B68     		ldr	r3, [r3]
+ 445 0018 0BB9     		cbnz	r3, .L40
+ 446              		.loc 1 195 0 is_stmt 0 discriminator 1
+ 447 001a FFF7FEFF 		bl	sclhigh
+ 448              	.LVL13:
+ 449              	.L40:
+ 196:Src/drv_softi2c.c ****   else {
+ 197:Src/drv_softi2c.c **** 		#ifdef i2cdebug
+ 198:Src/drv_softi2c.c **** 		printf("stop: scl high");
+ 199:Src/drv_softi2c.c **** 		#endif
+ 200:Src/drv_softi2c.c **** 		}
+ 201:Src/drv_softi2c.c ****   sdahigh();
+ 450              		.loc 1 201 0 is_stmt 1
+ 451 001e FFF7FEFF 		bl	sdahigh
+ 452              	.LVL14:
+ 453 0022 08BD     		pop	{r3, pc}
+ 454              	.L42:
+ 455              		.align	2
+ 456              	.L41:
+ 457 0024 00000000 		.word	sda
+ 458 0028 00000000 		.word	scl
+ 459              		.cfi_endproc
+ 460              	.LFE39:
+ 462              		.section	.text._sendbyte,"ax",%progbits
+ 463              		.align	2
+ 464              		.global	_sendbyte
+ 465              		.thumb
+ 466              		.thumb_func
+ 468              	_sendbyte:
+ 469              	.LFB40:
+ 202:Src/drv_softi2c.c ****  
+ 203:Src/drv_softi2c.c **** }
+ 204:Src/drv_softi2c.c **** 
+ 205:Src/drv_softi2c.c **** 
+ 206:Src/drv_softi2c.c **** 
+ 207:Src/drv_softi2c.c **** uint8_t _sendbyte( uint8_t value )
+ 208:Src/drv_softi2c.c **** {
+ 470              		.loc 1 208 0
+ 471              		.cfi_startproc
+ 472              		@ args = 0, pretend = 0, frame = 0
+ 473              		@ frame_needed = 0, uses_anonymous_args = 0
+ 474              	.LVL15:
+ 475 0000 38B5     		push	{r3, r4, r5, lr}
+ 476              	.LCFI6:
+ 477              		.cfi_def_cfa_offset 16
+ 478              		.cfi_offset 3, -16
+ 479              		.cfi_offset 4, -12
+ 480              		.cfi_offset 5, -8
+ 481              		.cfi_offset 14, -4
+ 482 0002 0546     		mov	r5, r0
+ 209:Src/drv_softi2c.c **** int i;
+ 210:Src/drv_softi2c.c ****  if (scl == 1) 
+ 483              		.loc 1 210 0
+ 484 0004 104B     		ldr	r3, .L50
+ 485 0006 1B68     		ldr	r3, [r3]
+ 486 0008 012B     		cmp	r3, #1
+ 487 000a 01D1     		bne	.L44
+ARM GAS  /tmp/ccVJwp9O.s 			page 13
+
+
+ 211:Src/drv_softi2c.c ****  {
+ 212:Src/drv_softi2c.c ****   scllow();
+ 488              		.loc 1 212 0
+ 489 000c FFF7FEFF 		bl	scllow
+ 490              	.LVL16:
+ 491              	.L44:
+ 208:Src/drv_softi2c.c **** {
+ 492              		.loc 1 208 0 discriminator 1
+ 493 0010 0724     		movs	r4, #7
+ 494 0012 0CE0     		b	.L45
+ 495              	.LVL17:
+ 496              	.L48:
+ 213:Src/drv_softi2c.c ****  }
+ 214:Src/drv_softi2c.c ****  
+ 215:Src/drv_softi2c.c ****  for ( i = 7; i >= 0 ;i--)
+ 216:Src/drv_softi2c.c ****  {
+ 217:Src/drv_softi2c.c ****  if ((value >> i)&1) 
+ 497              		.loc 1 217 0
+ 498 0014 45FA04F3 		asr	r3, r5, r4
+ 499 0018 13F0010F 		tst	r3, #1
+ 500 001c 02D0     		beq	.L46
+ 218:Src/drv_softi2c.c ****  {
+ 219:Src/drv_softi2c.c ****   sdahigh();
+ 501              		.loc 1 219 0
+ 502 001e FFF7FEFF 		bl	sdahigh
+ 503              	.LVL18:
+ 504 0022 01E0     		b	.L47
+ 505              	.L46:
+ 220:Src/drv_softi2c.c ****  }
+ 221:Src/drv_softi2c.c ****  else 
+ 222:Src/drv_softi2c.c ****  {
+ 223:Src/drv_softi2c.c ****   sdalow();
+ 506              		.loc 1 223 0
+ 507 0024 FFF7FEFF 		bl	sdalow
+ 508              	.LVL19:
+ 509              	.L47:
+ 224:Src/drv_softi2c.c ****  }
+ 225:Src/drv_softi2c.c ****  //sclhigh();
+ 226:Src/drv_softi2c.c ****  //scllow();
+ 227:Src/drv_softi2c.c ****  sclhighlow();
+ 510              		.loc 1 227 0
+ 511 0028 FFF7FEFF 		bl	sclhighlow
+ 512              	.LVL20:
+ 215:Src/drv_softi2c.c ****  for ( i = 7; i >= 0 ;i--)
+ 513              		.loc 1 215 0
+ 514 002c 013C     		subs	r4, r4, #1
+ 515              	.LVL21:
+ 516              	.L45:
+ 215:Src/drv_softi2c.c ****  for ( i = 7; i >= 0 ;i--)
+ 517              		.loc 1 215 0 is_stmt 0 discriminator 1
+ 518 002e 002C     		cmp	r4, #0
+ 519 0030 F0DA     		bge	.L48
+ 228:Src/drv_softi2c.c ****  }
+ 229:Src/drv_softi2c.c ****  
+ 230:Src/drv_softi2c.c ****  if (!sda) sdahigh(); // release the line
+ 520              		.loc 1 230 0 is_stmt 1
+ 521 0032 064B     		ldr	r3, .L50+4
+ARM GAS  /tmp/ccVJwp9O.s 			page 14
+
+
+ 522 0034 1B68     		ldr	r3, [r3]
+ 523 0036 0BB9     		cbnz	r3, .L49
+ 524              		.loc 1 230 0 is_stmt 0 discriminator 1
+ 525 0038 FFF7FEFF 		bl	sdahigh
+ 526              	.LVL22:
+ 527              	.L49:
+ 231:Src/drv_softi2c.c ****  //get ack
+ 232:Src/drv_softi2c.c **** 
+ 233:Src/drv_softi2c.c ****  sclhigh();
+ 528              		.loc 1 233 0 is_stmt 1
+ 529 003c FFF7FEFF 		bl	sclhigh
+ 530              	.LVL23:
+ 234:Src/drv_softi2c.c **** // skip ack since it is not used here
+ 235:Src/drv_softi2c.c ****  uint8_t ack;// = _readsda();
+ 236:Src/drv_softi2c.c **** 
+ 237:Src/drv_softi2c.c ****   if (ack)
+ 238:Src/drv_softi2c.c **** 	{
+ 239:Src/drv_softi2c.c **** 	#ifdef i2cdebug
+ 240:Src/drv_softi2c.c **** //	if (debug) Serial.println("NOT RECEIVED"); 
+ 241:Src/drv_softi2c.c **** 	#endif
+ 242:Src/drv_softi2c.c **** 	}
+ 243:Src/drv_softi2c.c ****  scllow();
+ 531              		.loc 1 243 0
+ 532 0040 FFF7FEFF 		bl	scllow
+ 533              	.LVL24:
+ 244:Src/drv_softi2c.c **** return ack; 
+ 245:Src/drv_softi2c.c **** }
+ 534              		.loc 1 245 0
+ 535 0044 0020     		movs	r0, #0
+ 536 0046 38BD     		pop	{r3, r4, r5, pc}
+ 537              	.LVL25:
+ 538              	.L51:
+ 539              		.align	2
+ 540              	.L50:
+ 541 0048 00000000 		.word	scl
+ 542 004c 00000000 		.word	sda
+ 543              		.cfi_endproc
+ 544              	.LFE40:
+ 546              		.section	.text._readbyte,"ax",%progbits
+ 547              		.align	2
+ 548              		.global	_readbyte
+ 549              		.thumb
+ 550              		.thumb_func
+ 552              	_readbyte:
+ 553              	.LFB41:
+ 246:Src/drv_softi2c.c **** 
+ 247:Src/drv_softi2c.c **** uint8_t _readbyte(uint8_t ack)  //ACK 1 single byte ACK 0 multiple bytes
+ 248:Src/drv_softi2c.c **** {
+ 554              		.loc 1 248 0
+ 555              		.cfi_startproc
+ 556              		@ args = 0, pretend = 0, frame = 0
+ 557              		@ frame_needed = 0, uses_anonymous_args = 0
+ 558              	.LVL26:
+ 559 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 560              	.LCFI7:
+ 561              		.cfi_def_cfa_offset 24
+ 562              		.cfi_offset 3, -24
+ARM GAS  /tmp/ccVJwp9O.s 			page 15
+
+
+ 563              		.cfi_offset 4, -20
+ 564              		.cfi_offset 5, -16
+ 565              		.cfi_offset 6, -12
+ 566              		.cfi_offset 7, -8
+ 567              		.cfi_offset 14, -4
+ 568 0002 0746     		mov	r7, r0
+ 569              	.LVL27:
+ 249:Src/drv_softi2c.c ****  uint8_t data=0;
+ 250:Src/drv_softi2c.c ****  if (scl == 1)
+ 570              		.loc 1 250 0
+ 571 0004 194B     		ldr	r3, .L62
+ 572 0006 1B68     		ldr	r3, [r3]
+ 573 0008 012B     		cmp	r3, #1
+ 574 000a 02D1     		bne	.L53
+ 251:Src/drv_softi2c.c **** 	{
+ 252:Src/drv_softi2c.c **** 	error1 = 1;
+ 575              		.loc 1 252 0
+ 576 000c 0122     		movs	r2, #1
+ 577 000e 184B     		ldr	r3, .L62+4
+ 578 0010 1A60     		str	r2, [r3]
+ 579              	.L53:
+ 253:Src/drv_softi2c.c **** 	#ifdef i2cdebug
+ 254:Src/drv_softi2c.c **** 	printf("read: scl high");
+ 255:Src/drv_softi2c.c **** 	#endif
+ 256:Src/drv_softi2c.c **** 	}
+ 257:Src/drv_softi2c.c ****  if ( sda == 0) 
+ 580              		.loc 1 257 0
+ 581 0012 184B     		ldr	r3, .L62+8
+ 582 0014 1B68     		ldr	r3, [r3]
+ 583 0016 0BB9     		cbnz	r3, .L54
+ 258:Src/drv_softi2c.c ****  {
+ 259:Src/drv_softi2c.c ****    sdahigh();
+ 584              		.loc 1 259 0
+ 585 0018 FFF7FEFF 		bl	sdahigh
+ 586              	.LVL28:
+ 587              	.L54:
+ 260:Src/drv_softi2c.c ****  }
+ 261:Src/drv_softi2c.c ****  if(!sdaout) setoutput();
+ 588              		.loc 1 261 0
+ 589 001c 164B     		ldr	r3, .L62+12
+ 590 001e 1B68     		ldr	r3, [r3]
+ 591 0020 0BB9     		cbnz	r3, .L55
+ 592              		.loc 1 261 0 is_stmt 0 discriminator 1
+ 593 0022 FFF7FEFF 		bl	setoutput
+ 594              	.LVL29:
+ 595              	.L55:
+ 248:Src/drv_softi2c.c **** {
+ 596              		.loc 1 248 0 is_stmt 1 discriminator 1
+ 597 0026 0724     		movs	r4, #7
+ 598 0028 0025     		movs	r5, #0
+ 262:Src/drv_softi2c.c ****  int i;
+ 263:Src/drv_softi2c.c ****  for( i = 7; i>=0;i--)
+ 264:Src/drv_softi2c.c ****  {
+ 265:Src/drv_softi2c.c ****   sclhigh(); 
+ 266:Src/drv_softi2c.c ****  if (_readsda() ) data|=(1<<i);
+ 599              		.loc 1 266 0 discriminator 1
+ 600 002a 0126     		movs	r6, #1
+ARM GAS  /tmp/ccVJwp9O.s 			page 16
+
+
+ 601 002c 0BE0     		b	.L56
+ 602              	.LVL30:
+ 603              	.L58:
+ 265:Src/drv_softi2c.c ****   sclhigh(); 
+ 604              		.loc 1 265 0
+ 605 002e FFF7FEFF 		bl	sclhigh
+ 606              	.LVL31:
+ 607              		.loc 1 266 0
+ 608 0032 FFF7FEFF 		bl	_readsda
+ 609              	.LVL32:
+ 610 0036 18B1     		cbz	r0, .L57
+ 611              		.loc 1 266 0 is_stmt 0 discriminator 1
+ 612 0038 06FA04F3 		lsl	r3, r6, r4
+ 613 003c 1D43     		orrs	r5, r5, r3
+ 614              	.LVL33:
+ 615 003e EDB2     		uxtb	r5, r5
+ 616              	.LVL34:
+ 617              	.L57:
+ 267:Src/drv_softi2c.c ****   scllow();
+ 618              		.loc 1 267 0 is_stmt 1
+ 619 0040 FFF7FEFF 		bl	scllow
+ 620              	.LVL35:
+ 263:Src/drv_softi2c.c ****  for( i = 7; i>=0;i--)
+ 621              		.loc 1 263 0
+ 622 0044 013C     		subs	r4, r4, #1
+ 623              	.LVL36:
+ 624              	.L56:
+ 263:Src/drv_softi2c.c ****  for( i = 7; i>=0;i--)
+ 625              		.loc 1 263 0 is_stmt 0 discriminator 1
+ 626 0046 002C     		cmp	r4, #0
+ 627 0048 F1DA     		bge	.L58
+ 268:Src/drv_softi2c.c ****  }
+ 269:Src/drv_softi2c.c **** 
+ 270:Src/drv_softi2c.c **** if (ack)  
+ 628              		.loc 1 270 0 is_stmt 1
+ 629 004a 17B1     		cbz	r7, .L59
+ 271:Src/drv_softi2c.c **** {
+ 272:Src/drv_softi2c.c ****   sdahigh();
+ 630              		.loc 1 272 0
+ 631 004c FFF7FEFF 		bl	sdahigh
+ 632              	.LVL37:
+ 633 0050 01E0     		b	.L60
+ 634              	.L59:
+ 273:Src/drv_softi2c.c **** } 
+ 274:Src/drv_softi2c.c **** else 
+ 275:Src/drv_softi2c.c **** {
+ 276:Src/drv_softi2c.c ****   sdalow();
+ 635              		.loc 1 276 0
+ 636 0052 FFF7FEFF 		bl	sdalow
+ 637              	.LVL38:
+ 638              	.L60:
+ 277:Src/drv_softi2c.c **** }
+ 278:Src/drv_softi2c.c ****   sclhigh();
+ 639              		.loc 1 278 0
+ 640 0056 FFF7FEFF 		bl	sclhigh
+ 641              	.LVL39:
+ 279:Src/drv_softi2c.c ****   scllow();
+ARM GAS  /tmp/ccVJwp9O.s 			page 17
+
+
+ 642              		.loc 1 279 0
+ 643 005a FFF7FEFF 		bl	scllow
+ 644              	.LVL40:
+ 280:Src/drv_softi2c.c **** if (sda) sdalow(); 
+ 645              		.loc 1 280 0
+ 646 005e 054B     		ldr	r3, .L62+8
+ 647 0060 1B68     		ldr	r3, [r3]
+ 648 0062 0BB1     		cbz	r3, .L61
+ 649              		.loc 1 280 0 is_stmt 0 discriminator 1
+ 650 0064 FFF7FEFF 		bl	sdalow
+ 651              	.LVL41:
+ 652              	.L61:
+ 281:Src/drv_softi2c.c **** 
+ 282:Src/drv_softi2c.c **** return data;
+ 283:Src/drv_softi2c.c **** }
+ 653              		.loc 1 283 0 is_stmt 1
+ 654 0068 2846     		mov	r0, r5
+ 655 006a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 656              	.LVL42:
+ 657              	.L63:
+ 658              		.align	2
+ 659              	.L62:
+ 660 006c 00000000 		.word	scl
+ 661 0070 00000000 		.word	error1
+ 662 0074 00000000 		.word	sda
+ 663 0078 00000000 		.word	.LANCHOR0
+ 664              		.cfi_endproc
+ 665              	.LFE41:
+ 667              		.section	.text.softi2c_write,"ax",%progbits
+ 668              		.align	2
+ 669              		.global	softi2c_write
+ 670              		.thumb
+ 671              		.thumb_func
+ 673              	softi2c_write:
+ 674              	.LFB42:
+ 284:Src/drv_softi2c.c **** 
+ 285:Src/drv_softi2c.c **** 
+ 286:Src/drv_softi2c.c **** uint8_t softi2c_write( uint8_t device_address , uint8_t address,uint8_t value)
+ 287:Src/drv_softi2c.c **** {
+ 675              		.loc 1 287 0
+ 676              		.cfi_startproc
+ 677              		@ args = 0, pretend = 0, frame = 0
+ 678              		@ frame_needed = 0, uses_anonymous_args = 0
+ 679              	.LVL43:
+ 680 0000 70B5     		push	{r4, r5, r6, lr}
+ 681              	.LCFI8:
+ 682              		.cfi_def_cfa_offset 16
+ 683              		.cfi_offset 4, -16
+ 684              		.cfi_offset 5, -12
+ 685              		.cfi_offset 6, -8
+ 686              		.cfi_offset 14, -4
+ 687 0002 0646     		mov	r6, r0
+ 688 0004 0D46     		mov	r5, r1
+ 689 0006 1446     		mov	r4, r2
+ 288:Src/drv_softi2c.c ****  _sendstart();
+ 690              		.loc 1 288 0
+ 691 0008 FFF7FEFF 		bl	_sendstart
+ARM GAS  /tmp/ccVJwp9O.s 			page 18
+
+
+ 692              	.LVL44:
+ 289:Src/drv_softi2c.c ****  _sendbyte((device_address<<1));
+ 693              		.loc 1 289 0
+ 694 000c 7000     		lsls	r0, r6, #1
+ 695 000e 00F0FE00 		and	r0, r0, #254
+ 696 0012 FFF7FEFF 		bl	_sendbyte
+ 697              	.LVL45:
+ 290:Src/drv_softi2c.c ****  _sendbyte(address);
+ 698              		.loc 1 290 0
+ 699 0016 2846     		mov	r0, r5
+ 700 0018 FFF7FEFF 		bl	_sendbyte
+ 701              	.LVL46:
+ 291:Src/drv_softi2c.c ****   uint8_t ack = _sendbyte(value);
+ 702              		.loc 1 291 0
+ 703 001c 2046     		mov	r0, r4
+ 704 001e FFF7FEFF 		bl	_sendbyte
+ 705              	.LVL47:
+ 706 0022 0446     		mov	r4, r0
+ 707              	.LVL48:
+ 292:Src/drv_softi2c.c ****   _sendstop();
+ 708              		.loc 1 292 0
+ 709 0024 FFF7FEFF 		bl	_sendstop
+ 710              	.LVL49:
+ 293:Src/drv_softi2c.c ****   return ack;
+ 294:Src/drv_softi2c.c **** }
+ 711              		.loc 1 294 0
+ 712 0028 2046     		mov	r0, r4
+ 713 002a 70BD     		pop	{r4, r5, r6, pc}
+ 714              		.cfi_endproc
+ 715              	.LFE42:
+ 717              		.section	.text.softi2c_read,"ax",%progbits
+ 718              		.align	2
+ 719              		.global	softi2c_read
+ 720              		.thumb
+ 721              		.thumb_func
+ 723              	softi2c_read:
+ 724              	.LFB43:
+ 295:Src/drv_softi2c.c **** 
+ 296:Src/drv_softi2c.c **** 
+ 297:Src/drv_softi2c.c **** uint8_t softi2c_read(uint8_t device_address , uint8_t register_address)  
+ 298:Src/drv_softi2c.c **** {
+ 725              		.loc 1 298 0
+ 726              		.cfi_startproc
+ 727              		@ args = 0, pretend = 0, frame = 0
+ 728              		@ frame_needed = 0, uses_anonymous_args = 0
+ 729              	.LVL50:
+ 730 0000 38B5     		push	{r3, r4, r5, lr}
+ 731              	.LCFI9:
+ 732              		.cfi_def_cfa_offset 16
+ 733              		.cfi_offset 3, -16
+ 734              		.cfi_offset 4, -12
+ 735              		.cfi_offset 5, -8
+ 736              		.cfi_offset 14, -4
+ 737 0002 0446     		mov	r4, r0
+ 738 0004 0D46     		mov	r5, r1
+ 299:Src/drv_softi2c.c ****  _sendstart();
+ 739              		.loc 1 299 0
+ARM GAS  /tmp/ccVJwp9O.s 			page 19
+
+
+ 740 0006 FFF7FEFF 		bl	_sendstart
+ 741              	.LVL51:
+ 300:Src/drv_softi2c.c ****  _sendbyte((device_address<<1));
+ 742              		.loc 1 300 0
+ 743 000a 6400     		lsls	r4, r4, #1
+ 744 000c E4B2     		uxtb	r4, r4
+ 745 000e 2046     		mov	r0, r4
+ 746 0010 FFF7FEFF 		bl	_sendbyte
+ 747              	.LVL52:
+ 301:Src/drv_softi2c.c ****  _sendbyte(register_address);
+ 748              		.loc 1 301 0
+ 749 0014 2846     		mov	r0, r5
+ 750 0016 FFF7FEFF 		bl	_sendbyte
+ 751              	.LVL53:
+ 302:Src/drv_softi2c.c ****  _restart(); 
+ 752              		.loc 1 302 0
+ 753 001a FFF7FEFF 		bl	_restart
+ 754              	.LVL54:
+ 303:Src/drv_softi2c.c ****  _sendbyte((device_address<<1) + 1);
+ 755              		.loc 1 303 0
+ 756 001e 601C     		adds	r0, r4, #1
+ 757 0020 C0B2     		uxtb	r0, r0
+ 758 0022 FFF7FEFF 		bl	_sendbyte
+ 759              	.LVL55:
+ 304:Src/drv_softi2c.c ****  uint8_t x = _readbyte(1); 
+ 760              		.loc 1 304 0
+ 761 0026 0120     		movs	r0, #1
+ 762 0028 FFF7FEFF 		bl	_readbyte
+ 763              	.LVL56:
+ 764 002c 0446     		mov	r4, r0
+ 765              	.LVL57:
+ 305:Src/drv_softi2c.c ****  _sendstop();
+ 766              		.loc 1 305 0
+ 767 002e FFF7FEFF 		bl	_sendstop
+ 768              	.LVL58:
+ 306:Src/drv_softi2c.c ****  return x; 
+ 307:Src/drv_softi2c.c **** }
+ 769              		.loc 1 307 0
+ 770 0032 2046     		mov	r0, r4
+ 771 0034 38BD     		pop	{r3, r4, r5, pc}
+ 772              		.cfi_endproc
+ 773              	.LFE43:
+ 775 0036 00BF     		.section	.text.softi2c_writedata,"ax",%progbits
+ 776              		.align	2
+ 777              		.global	softi2c_writedata
+ 778              		.thumb
+ 779              		.thumb_func
+ 781              	softi2c_writedata:
+ 782              	.LFB44:
+ 308:Src/drv_softi2c.c **** 
+ 309:Src/drv_softi2c.c **** 
+ 310:Src/drv_softi2c.c **** void softi2c_writedata(uint8_t device_address ,uint8_t register_address , int *data, int size ) 
+ 311:Src/drv_softi2c.c **** {
+ 783              		.loc 1 311 0
+ 784              		.cfi_startproc
+ 785              		@ args = 0, pretend = 0, frame = 0
+ 786              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccVJwp9O.s 			page 20
+
+
+ 787              	.LVL59:
+ 788 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 789              	.LCFI10:
+ 790              		.cfi_def_cfa_offset 24
+ 791              		.cfi_offset 3, -24
+ 792              		.cfi_offset 4, -20
+ 793              		.cfi_offset 5, -16
+ 794              		.cfi_offset 6, -12
+ 795              		.cfi_offset 7, -8
+ 796              		.cfi_offset 14, -4
+ 797 0002 0746     		mov	r7, r0
+ 798 0004 0C46     		mov	r4, r1
+ 799 0006 1646     		mov	r6, r2
+ 800 0008 1D46     		mov	r5, r3
+ 801              	.LVL60:
+ 312:Src/drv_softi2c.c **** 	int index = 0;
+ 313:Src/drv_softi2c.c ****  _sendstart();
+ 802              		.loc 1 313 0
+ 803 000a FFF7FEFF 		bl	_sendstart
+ 804              	.LVL61:
+ 314:Src/drv_softi2c.c ****  _sendbyte(device_address<<1);
+ 805              		.loc 1 314 0
+ 806 000e 7800     		lsls	r0, r7, #1
+ 807 0010 00F0FE00 		and	r0, r0, #254
+ 808 0014 FFF7FEFF 		bl	_sendbyte
+ 809              	.LVL62:
+ 315:Src/drv_softi2c.c ****  _sendbyte(register_address);
+ 810              		.loc 1 315 0
+ 811 0018 2046     		mov	r0, r4
+ 812 001a FFF7FEFF 		bl	_sendbyte
+ 813              	.LVL63:
+ 316:Src/drv_softi2c.c ****   
+ 317:Src/drv_softi2c.c ****   _sendstop();
+ 814              		.loc 1 317 0
+ 815 001e FFF7FEFF 		bl	_sendstop
+ 816              	.LVL64:
+ 312:Src/drv_softi2c.c **** 	int index = 0;
+ 817              		.loc 1 312 0
+ 818 0022 0024     		movs	r4, #0
+ 318:Src/drv_softi2c.c **** 
+ 319:Src/drv_softi2c.c **** 	while(index<size)
+ 819              		.loc 1 319 0
+ 820 0024 04E0     		b	.L67
+ 821              	.LVL65:
+ 822              	.L68:
+ 320:Src/drv_softi2c.c **** 	{
+ 321:Src/drv_softi2c.c **** 	_sendbyte(data[index]);
+ 823              		.loc 1 321 0
+ 824 0026 16F82400 		ldrb	r0, [r6, r4, lsl #2]	@ zero_extendqisi2
+ 825 002a FFF7FEFF 		bl	_sendbyte
+ 826              	.LVL66:
+ 322:Src/drv_softi2c.c **** 	index++;	
+ 827              		.loc 1 322 0
+ 828 002e 0134     		adds	r4, r4, #1
+ 829              	.LVL67:
+ 830              	.L67:
+ 319:Src/drv_softi2c.c **** 	while(index<size)
+ARM GAS  /tmp/ccVJwp9O.s 			page 21
+
+
+ 831              		.loc 1 319 0 discriminator 1
+ 832 0030 AC42     		cmp	r4, r5
+ 833 0032 F8DB     		blt	.L68
+ 323:Src/drv_softi2c.c **** 	}
+ 324:Src/drv_softi2c.c ****  _sendstop();
+ 834              		.loc 1 324 0
+ 835 0034 FFF7FEFF 		bl	_sendstop
+ 836              	.LVL68:
+ 837 0038 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 838              		.cfi_endproc
+ 839              	.LFE44:
+ 841 003a 00BF     		.section	.text.softi2c_readdata,"ax",%progbits
+ 842              		.align	2
+ 843              		.global	softi2c_readdata
+ 844              		.thumb
+ 845              		.thumb_func
+ 847              	softi2c_readdata:
+ 848              	.LFB45:
+ 325:Src/drv_softi2c.c **** 
+ 326:Src/drv_softi2c.c **** }
+ 327:Src/drv_softi2c.c **** 
+ 328:Src/drv_softi2c.c **** 
+ 329:Src/drv_softi2c.c **** void softi2c_readdata(uint8_t device_address ,uint8_t register_address , int *data, int size ) 
+ 330:Src/drv_softi2c.c **** {
+ 849              		.loc 1 330 0
+ 850              		.cfi_startproc
+ 851              		@ args = 0, pretend = 0, frame = 0
+ 852              		@ frame_needed = 0, uses_anonymous_args = 0
+ 853              	.LVL69:
+ 854 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 855              	.LCFI11:
+ 856              		.cfi_def_cfa_offset 24
+ 857              		.cfi_offset 3, -24
+ 858              		.cfi_offset 4, -20
+ 859              		.cfi_offset 5, -16
+ 860              		.cfi_offset 6, -12
+ 861              		.cfi_offset 7, -8
+ 862              		.cfi_offset 14, -4
+ 863 0002 0446     		mov	r4, r0
+ 864 0004 0F46     		mov	r7, r1
+ 865 0006 1546     		mov	r5, r2
+ 866 0008 1E46     		mov	r6, r3
+ 867              	.LVL70:
+ 331:Src/drv_softi2c.c **** 	int index = 0;
+ 332:Src/drv_softi2c.c ****  _sendstart();
+ 868              		.loc 1 332 0
+ 869 000a FFF7FEFF 		bl	_sendstart
+ 870              	.LVL71:
+ 333:Src/drv_softi2c.c ****  _sendbyte(device_address<<1);
+ 871              		.loc 1 333 0
+ 872 000e 6400     		lsls	r4, r4, #1
+ 873 0010 E4B2     		uxtb	r4, r4
+ 874 0012 2046     		mov	r0, r4
+ 875 0014 FFF7FEFF 		bl	_sendbyte
+ 876              	.LVL72:
+ 334:Src/drv_softi2c.c ****  _sendbyte(register_address);
+ 877              		.loc 1 334 0
+ARM GAS  /tmp/ccVJwp9O.s 			page 22
+
+
+ 878 0018 3846     		mov	r0, r7
+ 879 001a FFF7FEFF 		bl	_sendbyte
+ 880              	.LVL73:
+ 335:Src/drv_softi2c.c ****  _restart();
+ 881              		.loc 1 335 0
+ 882 001e FFF7FEFF 		bl	_restart
+ 883              	.LVL74:
+ 336:Src/drv_softi2c.c ****  _sendbyte( (device_address<<1) + 1);
+ 884              		.loc 1 336 0
+ 885 0022 601C     		adds	r0, r4, #1
+ 886 0024 C0B2     		uxtb	r0, r0
+ 887 0026 FFF7FEFF 		bl	_sendbyte
+ 888              	.LVL75:
+ 331:Src/drv_softi2c.c **** 	int index = 0;
+ 889              		.loc 1 331 0
+ 890 002a 0024     		movs	r4, #0
+ 337:Src/drv_softi2c.c **** 	while(index<size-1)
+ 891              		.loc 1 337 0
+ 892 002c 013E     		subs	r6, r6, #1
+ 893              	.LVL76:
+ 338:Src/drv_softi2c.c **** 	{
+ 339:Src/drv_softi2c.c **** 	data[index] = _readbyte(0);
+ 894              		.loc 1 339 0
+ 895 002e 2746     		mov	r7, r4
+ 337:Src/drv_softi2c.c **** 	while(index<size-1)
+ 896              		.loc 1 337 0
+ 897 0030 05E0     		b	.L70
+ 898              	.LVL77:
+ 899              	.L71:
+ 900              		.loc 1 339 0
+ 901 0032 3846     		mov	r0, r7
+ 902 0034 FFF7FEFF 		bl	_readbyte
+ 903              	.LVL78:
+ 904 0038 45F82400 		str	r0, [r5, r4, lsl #2]
+ 340:Src/drv_softi2c.c **** 	index++;	
+ 905              		.loc 1 340 0
+ 906 003c 0134     		adds	r4, r4, #1
+ 907              	.LVL79:
+ 908              	.L70:
+ 337:Src/drv_softi2c.c **** 	while(index<size-1)
+ 909              		.loc 1 337 0 discriminator 1
+ 910 003e A642     		cmp	r6, r4
+ 911 0040 F7DC     		bgt	.L71
+ 341:Src/drv_softi2c.c **** 	}
+ 342:Src/drv_softi2c.c ****   data[index] = _readbyte(1);
+ 912              		.loc 1 342 0
+ 913 0042 0120     		movs	r0, #1
+ 914 0044 FFF7FEFF 		bl	_readbyte
+ 915              	.LVL80:
+ 916 0048 45F82400 		str	r0, [r5, r4, lsl #2]
+ 343:Src/drv_softi2c.c ****  _sendstop();
+ 917              		.loc 1 343 0
+ 918 004c FFF7FEFF 		bl	_sendstop
+ 919              	.LVL81:
+ 920 0050 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 921              		.cfi_endproc
+ 922              	.LFE45:
+ARM GAS  /tmp/ccVJwp9O.s 			page 23
+
+
+ 924 0052 00BF     		.section	.text.softi2c_init,"ax",%progbits
+ 925              		.align	2
+ 926              		.global	softi2c_init
+ 927              		.thumb
+ 928              		.thumb_func
+ 930              	softi2c_init:
+ 931              	.LFB46:
+ 344:Src/drv_softi2c.c ****  
+ 345:Src/drv_softi2c.c **** }
+ 346:Src/drv_softi2c.c **** 
+ 347:Src/drv_softi2c.c **** 
+ 348:Src/drv_softi2c.c **** void softi2c_init()
+ 349:Src/drv_softi2c.c **** {
+ 932              		.loc 1 349 0
+ 933              		.cfi_startproc
+ 934              		@ args = 0, pretend = 0, frame = 8
+ 935              		@ frame_needed = 0, uses_anonymous_args = 0
+ 936 0000 70B5     		push	{r4, r5, r6, lr}
+ 937              	.LCFI12:
+ 938              		.cfi_def_cfa_offset 16
+ 939              		.cfi_offset 4, -16
+ 940              		.cfi_offset 5, -12
+ 941              		.cfi_offset 6, -8
+ 942              		.cfi_offset 14, -4
+ 943 0002 82B0     		sub	sp, sp, #8
+ 944              	.LCFI13:
+ 945              		.cfi_def_cfa_offset 24
+ 350:Src/drv_softi2c.c **** 
+ 351:Src/drv_softi2c.c ****   GPIO_InitPara GPIO_InitStructure;
+ 352:Src/drv_softi2c.c **** 
+ 353:Src/drv_softi2c.c **** 	
+ 354:Src/drv_softi2c.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_6;
+ 946              		.loc 1 354 0
+ 947 0004 4023     		movs	r3, #64
+ 948 0006 0093     		str	r3, [sp]
+ 355:Src/drv_softi2c.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_MODE_OUT;
+ 949              		.loc 1 355 0
+ 950 0008 0124     		movs	r4, #1
+ 951 000a 8DF80440 		strb	r4, [sp, #4]
+ 356:Src/drv_softi2c.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_SPEED_50MHZ;
+ 952              		.loc 1 356 0
+ 953 000e 0323     		movs	r3, #3
+ 954 0010 8DF80530 		strb	r3, [sp, #5]
+ 357:Src/drv_softi2c.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OTYPE_PP;
+ 955              		.loc 1 357 0
+ 956 0014 0025     		movs	r5, #0
+ 957 0016 8DF80650 		strb	r5, [sp, #6]
+ 358:Src/drv_softi2c.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PUPD_PULLUP;
+ 958              		.loc 1 358 0
+ 959 001a 8DF80740 		strb	r4, [sp, #7]
+ 359:Src/drv_softi2c.c **** 	
+ 360:Src/drv_softi2c.c ****   GPIO_Init(GPIOB,&GPIO_InitStructure);
+ 960              		.loc 1 360 0
+ 961 001e 0C4E     		ldr	r6, .L73
+ 962 0020 3046     		mov	r0, r6
+ 963 0022 6946     		mov	r1, sp
+ 964 0024 FFF7FEFF 		bl	GPIO_Init
+ARM GAS  /tmp/ccVJwp9O.s 			page 24
+
+
+ 965              	.LVL82:
+ 361:Src/drv_softi2c.c **** 	
+ 362:Src/drv_softi2c.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_PIN_7;
+ 966              		.loc 1 362 0
+ 967 0028 8023     		movs	r3, #128
+ 968 002a 0093     		str	r3, [sp]
+ 363:Src/drv_softi2c.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_MODE_OUT;
+ 969              		.loc 1 363 0
+ 970 002c 8DF80440 		strb	r4, [sp, #4]
+ 364:Src/drv_softi2c.c **** 
+ 365:Src/drv_softi2c.c ****   GPIO_Init(GPIOB,&GPIO_InitStructure);
+ 971              		.loc 1 365 0
+ 972 0030 3046     		mov	r0, r6
+ 973 0032 6946     		mov	r1, sp
+ 974 0034 FFF7FEFF 		bl	GPIO_Init
+ 975              	.LVL83:
+ 366:Src/drv_softi2c.c **** 
+ 367:Src/drv_softi2c.c **** sdaout = 1;
+ 976              		.loc 1 367 0
+ 977 0038 064B     		ldr	r3, .L73+4
+ 978 003a 1C60     		str	r4, [r3]
+ 368:Src/drv_softi2c.c **** sda = 0;
+ 979              		.loc 1 368 0
+ 980 003c 064B     		ldr	r3, .L73+8
+ 981 003e 1D60     		str	r5, [r3]
+ 369:Src/drv_softi2c.c **** scl = 0;
+ 982              		.loc 1 369 0
+ 983 0040 064B     		ldr	r3, .L73+12
+ 984 0042 1D60     		str	r5, [r3]
+ 370:Src/drv_softi2c.c **** 	
+ 371:Src/drv_softi2c.c **** sdahigh();
+ 985              		.loc 1 371 0
+ 986 0044 FFF7FEFF 		bl	sdahigh
+ 987              	.LVL84:
+ 372:Src/drv_softi2c.c **** sclhigh();
+ 988              		.loc 1 372 0
+ 989 0048 FFF7FEFF 		bl	sclhigh
+ 990              	.LVL85:
+ 373:Src/drv_softi2c.c **** 	
+ 374:Src/drv_softi2c.c **** }
+ 991              		.loc 1 374 0
+ 992 004c 02B0     		add	sp, sp, #8
+ 993              		@ sp needed
+ 994 004e 70BD     		pop	{r4, r5, r6, pc}
+ 995              	.L74:
+ 996              		.align	2
+ 997              	.L73:
+ 998 0050 00040048 		.word	1207960576
+ 999 0054 00000000 		.word	.LANCHOR0
+ 1000 0058 00000000 		.word	sda
+ 1001 005c 00000000 		.word	scl
+ 1002              		.cfi_endproc
+ 1003              	.LFE46:
+ 1005              		.section	.text.i2c_error,"ax",%progbits
+ 1006              		.align	2
+ 1007              		.global	i2c_error
+ 1008              		.thumb
+ARM GAS  /tmp/ccVJwp9O.s 			page 25
+
+
+ 1009              		.thumb_func
+ 1011              	i2c_error:
+ 1012              	.LFB47:
+ 375:Src/drv_softi2c.c **** 
+ 376:Src/drv_softi2c.c **** uint8_t i2c_error()
+ 377:Src/drv_softi2c.c **** {
+ 1013              		.loc 1 377 0
+ 1014              		.cfi_startproc
+ 1015              		@ args = 0, pretend = 0, frame = 0
+ 1016              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1017              		@ link register save eliminated.
+ 378:Src/drv_softi2c.c **** uint8_t errora = error1;
+ 1018              		.loc 1 378 0
+ 1019 0000 024B     		ldr	r3, .L76
+ 1020 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 1021              	.LVL86:
+ 379:Src/drv_softi2c.c **** error1 = 0;
+ 1022              		.loc 1 379 0
+ 1023 0004 0022     		movs	r2, #0
+ 1024 0006 1A60     		str	r2, [r3]
+ 1025              	.LVL87:
+ 380:Src/drv_softi2c.c **** return errora;
+ 381:Src/drv_softi2c.c **** }
+ 1026              		.loc 1 381 0
+ 1027 0008 7047     		bx	lr
+ 1028              	.L77:
+ 1029 000a 00BF     		.align	2
+ 1030              	.L76:
+ 1031 000c 00000000 		.word	error1
+ 1032              		.cfi_endproc
+ 1033              	.LFE47:
+ 1035              		.global	sdaout
+ 1036              		.comm	scl,4,4
+ 1037              		.comm	sda,4,4
+ 1038              		.comm	error1,4,4
+ 1039              		.section	.bss.sdaout,"aw",%nobits
+ 1040              		.align	2
+ 1041              		.set	.LANCHOR0,. + 0
+ 1044              	sdaout:
+ 1045 0000 00000000 		.space	4
+ 1046              		.text
+ 1047              	.Letext0:
+ 1048              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 1049              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 1050              		.file 4 "CMSIS/gd32f1x0.h"
+ 1051              		.file 5 "Peripherals/inc/gd32f1x0_gpio.h"
+ 1052              		.file 6 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccVJwp9O.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_softi2c.c
+     /tmp/ccVJwp9O.s:17     .text.scllow:00000000 $t
+     /tmp/ccVJwp9O.s:22     .text.scllow:00000000 scllow
+     /tmp/ccVJwp9O.s:42     .text.scllow:00000010 $d
+                            *COM*:00000004 scl
+     /tmp/ccVJwp9O.s:48     .text.sclhigh:00000000 $t
+     /tmp/ccVJwp9O.s:53     .text.sclhigh:00000000 sclhigh
+     /tmp/ccVJwp9O.s:72     .text.sclhigh:00000010 $d
+     /tmp/ccVJwp9O.s:78     .text.sclhighlow:00000000 $t
+     /tmp/ccVJwp9O.s:83     .text.sclhighlow:00000000 sclhighlow
+     /tmp/ccVJwp9O.s:104    .text.sclhighlow:00000010 $d
+     /tmp/ccVJwp9O.s:110    .text.setinput:00000000 $t
+     /tmp/ccVJwp9O.s:115    .text.setinput:00000000 setinput
+     /tmp/ccVJwp9O.s:139    .text.setinput:00000018 $d
+     /tmp/ccVJwp9O.s:145    .text.setoutput:00000000 $t
+     /tmp/ccVJwp9O.s:150    .text.setoutput:00000000 setoutput
+     /tmp/ccVJwp9O.s:185    .text.setoutput:0000002c $d
+     /tmp/ccVJwp9O.s:191    .text.sdalow:00000000 $t
+     /tmp/ccVJwp9O.s:196    .text.sdalow:00000000 sdalow
+     /tmp/ccVJwp9O.s:227    .text.sdalow:0000001c $d
+                            *COM*:00000004 sda
+     /tmp/ccVJwp9O.s:234    .text.sdahigh:00000000 $t
+     /tmp/ccVJwp9O.s:239    .text.sdahigh:00000000 sdahigh
+     /tmp/ccVJwp9O.s:270    .text.sdahigh:0000001c $d
+     /tmp/ccVJwp9O.s:277    .text._readsda:00000000 $t
+     /tmp/ccVJwp9O.s:282    .text._readsda:00000000 _readsda
+     /tmp/ccVJwp9O.s:315    .text._readsda:00000020 $d
+     /tmp/ccVJwp9O.s:321    .text._sendstart:00000000 $t
+     /tmp/ccVJwp9O.s:326    .text._sendstart:00000000 _sendstart
+     /tmp/ccVJwp9O.s:367    .text._sendstart:00000028 $d
+                            *COM*:00000004 error1
+     /tmp/ccVJwp9O.s:374    .text._restart:00000000 $t
+     /tmp/ccVJwp9O.s:379    .text._restart:00000000 _restart
+     /tmp/ccVJwp9O.s:408    .text._restart:00000018 $d
+     /tmp/ccVJwp9O.s:413    .text._sendstop:00000000 $t
+     /tmp/ccVJwp9O.s:418    .text._sendstop:00000000 _sendstop
+     /tmp/ccVJwp9O.s:457    .text._sendstop:00000024 $d
+     /tmp/ccVJwp9O.s:463    .text._sendbyte:00000000 $t
+     /tmp/ccVJwp9O.s:468    .text._sendbyte:00000000 _sendbyte
+     /tmp/ccVJwp9O.s:541    .text._sendbyte:00000048 $d
+     /tmp/ccVJwp9O.s:547    .text._readbyte:00000000 $t
+     /tmp/ccVJwp9O.s:552    .text._readbyte:00000000 _readbyte
+     /tmp/ccVJwp9O.s:660    .text._readbyte:0000006c $d
+     /tmp/ccVJwp9O.s:668    .text.softi2c_write:00000000 $t
+     /tmp/ccVJwp9O.s:673    .text.softi2c_write:00000000 softi2c_write
+     /tmp/ccVJwp9O.s:718    .text.softi2c_read:00000000 $t
+     /tmp/ccVJwp9O.s:723    .text.softi2c_read:00000000 softi2c_read
+     /tmp/ccVJwp9O.s:776    .text.softi2c_writedata:00000000 $t
+     /tmp/ccVJwp9O.s:781    .text.softi2c_writedata:00000000 softi2c_writedata
+     /tmp/ccVJwp9O.s:842    .text.softi2c_readdata:00000000 $t
+     /tmp/ccVJwp9O.s:847    .text.softi2c_readdata:00000000 softi2c_readdata
+     /tmp/ccVJwp9O.s:925    .text.softi2c_init:00000000 $t
+     /tmp/ccVJwp9O.s:930    .text.softi2c_init:00000000 softi2c_init
+     /tmp/ccVJwp9O.s:998    .text.softi2c_init:00000050 $d
+     /tmp/ccVJwp9O.s:1006   .text.i2c_error:00000000 $t
+     /tmp/ccVJwp9O.s:1011   .text.i2c_error:00000000 i2c_error
+ARM GAS  /tmp/ccVJwp9O.s 			page 27
+
+
+     /tmp/ccVJwp9O.s:1031   .text.i2c_error:0000000c $d
+     /tmp/ccVJwp9O.s:1044   .bss.sdaout:00000000 sdaout
+     /tmp/ccVJwp9O.s:1040   .bss.sdaout:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+GPIO_ReadInputBit
+GPIO_Init

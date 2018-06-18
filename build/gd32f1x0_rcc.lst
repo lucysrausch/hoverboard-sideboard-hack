@@ -1,0 +1,3378 @@
+ARM GAS  /tmp/ccy6G2yN.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"gd32f1x0_rcc.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.RCC_DeInit,"ax",%progbits
+  17              		.align	2
+  18              		.global	RCC_DeInit
+  19              		.thumb
+  20              		.thumb_func
+  22              	RCC_DeInit:
+  23              	.LFB29:
+  24              		.file 1 "Peripherals/src/gd32f1x0_rcc.c"
+   1:Peripherals/src/gd32f1x0_rcc.c **** /**
+   2:Peripherals/src/gd32f1x0_rcc.c ****   ******************************************************************************
+   3:Peripherals/src/gd32f1x0_rcc.c ****   * @file    gd32f1x0_rcc.c
+   4:Peripherals/src/gd32f1x0_rcc.c ****   * @author  MCU SD
+   5:Peripherals/src/gd32f1x0_rcc.c ****   * @version V1.0.1
+   6:Peripherals/src/gd32f1x0_rcc.c ****   * @date    6-Sep-2014
+   7:Peripherals/src/gd32f1x0_rcc.c ****   * @brief   RCC functions of the firmware library.
+   8:Peripherals/src/gd32f1x0_rcc.c ****   ******************************************************************************
+   9:Peripherals/src/gd32f1x0_rcc.c ****   */
+  10:Peripherals/src/gd32f1x0_rcc.c **** 
+  11:Peripherals/src/gd32f1x0_rcc.c **** /* Includes ------------------------------------------------------------------*/
+  12:Peripherals/src/gd32f1x0_rcc.c **** #include "gd32f1x0_rcc.h"
+  13:Peripherals/src/gd32f1x0_rcc.c **** 
+  14:Peripherals/src/gd32f1x0_rcc.c **** /** @addtogroup GD32F1x0_Firmware
+  15:Peripherals/src/gd32f1x0_rcc.c ****   * @{
+  16:Peripherals/src/gd32f1x0_rcc.c ****   */
+  17:Peripherals/src/gd32f1x0_rcc.c **** 
+  18:Peripherals/src/gd32f1x0_rcc.c **** /** @defgroup RCC 
+  19:Peripherals/src/gd32f1x0_rcc.c ****   * @brief RCC driver modules
+  20:Peripherals/src/gd32f1x0_rcc.c ****   * @{
+  21:Peripherals/src/gd32f1x0_rcc.c ****   */ 
+  22:Peripherals/src/gd32f1x0_rcc.c **** 
+  23:Peripherals/src/gd32f1x0_rcc.c **** /** @defgroup RCC_Private_Defines
+  24:Peripherals/src/gd32f1x0_rcc.c ****   * @{
+  25:Peripherals/src/gd32f1x0_rcc.c ****   */
+  26:Peripherals/src/gd32f1x0_rcc.c **** /* ---------------------- RCC registers mask -------------------------------- */
+  27:Peripherals/src/gd32f1x0_rcc.c **** 
+  28:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCCR_HSIEN mask */
+  29:Peripherals/src/gd32f1x0_rcc.c **** #define  GCCR_HSIEN_SET                        ((uint32_t)0x00000001)
+  30:Peripherals/src/gd32f1x0_rcc.c **** 
+  31:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCFGR_Reset mask */
+  32:Peripherals/src/gd32f1x0_rcc.c **** #define  GCFGR_RESET                           ((uint32_t)0x083F000C)
+  33:Peripherals/src/gd32f1x0_rcc.c **** 
+  34:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCCR_HSEEN_CKMEN_PLLEN masks */
+ARM GAS  /tmp/ccy6G2yN.s 			page 2
+
+
+  35:Peripherals/src/gd32f1x0_rcc.c **** #define  GCCR_HSEEN_CKMEN_PLLEN_RESET          ((uint32_t)0xFEF6FFFF)
+  36:Peripherals/src/gd32f1x0_rcc.c **** 
+  37:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCCR_HSEBPS mask */
+  38:Peripherals/src/gd32f1x0_rcc.c **** #define  GCCR_HSEBPS_RESET                     ((uint32_t)0xFFFBFFFF)
+  39:Peripherals/src/gd32f1x0_rcc.c **** 
+  40:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCFGR_PLLSEL_PLLPREDV_PLLMF masks */
+  41:Peripherals/src/gd32f1x0_rcc.c **** #define  GCFGR_PLLSEL_PLLPREDV_PLLMF_RESET     ((uint32_t)0xF7C0FFFF)
+  42:Peripherals/src/gd32f1x0_rcc.c **** 
+  43:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCFGR2_HSEPREDIV mask */
+  44:Peripherals/src/gd32f1x0_rcc.c **** #define  GCFGR2_HSEPREDIV_RESET                ((uint32_t)0xFFFFFFF0)
+  45:Peripherals/src/gd32f1x0_rcc.c **** 
+  46:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCFGR3_USARTSEL_CECSEL_ADCSEL masks */
+  47:Peripherals/src/gd32f1x0_rcc.c **** #define  GCFGR3_USARTSEL_CECSEL_ADCSEL_RESET   ((uint32_t)0xFFFFFEBC)
+  48:Peripherals/src/gd32f1x0_rcc.c **** 
+  49:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCCR2_HSI14 mask */
+  50:Peripherals/src/gd32f1x0_rcc.c **** #define  GCCR2_HSI14_RESET                     ((uint32_t)0xFFFFFFFE)
+  51:Peripherals/src/gd32f1x0_rcc.c **** 
+  52:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCIR_INT masks */
+  53:Peripherals/src/gd32f1x0_rcc.c **** #define  GCIR_INT_RESET                        ((uint32_t)0x00000000)
+  54:Peripherals/src/gd32f1x0_rcc.c **** 
+  55:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCCR_HSIADJ masks */
+  56:Peripherals/src/gd32f1x0_rcc.c **** #define  GCCR_HSIADJ_OFFSET                    ((uint32_t)0x00000003)
+  57:Peripherals/src/gd32f1x0_rcc.c **** 
+  58:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCCR2_HSI14ADJ masks */
+  59:Peripherals/src/gd32f1x0_rcc.c **** #define  GCCR2_HSI14ADJ_OFFSET                 ((uint32_t)0x00000003)
+  60:Peripherals/src/gd32f1x0_rcc.c **** 
+  61:Peripherals/src/gd32f1x0_rcc.c **** /* GCCR register byte 2 (Bits[23:16]) base address */
+  62:Peripherals/src/gd32f1x0_rcc.c **** #define  GCCR_BYTE2_ADDRESS                    ((uint32_t)0x40021002)
+  63:Peripherals/src/gd32f1x0_rcc.c **** 
+  64:Peripherals/src/gd32f1x0_rcc.c **** /* GCFGR register byte 3 (Bits[31:23]) base address */
+  65:Peripherals/src/gd32f1x0_rcc.c **** #define  GCFGR_BYTE3_ADDRESS                   ((uint32_t)0x40021007)
+  66:Peripherals/src/gd32f1x0_rcc.c **** 
+  67:Peripherals/src/gd32f1x0_rcc.c **** /* GCIR register byte 1 (Bits[15:8]) base address */
+  68:Peripherals/src/gd32f1x0_rcc.c **** #define  GCIR_BYTE1_ADDRESS                    ((uint32_t)0x40021009)
+  69:Peripherals/src/gd32f1x0_rcc.c **** 
+  70:Peripherals/src/gd32f1x0_rcc.c **** /* GCIR register byte 2 (Bits[23:16]) base address */
+  71:Peripherals/src/gd32f1x0_rcc.c **** #define  GCIR_BYTE2_ADDRESS                    ((uint32_t)0x4002100A)
+  72:Peripherals/src/gd32f1x0_rcc.c **** 
+  73:Peripherals/src/gd32f1x0_rcc.c **** /* RCC GCFGR3_HSI14ADC masks */
+  74:Peripherals/src/gd32f1x0_rcc.c **** #define  GCFGR3_HSI14ADC_OFFSET                ((uint32_t)0x00000010)
+  75:Peripherals/src/gd32f1x0_rcc.c ****  
+  76:Peripherals/src/gd32f1x0_rcc.c **** /* RCC Flag Mask */
+  77:Peripherals/src/gd32f1x0_rcc.c **** #define  FLAG_MASK                             ((uint8_t)0x1F)
+  78:Peripherals/src/gd32f1x0_rcc.c **** 
+  79:Peripherals/src/gd32f1x0_rcc.c **** /* RCC HSI clock divided by 2 masks */
+  80:Peripherals/src/gd32f1x0_rcc.c **** #define  HSI_CLOCK_DIVIDED_2                   ((uint32_t)0x00000001)
+  81:Peripherals/src/gd32f1x0_rcc.c **** 
+  82:Peripherals/src/gd32f1x0_rcc.c **** /* RCC RCC_VC_KEY_ULOCKPOWER masks */
+  83:Peripherals/src/gd32f1x0_rcc.c **** #define	 RCC_VC_KEY_ULOCKPOWER                 ((uint32_t)0x1A2B3C4D)
+  84:Peripherals/src/gd32f1x0_rcc.c **** 
+  85:Peripherals/src/gd32f1x0_rcc.c **** /* RCC RCC_VC_KEY_CLEAR masks */
+  86:Peripherals/src/gd32f1x0_rcc.c **** #define	 RCC_VC_KEY_CLEAR                      ((uint32_t)0x00000000)
+  87:Peripherals/src/gd32f1x0_rcc.c **** 
+  88:Peripherals/src/gd32f1x0_rcc.c **** /* PLLMF[3:0] Bits */
+  89:Peripherals/src/gd32f1x0_rcc.c **** #define  RCC_GCFGR_PLLMF_3_0                   ((uint32_t)0x003C0000)
+  90:Peripherals/src/gd32f1x0_rcc.c **** 
+  91:Peripherals/src/gd32f1x0_rcc.c **** static __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+ARM GAS  /tmp/ccy6G2yN.s 			page 3
+
+
+  92:Peripherals/src/gd32f1x0_rcc.c **** static __I uint8_t APBPrescTable[8] = {0, 0, 0, 0, 1, 2, 3, 4};
+  93:Peripherals/src/gd32f1x0_rcc.c **** 
+  94:Peripherals/src/gd32f1x0_rcc.c **** /**
+  95:Peripherals/src/gd32f1x0_rcc.c ****   * @}
+  96:Peripherals/src/gd32f1x0_rcc.c ****   */
+  97:Peripherals/src/gd32f1x0_rcc.c **** 
+  98:Peripherals/src/gd32f1x0_rcc.c **** /** @defgroup RCC_Private_Functions
+  99:Peripherals/src/gd32f1x0_rcc.c ****   * @{
+ 100:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 101:Peripherals/src/gd32f1x0_rcc.c **** 
+ 102:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 103:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Reset the RCC clock configuration.
+ 104:Peripherals/src/gd32f1x0_rcc.c ****   * @param  None
+ 105:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 106:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 107:Peripherals/src/gd32f1x0_rcc.c **** void RCC_DeInit(void)
+ 108:Peripherals/src/gd32f1x0_rcc.c **** {
+  25              		.loc 1 108 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+ 109:Peripherals/src/gd32f1x0_rcc.c ****     /* Set RCC GCCR_HSIEN mask */
+ 110:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCCR |= GCCR_HSIEN_SET;
+  30              		.loc 1 110 0
+  31 0000 144B     		ldr	r3, .L2
+  32 0002 1A68     		ldr	r2, [r3]
+  33 0004 42F00102 		orr	r2, r2, #1
+  34 0008 1A60     		str	r2, [r3]
+ 111:Peripherals/src/gd32f1x0_rcc.c ****     
+ 112:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset SCS[1:0], AHBPS[3:0], APB1PS[2:0],APB2PS[2:0], ADCPS[1:0], ,USBPS[1:0],CKOTUSRC[2:0], 
+ 113:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR &= GCFGR_RESET;
+  35              		.loc 1 113 0
+  36 000a 5968     		ldr	r1, [r3, #4]
+  37 000c 124A     		ldr	r2, .L2+4
+  38 000e 0A40     		ands	r2, r2, r1
+  39 0010 5A60     		str	r2, [r3, #4]
+ 114:Peripherals/src/gd32f1x0_rcc.c ****     
+ 115:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset HSEEN, CKMEN and PLLEN bits */
+ 116:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCCR &= GCCR_HSEEN_CKMEN_PLLEN_RESET;
+  40              		.loc 1 116 0
+  41 0012 1A68     		ldr	r2, [r3]
+  42 0014 22F08472 		bic	r2, r2, #17301504
+  43 0018 22F48032 		bic	r2, r2, #65536
+  44 001c 1A60     		str	r2, [r3]
+ 117:Peripherals/src/gd32f1x0_rcc.c ****     
+ 118:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset HSEBPS bit */
+ 119:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCCR &= GCCR_HSEBPS_RESET;
+  45              		.loc 1 119 0
+  46 001e 1A68     		ldr	r2, [r3]
+  47 0020 22F48022 		bic	r2, r2, #262144
+  48 0024 1A60     		str	r2, [r3]
+ 120:Peripherals/src/gd32f1x0_rcc.c ****     
+ 121:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset PLLSEL, PLLPREDV and PLLMF[4:0] bits */
+ 122:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR &= GCFGR_PLLSEL_PLLPREDV_PLLMF_RESET;
+  49              		.loc 1 122 0
+  50 0026 5A68     		ldr	r2, [r3, #4]
+ARM GAS  /tmp/ccy6G2yN.s 			page 4
+
+
+  51 0028 22F00362 		bic	r2, r2, #137363456
+  52 002c 22F47022 		bic	r2, r2, #983040
+  53 0030 5A60     		str	r2, [r3, #4]
+ 123:Peripherals/src/gd32f1x0_rcc.c ****     
+ 124:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset HSEPREDIV[3:0] bits */
+ 125:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR2 &= GCFGR2_HSEPREDIV_RESET;
+  54              		.loc 1 125 0
+  55 0032 DA6A     		ldr	r2, [r3, #44]
+  56 0034 22F00F02 		bic	r2, r2, #15
+  57 0038 DA62     		str	r2, [r3, #44]
+ 126:Peripherals/src/gd32f1x0_rcc.c ****     
+ 127:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset USARTSEL[1:0], CECSEL and ADCSEL bits */
+ 128:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR3 &= GCFGR3_USARTSEL_CECSEL_ADCSEL_RESET;
+  58              		.loc 1 128 0
+  59 003a 1A6B     		ldr	r2, [r3, #48]
+  60 003c 22F4A172 		bic	r2, r2, #322
+  61 0040 22F00102 		bic	r2, r2, #1
+  62 0044 1A63     		str	r2, [r3, #48]
+ 129:Peripherals/src/gd32f1x0_rcc.c ****     
+ 130:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset HSI14 bit */
+ 131:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCCR2 &= GCCR2_HSI14_RESET;
+  63              		.loc 1 131 0
+  64 0046 5A6B     		ldr	r2, [r3, #52]
+  65 0048 22F00102 		bic	r2, r2, #1
+  66 004c 5A63     		str	r2, [r3, #52]
+ 132:Peripherals/src/gd32f1x0_rcc.c ****     
+ 133:Peripherals/src/gd32f1x0_rcc.c ****     /* Disable all interrupts */
+ 134:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCIR = GCIR_INT_RESET;
+  67              		.loc 1 134 0
+  68 004e 0022     		movs	r2, #0
+  69 0050 9A60     		str	r2, [r3, #8]
+  70 0052 7047     		bx	lr
+  71              	.L3:
+  72              		.align	2
+  73              	.L2:
+  74 0054 00100240 		.word	1073876992
+  75 0058 0C003F08 		.word	138346508
+  76              		.cfi_endproc
+  77              	.LFE29:
+  79              		.section	.text.RCC_HSEConfig,"ax",%progbits
+  80              		.align	2
+  81              		.global	RCC_HSEConfig
+  82              		.thumb
+  83              		.thumb_func
+  85              	RCC_HSEConfig:
+  86              	.LFB30:
+ 135:Peripherals/src/gd32f1x0_rcc.c **** }
+ 136:Peripherals/src/gd32f1x0_rcc.c **** 
+ 137:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 138:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the External High Speed oscillator (HSE).
+ 139:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_HSE: specify the new state of HSE.
+ 140:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 141:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_HSE_OFF: turn off the HSE
+ 142:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_HSE_ON: turn on the HSE
+ 143:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_HSE_BYPASS: HSE bypassed with external clock
+ 144:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 145:Peripherals/src/gd32f1x0_rcc.c ****   */
+ARM GAS  /tmp/ccy6G2yN.s 			page 5
+
+
+ 146:Peripherals/src/gd32f1x0_rcc.c **** void RCC_HSEConfig(uint8_t RCC_HSE)
+ 147:Peripherals/src/gd32f1x0_rcc.c **** {
+  87              		.loc 1 147 0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		@ link register save eliminated.
+  92              	.LVL0:
+ 148:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset HSEEN and HSESTB bits */
+ 149:Peripherals/src/gd32f1x0_rcc.c ****     *(__IO uint8_t *) GCCR_BYTE2_ADDRESS = RCC_HSE_OFF;
+  93              		.loc 1 149 0
+  94 0000 024B     		ldr	r3, .L5
+  95 0002 0022     		movs	r2, #0
+  96 0004 1A70     		strb	r2, [r3]
+ 150:Peripherals/src/gd32f1x0_rcc.c ****     
+ 151:Peripherals/src/gd32f1x0_rcc.c ****     /* Set the new state of HSE */
+ 152:Peripherals/src/gd32f1x0_rcc.c ****     *(__IO uint8_t *) GCCR_BYTE2_ADDRESS = RCC_HSE;
+  97              		.loc 1 152 0
+  98 0006 1870     		strb	r0, [r3]
+  99 0008 7047     		bx	lr
+ 100              	.L6:
+ 101 000a 00BF     		.align	2
+ 102              	.L5:
+ 103 000c 02100240 		.word	1073876994
+ 104              		.cfi_endproc
+ 105              	.LFE30:
+ 107              		.section	.text.RCC_AdjustHSICalibrationValue,"ax",%progbits
+ 108              		.align	2
+ 109              		.global	RCC_AdjustHSICalibrationValue
+ 110              		.thumb
+ 111              		.thumb_func
+ 113              	RCC_AdjustHSICalibrationValue:
+ 114              	.LFB32:
+ 153:Peripherals/src/gd32f1x0_rcc.c **** }
+ 154:Peripherals/src/gd32f1x0_rcc.c **** 
+ 155:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 156:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Wait for HSE start-up.
+ 157:Peripherals/src/gd32f1x0_rcc.c ****   * @param  None
+ 158:Peripherals/src/gd32f1x0_rcc.c ****   * @retval The HSE start-up result(SUCCESS or ERROR)
+ 159:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 160:Peripherals/src/gd32f1x0_rcc.c **** TypeState RCC_WaitForHSEStartUp(void)
+ 161:Peripherals/src/gd32f1x0_rcc.c **** {
+ 162:Peripherals/src/gd32f1x0_rcc.c ****     __IO uint32_t HSE_StartOk_Counter = 0;
+ 163:Peripherals/src/gd32f1x0_rcc.c ****     TypeState HSEState = RESET;
+ 164:Peripherals/src/gd32f1x0_rcc.c ****     
+ 165:Peripherals/src/gd32f1x0_rcc.c ****     /* Wait until HSE is ready and if timeout to exit */
+ 166:Peripherals/src/gd32f1x0_rcc.c ****     while((HSE_StartOk_Counter != HSE_STARTUP_TIMEOUT) && (HSEState == RESET))
+ 167:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 168:Peripherals/src/gd32f1x0_rcc.c ****         HSEState = RCC_GetBitState(RCC_FLAG_HSESTB);
+ 169:Peripherals/src/gd32f1x0_rcc.c ****         HSE_StartOk_Counter++;  
+ 170:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 171:Peripherals/src/gd32f1x0_rcc.c ****     
+ 172:Peripherals/src/gd32f1x0_rcc.c ****     if(RCC_GetBitState(RCC_FLAG_HSESTB) != RESET)
+ 173:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 174:Peripherals/src/gd32f1x0_rcc.c ****         return SUCCESS;
+ 175:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 176:Peripherals/src/gd32f1x0_rcc.c ****     else
+ARM GAS  /tmp/ccy6G2yN.s 			page 6
+
+
+ 177:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 178:Peripherals/src/gd32f1x0_rcc.c ****         return ERROR;
+ 179:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 180:Peripherals/src/gd32f1x0_rcc.c **** }
+ 181:Peripherals/src/gd32f1x0_rcc.c **** 
+ 182:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 183:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Adjust the Internal High Speed oscillator (HSI) calibration value.
+ 184:Peripherals/src/gd32f1x0_rcc.c ****   * @param  HSICalibrationValue: the HSI calibration value.
+ 185:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter must be between 0 and 0x1F.
+ 186:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 187:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 188:Peripherals/src/gd32f1x0_rcc.c **** void RCC_AdjustHSICalibrationValue(uint8_t HSICalibrationValue)
+ 189:Peripherals/src/gd32f1x0_rcc.c **** {
+ 115              		.loc 1 189 0
+ 116              		.cfi_startproc
+ 117              		@ args = 0, pretend = 0, frame = 0
+ 118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119              		@ link register save eliminated.
+ 120              	.LVL1:
+ 190:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp_adjust = 0;
+ 191:Peripherals/src/gd32f1x0_rcc.c ****     
+ 192:Peripherals/src/gd32f1x0_rcc.c ****     temp_adjust = RCC->GCCR;
+ 121              		.loc 1 192 0
+ 122 0000 034B     		ldr	r3, .L8
+ 123 0002 1A68     		ldr	r2, [r3]
+ 124              	.LVL2:
+ 193:Peripherals/src/gd32f1x0_rcc.c ****     
+ 194:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear HSIADJ[4:0] bits */
+ 195:Peripherals/src/gd32f1x0_rcc.c ****     temp_adjust &= ~RCC_GCCR_HSIADJ;
+ 125              		.loc 1 195 0
+ 126 0004 22F0F802 		bic	r2, r2, #248
+ 127              	.LVL3:
+ 196:Peripherals/src/gd32f1x0_rcc.c ****     
+ 197:Peripherals/src/gd32f1x0_rcc.c ****     /* Set HSIADJ[4:0] bits according to HSICalibrationValue value */
+ 198:Peripherals/src/gd32f1x0_rcc.c ****     temp_adjust |= (uint32_t)HSICalibrationValue << GCCR_HSIADJ_OFFSET ;
+ 128              		.loc 1 198 0
+ 129 0008 42EAC000 		orr	r0, r2, r0, lsl #3
+ 130              	.LVL4:
+ 199:Peripherals/src/gd32f1x0_rcc.c ****     
+ 200:Peripherals/src/gd32f1x0_rcc.c ****     /* Store the calibration value */
+ 201:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCCR = temp_adjust;
+ 131              		.loc 1 201 0
+ 132 000c 1860     		str	r0, [r3]
+ 133 000e 7047     		bx	lr
+ 134              	.L9:
+ 135              		.align	2
+ 136              	.L8:
+ 137 0010 00100240 		.word	1073876992
+ 138              		.cfi_endproc
+ 139              	.LFE32:
+ 141              		.section	.text.RCC_HSI_Enable,"ax",%progbits
+ 142              		.align	2
+ 143              		.global	RCC_HSI_Enable
+ 144              		.thumb
+ 145              		.thumb_func
+ 147              	RCC_HSI_Enable:
+ 148              	.LFB33:
+ARM GAS  /tmp/ccy6G2yN.s 			page 7
+
+
+ 202:Peripherals/src/gd32f1x0_rcc.c **** }
+ 203:Peripherals/src/gd32f1x0_rcc.c **** 
+ 204:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 205:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the Internal High Speed oscillator (HSI).
+ 206:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new value of the HSI.
+ 207:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 208:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 209:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 210:Peripherals/src/gd32f1x0_rcc.c **** void RCC_HSI_Enable(TypeState NewValue)
+ 211:Peripherals/src/gd32f1x0_rcc.c **** {
+ 149              		.loc 1 211 0
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 0
+ 152              		@ frame_needed = 0, uses_anonymous_args = 0
+ 153              		@ link register save eliminated.
+ 154              	.LVL5:
+ 212:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 155              		.loc 1 212 0
+ 156 0000 28B1     		cbz	r0, .L11
+ 213:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 214:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCCR |= RCC_GCCR_HSIEN;
+ 157              		.loc 1 214 0
+ 158 0002 064B     		ldr	r3, .L13
+ 159 0004 1A68     		ldr	r2, [r3]
+ 160 0006 42F00102 		orr	r2, r2, #1
+ 161 000a 1A60     		str	r2, [r3]
+ 162 000c 7047     		bx	lr
+ 163              	.L11:
+ 215:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 216:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 217:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 218:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCCR &= ~RCC_GCCR_HSIEN;
+ 164              		.loc 1 218 0
+ 165 000e 034B     		ldr	r3, .L13
+ 166 0010 1A68     		ldr	r2, [r3]
+ 167 0012 22F00102 		bic	r2, r2, #1
+ 168 0016 1A60     		str	r2, [r3]
+ 169 0018 7047     		bx	lr
+ 170              	.L14:
+ 171 001a 00BF     		.align	2
+ 172              	.L13:
+ 173 001c 00100240 		.word	1073876992
+ 174              		.cfi_endproc
+ 175              	.LFE33:
+ 177              		.section	.text.RCC_AdjustHSI14CalibrationValue,"ax",%progbits
+ 178              		.align	2
+ 179              		.global	RCC_AdjustHSI14CalibrationValue
+ 180              		.thumb
+ 181              		.thumb_func
+ 183              	RCC_AdjustHSI14CalibrationValue:
+ 184              	.LFB34:
+ 219:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 220:Peripherals/src/gd32f1x0_rcc.c **** }
+ 221:Peripherals/src/gd32f1x0_rcc.c **** 
+ 222:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 223:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Adjust the Internal High Speed oscillator (HSI14) calibration value.
+ 224:Peripherals/src/gd32f1x0_rcc.c ****   * @param  HSI14CalibrationValue: the HSI14 calibration value.
+ARM GAS  /tmp/ccy6G2yN.s 			page 8
+
+
+ 225:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter must be  between 0 and 0x1F.
+ 226:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 227:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 228:Peripherals/src/gd32f1x0_rcc.c **** void RCC_AdjustHSI14CalibrationValue(uint8_t HSI14CalibrationValue)
+ 229:Peripherals/src/gd32f1x0_rcc.c **** {
+ 185              		.loc 1 229 0
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 0
+ 188              		@ frame_needed = 0, uses_anonymous_args = 0
+ 189              		@ link register save eliminated.
+ 190              	.LVL6:
+ 230:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp_adjust = 0;
+ 231:Peripherals/src/gd32f1x0_rcc.c ****     
+ 232:Peripherals/src/gd32f1x0_rcc.c ****     temp_adjust = RCC->GCCR2;
+ 191              		.loc 1 232 0
+ 192 0000 034B     		ldr	r3, .L16
+ 193 0002 5A6B     		ldr	r2, [r3, #52]
+ 194              	.LVL7:
+ 233:Peripherals/src/gd32f1x0_rcc.c ****     
+ 234:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset HSI14ADJ[4:0] bits */
+ 235:Peripherals/src/gd32f1x0_rcc.c ****     temp_adjust &= ~RCC_GCCR2_HSI14ADJ;
+ 195              		.loc 1 235 0
+ 196 0004 22F0F802 		bic	r2, r2, #248
+ 197              	.LVL8:
+ 236:Peripherals/src/gd32f1x0_rcc.c ****     
+ 237:Peripherals/src/gd32f1x0_rcc.c ****     /* Set the HSI14ADJ[4:0] bits according to HSI14CalibrationValue value */
+ 238:Peripherals/src/gd32f1x0_rcc.c ****     temp_adjust |= (uint32_t)HSI14CalibrationValue << GCCR2_HSI14ADJ_OFFSET ;
+ 198              		.loc 1 238 0
+ 199 0008 42EAC000 		orr	r0, r2, r0, lsl #3
+ 200              	.LVL9:
+ 239:Peripherals/src/gd32f1x0_rcc.c ****     
+ 240:Peripherals/src/gd32f1x0_rcc.c ****     /* Store the calibration value */
+ 241:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCCR2 = temp_adjust;
+ 201              		.loc 1 241 0
+ 202 000c 5863     		str	r0, [r3, #52]
+ 203 000e 7047     		bx	lr
+ 204              	.L17:
+ 205              		.align	2
+ 206              	.L16:
+ 207 0010 00100240 		.word	1073876992
+ 208              		.cfi_endproc
+ 209              	.LFE34:
+ 211              		.section	.text.RCC_HSI14_Enable,"ax",%progbits
+ 212              		.align	2
+ 213              		.global	RCC_HSI14_Enable
+ 214              		.thumb
+ 215              		.thumb_func
+ 217              	RCC_HSI14_Enable:
+ 218              	.LFB35:
+ 242:Peripherals/src/gd32f1x0_rcc.c **** }
+ 243:Peripherals/src/gd32f1x0_rcc.c **** 
+ 244:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 245:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the Internal High Speed oscillator(HSI14).
+ 246:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new value of the HSI.
+ 247:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 248:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 249:Peripherals/src/gd32f1x0_rcc.c ****   */
+ARM GAS  /tmp/ccy6G2yN.s 			page 9
+
+
+ 250:Peripherals/src/gd32f1x0_rcc.c **** void RCC_HSI14_Enable(TypeState NewValue)
+ 251:Peripherals/src/gd32f1x0_rcc.c **** {
+ 219              		.loc 1 251 0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 0
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 223              		@ link register save eliminated.
+ 224              	.LVL10:
+ 252:Peripherals/src/gd32f1x0_rcc.c ****     if(NewValue != DISABLE)
+ 225              		.loc 1 252 0
+ 226 0000 28B1     		cbz	r0, .L19
+ 253:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 254:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCCR2 |= RCC_GCCR2_HSI14EN;
+ 227              		.loc 1 254 0
+ 228 0002 064B     		ldr	r3, .L21
+ 229 0004 5A6B     		ldr	r2, [r3, #52]
+ 230 0006 42F00102 		orr	r2, r2, #1
+ 231 000a 5A63     		str	r2, [r3, #52]
+ 232 000c 7047     		bx	lr
+ 233              	.L19:
+ 255:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 256:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 257:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 258:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCCR2 &= ~RCC_GCCR2_HSI14EN;
+ 234              		.loc 1 258 0
+ 235 000e 034B     		ldr	r3, .L21
+ 236 0010 5A6B     		ldr	r2, [r3, #52]
+ 237 0012 22F00102 		bic	r2, r2, #1
+ 238 0016 5A63     		str	r2, [r3, #52]
+ 239 0018 7047     		bx	lr
+ 240              	.L22:
+ 241 001a 00BF     		.align	2
+ 242              	.L21:
+ 243 001c 00100240 		.word	1073876992
+ 244              		.cfi_endproc
+ 245              	.LFE35:
+ 247              		.section	.text.RCC_LSEConfig,"ax",%progbits
+ 248              		.align	2
+ 249              		.global	RCC_LSEConfig
+ 250              		.thumb
+ 251              		.thumb_func
+ 253              	RCC_LSEConfig:
+ 254              	.LFB36:
+ 259:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 260:Peripherals/src/gd32f1x0_rcc.c **** }
+ 261:Peripherals/src/gd32f1x0_rcc.c **** 
+ 262:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 263:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the External Low Speed oscillator (LSE).
+ 264:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_LSE: specify the new state of the LSE.
+ 265:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 266:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_LSE_OFF: turn off the LSE 
+ 267:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_LSE_EN: turn on the LSE 
+ 268:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_LSE_Bypass: LSE bypassed with external clock
+ 269:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 270:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 271:Peripherals/src/gd32f1x0_rcc.c **** void RCC_LSEConfig(uint32_t RCC_LSE)
+ 272:Peripherals/src/gd32f1x0_rcc.c **** {
+ARM GAS  /tmp/ccy6G2yN.s 			page 10
+
+
+ 255              		.loc 1 272 0
+ 256              		.cfi_startproc
+ 257              		@ args = 0, pretend = 0, frame = 0
+ 258              		@ frame_needed = 0, uses_anonymous_args = 0
+ 259              		@ link register save eliminated.
+ 260              	.LVL11:
+ 273:Peripherals/src/gd32f1x0_rcc.c ****     /* Reset LSEEN and LSEBPS bits before configuring the LSE */
+ 274:Peripherals/src/gd32f1x0_rcc.c ****     RCC->BDCR &= ~(RCC_BDCR_LSEEN);
+ 261              		.loc 1 274 0
+ 262 0000 064B     		ldr	r3, .L24
+ 263 0002 1A6A     		ldr	r2, [r3, #32]
+ 264 0004 22F00102 		bic	r2, r2, #1
+ 265 0008 1A62     		str	r2, [r3, #32]
+ 275:Peripherals/src/gd32f1x0_rcc.c ****     RCC->BDCR &= ~(RCC_BDCR_LSEBPS);
+ 266              		.loc 1 275 0
+ 267 000a 1A6A     		ldr	r2, [r3, #32]
+ 268 000c 22F00402 		bic	r2, r2, #4
+ 269 0010 1A62     		str	r2, [r3, #32]
+ 276:Peripherals/src/gd32f1x0_rcc.c ****     
+ 277:Peripherals/src/gd32f1x0_rcc.c ****     /* Configure LSE */
+ 278:Peripherals/src/gd32f1x0_rcc.c ****     RCC->BDCR |= RCC_LSE;
+ 270              		.loc 1 278 0
+ 271 0012 1A6A     		ldr	r2, [r3, #32]
+ 272 0014 1043     		orrs	r0, r0, r2
+ 273              	.LVL12:
+ 274 0016 1862     		str	r0, [r3, #32]
+ 275 0018 7047     		bx	lr
+ 276              	.L25:
+ 277 001a 00BF     		.align	2
+ 278              	.L24:
+ 279 001c 00100240 		.word	1073876992
+ 280              		.cfi_endproc
+ 281              	.LFE36:
+ 283              		.section	.text.RCC_LSEDriveConfig,"ax",%progbits
+ 284              		.align	2
+ 285              		.global	RCC_LSEDriveConfig
+ 286              		.thumb
+ 287              		.thumb_func
+ 289              	RCC_LSEDriveConfig:
+ 290              	.LFB37:
+ 279:Peripherals/src/gd32f1x0_rcc.c **** }
+ 280:Peripherals/src/gd32f1x0_rcc.c **** 
+ 281:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 282:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the External Low Speed oscillator (LSE) drive capability.
+ 283:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_LSEDrive: specify the new state of the LSE drive capability.
+ 284:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 285:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_LSEDRIVE_LOW: LSE low drive capability.
+ 286:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_LSEDRIVE_MEDIUMLOE: LSE medium low drive capability.
+ 287:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_LSEDRIVE_MEDIUMHIGH: LSE medium high drive capability.
+ 288:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_LSEDRIVE_HIGH: LSE high drive capability.
+ 289:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 290:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 291:Peripherals/src/gd32f1x0_rcc.c **** void RCC_LSEDriveConfig(uint32_t RCC_LSEDrive)
+ 292:Peripherals/src/gd32f1x0_rcc.c **** {
+ 291              		.loc 1 292 0
+ 292              		.cfi_startproc
+ 293              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccy6G2yN.s 			page 11
+
+
+ 294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295              		@ link register save eliminated.
+ 296              	.LVL13:
+ 293:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear LSEDRI[1:0] bits */
+ 294:Peripherals/src/gd32f1x0_rcc.c ****     RCC->BDCR &= ~(RCC_BDCR_LSEDRI);
+ 297              		.loc 1 294 0
+ 298 0000 044B     		ldr	r3, .L27
+ 299 0002 1A6A     		ldr	r2, [r3, #32]
+ 300 0004 22F01802 		bic	r2, r2, #24
+ 301 0008 1A62     		str	r2, [r3, #32]
+ 295:Peripherals/src/gd32f1x0_rcc.c ****     
+ 296:Peripherals/src/gd32f1x0_rcc.c ****     /* Set the LSE drive capability */
+ 297:Peripherals/src/gd32f1x0_rcc.c ****     RCC->BDCR |= RCC_LSEDrive;
+ 302              		.loc 1 297 0
+ 303 000a 1A6A     		ldr	r2, [r3, #32]
+ 304 000c 1043     		orrs	r0, r0, r2
+ 305              	.LVL14:
+ 306 000e 1862     		str	r0, [r3, #32]
+ 307 0010 7047     		bx	lr
+ 308              	.L28:
+ 309 0012 00BF     		.align	2
+ 310              	.L27:
+ 311 0014 00100240 		.word	1073876992
+ 312              		.cfi_endproc
+ 313              	.LFE37:
+ 315              		.section	.text.RCC_LSI_Enable,"ax",%progbits
+ 316              		.align	2
+ 317              		.global	RCC_LSI_Enable
+ 318              		.thumb
+ 319              		.thumb_func
+ 321              	RCC_LSI_Enable:
+ 322              	.LFB38:
+ 298:Peripherals/src/gd32f1x0_rcc.c **** }
+ 299:Peripherals/src/gd32f1x0_rcc.c **** 
+ 300:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 301:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the Internal Low Speed oscillator (LSI).
+ 302:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new value of the LSI.
+ 303:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 304:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 305:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 306:Peripherals/src/gd32f1x0_rcc.c **** void RCC_LSI_Enable(TypeState NewValue)
+ 307:Peripherals/src/gd32f1x0_rcc.c **** {
+ 323              		.loc 1 307 0
+ 324              		.cfi_startproc
+ 325              		@ args = 0, pretend = 0, frame = 0
+ 326              		@ frame_needed = 0, uses_anonymous_args = 0
+ 327              		@ link register save eliminated.
+ 328              	.LVL15:
+ 308:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 329              		.loc 1 308 0
+ 330 0000 28B1     		cbz	r0, .L30
+ 309:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 310:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCSR |= RCC_GCSR_LSIEN;
+ 331              		.loc 1 310 0
+ 332 0002 064B     		ldr	r3, .L32
+ 333 0004 5A6A     		ldr	r2, [r3, #36]
+ 334 0006 42F00102 		orr	r2, r2, #1
+ARM GAS  /tmp/ccy6G2yN.s 			page 12
+
+
+ 335 000a 5A62     		str	r2, [r3, #36]
+ 336 000c 7047     		bx	lr
+ 337              	.L30:
+ 311:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 312:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 313:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 314:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCSR &= ~RCC_GCSR_LSIEN;
+ 338              		.loc 1 314 0
+ 339 000e 034B     		ldr	r3, .L32
+ 340 0010 5A6A     		ldr	r2, [r3, #36]
+ 341 0012 22F00102 		bic	r2, r2, #1
+ 342 0016 5A62     		str	r2, [r3, #36]
+ 343 0018 7047     		bx	lr
+ 344              	.L33:
+ 345 001a 00BF     		.align	2
+ 346              	.L32:
+ 347 001c 00100240 		.word	1073876992
+ 348              		.cfi_endproc
+ 349              	.LFE38:
+ 351              		.section	.text.RCC_PLLConfig,"ax",%progbits
+ 352              		.align	2
+ 353              		.global	RCC_PLLConfig
+ 354              		.thumb
+ 355              		.thumb_func
+ 357              	RCC_PLLConfig:
+ 358              	.LFB39:
+ 315:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 316:Peripherals/src/gd32f1x0_rcc.c **** }
+ 317:Peripherals/src/gd32f1x0_rcc.c **** 
+ 318:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 319:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the PLL clock source and multiplication factor.
+ 320:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_PLLSelect: specify the PLL clock source.
+ 321:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 322:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_PLLSOURCE_HSI_DIV2: HSI divided by 2 selected as PLL clock source
+ 323:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_PLLSOURCE_HSEPREDIV: HSE selected as PLL clock source
+ 324:Peripherals/src/gd32f1x0_rcc.c ****   * @note   if using HSE as PLL source, the minimum clock frequency for PLL is 2 MHz.
+ 325:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_PLLMF: specify the PLL multiplication factor,  RCC_PLLMUL_x where x:[2,32] 
+ 326:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 327:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 328:Peripherals/src/gd32f1x0_rcc.c **** void RCC_PLLConfig(uint32_t RCC_PLLSelect, uint32_t RCC_PLLMF)
+ 329:Peripherals/src/gd32f1x0_rcc.c **** {
+ 359              		.loc 1 329 0
+ 360              		.cfi_startproc
+ 361              		@ args = 0, pretend = 0, frame = 0
+ 362              		@ frame_needed = 0, uses_anonymous_args = 0
+ 363              		@ link register save eliminated.
+ 364              	.LVL16:
+ 330:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear PLLSEL [16] and PLLMF [27] [21:18] bits */
+ 331:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR &= ~(RCC_GCFGR_PLLMF | RCC_GCFGR_PLLSEL);
+ 365              		.loc 1 331 0
+ 366 0000 054B     		ldr	r3, .L35
+ 367 0002 5A68     		ldr	r2, [r3, #4]
+ 368 0004 22F00362 		bic	r2, r2, #137363456
+ 369 0008 22F45022 		bic	r2, r2, #851968
+ 370 000c 5A60     		str	r2, [r3, #4]
+ 332:Peripherals/src/gd32f1x0_rcc.c ****     
+ 333:Peripherals/src/gd32f1x0_rcc.c ****     /* Set the PLLSEL and PLLMF */
+ARM GAS  /tmp/ccy6G2yN.s 			page 13
+
+
+ 334:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR |= (uint32_t)(RCC_PLLSelect | RCC_PLLMF);
+ 371              		.loc 1 334 0
+ 372 000e 5A68     		ldr	r2, [r3, #4]
+ 373 0010 0143     		orrs	r1, r1, r0
+ 374              	.LVL17:
+ 375 0012 0A43     		orrs	r2, r2, r1
+ 376 0014 5A60     		str	r2, [r3, #4]
+ 377 0016 7047     		bx	lr
+ 378              	.L36:
+ 379              		.align	2
+ 380              	.L35:
+ 381 0018 00100240 		.word	1073876992
+ 382              		.cfi_endproc
+ 383              	.LFE39:
+ 385              		.section	.text.RCC_PLL_Enable,"ax",%progbits
+ 386              		.align	2
+ 387              		.global	RCC_PLL_Enable
+ 388              		.thumb
+ 389              		.thumb_func
+ 391              	RCC_PLL_Enable:
+ 392              	.LFB40:
+ 335:Peripherals/src/gd32f1x0_rcc.c **** }
+ 336:Peripherals/src/gd32f1x0_rcc.c **** 
+ 337:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 338:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the PLL.
+ 339:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new value of the PLL.
+ 340:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 341:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 342:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 343:Peripherals/src/gd32f1x0_rcc.c **** void RCC_PLL_Enable(TypeState NewValue)
+ 344:Peripherals/src/gd32f1x0_rcc.c **** {
+ 393              		.loc 1 344 0
+ 394              		.cfi_startproc
+ 395              		@ args = 0, pretend = 0, frame = 0
+ 396              		@ frame_needed = 0, uses_anonymous_args = 0
+ 397              		@ link register save eliminated.
+ 398              	.LVL18:
+ 345:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 399              		.loc 1 345 0
+ 400 0000 28B1     		cbz	r0, .L38
+ 346:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 347:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCCR |= RCC_GCCR_PLLEN;
+ 401              		.loc 1 347 0
+ 402 0002 064B     		ldr	r3, .L40
+ 403 0004 1A68     		ldr	r2, [r3]
+ 404 0006 42F08072 		orr	r2, r2, #16777216
+ 405 000a 1A60     		str	r2, [r3]
+ 406 000c 7047     		bx	lr
+ 407              	.L38:
+ 348:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 349:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 350:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 351:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCCR &= ~RCC_GCCR_PLLEN;
+ 408              		.loc 1 351 0
+ 409 000e 034B     		ldr	r3, .L40
+ 410 0010 1A68     		ldr	r2, [r3]
+ 411 0012 22F08072 		bic	r2, r2, #16777216
+ARM GAS  /tmp/ccy6G2yN.s 			page 14
+
+
+ 412 0016 1A60     		str	r2, [r3]
+ 413 0018 7047     		bx	lr
+ 414              	.L41:
+ 415 001a 00BF     		.align	2
+ 416              	.L40:
+ 417 001c 00100240 		.word	1073876992
+ 418              		.cfi_endproc
+ 419              	.LFE40:
+ 421              		.section	.text.RCC_HSEPREDVConfig,"ax",%progbits
+ 422              		.align	2
+ 423              		.global	RCC_HSEPREDVConfig
+ 424              		.thumb
+ 425              		.thumb_func
+ 427              	RCC_HSEPREDVConfig:
+ 428              	.LFB41:
+ 352:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 353:Peripherals/src/gd32f1x0_rcc.c **** }
+ 354:Peripherals/src/gd32f1x0_rcc.c **** 
+ 355:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 356:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the HSEPREDV division factor.
+ 357:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_HSEPREDV1_Div: specify the HSE division factor.
+ 358:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be RCC_HSEPREDV1_DIVx where x:[1,16]
+ 359:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 360:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 361:Peripherals/src/gd32f1x0_rcc.c **** void RCC_HSEPREDVConfig(uint32_t RCC_HSEPREDV1_Div)
+ 362:Peripherals/src/gd32f1x0_rcc.c **** {
+ 429              		.loc 1 362 0
+ 430              		.cfi_startproc
+ 431              		@ args = 0, pretend = 0, frame = 0
+ 432              		@ frame_needed = 0, uses_anonymous_args = 0
+ 433              		@ link register save eliminated.
+ 434              	.LVL19:
+ 363:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp = 0;
+ 364:Peripherals/src/gd32f1x0_rcc.c ****     
+ 365:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR2;
+ 435              		.loc 1 365 0
+ 436 0000 034B     		ldr	r3, .L43
+ 437 0002 DA6A     		ldr	r2, [r3, #44]
+ 438              	.LVL20:
+ 366:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear HSEPREDV[3:0] bits */
+ 367:Peripherals/src/gd32f1x0_rcc.c ****     temp &= ~(RCC_GCFGR2_HSEPREDV1);
+ 439              		.loc 1 367 0
+ 440 0004 22F00F02 		bic	r2, r2, #15
+ 441              	.LVL21:
+ 368:Peripherals/src/gd32f1x0_rcc.c ****     /* Set the HSEPREDV division factor */
+ 369:Peripherals/src/gd32f1x0_rcc.c ****     temp |= RCC_HSEPREDV1_Div;
+ 442              		.loc 1 369 0
+ 443 0008 1043     		orrs	r0, r0, r2
+ 444              	.LVL22:
+ 370:Peripherals/src/gd32f1x0_rcc.c ****     /* Store the new value */
+ 371:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR2 = temp;
+ 445              		.loc 1 371 0
+ 446 000a D862     		str	r0, [r3, #44]
+ 447 000c 7047     		bx	lr
+ 448              	.L44:
+ 449 000e 00BF     		.align	2
+ 450              	.L43:
+ARM GAS  /tmp/ccy6G2yN.s 			page 15
+
+
+ 451 0010 00100240 		.word	1073876992
+ 452              		.cfi_endproc
+ 453              	.LFE41:
+ 455              		.section	.text.RCC_HSEClockMonitor_Enable,"ax",%progbits
+ 456              		.align	2
+ 457              		.global	RCC_HSEClockMonitor_Enable
+ 458              		.thumb
+ 459              		.thumb_func
+ 461              	RCC_HSEClockMonitor_Enable:
+ 462              	.LFB42:
+ 372:Peripherals/src/gd32f1x0_rcc.c **** }
+ 373:Peripherals/src/gd32f1x0_rcc.c **** 
+ 374:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 375:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the Clock Security System.
+ 376:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new value of the Clock Security System.
+ 377:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 378:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 379:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 380:Peripherals/src/gd32f1x0_rcc.c **** void RCC_HSEClockMonitor_Enable(TypeState NewValue)
+ 381:Peripherals/src/gd32f1x0_rcc.c **** {
+ 463              		.loc 1 381 0
+ 464              		.cfi_startproc
+ 465              		@ args = 0, pretend = 0, frame = 0
+ 466              		@ frame_needed = 0, uses_anonymous_args = 0
+ 467              		@ link register save eliminated.
+ 468              	.LVL23:
+ 382:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 469              		.loc 1 382 0
+ 470 0000 28B1     		cbz	r0, .L46
+ 383:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 384:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCCR |= RCC_GCCR_CKMEN;
+ 471              		.loc 1 384 0
+ 472 0002 064B     		ldr	r3, .L48
+ 473 0004 1A68     		ldr	r2, [r3]
+ 474 0006 42F40022 		orr	r2, r2, #524288
+ 475 000a 1A60     		str	r2, [r3]
+ 476 000c 7047     		bx	lr
+ 477              	.L46:
+ 385:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 386:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 387:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 388:Peripherals/src/gd32f1x0_rcc.c ****         RCC->GCCR &= ~RCC_GCCR_CKMEN;
+ 478              		.loc 1 388 0
+ 479 000e 034B     		ldr	r3, .L48
+ 480 0010 1A68     		ldr	r2, [r3]
+ 481 0012 22F40022 		bic	r2, r2, #524288
+ 482 0016 1A60     		str	r2, [r3]
+ 483 0018 7047     		bx	lr
+ 484              	.L49:
+ 485 001a 00BF     		.align	2
+ 486              	.L48:
+ 487 001c 00100240 		.word	1073876992
+ 488              		.cfi_endproc
+ 489              	.LFE42:
+ 491              		.section	.text.RCC_CKOUTSRCConfig,"ax",%progbits
+ 492              		.align	2
+ 493              		.global	RCC_CKOUTSRCConfig
+ARM GAS  /tmp/ccy6G2yN.s 			page 16
+
+
+ 494              		.thumb
+ 495              		.thumb_func
+ 497              	RCC_CKOUTSRCConfig:
+ 498              	.LFB43:
+ 389:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 390:Peripherals/src/gd32f1x0_rcc.c **** }
+ 391:Peripherals/src/gd32f1x0_rcc.c **** 
+ 392:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 393:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Select the clock source to output on CKOUTSRC and the corresponding prescaler.
+ 394:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_CKOUTSRC: specify the clock source to output.
+ 395:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 396:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_NOCLOCK: No clock selected.
+ 397:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_HSI14: selecte HSI14 to output.
+ 398:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_LSI: selecte LSI to output.
+ 399:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_LSE: selecte LSE to output.
+ 400:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_SYSCLK: selecte System clock to output.
+ 401:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_HSI: selecte HSI to output.
+ 402:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_HSE: selecte HSE to output.
+ 403:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_PLLCLK_DIV2: PLL clock divided by 2 selecte.
+ 404:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTSRC_PLLCLK_DIV1: PLL clock selected.
+ 405:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_CKOUTDIV: specify the corresponding prescaler on CKOUTSRC.
+ 406:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 407:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTDIV_1: CK_OUT clock is divided by 1.
+ 408:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTDIV_2: CK_OUT clock is divided by 2.
+ 409:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTDIV_4: CK_OUT clock is divided by 4.
+ 410:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTDIV_8: CK_OUT clock is divided by 8.
+ 411:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTDIV_16: CK_OUT clock is divided by 16.
+ 412:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTDIV_32: CK_OUT clock is divided by 32.
+ 413:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTDIV_64: CK_OUT clock is divided by 64.
+ 414:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CKOUTDIV_128: CK_OUT clock is divided by 128.    
+ 415:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 416:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 417:Peripherals/src/gd32f1x0_rcc.c **** void RCC_CKOUTSRCConfig(uint32_t RCC_CKOUTSRC, uint32_t RCC_CKOUTDIV)
+ 418:Peripherals/src/gd32f1x0_rcc.c **** {
+ 499              		.loc 1 418 0
+ 500              		.cfi_startproc
+ 501              		@ args = 0, pretend = 0, frame = 0
+ 502              		@ frame_needed = 0, uses_anonymous_args = 0
+ 503              		@ link register save eliminated.
+ 504              	.LVL24:
+ 419:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp = 0;
+ 420:Peripherals/src/gd32f1x0_rcc.c ****     
+ 421:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR;
+ 505              		.loc 1 421 0
+ 506 0000 034B     		ldr	r3, .L51
+ 507 0002 5A68     		ldr	r2, [r3, #4]
+ 508              	.LVL25:
+ 422:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear CKOUTSRC[2:0] bits */
+ 423:Peripherals/src/gd32f1x0_rcc.c ****     temp &= ~(RCC_GCFGR_CKOUTDIV | RCC_GCFGR_CKOUTSEL | RCC_GCFGR_PLLDV);
+ 509              		.loc 1 423 0
+ 510 0004 22F07742 		bic	r2, r2, #-150994944
+ 511              	.LVL26:
+ 424:Peripherals/src/gd32f1x0_rcc.c ****     /* Set the RCC_CKOUTSRC and RCC_CKOUTDIV */
+ 425:Peripherals/src/gd32f1x0_rcc.c ****     temp |= (RCC_CKOUTDIV | RCC_CKOUTSRC);
+ 512              		.loc 1 425 0
+ 513 0008 0143     		orrs	r1, r1, r0
+ 514              	.LVL27:
+ARM GAS  /tmp/ccy6G2yN.s 			page 17
+
+
+ 515 000a 0A43     		orrs	r2, r2, r1
+ 516              	.LVL28:
+ 426:Peripherals/src/gd32f1x0_rcc.c ****     /* Store the new value */
+ 427:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR = temp;
+ 517              		.loc 1 427 0
+ 518 000c 5A60     		str	r2, [r3, #4]
+ 519 000e 7047     		bx	lr
+ 520              	.L52:
+ 521              		.align	2
+ 522              	.L51:
+ 523 0010 00100240 		.word	1073876992
+ 524              		.cfi_endproc
+ 525              	.LFE43:
+ 527              		.section	.text.RCC_CK_SYSConfig,"ax",%progbits
+ 528              		.align	2
+ 529              		.global	RCC_CK_SYSConfig
+ 530              		.thumb
+ 531              		.thumb_func
+ 533              	RCC_CK_SYSConfig:
+ 534              	.LFB44:
+ 428:Peripherals/src/gd32f1x0_rcc.c **** }
+ 429:Peripherals/src/gd32f1x0_rcc.c **** 
+ 430:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 431:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the system clock (CK_SYS) 
+ 432:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_SYSCLKSource: specify the system clock source 
+ 433:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 434:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLKSOURCE_HSI:    selecte HSI as CK_SYS source
+ 435:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLKSOURCE_HSE:    selecte HSE as CK_SYS source
+ 436:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLKSOURCE_PLLCLK: selecte PLL as CK_SYS source
+ 437:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 438:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 439:Peripherals/src/gd32f1x0_rcc.c **** void RCC_CK_SYSConfig(uint32_t RCC_SYSCLKSource)
+ 440:Peripherals/src/gd32f1x0_rcc.c **** {
+ 535              		.loc 1 440 0
+ 536              		.cfi_startproc
+ 537              		@ args = 0, pretend = 0, frame = 0
+ 538              		@ frame_needed = 0, uses_anonymous_args = 0
+ 539              		@ link register save eliminated.
+ 540              	.LVL29:
+ 441:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp = 0;
+ 442:Peripherals/src/gd32f1x0_rcc.c ****     
+ 443:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR;
+ 541              		.loc 1 443 0
+ 542 0000 034B     		ldr	r3, .L54
+ 543 0002 5A68     		ldr	r2, [r3, #4]
+ 544              	.LVL30:
+ 444:Peripherals/src/gd32f1x0_rcc.c ****     
+ 445:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear SCS[1:0] bits */
+ 446:Peripherals/src/gd32f1x0_rcc.c ****     temp &= ~RCC_GCFGR_SCS;
+ 545              		.loc 1 446 0
+ 546 0004 22F00302 		bic	r2, r2, #3
+ 547              	.LVL31:
+ 447:Peripherals/src/gd32f1x0_rcc.c ****     
+ 448:Peripherals/src/gd32f1x0_rcc.c ****     /* Set SCS[1:0] bits according to RCC_SYSCLKSource value */
+ 449:Peripherals/src/gd32f1x0_rcc.c ****     temp |= RCC_SYSCLKSource;
+ 548              		.loc 1 449 0
+ 549 0008 1043     		orrs	r0, r0, r2
+ARM GAS  /tmp/ccy6G2yN.s 			page 18
+
+
+ 550              	.LVL32:
+ 450:Peripherals/src/gd32f1x0_rcc.c ****     
+ 451:Peripherals/src/gd32f1x0_rcc.c ****     /* Store the new value */
+ 452:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR = temp;
+ 551              		.loc 1 452 0
+ 552 000a 5860     		str	r0, [r3, #4]
+ 553 000c 7047     		bx	lr
+ 554              	.L55:
+ 555 000e 00BF     		.align	2
+ 556              	.L54:
+ 557 0010 00100240 		.word	1073876992
+ 558              		.cfi_endproc
+ 559              	.LFE44:
+ 561              		.section	.text.RCC_GetCK_SYSSource,"ax",%progbits
+ 562              		.align	2
+ 563              		.global	RCC_GetCK_SYSSource
+ 564              		.thumb
+ 565              		.thumb_func
+ 567              	RCC_GetCK_SYSSource:
+ 568              	.LFB45:
+ 453:Peripherals/src/gd32f1x0_rcc.c **** }
+ 454:Peripherals/src/gd32f1x0_rcc.c **** 
+ 455:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 456:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Get the system clock source.
+ 457:Peripherals/src/gd32f1x0_rcc.c ****   * @param  None
+ 458:Peripherals/src/gd32f1x0_rcc.c ****   * @retval Get the system clock source. The returned value can be one 
+ 459:Peripherals/src/gd32f1x0_rcc.c ****   *         of the following values:
+ 460:Peripherals/src/gd32f1x0_rcc.c ****   *           - 0x00: HSI used as CK_SYS source
+ 461:Peripherals/src/gd32f1x0_rcc.c ****   *           - 0x04: HSE used as CK_SYS source  
+ 462:Peripherals/src/gd32f1x0_rcc.c ****   *           - 0x08: PLL used as CK_SYS source
+ 463:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 464:Peripherals/src/gd32f1x0_rcc.c **** uint8_t RCC_GetCK_SYSSource(void)
+ 465:Peripherals/src/gd32f1x0_rcc.c **** {
+ 569              		.loc 1 465 0
+ 570              		.cfi_startproc
+ 571              		@ args = 0, pretend = 0, frame = 0
+ 572              		@ frame_needed = 0, uses_anonymous_args = 0
+ 573              		@ link register save eliminated.
+ 466:Peripherals/src/gd32f1x0_rcc.c ****     return ((uint8_t)(RCC->GCFGR & RCC_GCFGR_SCSS));
+ 574              		.loc 1 466 0
+ 575 0000 024B     		ldr	r3, .L57
+ 576 0002 5868     		ldr	r0, [r3, #4]
+ 467:Peripherals/src/gd32f1x0_rcc.c **** }
+ 577              		.loc 1 467 0
+ 578 0004 00F00C00 		and	r0, r0, #12
+ 579 0008 7047     		bx	lr
+ 580              	.L58:
+ 581 000a 00BF     		.align	2
+ 582              	.L57:
+ 583 000c 00100240 		.word	1073876992
+ 584              		.cfi_endproc
+ 585              	.LFE45:
+ 587              		.section	.text.RCC_AHBConfig,"ax",%progbits
+ 588              		.align	2
+ 589              		.global	RCC_AHBConfig
+ 590              		.thumb
+ 591              		.thumb_func
+ARM GAS  /tmp/ccy6G2yN.s 			page 19
+
+
+ 593              	RCC_AHBConfig:
+ 594              	.LFB46:
+ 468:Peripherals/src/gd32f1x0_rcc.c **** 
+ 469:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 470:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the AHB clock.
+ 471:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_CK_SYSDiv: specify the AHB clock divider. This clock is derived from 
+ 472:Peripherals/src/gd32f1x0_rcc.c ****   *         the system clock (CK_SYS).
+ 473:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 474:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV1:   AHB clock = CK_SYS
+ 475:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV2:   AHB clock = CK_SYS/2
+ 476:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV4:   AHB clock = CK_SYS/4
+ 477:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV8:   AHB clock = CK_SYS/8
+ 478:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV16:  AHB clock = CK_SYS/16
+ 479:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV64:  AHB clock = CK_SYS/64
+ 480:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV128: AHB clock = CK_SYS/128
+ 481:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV256: AHB clock = CK_SYS/256
+ 482:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_SYSCLK_DIV512: AHB clock = CK_SYS/512
+ 483:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 484:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 485:Peripherals/src/gd32f1x0_rcc.c **** void RCC_AHBConfig(uint32_t RCC_CK_SYSDiv)
+ 486:Peripherals/src/gd32f1x0_rcc.c **** {
+ 595              		.loc 1 486 0
+ 596              		.cfi_startproc
+ 597              		@ args = 0, pretend = 0, frame = 0
+ 598              		@ frame_needed = 0, uses_anonymous_args = 0
+ 599              		@ link register save eliminated.
+ 600              	.LVL33:
+ 487:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp = 0;
+ 488:Peripherals/src/gd32f1x0_rcc.c ****     
+ 489:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR;
+ 601              		.loc 1 489 0
+ 602 0000 034B     		ldr	r3, .L60
+ 603 0002 5A68     		ldr	r2, [r3, #4]
+ 604              	.LVL34:
+ 490:Peripherals/src/gd32f1x0_rcc.c ****     
+ 491:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear AHBPS[3:0] bits */
+ 492:Peripherals/src/gd32f1x0_rcc.c ****     temp &= ~RCC_GCFGR_AHBPS;
+ 605              		.loc 1 492 0
+ 606 0004 22F0F002 		bic	r2, r2, #240
+ 607              	.LVL35:
+ 493:Peripherals/src/gd32f1x0_rcc.c ****     
+ 494:Peripherals/src/gd32f1x0_rcc.c ****     /* Set AHBPS[3:0] bits according to RCC_CK_SYSDiv value */
+ 495:Peripherals/src/gd32f1x0_rcc.c ****     temp |= RCC_CK_SYSDiv;
+ 608              		.loc 1 495 0
+ 609 0008 1043     		orrs	r0, r0, r2
+ 610              	.LVL36:
+ 496:Peripherals/src/gd32f1x0_rcc.c ****     
+ 497:Peripherals/src/gd32f1x0_rcc.c ****     /* Store the new value */
+ 498:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR = temp;
+ 611              		.loc 1 498 0
+ 612 000a 5860     		str	r0, [r3, #4]
+ 613 000c 7047     		bx	lr
+ 614              	.L61:
+ 615 000e 00BF     		.align	2
+ 616              	.L60:
+ 617 0010 00100240 		.word	1073876992
+ 618              		.cfi_endproc
+ARM GAS  /tmp/ccy6G2yN.s 			page 20
+
+
+ 619              	.LFE46:
+ 621              		.section	.text.RCC_APB1Config,"ax",%progbits
+ 622              		.align	2
+ 623              		.global	RCC_APB1Config
+ 624              		.thumb
+ 625              		.thumb_func
+ 627              	RCC_APB1Config:
+ 628              	.LFB47:
+ 499:Peripherals/src/gd32f1x0_rcc.c **** }
+ 500:Peripherals/src/gd32f1x0_rcc.c **** 
+ 501:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 502:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the APB1 clock.
+ 503:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_APB1: specify the APB1 clock divider. This clock is derived from 
+ 504:Peripherals/src/gd32f1x0_rcc.c ****   *         the AHB clock.
+ 505:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 506:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1AHB_DIV1: APB1 clock = AHB
+ 507:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1AHB_DIV2: APB1 clock = AHB/2
+ 508:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1AHB_DIV4: APB1 clock = AHB/4
+ 509:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1AHB_DIV8: APB1 clock = AHB/8
+ 510:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1AHB_DIV16: APB1 clock = AHB/16
+ 511:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 512:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 513:Peripherals/src/gd32f1x0_rcc.c **** void RCC_APB1Config(uint32_t RCC_APB1)
+ 514:Peripherals/src/gd32f1x0_rcc.c **** {
+ 629              		.loc 1 514 0
+ 630              		.cfi_startproc
+ 631              		@ args = 0, pretend = 0, frame = 0
+ 632              		@ frame_needed = 0, uses_anonymous_args = 0
+ 633              		@ link register save eliminated.
+ 634              	.LVL37:
+ 515:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp = 0;
+ 516:Peripherals/src/gd32f1x0_rcc.c ****     
+ 517:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR;
+ 635              		.loc 1 517 0
+ 636 0000 034B     		ldr	r3, .L63
+ 637 0002 5A68     		ldr	r2, [r3, #4]
+ 638              	.LVL38:
+ 518:Peripherals/src/gd32f1x0_rcc.c ****     
+ 519:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear APB1PS[2:0] bits */
+ 520:Peripherals/src/gd32f1x0_rcc.c ****     temp &= ~RCC_GCFGR_APB1PS;
+ 639              		.loc 1 520 0
+ 640 0004 22F4E062 		bic	r2, r2, #1792
+ 641              	.LVL39:
+ 521:Peripherals/src/gd32f1x0_rcc.c ****     
+ 522:Peripherals/src/gd32f1x0_rcc.c ****     /* Set APB1PS[2:0] bits according to RCC_APB1 value */
+ 523:Peripherals/src/gd32f1x0_rcc.c ****     temp |= RCC_APB1;
+ 642              		.loc 1 523 0
+ 643 0008 1043     		orrs	r0, r0, r2
+ 644              	.LVL40:
+ 524:Peripherals/src/gd32f1x0_rcc.c ****     
+ 525:Peripherals/src/gd32f1x0_rcc.c ****     /* Store the new value */
+ 526:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR = temp;
+ 645              		.loc 1 526 0
+ 646 000a 5860     		str	r0, [r3, #4]
+ 647 000c 7047     		bx	lr
+ 648              	.L64:
+ 649 000e 00BF     		.align	2
+ARM GAS  /tmp/ccy6G2yN.s 			page 21
+
+
+ 650              	.L63:
+ 651 0010 00100240 		.word	1073876992
+ 652              		.cfi_endproc
+ 653              	.LFE47:
+ 655              		.section	.text.RCC_APB2Config,"ax",%progbits
+ 656              		.align	2
+ 657              		.global	RCC_APB2Config
+ 658              		.thumb
+ 659              		.thumb_func
+ 661              	RCC_APB2Config:
+ 662              	.LFB48:
+ 527:Peripherals/src/gd32f1x0_rcc.c **** }
+ 528:Peripherals/src/gd32f1x0_rcc.c **** 
+ 529:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 530:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the APB2 clock.
+ 531:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_APB2: specify the APB2 clock divider. This clock is derived from 
+ 532:Peripherals/src/gd32f1x0_rcc.c ****   *         the AHB clock.
+ 533:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 534:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2AHB_DIV1: APB2 clock = AHB
+ 535:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2AHB_DIV2: APB2 clock = AHB/2
+ 536:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2AHB_DIV4: APB2 clock = AHB/4
+ 537:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2AHB_DIV8: APB2 clock = AHB/8
+ 538:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2AHB_DIV16: APB2 clock = AHB/16
+ 539:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 540:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 541:Peripherals/src/gd32f1x0_rcc.c **** void RCC_APB2Config(uint32_t RCC_APB2)
+ 542:Peripherals/src/gd32f1x0_rcc.c **** {
+ 663              		.loc 1 542 0
+ 664              		.cfi_startproc
+ 665              		@ args = 0, pretend = 0, frame = 0
+ 666              		@ frame_needed = 0, uses_anonymous_args = 0
+ 667              		@ link register save eliminated.
+ 668              	.LVL41:
+ 543:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp = 0;
+ 544:Peripherals/src/gd32f1x0_rcc.c ****     
+ 545:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR;
+ 669              		.loc 1 545 0
+ 670 0000 034B     		ldr	r3, .L66
+ 671 0002 5A68     		ldr	r2, [r3, #4]
+ 672              	.LVL42:
+ 546:Peripherals/src/gd32f1x0_rcc.c ****     
+ 547:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear APB2PS[2:0] bits */
+ 548:Peripherals/src/gd32f1x0_rcc.c ****     temp &= ~RCC_GCFGR_APB2PS;
+ 673              		.loc 1 548 0
+ 674 0004 22F46052 		bic	r2, r2, #14336
+ 675              	.LVL43:
+ 549:Peripherals/src/gd32f1x0_rcc.c ****     
+ 550:Peripherals/src/gd32f1x0_rcc.c ****     /* Set APB2PS[2:0] bits according to RCC_APB2 value */
+ 551:Peripherals/src/gd32f1x0_rcc.c ****     temp |= RCC_APB2;
+ 676              		.loc 1 551 0
+ 677 0008 1043     		orrs	r0, r0, r2
+ 678              	.LVL44:
+ 552:Peripherals/src/gd32f1x0_rcc.c ****     
+ 553:Peripherals/src/gd32f1x0_rcc.c ****     /* Store the new value */
+ 554:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR = temp;
+ 679              		.loc 1 554 0
+ 680 000a 5860     		str	r0, [r3, #4]
+ARM GAS  /tmp/ccy6G2yN.s 			page 22
+
+
+ 681 000c 7047     		bx	lr
+ 682              	.L67:
+ 683 000e 00BF     		.align	2
+ 684              	.L66:
+ 685 0010 00100240 		.word	1073876992
+ 686              		.cfi_endproc
+ 687              	.LFE48:
+ 689              		.section	.text.RCC_ADCCLKConfig,"ax",%progbits
+ 690              		.align	2
+ 691              		.global	RCC_ADCCLKConfig
+ 692              		.thumb
+ 693              		.thumb_func
+ 695              	RCC_ADCCLKConfig:
+ 696              	.LFB49:
+ 555:Peripherals/src/gd32f1x0_rcc.c **** }
+ 556:Peripherals/src/gd32f1x0_rcc.c **** 
+ 557:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 558:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the ADC clock (ADCCLK).
+ 559:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_ADCCLK: specify the ADC clock source. This clock is derived 
+ 560:Peripherals/src/gd32f1x0_rcc.c ****   *         from the HSI14 or APB2 clock.
+ 561:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 562:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_ADCCLK_HSI14: ADC clock = HSI14 (14MHz)
+ 563:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_ADCCLK_APB2_DIV2: ADC clock = APB2/2
+ 564:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_ADCCLK_APB2_DIV4: ADC clock = APB2/4
+ 565:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_ADCCLK_APB2_DIV6: ADC clock = APB2/6
+ 566:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_ADCCLK_APB2_DIV8: ADC clock = APB2/8      
+ 567:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 568:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 569:Peripherals/src/gd32f1x0_rcc.c **** void RCC_ADCCLKConfig(uint32_t RCC_ADCCLK)
+ 570:Peripherals/src/gd32f1x0_rcc.c **** { 
+ 697              		.loc 1 570 0
+ 698              		.cfi_startproc
+ 699              		@ args = 0, pretend = 0, frame = 0
+ 700              		@ frame_needed = 0, uses_anonymous_args = 0
+ 701              		@ link register save eliminated.
+ 702              	.LVL45:
+ 571:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear ADCPS bit */
+ 572:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR &= ~RCC_GCFGR_ADCPS;
+ 703              		.loc 1 572 0
+ 704 0000 084B     		ldr	r3, .L69
+ 705 0002 5A68     		ldr	r2, [r3, #4]
+ 706 0004 22F44042 		bic	r2, r2, #49152
+ 707 0008 5A60     		str	r2, [r3, #4]
+ 573:Peripherals/src/gd32f1x0_rcc.c ****     /* Set ADCPS bits according to RCC_APB2 value */
+ 574:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR |= RCC_ADCCLK & 0xFFFF;
+ 708              		.loc 1 574 0
+ 709 000a 5968     		ldr	r1, [r3, #4]
+ 710 000c 82B2     		uxth	r2, r0
+ 711 000e 0A43     		orrs	r2, r2, r1
+ 712 0010 5A60     		str	r2, [r3, #4]
+ 575:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear ADCSEL bit */
+ 576:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR3 &= ~RCC_GCFGR3_ADCSEL; 
+ 713              		.loc 1 576 0
+ 714 0012 1A6B     		ldr	r2, [r3, #48]
+ 715 0014 22F48072 		bic	r2, r2, #256
+ 716 0018 1A63     		str	r2, [r3, #48]
+ 577:Peripherals/src/gd32f1x0_rcc.c ****     /* Set ADCSEL bits according to RCC_ADCCLK value */
+ARM GAS  /tmp/ccy6G2yN.s 			page 23
+
+
+ 578:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR3 |= RCC_ADCCLK >> GCFGR3_HSI14ADC_OFFSET;  
+ 717              		.loc 1 578 0
+ 718 001a 1A6B     		ldr	r2, [r3, #48]
+ 719 001c 42EA1040 		orr	r0, r2, r0, lsr #16
+ 720              	.LVL46:
+ 721 0020 1863     		str	r0, [r3, #48]
+ 722 0022 7047     		bx	lr
+ 723              	.L70:
+ 724              		.align	2
+ 725              	.L69:
+ 726 0024 00100240 		.word	1073876992
+ 727              		.cfi_endproc
+ 728              	.LFE49:
+ 730              		.section	.text.RCC_USBCLKConfig,"ax",%progbits
+ 731              		.align	2
+ 732              		.global	RCC_USBCLKConfig
+ 733              		.thumb
+ 734              		.thumb_func
+ 736              	RCC_USBCLKConfig:
+ 737              	.LFB50:
+ 579:Peripherals/src/gd32f1x0_rcc.c **** }
+ 580:Peripherals/src/gd32f1x0_rcc.c **** 
+ 581:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 582:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the USB clock (USBCLK).
+ 583:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_USBCLK: specify the USB clock source. This clock is derived 
+ 584:Peripherals/src/gd32f1x0_rcc.c ****   *         from the PLL.
+ 585:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 586:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_USBCLK_PLL_DIV1_5: USB clock = PLL/1.5
+ 587:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_USBCLK_PLL_DIV1: USB clock = PLL
+ 588:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_USBCLK_PLL_DIV2: USB clock = PLL/2
+ 589:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_USBCLK_PLL_DIV2_5: USB clock = PLL/2.5
+ 590:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 591:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 592:Peripherals/src/gd32f1x0_rcc.c **** void RCC_USBCLKConfig(uint32_t RCC_USBCLK)
+ 593:Peripherals/src/gd32f1x0_rcc.c **** { 
+ 738              		.loc 1 593 0
+ 739              		.cfi_startproc
+ 740              		@ args = 0, pretend = 0, frame = 0
+ 741              		@ frame_needed = 0, uses_anonymous_args = 0
+ 742              		@ link register save eliminated.
+ 743              	.LVL47:
+ 594:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear USBPS bit */
+ 595:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR &= ~RCC_GCFGR_USBPS;
+ 744              		.loc 1 595 0
+ 745 0000 044B     		ldr	r3, .L72
+ 746 0002 5A68     		ldr	r2, [r3, #4]
+ 747 0004 22F44002 		bic	r2, r2, #12582912
+ 748 0008 5A60     		str	r2, [r3, #4]
+ 596:Peripherals/src/gd32f1x0_rcc.c ****     /* Set USBPS bits according to RCC_USBCLK value */
+ 597:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR |= RCC_USBCLK;
+ 749              		.loc 1 597 0
+ 750 000a 5A68     		ldr	r2, [r3, #4]
+ 751 000c 1043     		orrs	r0, r0, r2
+ 752              	.LVL48:
+ 753 000e 5860     		str	r0, [r3, #4]
+ 754 0010 7047     		bx	lr
+ 755              	.L73:
+ARM GAS  /tmp/ccy6G2yN.s 			page 24
+
+
+ 756 0012 00BF     		.align	2
+ 757              	.L72:
+ 758 0014 00100240 		.word	1073876992
+ 759              		.cfi_endproc
+ 760              	.LFE50:
+ 762              		.section	.text.RCC_CECCLKConfig,"ax",%progbits
+ 763              		.align	2
+ 764              		.global	RCC_CECCLKConfig
+ 765              		.thumb
+ 766              		.thumb_func
+ 768              	RCC_CECCLKConfig:
+ 769              	.LFB51:
+ 598:Peripherals/src/gd32f1x0_rcc.c **** }
+ 599:Peripherals/src/gd32f1x0_rcc.c **** 
+ 600:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 601:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the CEC clock (CECCLK).
+ 602:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_CECCLK: specify the CEC clock source. This clock is derived 
+ 603:Peripherals/src/gd32f1x0_rcc.c ****   *         from the HSI or LSE clock.
+ 604:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 605:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CECCLK_HSI_DIV244: CEC clock = HSI/244 (32768Hz)
+ 606:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_CECCLK_LSE: CEC clock = LSE
+ 607:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 608:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 609:Peripherals/src/gd32f1x0_rcc.c **** void RCC_CECCLKConfig(uint32_t RCC_CECCLK)
+ 610:Peripherals/src/gd32f1x0_rcc.c **** { 
+ 770              		.loc 1 610 0
+ 771              		.cfi_startproc
+ 772              		@ args = 0, pretend = 0, frame = 0
+ 773              		@ frame_needed = 0, uses_anonymous_args = 0
+ 774              		@ link register save eliminated.
+ 775              	.LVL49:
+ 611:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear CECSEL bit */
+ 612:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR3 &= ~RCC_GCFGR3_CECSEL;
+ 776              		.loc 1 612 0
+ 777 0000 044B     		ldr	r3, .L75
+ 778 0002 1A6B     		ldr	r2, [r3, #48]
+ 779 0004 22F04002 		bic	r2, r2, #64
+ 780 0008 1A63     		str	r2, [r3, #48]
+ 613:Peripherals/src/gd32f1x0_rcc.c ****     /* Set CECSEL bits according to RCC_CECCLK value */
+ 614:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR3 |= RCC_CECCLK;
+ 781              		.loc 1 614 0
+ 782 000a 1A6B     		ldr	r2, [r3, #48]
+ 783 000c 1043     		orrs	r0, r0, r2
+ 784              	.LVL50:
+ 785 000e 1863     		str	r0, [r3, #48]
+ 786 0010 7047     		bx	lr
+ 787              	.L76:
+ 788 0012 00BF     		.align	2
+ 789              	.L75:
+ 790 0014 00100240 		.word	1073876992
+ 791              		.cfi_endproc
+ 792              	.LFE51:
+ 794              		.section	.text.RCC_USARTCLKConfig,"ax",%progbits
+ 795              		.align	2
+ 796              		.global	RCC_USARTCLKConfig
+ 797              		.thumb
+ 798              		.thumb_func
+ARM GAS  /tmp/ccy6G2yN.s 			page 25
+
+
+ 800              	RCC_USARTCLKConfig:
+ 801              	.LFB52:
+ 615:Peripherals/src/gd32f1x0_rcc.c **** }
+ 616:Peripherals/src/gd32f1x0_rcc.c **** 
+ 617:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 618:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the USART1 clock (USART1CLK).
+ 619:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_USARTCLK: specify the USART1 clock source. 
+ 620:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 621:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_USART1CLK_APB2: USART1 clock = APB2 Clock
+ 622:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_USART1CLK_CK_SYS: USART1 clock = CK_SYS Clock
+ 623:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_USART1CLK_LSE: USART1 clock = LSE Clock
+ 624:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_USART1CLK_HSI: USART1 clock = HSI Clock
+ 625:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 626:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 627:Peripherals/src/gd32f1x0_rcc.c **** void RCC_USARTCLKConfig(uint32_t RCC_USARTCLK)
+ 628:Peripherals/src/gd32f1x0_rcc.c **** { 
+ 802              		.loc 1 628 0
+ 803              		.cfi_startproc
+ 804              		@ args = 0, pretend = 0, frame = 0
+ 805              		@ frame_needed = 0, uses_anonymous_args = 0
+ 806              		@ link register save eliminated.
+ 807              	.LVL51:
+ 629:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear USARTSEL[1:0] bit */
+ 630:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR3 &= ~RCC_GCFGR3_USART1SEL;
+ 808              		.loc 1 630 0
+ 809 0000 044B     		ldr	r3, .L78
+ 810 0002 1A6B     		ldr	r2, [r3, #48]
+ 811 0004 22F00302 		bic	r2, r2, #3
+ 812 0008 1A63     		str	r2, [r3, #48]
+ 631:Peripherals/src/gd32f1x0_rcc.c ****     /* Set USARTSEL bits according to RCC_USARTCLK value */
+ 632:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCFGR3 |= RCC_USARTCLK;
+ 813              		.loc 1 632 0
+ 814 000a 1A6B     		ldr	r2, [r3, #48]
+ 815 000c 1043     		orrs	r0, r0, r2
+ 816              	.LVL52:
+ 817 000e 1863     		str	r0, [r3, #48]
+ 818 0010 7047     		bx	lr
+ 819              	.L79:
+ 820 0012 00BF     		.align	2
+ 821              	.L78:
+ 822 0014 00100240 		.word	1073876992
+ 823              		.cfi_endproc
+ 824              	.LFE52:
+ 826              		.section	.text.RCC_RTCCLKConfig,"ax",%progbits
+ 827              		.align	2
+ 828              		.global	RCC_RTCCLKConfig
+ 829              		.thumb
+ 830              		.thumb_func
+ 832              	RCC_RTCCLKConfig:
+ 833              	.LFB53:
+ 633:Peripherals/src/gd32f1x0_rcc.c **** }
+ 634:Peripherals/src/gd32f1x0_rcc.c **** 
+ 635:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 636:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the RTC clock (RTCCLK).           
+ 637:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_RTCCLKSource: specify the RTC clock source.
+ 638:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+ 639:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_RTCCLKSource_LSE: selecte LSE as RTC clock
+ARM GAS  /tmp/ccy6G2yN.s 			page 26
+
+
+ 640:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_RTCCLKSource_LSI: selecte LSI as RTC clock
+ 641:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_RTCCLKSource_HSE_DIV32: selecte HSE divided by 32 as RTC clock         
+ 642:Peripherals/src/gd32f1x0_rcc.c ****   * @note   if using HSE as RTC source, the maximum clock frequency for RTC is 2 MHz.              
+ 643:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 644:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 645:Peripherals/src/gd32f1x0_rcc.c **** void RCC_RTCCLKConfig(uint32_t RCC_RTCCLKSource)
+ 646:Peripherals/src/gd32f1x0_rcc.c **** {
+ 834              		.loc 1 646 0
+ 835              		.cfi_startproc
+ 836              		@ args = 0, pretend = 0, frame = 0
+ 837              		@ frame_needed = 0, uses_anonymous_args = 0
+ 838              		@ link register save eliminated.
+ 839              	.LVL53:
+ 647:Peripherals/src/gd32f1x0_rcc.c ****     /* Select the RTC clock source */
+ 648:Peripherals/src/gd32f1x0_rcc.c ****     RCC->BDCR |= RCC_RTCCLKSource;
+ 840              		.loc 1 648 0
+ 841 0000 024B     		ldr	r3, .L81
+ 842 0002 1A6A     		ldr	r2, [r3, #32]
+ 843 0004 1043     		orrs	r0, r0, r2
+ 844              	.LVL54:
+ 845 0006 1862     		str	r0, [r3, #32]
+ 846 0008 7047     		bx	lr
+ 847              	.L82:
+ 848 000a 00BF     		.align	2
+ 849              	.L81:
+ 850 000c 00100240 		.word	1073876992
+ 851              		.cfi_endproc
+ 852              	.LFE53:
+ 854              		.section	.text.RCC_GetClocksFreq,"ax",%progbits
+ 855              		.align	2
+ 856              		.global	RCC_GetClocksFreq
+ 857              		.thumb
+ 858              		.thumb_func
+ 860              	RCC_GetClocksFreq:
+ 861              	.LFB54:
+ 649:Peripherals/src/gd32f1x0_rcc.c **** }
+ 650:Peripherals/src/gd32f1x0_rcc.c **** 
+ 651:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 652:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Get the frequencies of the CK_SYS, AHB, APB1, APB2, ADC, CEC and USART1 clocks.    
+ 653:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 654:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 655:Peripherals/src/gd32f1x0_rcc.c **** void RCC_GetClocksFreq(RCC_ClocksPara* RCC_Clocks)
+ 656:Peripherals/src/gd32f1x0_rcc.c **** {
+ 862              		.loc 1 656 0
+ 863              		.cfi_startproc
+ 864              		@ args = 0, pretend = 0, frame = 0
+ 865              		@ frame_needed = 0, uses_anonymous_args = 0
+ 866              		@ link register save eliminated.
+ 867              	.LVL55:
+ 868 0000 30B4     		push	{r4, r5}
+ 869              	.LCFI0:
+ 870              		.cfi_def_cfa_offset 8
+ 871              		.cfi_offset 4, -8
+ 872              		.cfi_offset 5, -4
+ 873              	.LVL56:
+ 657:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp = 0, pllmf = 0, pllmf4=0,pllselect = 0, prediv1factor = 0, presc = 0;
+ 658:Peripherals/src/gd32f1x0_rcc.c ****     
+ARM GAS  /tmp/ccy6G2yN.s 			page 27
+
+
+ 659:Peripherals/src/gd32f1x0_rcc.c ****     /* Get CK_SYS source -------------------------------------------------------*/
+ 660:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR & RCC_GCFGR_SCSS;
+ 874              		.loc 1 660 0
+ 875 0002 4D4B     		ldr	r3, .L104
+ 876 0004 5B68     		ldr	r3, [r3, #4]
+ 877 0006 03F00C03 		and	r3, r3, #12
+ 878              	.LVL57:
+ 661:Peripherals/src/gd32f1x0_rcc.c ****     
+ 662:Peripherals/src/gd32f1x0_rcc.c ****     switch (temp)
+ 879              		.loc 1 662 0
+ 880 000a 042B     		cmp	r3, #4
+ 881 000c 05D0     		beq	.L85
+ 882 000e 082B     		cmp	r3, #8
+ 883 0010 06D0     		beq	.L86
+ 884 0012 2BBB     		cbnz	r3, .L103
+ 663:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 664:Peripherals/src/gd32f1x0_rcc.c ****         case 0x00:  /* HSI used as CK_SYS */
+ 665:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->CK_SYS_Frequency = HSI_VALUE;
+ 885              		.loc 1 665 0
+ 886 0014 494B     		ldr	r3, .L104+4
+ 887              	.LVL58:
+ 888 0016 0360     		str	r3, [r0]
+ 666:Peripherals/src/gd32f1x0_rcc.c ****         break;
+ 889              		.loc 1 666 0
+ 890 0018 24E0     		b	.L88
+ 891              	.LVL59:
+ 892              	.L85:
+ 667:Peripherals/src/gd32f1x0_rcc.c ****         case 0x04:  /* HSE used as CK_SYS */
+ 668:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->CK_SYS_Frequency = HSE_VALUE;
+ 893              		.loc 1 668 0
+ 894 001a 484B     		ldr	r3, .L104+4
+ 895              	.LVL60:
+ 896 001c 0360     		str	r3, [r0]
+ 669:Peripherals/src/gd32f1x0_rcc.c ****         break;
+ 897              		.loc 1 669 0
+ 898 001e 21E0     		b	.L88
+ 899              	.LVL61:
+ 900              	.L86:
+ 670:Peripherals/src/gd32f1x0_rcc.c ****         case 0x08:  /* PLL used as CK_SYS */
+ 671:Peripherals/src/gd32f1x0_rcc.c ****         /* Get PLL clock source and multiplication factor ----------------------*/
+ 672:Peripherals/src/gd32f1x0_rcc.c ****         /* Get PLLMF[3:0] */
+ 673:Peripherals/src/gd32f1x0_rcc.c ****         pllmf = RCC->GCFGR & RCC_GCFGR_PLLMF_3_0;
+ 901              		.loc 1 673 0
+ 902 0020 454B     		ldr	r3, .L104
+ 903              	.LVL62:
+ 904 0022 5968     		ldr	r1, [r3, #4]
+ 905              	.LVL63:
+ 674:Peripherals/src/gd32f1x0_rcc.c ****         /* Get PLLMF[4] */
+ 675:Peripherals/src/gd32f1x0_rcc.c ****         pllmf4 = RCC->GCFGR & RCC_GCFGR_PLLMF_4;
+ 906              		.loc 1 675 0
+ 907 0024 5A68     		ldr	r2, [r3, #4]
+ 908              	.LVL64:
+ 676:Peripherals/src/gd32f1x0_rcc.c ****         pllmf4 = (( pllmf4 >> 27)*15);
+ 909              		.loc 1 676 0
+ 910 0026 C2F3C062 		ubfx	r2, r2, #27, #1
+ 911              	.LVL65:
+ 912 002a C2EB0212 		rsb	r2, r2, r2, lsl #4
+ARM GAS  /tmp/ccy6G2yN.s 			page 28
+
+
+ 677:Peripherals/src/gd32f1x0_rcc.c ****         
+ 678:Peripherals/src/gd32f1x0_rcc.c ****         pllmf = ( pllmf >> 18) + pllmf4+ 2;
+ 913              		.loc 1 678 0
+ 914 002e C1F38341 		ubfx	r1, r1, #18, #4
+ 915              	.LVL66:
+ 916 0032 0A44     		add	r2, r2, r1
+ 917 0034 0232     		adds	r2, r2, #2
+ 918              	.LVL67:
+ 679:Peripherals/src/gd32f1x0_rcc.c ****         
+ 680:Peripherals/src/gd32f1x0_rcc.c ****         pllselect = RCC->GCFGR & RCC_GCFGR_PLLSEL;
+ 919              		.loc 1 680 0
+ 920 0036 5B68     		ldr	r3, [r3, #4]
+ 921              	.LVL68:
+ 681:Peripherals/src/gd32f1x0_rcc.c ****         if (pllselect == 0x00)
+ 922              		.loc 1 681 0
+ 923 0038 13F4803F 		tst	r3, #65536
+ 924 003c 04D1     		bne	.L89
+ 682:Peripherals/src/gd32f1x0_rcc.c ****         {
+ 683:Peripherals/src/gd32f1x0_rcc.c ****             /* HSI clock divided by 2 selected as PLL clock source */
+ 684:Peripherals/src/gd32f1x0_rcc.c ****             RCC_Clocks->CK_SYS_Frequency = (HSI_VALUE >>HSI_CLOCK_DIVIDED_2) * pllmf;
+ 925              		.loc 1 684 0
+ 926 003e 404B     		ldr	r3, .L104+8
+ 927              	.LVL69:
+ 928 0040 03FB02F2 		mul	r2, r3, r2
+ 929              	.LVL70:
+ 930 0044 0260     		str	r2, [r0]
+ 931 0046 0DE0     		b	.L88
+ 932              	.LVL71:
+ 933              	.L89:
+ 685:Peripherals/src/gd32f1x0_rcc.c ****         }
+ 686:Peripherals/src/gd32f1x0_rcc.c ****         else
+ 687:Peripherals/src/gd32f1x0_rcc.c ****         {
+ 688:Peripherals/src/gd32f1x0_rcc.c ****             /*Get the HSEPREDV division factor */
+ 689:Peripherals/src/gd32f1x0_rcc.c ****             prediv1factor = (RCC->GCFGR2 & RCC_GCFGR2_HSEPREDV1) + 1;
+ 934              		.loc 1 689 0
+ 935 0048 3B4B     		ldr	r3, .L104
+ 936              	.LVL72:
+ 937 004a DB6A     		ldr	r3, [r3, #44]
+ 938 004c 03F00F03 		and	r3, r3, #15
+ 939 0050 0133     		adds	r3, r3, #1
+ 940              	.LVL73:
+ 690:Peripherals/src/gd32f1x0_rcc.c ****             /* HSE clock selected as PLL clock source */
+ 691:Peripherals/src/gd32f1x0_rcc.c ****             RCC_Clocks->CK_SYS_Frequency = (HSE_VALUE / prediv1factor) * pllmf; 
+ 941              		.loc 1 691 0
+ 942 0052 3A49     		ldr	r1, .L104+4
+ 943 0054 B1FBF3F3 		udiv	r3, r1, r3
+ 944              	.LVL74:
+ 945 0058 02FB03F2 		mul	r2, r2, r3
+ 946              	.LVL75:
+ 947 005c 0260     		str	r2, [r0]
+ 948 005e 01E0     		b	.L88
+ 949              	.LVL76:
+ 950              	.L103:
+ 692:Peripherals/src/gd32f1x0_rcc.c ****         }      
+ 693:Peripherals/src/gd32f1x0_rcc.c ****         break;
+ 694:Peripherals/src/gd32f1x0_rcc.c ****         default: /* HSI used as system clock */
+ 695:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->CK_SYS_Frequency = HSI_VALUE;
+ARM GAS  /tmp/ccy6G2yN.s 			page 29
+
+
+ 951              		.loc 1 695 0
+ 952 0060 364B     		ldr	r3, .L104+4
+ 953              	.LVL77:
+ 954 0062 0360     		str	r3, [r0]
+ 955              	.LVL78:
+ 956              	.L88:
+ 696:Peripherals/src/gd32f1x0_rcc.c ****         break;
+ 697:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 698:Peripherals/src/gd32f1x0_rcc.c ****     
+ 699:Peripherals/src/gd32f1x0_rcc.c ****     /* Get AHB prescaler */
+ 700:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR & RCC_GCFGR_AHBPS;
+ 957              		.loc 1 700 0
+ 958 0064 344B     		ldr	r3, .L104
+ 959 0066 5A68     		ldr	r2, [r3, #4]
+ 960              	.LVL79:
+ 701:Peripherals/src/gd32f1x0_rcc.c ****     temp = temp >> 4;
+ 961              		.loc 1 701 0
+ 962 0068 C2F30312 		ubfx	r2, r2, #4, #4
+ 963              	.LVL80:
+ 702:Peripherals/src/gd32f1x0_rcc.c ****     presc = AHBPrescTable[temp]; 
+ 964              		.loc 1 702 0
+ 965 006c 3549     		ldr	r1, .L104+12
+ 966 006e 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 967              	.LVL81:
+ 968 0070 D2B2     		uxtb	r2, r2
+ 969              	.LVL82:
+ 703:Peripherals/src/gd32f1x0_rcc.c ****     /* Get AHB clock frequency */
+ 704:Peripherals/src/gd32f1x0_rcc.c ****     RCC_Clocks->AHB_Frequency = RCC_Clocks->CK_SYS_Frequency >> presc;
+ 970              		.loc 1 704 0
+ 971 0072 0468     		ldr	r4, [r0]
+ 972 0074 24FA02F2 		lsr	r2, r4, r2
+ 973              	.LVL83:
+ 974 0078 4260     		str	r2, [r0, #4]
+ 705:Peripherals/src/gd32f1x0_rcc.c ****     
+ 706:Peripherals/src/gd32f1x0_rcc.c ****     /* Get APB1 prescaler */
+ 707:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR & RCC_GCFGR_APB1PS;
+ 975              		.loc 1 707 0
+ 976 007a 5D68     		ldr	r5, [r3, #4]
+ 977              	.LVL84:
+ 708:Peripherals/src/gd32f1x0_rcc.c ****     temp = temp >> 8;
+ 978              		.loc 1 708 0
+ 979 007c C5F30225 		ubfx	r5, r5, #8, #3
+ 980              	.LVL85:
+ 709:Peripherals/src/gd32f1x0_rcc.c ****     presc = APBPrescTable[temp];
+ 981              		.loc 1 709 0
+ 982 0080 3149     		ldr	r1, .L104+16
+ 983 0082 4D5D     		ldrb	r5, [r1, r5]	@ zero_extendqisi2
+ 984              	.LVL86:
+ 985 0084 EDB2     		uxtb	r5, r5
+ 986              	.LVL87:
+ 710:Peripherals/src/gd32f1x0_rcc.c ****     /* Get APB1 clock frequency */
+ 711:Peripherals/src/gd32f1x0_rcc.c ****     RCC_Clocks->APB1_Frequency = RCC_Clocks->AHB_Frequency >> presc;
+ 987              		.loc 1 711 0
+ 988 0086 22FA05F5 		lsr	r5, r2, r5
+ 989              	.LVL88:
+ 990 008a 8560     		str	r5, [r0, #8]
+ 712:Peripherals/src/gd32f1x0_rcc.c ****     
+ARM GAS  /tmp/ccy6G2yN.s 			page 30
+
+
+ 713:Peripherals/src/gd32f1x0_rcc.c ****     /* Get APB2 prescaler */
+ 714:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC->GCFGR & RCC_GCFGR_APB2PS;
+ 991              		.loc 1 714 0
+ 992 008c 5D68     		ldr	r5, [r3, #4]
+ 993              	.LVL89:
+ 715:Peripherals/src/gd32f1x0_rcc.c ****     temp = temp >> 11;
+ 994              		.loc 1 715 0
+ 995 008e C5F3C225 		ubfx	r5, r5, #11, #3
+ 996              	.LVL90:
+ 716:Peripherals/src/gd32f1x0_rcc.c ****     presc = APBPrescTable[temp];
+ 997              		.loc 1 716 0
+ 998 0092 495D     		ldrb	r1, [r1, r5]	@ zero_extendqisi2
+ 999 0094 C9B2     		uxtb	r1, r1
+ 1000              	.LVL91:
+ 717:Peripherals/src/gd32f1x0_rcc.c ****     /* Get APB2 clock frequency */
+ 718:Peripherals/src/gd32f1x0_rcc.c ****     RCC_Clocks->APB2_Frequency = RCC_Clocks->AHB_Frequency >> presc;
+ 1001              		.loc 1 718 0
+ 1002 0096 CA40     		lsrs	r2, r2, r1
+ 1003 0098 C260     		str	r2, [r0, #12]
+ 719:Peripherals/src/gd32f1x0_rcc.c ****     
+ 720:Peripherals/src/gd32f1x0_rcc.c ****     /* Get ADCCLK clock frequency */
+ 721:Peripherals/src/gd32f1x0_rcc.c ****     if((RCC->GCFGR3 & RCC_GCFGR3_ADCSEL) != RCC_GCFGR3_ADCSEL)
+ 1004              		.loc 1 721 0
+ 1005 009a 1B6B     		ldr	r3, [r3, #48]
+ 1006 009c 13F4807F 		tst	r3, #256
+ 1007 00a0 02D1     		bne	.L90
+ 722:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 723:Peripherals/src/gd32f1x0_rcc.c ****         /* ADC Clock clock is derived from the HSI14 */
+ 724:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->ADCCLK_Frequency = HSI14_VALUE;
+ 1008              		.loc 1 724 0
+ 1009 00a2 2A4B     		ldr	r3, .L104+20
+ 1010 00a4 0361     		str	r3, [r0, #16]
+ 1011 00a6 17E0     		b	.L91
+ 1012              	.L90:
+ 725:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 726:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 727:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 728:Peripherals/src/gd32f1x0_rcc.c ****         temp = ((RCC->GCFGR & RCC_GCFGR_ADCPS) >>14 );
+ 1013              		.loc 1 728 0
+ 1014 00a8 234B     		ldr	r3, .L104
+ 1015 00aa 5B68     		ldr	r3, [r3, #4]
+ 1016 00ac C3F38133 		ubfx	r3, r3, #14, #2
+ 1017              	.LVL92:
+ 729:Peripherals/src/gd32f1x0_rcc.c ****         switch (temp)
+ 1018              		.loc 1 729 0
+ 1019 00b0 032B     		cmp	r3, #3
+ 1020 00b2 11D8     		bhi	.L91
+ 1021 00b4 DFE803F0 		tbb	[pc, r3]
+ 1022              	.LVL93:
+ 1023              	.L93:
+ 1024 00b8 02       		.byte	(.L92-.L93)/2
+ 1025 00b9 05       		.byte	(.L94-.L93)/2
+ 1026 00ba 08       		.byte	(.L95-.L93)/2
+ 1027 00bb 0E       		.byte	(.L96-.L93)/2
+ 1028              		.p2align 1
+ 1029              	.L92:
+ 730:Peripherals/src/gd32f1x0_rcc.c ****         {
+ARM GAS  /tmp/ccy6G2yN.s 			page 31
+
+
+ 731:Peripherals/src/gd32f1x0_rcc.c ****             case 0: /* ADC Clock is derived from APB2/2 */
+ 732:Peripherals/src/gd32f1x0_rcc.c ****             RCC_Clocks->ADCCLK_Frequency = (RCC_Clocks->APB2_Frequency /2);
+ 1030              		.loc 1 732 0
+ 1031 00bc 5308     		lsrs	r3, r2, #1
+ 1032              	.LVL94:
+ 1033 00be 0361     		str	r3, [r0, #16]
+ 733:Peripherals/src/gd32f1x0_rcc.c ****             break;
+ 1034              		.loc 1 733 0
+ 1035 00c0 0AE0     		b	.L91
+ 1036              	.LVL95:
+ 1037              	.L94:
+ 734:Peripherals/src/gd32f1x0_rcc.c ****             case 1: /* ADC Clock is derived from APB2/4 */
+ 735:Peripherals/src/gd32f1x0_rcc.c ****             RCC_Clocks->ADCCLK_Frequency = (RCC_Clocks->APB2_Frequency /4);
+ 1038              		.loc 1 735 0
+ 1039 00c2 9308     		lsrs	r3, r2, #2
+ 1040              	.LVL96:
+ 1041 00c4 0361     		str	r3, [r0, #16]
+ 736:Peripherals/src/gd32f1x0_rcc.c ****             break;
+ 1042              		.loc 1 736 0
+ 1043 00c6 07E0     		b	.L91
+ 1044              	.LVL97:
+ 1045              	.L95:
+ 737:Peripherals/src/gd32f1x0_rcc.c ****             case 2: /* ADC Clock is derived from APB2/6 */
+ 738:Peripherals/src/gd32f1x0_rcc.c ****             RCC_Clocks->ADCCLK_Frequency = (RCC_Clocks->APB2_Frequency /6);
+ 1046              		.loc 1 738 0
+ 1047 00c8 214B     		ldr	r3, .L104+24
+ 1048              	.LVL98:
+ 1049 00ca A3FB0213 		umull	r1, r3, r3, r2
+ 1050 00ce 9B08     		lsrs	r3, r3, #2
+ 1051 00d0 0361     		str	r3, [r0, #16]
+ 739:Peripherals/src/gd32f1x0_rcc.c ****             break;
+ 1052              		.loc 1 739 0
+ 1053 00d2 01E0     		b	.L91
+ 1054              	.LVL99:
+ 1055              	.L96:
+ 740:Peripherals/src/gd32f1x0_rcc.c ****             case 3: /* ADC Clock is derived from APB2/8 */
+ 741:Peripherals/src/gd32f1x0_rcc.c ****             RCC_Clocks->ADCCLK_Frequency = (RCC_Clocks->APB2_Frequency /8);
+ 1056              		.loc 1 741 0
+ 1057 00d4 D308     		lsrs	r3, r2, #3
+ 1058              	.LVL100:
+ 1059 00d6 0361     		str	r3, [r0, #16]
+ 1060              	.L91:
+ 742:Peripherals/src/gd32f1x0_rcc.c ****             break;
+ 743:Peripherals/src/gd32f1x0_rcc.c ****         }      
+ 744:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 745:Peripherals/src/gd32f1x0_rcc.c ****     
+ 746:Peripherals/src/gd32f1x0_rcc.c ****     /* Get CECCLK clock frequency */
+ 747:Peripherals/src/gd32f1x0_rcc.c ****     if((RCC->GCFGR3 & RCC_GCFGR3_CECSEL) != RCC_GCFGR3_CECSEL)
+ 1061              		.loc 1 747 0
+ 1062 00d8 174B     		ldr	r3, .L104
+ 1063 00da 1B6B     		ldr	r3, [r3, #48]
+ 1064 00dc 13F0400F 		tst	r3, #64
+ 1065 00e0 03D1     		bne	.L97
+ 748:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 749:Peripherals/src/gd32f1x0_rcc.c ****         /* CEC Clock is derived from HSI/244 */
+ 750:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->CECCLK_Frequency = HSI_VALUE / 244;
+ 1066              		.loc 1 750 0
+ARM GAS  /tmp/ccy6G2yN.s 			page 32
+
+
+ 1067 00e2 48F21203 		movw	r3, #32786
+ 1068 00e6 4361     		str	r3, [r0, #20]
+ 1069 00e8 02E0     		b	.L98
+ 1070              	.L97:
+ 751:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 752:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 753:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 754:Peripherals/src/gd32f1x0_rcc.c ****         /* CEC Clock is derived from LSE. */
+ 755:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->CECCLK_Frequency = LSE_VALUE;
+ 1071              		.loc 1 755 0
+ 1072 00ea 4FF40043 		mov	r3, #32768
+ 1073 00ee 4361     		str	r3, [r0, #20]
+ 1074              	.L98:
+ 756:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 757:Peripherals/src/gd32f1x0_rcc.c ****     
+ 758:Peripherals/src/gd32f1x0_rcc.c ****     /* Get USART1CLK clock frequency */
+ 759:Peripherals/src/gd32f1x0_rcc.c ****     if((RCC->GCFGR3 & RCC_GCFGR3_USART1SEL) == RCC_USART1CLK_APB2)
+ 1075              		.loc 1 759 0
+ 1076 00f0 114B     		ldr	r3, .L104
+ 1077 00f2 1B6B     		ldr	r3, [r3, #48]
+ 1078 00f4 13F0030F 		tst	r3, #3
+ 1079 00f8 01D1     		bne	.L99
+ 760:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 761:Peripherals/src/gd32f1x0_rcc.c ****         /* USART1 Clock is derived from APB2 */
+ 762:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->USART1CLK_Frequency = RCC_Clocks->APB2_Frequency;
+ 1080              		.loc 1 762 0
+ 1081 00fa 8261     		str	r2, [r0, #24]
+ 1082 00fc 19E0     		b	.L83
+ 1083              	.L99:
+ 763:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 764:Peripherals/src/gd32f1x0_rcc.c ****     else if((RCC->GCFGR3 & RCC_GCFGR3_USART1SEL) == RCC_GCFGR3_USART1SEL_0)
+ 1084              		.loc 1 764 0
+ 1085 00fe 0E4B     		ldr	r3, .L104
+ 1086 0100 1B6B     		ldr	r3, [r3, #48]
+ 1087 0102 03F00303 		and	r3, r3, #3
+ 1088 0106 012B     		cmp	r3, #1
+ 1089 0108 01D1     		bne	.L101
+ 765:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 766:Peripherals/src/gd32f1x0_rcc.c ****         /* USART1 Clock is derived from System Clock */
+ 767:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->USART1CLK_Frequency = RCC_Clocks->CK_SYS_Frequency;
+ 1090              		.loc 1 767 0
+ 1091 010a 8461     		str	r4, [r0, #24]
+ 1092 010c 11E0     		b	.L83
+ 1093              	.L101:
+ 768:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 769:Peripherals/src/gd32f1x0_rcc.c ****     else if((RCC->GCFGR3 & RCC_GCFGR3_USART1SEL) == RCC_GCFGR3_USART1SEL_1)
+ 1094              		.loc 1 769 0
+ 1095 010e 0A4B     		ldr	r3, .L104
+ 1096 0110 1B6B     		ldr	r3, [r3, #48]
+ 1097 0112 03F00303 		and	r3, r3, #3
+ 1098 0116 022B     		cmp	r3, #2
+ 1099 0118 03D1     		bne	.L102
+ 770:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 771:Peripherals/src/gd32f1x0_rcc.c ****         /* USART1 Clock is derived from LSE */
+ 772:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->USART1CLK_Frequency = LSE_VALUE;
+ 1100              		.loc 1 772 0
+ 1101 011a 4FF40043 		mov	r3, #32768
+ARM GAS  /tmp/ccy6G2yN.s 			page 33
+
+
+ 1102 011e 8361     		str	r3, [r0, #24]
+ 1103 0120 07E0     		b	.L83
+ 1104              	.L102:
+ 773:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 774:Peripherals/src/gd32f1x0_rcc.c ****     else if((RCC->GCFGR3 & RCC_GCFGR3_USART1SEL) == RCC_GCFGR3_USART1SEL)
+ 1105              		.loc 1 774 0
+ 1106 0122 054B     		ldr	r3, .L104
+ 1107 0124 1B6B     		ldr	r3, [r3, #48]
+ 1108 0126 03F00303 		and	r3, r3, #3
+ 1109 012a 032B     		cmp	r3, #3
+ 1110 012c 01D1     		bne	.L83
+ 775:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 776:Peripherals/src/gd32f1x0_rcc.c ****         /* USART1 Clock is derived from HSI */
+ 777:Peripherals/src/gd32f1x0_rcc.c ****         RCC_Clocks->USART1CLK_Frequency = HSI_VALUE;
+ 1111              		.loc 1 777 0
+ 1112 012e 034B     		ldr	r3, .L104+4
+ 1113 0130 8361     		str	r3, [r0, #24]
+ 1114              	.L83:
+ 778:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 779:Peripherals/src/gd32f1x0_rcc.c **** }
+ 1115              		.loc 1 779 0
+ 1116 0132 30BC     		pop	{r4, r5}
+ 1117 0134 7047     		bx	lr
+ 1118              	.L105:
+ 1119 0136 00BF     		.align	2
+ 1120              	.L104:
+ 1121 0138 00100240 		.word	1073876992
+ 1122 013c 00127A00 		.word	8000000
+ 1123 0140 00093D00 		.word	4000000
+ 1124 0144 00000000 		.word	.LANCHOR0
+ 1125 0148 00000000 		.word	.LANCHOR1
+ 1126 014c 809FD500 		.word	14000000
+ 1127 0150 ABAAAAAA 		.word	-1431655765
+ 1128              		.cfi_endproc
+ 1129              	.LFE54:
+ 1131              		.section	.text.RCC_AHBPeriphClock_Enable,"ax",%progbits
+ 1132              		.align	2
+ 1133              		.global	RCC_AHBPeriphClock_Enable
+ 1134              		.thumb
+ 1135              		.thumb_func
+ 1137              	RCC_AHBPeriphClock_Enable:
+ 1138              	.LFB55:
+ 780:Peripherals/src/gd32f1x0_rcc.c **** 
+ 781:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 782:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the AHB peripheral clock.    
+ 783:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_AHBPeriph: specify the AHB peripheral clock.
+ 784:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be any combination of the following values:
+ 785:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOA: GPIOA clock
+ 786:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOB: GPIOB clock
+ 787:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOC: GPIOC clock
+ 788:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOD: GPIOD clock
+ 789:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOF: GPIOF clock
+ 790:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_TSI:   TSI clock
+ 791:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_CRC:   CRC clock
+ 792:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_FMC:   FMC clock
+ 793:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_SRAM:  SRAM clock
+ 794:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_DMA1:  DMA1 clock
+ARM GAS  /tmp/ccy6G2yN.s 			page 34
+
+
+ 795:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the peripheral clock.
+ 796:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 797:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 798:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 799:Peripherals/src/gd32f1x0_rcc.c **** void RCC_AHBPeriphClock_Enable(uint32_t RCC_AHBPeriph, TypeState NewValue)
+ 800:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1139              		.loc 1 800 0
+ 1140              		.cfi_startproc
+ 1141              		@ args = 0, pretend = 0, frame = 0
+ 1142              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1143              		@ link register save eliminated.
+ 1144              	.LVL101:
+ 801:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1145              		.loc 1 801 0
+ 1146 0000 21B1     		cbz	r1, .L107
+ 802:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 803:Peripherals/src/gd32f1x0_rcc.c ****         RCC->AHBCCR |= RCC_AHBPeriph;
+ 1147              		.loc 1 803 0
+ 1148 0002 054B     		ldr	r3, .L109
+ 1149 0004 5A69     		ldr	r2, [r3, #20]
+ 1150 0006 1043     		orrs	r0, r0, r2
+ 1151              	.LVL102:
+ 1152 0008 5861     		str	r0, [r3, #20]
+ 1153 000a 7047     		bx	lr
+ 1154              	.LVL103:
+ 1155              	.L107:
+ 804:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 805:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 806:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 807:Peripherals/src/gd32f1x0_rcc.c ****         RCC->AHBCCR &= ~RCC_AHBPeriph;
+ 1156              		.loc 1 807 0
+ 1157 000c 024B     		ldr	r3, .L109
+ 1158 000e 5A69     		ldr	r2, [r3, #20]
+ 1159 0010 22EA0000 		bic	r0, r2, r0
+ 1160              	.LVL104:
+ 1161 0014 5861     		str	r0, [r3, #20]
+ 1162 0016 7047     		bx	lr
+ 1163              	.L110:
+ 1164              		.align	2
+ 1165              	.L109:
+ 1166 0018 00100240 		.word	1073876992
+ 1167              		.cfi_endproc
+ 1168              	.LFE55:
+ 1170              		.section	.text.RCC_APB1PeriphClock_Enable,"ax",%progbits
+ 1171              		.align	2
+ 1172              		.global	RCC_APB1PeriphClock_Enable
+ 1173              		.thumb
+ 1174              		.thumb_func
+ 1176              	RCC_APB1PeriphClock_Enable:
+ 1177              	.LFB56:
+ 808:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 809:Peripherals/src/gd32f1x0_rcc.c **** }
+ 810:Peripherals/src/gd32f1x0_rcc.c **** 
+ 811:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 812:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the APB1 peripheral clock.
+ 813:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_APB1Periph: specify the APB1 peripheral clock.
+ 814:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be any combination of the following values:
+ARM GAS  /tmp/ccy6G2yN.s 			page 35
+
+
+ 815:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_TIMER2:   TIMER2 clock
+ 816:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_TIMER3:   TIMER3 clock
+ 817:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_TIMER6:   TIMER6 clock
+ 818:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_TIMER14:  TIMER14 clock
+ 819:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_WWDG:     WWDG clock
+ 820:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_SPI2:     SPI2 clock
+ 821:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_SPI3:     SPI3 clock
+ 822:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_USART2:   USART2 clock
+ 823:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_I2C1:     I2C1 clock
+ 824:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_I2C2:     I2C2 clock
+ 825:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_USB:      USB clock
+ 826:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_PWR:      PWR clock
+ 827:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_DAC:      DAC clock
+ 828:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_CEC:      CEC clock                               
+ 829:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the peripheral clock.
+ 830:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 831:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 832:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 833:Peripherals/src/gd32f1x0_rcc.c **** void RCC_APB1PeriphClock_Enable(uint32_t RCC_APB1Periph, TypeState NewValue)
+ 834:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1178              		.loc 1 834 0
+ 1179              		.cfi_startproc
+ 1180              		@ args = 0, pretend = 0, frame = 0
+ 1181              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1182              		@ link register save eliminated.
+ 1183              	.LVL105:
+ 835:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1184              		.loc 1 835 0
+ 1185 0000 21B1     		cbz	r1, .L112
+ 836:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 837:Peripherals/src/gd32f1x0_rcc.c ****         RCC->APB1CCR |= RCC_APB1Periph;
+ 1186              		.loc 1 837 0
+ 1187 0002 054B     		ldr	r3, .L114
+ 1188 0004 DA69     		ldr	r2, [r3, #28]
+ 1189 0006 1043     		orrs	r0, r0, r2
+ 1190              	.LVL106:
+ 1191 0008 D861     		str	r0, [r3, #28]
+ 1192 000a 7047     		bx	lr
+ 1193              	.LVL107:
+ 1194              	.L112:
+ 838:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 839:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 840:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 841:Peripherals/src/gd32f1x0_rcc.c ****         RCC->APB1CCR &= ~RCC_APB1Periph;
+ 1195              		.loc 1 841 0
+ 1196 000c 024B     		ldr	r3, .L114
+ 1197 000e DA69     		ldr	r2, [r3, #28]
+ 1198 0010 22EA0000 		bic	r0, r2, r0
+ 1199              	.LVL108:
+ 1200 0014 D861     		str	r0, [r3, #28]
+ 1201 0016 7047     		bx	lr
+ 1202              	.L115:
+ 1203              		.align	2
+ 1204              	.L114:
+ 1205 0018 00100240 		.word	1073876992
+ 1206              		.cfi_endproc
+ 1207              	.LFE56:
+ARM GAS  /tmp/ccy6G2yN.s 			page 36
+
+
+ 1209              		.section	.text.RCC_APB2PeriphClock_Enable,"ax",%progbits
+ 1210              		.align	2
+ 1211              		.global	RCC_APB2PeriphClock_Enable
+ 1212              		.thumb
+ 1213              		.thumb_func
+ 1215              	RCC_APB2PeriphClock_Enable:
+ 1216              	.LFB57:
+ 842:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 843:Peripherals/src/gd32f1x0_rcc.c **** }
+ 844:Peripherals/src/gd32f1x0_rcc.c **** 
+ 845:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 846:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the APB2 peripheral clock.
+ 847:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_APB2Periph: specify the APB2 peripheral clock.
+ 848:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be any combination of the following values:
+ 849:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_CFG:      CFG clock
+ 850:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_ADC1:     ADC1 clock
+ 851:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_TIMER1:   TIMER1 clock
+ 852:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_SPI1:     SPI1 clock
+ 853:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_USART1:   USART1 clock
+ 854:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_TIMER15:  TIMER15 clock
+ 855:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_TIMER16:  TIMER16 clock
+ 856:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_TIMER17:  TIMER17 clock
+ 857:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the peripheral clock.
+ 858:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 859:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 860:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 861:Peripherals/src/gd32f1x0_rcc.c **** void RCC_APB2PeriphClock_Enable(uint32_t RCC_APB2Periph, TypeState NewValue)
+ 862:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1217              		.loc 1 862 0
+ 1218              		.cfi_startproc
+ 1219              		@ args = 0, pretend = 0, frame = 0
+ 1220              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1221              		@ link register save eliminated.
+ 1222              	.LVL109:
+ 863:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1223              		.loc 1 863 0
+ 1224 0000 21B1     		cbz	r1, .L117
+ 864:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 865:Peripherals/src/gd32f1x0_rcc.c ****         RCC->APB2CCR |= RCC_APB2Periph;
+ 1225              		.loc 1 865 0
+ 1226 0002 054B     		ldr	r3, .L119
+ 1227 0004 9A69     		ldr	r2, [r3, #24]
+ 1228 0006 1043     		orrs	r0, r0, r2
+ 1229              	.LVL110:
+ 1230 0008 9861     		str	r0, [r3, #24]
+ 1231 000a 7047     		bx	lr
+ 1232              	.LVL111:
+ 1233              	.L117:
+ 866:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 867:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 868:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 869:Peripherals/src/gd32f1x0_rcc.c ****         RCC->APB2CCR &= ~RCC_APB2Periph;
+ 1234              		.loc 1 869 0
+ 1235 000c 024B     		ldr	r3, .L119
+ 1236 000e 9A69     		ldr	r2, [r3, #24]
+ 1237 0010 22EA0000 		bic	r0, r2, r0
+ 1238              	.LVL112:
+ARM GAS  /tmp/ccy6G2yN.s 			page 37
+
+
+ 1239 0014 9861     		str	r0, [r3, #24]
+ 1240 0016 7047     		bx	lr
+ 1241              	.L120:
+ 1242              		.align	2
+ 1243              	.L119:
+ 1244 0018 00100240 		.word	1073876992
+ 1245              		.cfi_endproc
+ 1246              	.LFE57:
+ 1248              		.section	.text.RCC_ACCRPeriphClock_Enable,"ax",%progbits
+ 1249              		.align	2
+ 1250              		.global	RCC_ACCRPeriphClock_Enable
+ 1251              		.thumb
+ 1252              		.thumb_func
+ 1254              	RCC_ACCRPeriphClock_Enable:
+ 1255              	.LFB58:
+ 870:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 871:Peripherals/src/gd32f1x0_rcc.c **** }
+ 872:Peripherals/src/gd32f1x0_rcc.c **** 
+ 873:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 874:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the ACCR_I2C3 peripheral clock.
+ 875:Peripherals/src/gd32f1x0_rcc.c ****   * @note   I2C3 Clock is derived from APB1
+ 876:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_ACCRPeriph: specify the ACCR_I2C3 peripheral clock.
+ 877:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_ACCRPERIPH_I2C3:   I2C3 clock                             
+ 878:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the peripheral clock.
+ 879:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 880:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 881:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 882:Peripherals/src/gd32f1x0_rcc.c **** void RCC_ACCRPeriphClock_Enable(uint32_t RCC_ACCRPeriph, TypeState NewValue)
+ 883:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1256              		.loc 1 883 0
+ 1257              		.cfi_startproc
+ 1258              		@ args = 0, pretend = 0, frame = 0
+ 1259              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1260              		@ link register save eliminated.
+ 1261              	.LVL113:
+ 884:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1262              		.loc 1 884 0
+ 1263 0000 31B1     		cbz	r1, .L122
+ 885:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 886:Peripherals/src/gd32f1x0_rcc.c ****         RCC->RCC_I2C3CCR |= RCC_ACCRPeriph;
+ 1264              		.loc 1 886 0
+ 1265 0002 074B     		ldr	r3, .L124
+ 1266 0004 D3F8F820 		ldr	r2, [r3, #248]
+ 1267 0008 1043     		orrs	r0, r0, r2
+ 1268              	.LVL114:
+ 1269 000a C3F8F800 		str	r0, [r3, #248]
+ 1270 000e 7047     		bx	lr
+ 1271              	.LVL115:
+ 1272              	.L122:
+ 887:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 888:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 889:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 890:Peripherals/src/gd32f1x0_rcc.c ****         RCC->RCC_I2C3CCR &= ~RCC_ACCRPeriph;
+ 1273              		.loc 1 890 0
+ 1274 0010 034B     		ldr	r3, .L124
+ 1275 0012 D3F8F820 		ldr	r2, [r3, #248]
+ 1276 0016 22EA0000 		bic	r0, r2, r0
+ARM GAS  /tmp/ccy6G2yN.s 			page 38
+
+
+ 1277              	.LVL116:
+ 1278 001a C3F8F800 		str	r0, [r3, #248]
+ 1279 001e 7047     		bx	lr
+ 1280              	.L125:
+ 1281              		.align	2
+ 1282              	.L124:
+ 1283 0020 00100240 		.word	1073876992
+ 1284              		.cfi_endproc
+ 1285              	.LFE58:
+ 1287              		.section	.text.RCC_RTCCLK_Enable,"ax",%progbits
+ 1288              		.align	2
+ 1289              		.global	RCC_RTCCLK_Enable
+ 1290              		.thumb
+ 1291              		.thumb_func
+ 1293              	RCC_RTCCLK_Enable:
+ 1294              	.LFB59:
+ 891:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 892:Peripherals/src/gd32f1x0_rcc.c **** }
+ 893:Peripherals/src/gd32f1x0_rcc.c **** 
+ 894:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 895:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable the RTC clock.
+ 896:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the RTC clock.
+ 897:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 898:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 899:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 900:Peripherals/src/gd32f1x0_rcc.c **** void RCC_RTCCLK_Enable(TypeState NewValue)
+ 901:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1295              		.loc 1 901 0
+ 1296              		.cfi_startproc
+ 1297              		@ args = 0, pretend = 0, frame = 0
+ 1298              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1299              		@ link register save eliminated.
+ 1300              	.LVL117:
+ 902:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1301              		.loc 1 902 0
+ 1302 0000 28B1     		cbz	r0, .L127
+ 903:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 904:Peripherals/src/gd32f1x0_rcc.c ****         RCC->BDCR |= RCC_BDCR_RTCEN;
+ 1303              		.loc 1 904 0
+ 1304 0002 064B     		ldr	r3, .L129
+ 1305 0004 1A6A     		ldr	r2, [r3, #32]
+ 1306 0006 42F40042 		orr	r2, r2, #32768
+ 1307 000a 1A62     		str	r2, [r3, #32]
+ 1308 000c 7047     		bx	lr
+ 1309              	.L127:
+ 905:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 906:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 907:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 908:Peripherals/src/gd32f1x0_rcc.c ****         RCC->BDCR &= ~RCC_BDCR_RTCEN;
+ 1310              		.loc 1 908 0
+ 1311 000e 034B     		ldr	r3, .L129
+ 1312 0010 1A6A     		ldr	r2, [r3, #32]
+ 1313 0012 22F40042 		bic	r2, r2, #32768
+ 1314 0016 1A62     		str	r2, [r3, #32]
+ 1315 0018 7047     		bx	lr
+ 1316              	.L130:
+ 1317 001a 00BF     		.align	2
+ARM GAS  /tmp/ccy6G2yN.s 			page 39
+
+
+ 1318              	.L129:
+ 1319 001c 00100240 		.word	1073876992
+ 1320              		.cfi_endproc
+ 1321              	.LFE59:
+ 1323              		.section	.text.RCC_AHBPeriphReset_Enable,"ax",%progbits
+ 1324              		.align	2
+ 1325              		.global	RCC_AHBPeriphReset_Enable
+ 1326              		.thumb
+ 1327              		.thumb_func
+ 1329              	RCC_AHBPeriphReset_Enable:
+ 1330              	.LFB60:
+ 909:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 910:Peripherals/src/gd32f1x0_rcc.c **** }
+ 911:Peripherals/src/gd32f1x0_rcc.c **** 
+ 912:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 913:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Force or release AHB peripheral reset.
+ 914:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_AHBPeriphRST: specify the AHB peripheral to reset.
+ 915:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be any combination of the following values:
+ 916:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOARST: reset GPIOA clock 
+ 917:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOBRST: reset GPIOB clock 
+ 918:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOCRST: reset GPIOC clock 
+ 919:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIODRST: reset GPIOD clock 
+ 920:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_GPIOFRST: reset GPIOF clock 
+ 921:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_AHBPERIPH_TSIRST:   reset TSI clock 
+ 922:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the peripheral reset.
+ 923:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 924:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 925:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 926:Peripherals/src/gd32f1x0_rcc.c **** void RCC_AHBPeriphReset_Enable(uint32_t RCC_AHBPeriphRST, TypeState NewValue)
+ 927:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1331              		.loc 1 927 0
+ 1332              		.cfi_startproc
+ 1333              		@ args = 0, pretend = 0, frame = 0
+ 1334              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1335              		@ link register save eliminated.
+ 1336              	.LVL118:
+ 928:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1337              		.loc 1 928 0
+ 1338 0000 21B1     		cbz	r1, .L132
+ 929:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 930:Peripherals/src/gd32f1x0_rcc.c ****         RCC->AHBRCR |= RCC_AHBPeriphRST;
+ 1339              		.loc 1 930 0
+ 1340 0002 054B     		ldr	r3, .L134
+ 1341 0004 9A6A     		ldr	r2, [r3, #40]
+ 1342 0006 1043     		orrs	r0, r0, r2
+ 1343              	.LVL119:
+ 1344 0008 9862     		str	r0, [r3, #40]
+ 1345 000a 7047     		bx	lr
+ 1346              	.LVL120:
+ 1347              	.L132:
+ 931:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 932:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 933:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 934:Peripherals/src/gd32f1x0_rcc.c ****         RCC->AHBRCR &= ~RCC_AHBPeriphRST;
+ 1348              		.loc 1 934 0
+ 1349 000c 024B     		ldr	r3, .L134
+ 1350 000e 9A6A     		ldr	r2, [r3, #40]
+ARM GAS  /tmp/ccy6G2yN.s 			page 40
+
+
+ 1351 0010 22EA0000 		bic	r0, r2, r0
+ 1352              	.LVL121:
+ 1353 0014 9862     		str	r0, [r3, #40]
+ 1354 0016 7047     		bx	lr
+ 1355              	.L135:
+ 1356              		.align	2
+ 1357              	.L134:
+ 1358 0018 00100240 		.word	1073876992
+ 1359              		.cfi_endproc
+ 1360              	.LFE60:
+ 1362              		.section	.text.RCC_APB2PeriphReset_Enable,"ax",%progbits
+ 1363              		.align	2
+ 1364              		.global	RCC_APB2PeriphReset_Enable
+ 1365              		.thumb
+ 1366              		.thumb_func
+ 1368              	RCC_APB2PeriphReset_Enable:
+ 1369              	.LFB61:
+ 935:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 936:Peripherals/src/gd32f1x0_rcc.c **** }
+ 937:Peripherals/src/gd32f1x0_rcc.c **** 
+ 938:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 939:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Force or release APB2 peripheral reset.
+ 940:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_APB2PeriphRST: specifies the APB2 peripheral to reset.
+ 941:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be any combination of the following values:
+ 942:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_CFGRST:      reset CFG clock
+ 943:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_ADC1RST:     reset ADC1 clock
+ 944:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_TIMER1RST:   reset TIM1 clock
+ 945:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_SPI1RST:     reset SPI1 clock
+ 946:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_USART1RST:   reset USART1 clock
+ 947:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_TIMER15RST:  reset TIMER15 clock
+ 948:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_TIMER16RST:  reset TIMER16 clock
+ 949:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB2PERIPH_TIMER17RST:  reset TIMER17 clock
+ 950:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the peripheral reset.
+ 951:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 952:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 953:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 954:Peripherals/src/gd32f1x0_rcc.c **** void RCC_APB2PeriphReset_Enable(uint32_t RCC_APB2PeriphRST, TypeState NewValue)
+ 955:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1370              		.loc 1 955 0
+ 1371              		.cfi_startproc
+ 1372              		@ args = 0, pretend = 0, frame = 0
+ 1373              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1374              		@ link register save eliminated.
+ 1375              	.LVL122:
+ 956:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1376              		.loc 1 956 0
+ 1377 0000 21B1     		cbz	r1, .L137
+ 957:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 958:Peripherals/src/gd32f1x0_rcc.c ****         RCC->APB2RCR |= RCC_APB2PeriphRST;
+ 1378              		.loc 1 958 0
+ 1379 0002 054B     		ldr	r3, .L139
+ 1380 0004 DA68     		ldr	r2, [r3, #12]
+ 1381 0006 1043     		orrs	r0, r0, r2
+ 1382              	.LVL123:
+ 1383 0008 D860     		str	r0, [r3, #12]
+ 1384 000a 7047     		bx	lr
+ 1385              	.LVL124:
+ARM GAS  /tmp/ccy6G2yN.s 			page 41
+
+
+ 1386              	.L137:
+ 959:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 960:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 961:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 962:Peripherals/src/gd32f1x0_rcc.c ****         RCC->APB2RCR &= ~RCC_APB2PeriphRST;
+ 1387              		.loc 1 962 0
+ 1388 000c 024B     		ldr	r3, .L139
+ 1389 000e DA68     		ldr	r2, [r3, #12]
+ 1390 0010 22EA0000 		bic	r0, r2, r0
+ 1391              	.LVL125:
+ 1392 0014 D860     		str	r0, [r3, #12]
+ 1393 0016 7047     		bx	lr
+ 1394              	.L140:
+ 1395              		.align	2
+ 1396              	.L139:
+ 1397 0018 00100240 		.word	1073876992
+ 1398              		.cfi_endproc
+ 1399              	.LFE61:
+ 1401              		.section	.text.RCC_APB1PeriphReset_Enable,"ax",%progbits
+ 1402              		.align	2
+ 1403              		.global	RCC_APB1PeriphReset_Enable
+ 1404              		.thumb
+ 1405              		.thumb_func
+ 1407              	RCC_APB1PeriphReset_Enable:
+ 1408              	.LFB62:
+ 963:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 964:Peripherals/src/gd32f1x0_rcc.c **** }
+ 965:Peripherals/src/gd32f1x0_rcc.c **** 
+ 966:Peripherals/src/gd32f1x0_rcc.c **** /**
+ 967:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Force or release APB1 peripheral reset.
+ 968:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_APB1PeriphRST: specifies the APB1 peripheral to reset.
+ 969:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be any combination of the following values:
+ 970:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_TIMER2RST:   reset TIMER2 clock
+ 971:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_TIMER3RST:   reset TIMER3 clock
+ 972:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_TIMER6RST:   reset TIMER6 clock
+ 973:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_TIMER14RST:  reset TIMER14 clock
+ 974:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_WWDGRST:     reset WWDG clock
+ 975:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_SPI2RST:     reset SPI2 clock
+ 976:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_SPI3RST:     reset SPI3 clock
+ 977:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_USART2RST:   reset USART2 clock
+ 978:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_I2C1RST:     reset I2C1 clock
+ 979:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_I2C2RST:     reset I2C2 clock
+ 980:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_USBRST:      reset PWR clock
+ 981:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_PWRRST:      reset PWR clock
+ 982:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_DACRST:      reset DAC clock
+ 983:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_APB1PERIPH_CECRST:      reset CEC clock
+ 984:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the peripheral clock (ENABLE or DISABLE).
+ 985:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+ 986:Peripherals/src/gd32f1x0_rcc.c ****   */
+ 987:Peripherals/src/gd32f1x0_rcc.c **** void RCC_APB1PeriphReset_Enable(uint32_t RCC_APB1PeriphRST, TypeState NewValue)
+ 988:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1409              		.loc 1 988 0
+ 1410              		.cfi_startproc
+ 1411              		@ args = 0, pretend = 0, frame = 0
+ 1412              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1413              		@ link register save eliminated.
+ 1414              	.LVL126:
+ARM GAS  /tmp/ccy6G2yN.s 			page 42
+
+
+ 989:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1415              		.loc 1 989 0
+ 1416 0000 21B1     		cbz	r1, .L142
+ 990:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 991:Peripherals/src/gd32f1x0_rcc.c ****         RCC->APB1RCR |= RCC_APB1PeriphRST;
+ 1417              		.loc 1 991 0
+ 1418 0002 054B     		ldr	r3, .L144
+ 1419 0004 1A69     		ldr	r2, [r3, #16]
+ 1420 0006 1043     		orrs	r0, r0, r2
+ 1421              	.LVL127:
+ 1422 0008 1861     		str	r0, [r3, #16]
+ 1423 000a 7047     		bx	lr
+ 1424              	.LVL128:
+ 1425              	.L142:
+ 992:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 993:Peripherals/src/gd32f1x0_rcc.c ****     else
+ 994:Peripherals/src/gd32f1x0_rcc.c ****     {
+ 995:Peripherals/src/gd32f1x0_rcc.c ****         RCC->APB1RCR &= ~RCC_APB1PeriphRST;
+ 1426              		.loc 1 995 0
+ 1427 000c 024B     		ldr	r3, .L144
+ 1428 000e 1A69     		ldr	r2, [r3, #16]
+ 1429 0010 22EA0000 		bic	r0, r2, r0
+ 1430              	.LVL129:
+ 1431 0014 1861     		str	r0, [r3, #16]
+ 1432 0016 7047     		bx	lr
+ 1433              	.L145:
+ 1434              		.align	2
+ 1435              	.L144:
+ 1436 0018 00100240 		.word	1073876992
+ 1437              		.cfi_endproc
+ 1438              	.LFE62:
+ 1440              		.section	.text.RCC_ARCRPeriphReset_Enable,"ax",%progbits
+ 1441              		.align	2
+ 1442              		.global	RCC_ARCRPeriphReset_Enable
+ 1443              		.thumb
+ 1444              		.thumb_func
+ 1446              	RCC_ARCRPeriphReset_Enable:
+ 1447              	.LFB63:
+ 996:Peripherals/src/gd32f1x0_rcc.c ****     }
+ 997:Peripherals/src/gd32f1x0_rcc.c **** }
+ 998:Peripherals/src/gd32f1x0_rcc.c **** 
+ 999:Peripherals/src/gd32f1x0_rcc.c **** /**
+1000:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Force or release ARCR_I2C3 peripheral reset.
+1001:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_ARCRPeriphRST
+1002:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_ARCRPERIPH_I2C3RST:   reset I2C3 clock
+1003:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the peripheral clock (ENABLE or DISABLE).
+1004:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+1005:Peripherals/src/gd32f1x0_rcc.c ****   */
+1006:Peripherals/src/gd32f1x0_rcc.c **** void RCC_ARCRPeriphReset_Enable(uint32_t RCC_ARCRPeriphRST, TypeState NewValue)
+1007:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1448              		.loc 1 1007 0
+ 1449              		.cfi_startproc
+ 1450              		@ args = 0, pretend = 0, frame = 0
+ 1451              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1452              		@ link register save eliminated.
+ 1453              	.LVL130:
+1008:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ARM GAS  /tmp/ccy6G2yN.s 			page 43
+
+
+ 1454              		.loc 1 1008 0
+ 1455 0000 31B1     		cbz	r1, .L147
+1009:Peripherals/src/gd32f1x0_rcc.c ****     {
+1010:Peripherals/src/gd32f1x0_rcc.c ****         RCC->RCC_I2C3RCR |= RCC_ARCRPeriphRST;
+ 1456              		.loc 1 1010 0
+ 1457 0002 074B     		ldr	r3, .L149
+ 1458 0004 D3F8FC20 		ldr	r2, [r3, #252]
+ 1459 0008 1043     		orrs	r0, r0, r2
+ 1460              	.LVL131:
+ 1461 000a C3F8FC00 		str	r0, [r3, #252]
+ 1462 000e 7047     		bx	lr
+ 1463              	.LVL132:
+ 1464              	.L147:
+1011:Peripherals/src/gd32f1x0_rcc.c ****     }
+1012:Peripherals/src/gd32f1x0_rcc.c ****     else
+1013:Peripherals/src/gd32f1x0_rcc.c ****     {
+1014:Peripherals/src/gd32f1x0_rcc.c ****         RCC->RCC_I2C3RCR &= ~RCC_ARCRPeriphRST;
+ 1465              		.loc 1 1014 0
+ 1466 0010 034B     		ldr	r3, .L149
+ 1467 0012 D3F8FC20 		ldr	r2, [r3, #252]
+ 1468 0016 22EA0000 		bic	r0, r2, r0
+ 1469              	.LVL133:
+ 1470 001a C3F8FC00 		str	r0, [r3, #252]
+ 1471 001e 7047     		bx	lr
+ 1472              	.L150:
+ 1473              		.align	2
+ 1474              	.L149:
+ 1475 0020 00100240 		.word	1073876992
+ 1476              		.cfi_endproc
+ 1477              	.LFE63:
+ 1479              		.section	.text.RCC_BackupReset_Enable,"ax",%progbits
+ 1480              		.align	2
+ 1481              		.global	RCC_BackupReset_Enable
+ 1482              		.thumb
+ 1483              		.thumb_func
+ 1485              	RCC_BackupReset_Enable:
+ 1486              	.LFB64:
+1015:Peripherals/src/gd32f1x0_rcc.c ****     }
+1016:Peripherals/src/gd32f1x0_rcc.c **** }
+1017:Peripherals/src/gd32f1x0_rcc.c **** 
+1018:Peripherals/src/gd32f1x0_rcc.c **** /**
+1019:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Force or release the Backup domain reset.
+1020:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the Backup domain reset (ENABLE or DISABLE).
+1021:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+1022:Peripherals/src/gd32f1x0_rcc.c ****   */
+1023:Peripherals/src/gd32f1x0_rcc.c **** void RCC_BackupReset_Enable(TypeState NewValue)
+1024:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1487              		.loc 1 1024 0
+ 1488              		.cfi_startproc
+ 1489              		@ args = 0, pretend = 0, frame = 0
+ 1490              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1491              		@ link register save eliminated.
+ 1492              	.LVL134:
+1025:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1493              		.loc 1 1025 0
+ 1494 0000 28B1     		cbz	r0, .L152
+1026:Peripherals/src/gd32f1x0_rcc.c ****     {
+ARM GAS  /tmp/ccy6G2yN.s 			page 44
+
+
+1027:Peripherals/src/gd32f1x0_rcc.c ****         RCC->BDCR |= RCC_BDCR_BKPRST;
+ 1495              		.loc 1 1027 0
+ 1496 0002 064B     		ldr	r3, .L154
+ 1497 0004 1A6A     		ldr	r2, [r3, #32]
+ 1498 0006 42F48032 		orr	r2, r2, #65536
+ 1499 000a 1A62     		str	r2, [r3, #32]
+ 1500 000c 7047     		bx	lr
+ 1501              	.L152:
+1028:Peripherals/src/gd32f1x0_rcc.c ****     }
+1029:Peripherals/src/gd32f1x0_rcc.c ****     else
+1030:Peripherals/src/gd32f1x0_rcc.c ****     {
+1031:Peripherals/src/gd32f1x0_rcc.c ****         RCC->BDCR &= ~RCC_BDCR_BKPRST;
+ 1502              		.loc 1 1031 0
+ 1503 000e 034B     		ldr	r3, .L154
+ 1504 0010 1A6A     		ldr	r2, [r3, #32]
+ 1505 0012 22F48032 		bic	r2, r2, #65536
+ 1506 0016 1A62     		str	r2, [r3, #32]
+ 1507 0018 7047     		bx	lr
+ 1508              	.L155:
+ 1509 001a 00BF     		.align	2
+ 1510              	.L154:
+ 1511 001c 00100240 		.word	1073876992
+ 1512              		.cfi_endproc
+ 1513              	.LFE64:
+ 1515              		.section	.text.RCC_INTConfig,"ax",%progbits
+ 1516              		.align	2
+ 1517              		.global	RCC_INTConfig
+ 1518              		.thumb
+ 1519              		.thumb_func
+ 1521              	RCC_INTConfig:
+ 1522              	.LFB65:
+1032:Peripherals/src/gd32f1x0_rcc.c ****     }
+1033:Peripherals/src/gd32f1x0_rcc.c **** }
+1034:Peripherals/src/gd32f1x0_rcc.c **** 
+1035:Peripherals/src/gd32f1x0_rcc.c **** /**
+1036:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Enable or disable RCC interrupts.
+1037:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_INT: specify the RCC interrupt sources.
+1038:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be any combination of the following values:
+1039:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_LSISTB: LSI ready interrupt
+1040:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_LSESTB: LSE ready interrupt
+1041:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSISTB: HSI ready interrupt
+1042:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSESTB: HSE ready interrupt
+1043:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_PLLSTB: PLL ready interrupt
+1044:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSI14STB: HSI14 ready interrupt
+1045:Peripherals/src/gd32f1x0_rcc.c ****   * @param  NewValue: new state of the RCC interrupts (ENABLE or DISABLE).
+1046:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+1047:Peripherals/src/gd32f1x0_rcc.c ****   */
+1048:Peripherals/src/gd32f1x0_rcc.c **** void RCC_INTConfig(uint8_t RCC_INT, TypeState NewValue)
+1049:Peripherals/src/gd32f1x0_rcc.c **** {  
+ 1523              		.loc 1 1049 0
+ 1524              		.cfi_startproc
+ 1525              		@ args = 0, pretend = 0, frame = 0
+ 1526              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1527              		@ link register save eliminated.
+ 1528              	.LVL135:
+1050:Peripherals/src/gd32f1x0_rcc.c ****     if (NewValue != DISABLE)
+ 1529              		.loc 1 1050 0
+ARM GAS  /tmp/ccy6G2yN.s 			page 45
+
+
+ 1530 0000 21B1     		cbz	r1, .L157
+1051:Peripherals/src/gd32f1x0_rcc.c ****     {
+1052:Peripherals/src/gd32f1x0_rcc.c ****         /* Perform Byte access to RCC_GCIR[13:8] bits to enable the selected interrupts */
+1053:Peripherals/src/gd32f1x0_rcc.c ****         *(__IO uint8_t *) GCIR_BYTE1_ADDRESS |= RCC_INT;
+ 1531              		.loc 1 1053 0
+ 1532 0002 054B     		ldr	r3, .L159
+ 1533 0004 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1534 0006 1043     		orrs	r0, r0, r2
+ 1535              	.LVL136:
+ 1536 0008 1870     		strb	r0, [r3]
+ 1537 000a 7047     		bx	lr
+ 1538              	.LVL137:
+ 1539              	.L157:
+1054:Peripherals/src/gd32f1x0_rcc.c ****     }
+1055:Peripherals/src/gd32f1x0_rcc.c ****     else
+1056:Peripherals/src/gd32f1x0_rcc.c ****     {
+1057:Peripherals/src/gd32f1x0_rcc.c ****         /* Perform Byte access to GRCC_GCIR[13:8] bits to disable the selected interrupts */
+1058:Peripherals/src/gd32f1x0_rcc.c ****         *(__IO uint8_t *) GCIR_BYTE1_ADDRESS &= (uint8_t)~RCC_INT;
+ 1540              		.loc 1 1058 0
+ 1541 000c 024B     		ldr	r3, .L159
+ 1542 000e 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1543 0010 22EA0000 		bic	r0, r2, r0
+ 1544              	.LVL138:
+ 1545 0014 1870     		strb	r0, [r3]
+ 1546 0016 7047     		bx	lr
+ 1547              	.L160:
+ 1548              		.align	2
+ 1549              	.L159:
+ 1550 0018 09100240 		.word	1073877001
+ 1551              		.cfi_endproc
+ 1552              	.LFE65:
+ 1554              		.section	.text.RCC_GetBitState,"ax",%progbits
+ 1555              		.align	2
+ 1556              		.global	RCC_GetBitState
+ 1557              		.thumb
+ 1558              		.thumb_func
+ 1560              	RCC_GetBitState:
+ 1561              	.LFB66:
+1059:Peripherals/src/gd32f1x0_rcc.c ****     }
+1060:Peripherals/src/gd32f1x0_rcc.c **** }
+1061:Peripherals/src/gd32f1x0_rcc.c **** 
+1062:Peripherals/src/gd32f1x0_rcc.c **** /**
+1063:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Check whether the specified RCC flag is set or not.
+1064:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_FLAG: specify the flag to check.
+1065:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+1066:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_HSISTB: HSI clock ready  
+1067:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_HSESTB: HSE clock ready
+1068:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_PLLSTB: PLL clock ready
+1069:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_LSESTB: LSE clock ready
+1070:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_LSISTB: LSI clock ready
+1071:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_OBLSTB: Option Byte Loader (OBL) reset 
+1072:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_EPRST:  Pin reset
+1073:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_V12RST: V12 power domain reset  
+1074:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_POPDRST: POR/PDR reset
+1075:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_SWRST:  Software reset
+1076:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_IWDGRST: Independent Watchdog reset
+1077:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_WWDGRST: Window Watchdog reset
+ARM GAS  /tmp/ccy6G2yN.s 			page 46
+
+
+1078:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_LPRST: Low Power reset
+1079:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_FLAG_HSI14STB: HSI14 clock ready  
+1080:Peripherals/src/gd32f1x0_rcc.c ****   * @retval The new state of RCC_FLAG (SET or RESET).
+1081:Peripherals/src/gd32f1x0_rcc.c ****   */
+1082:Peripherals/src/gd32f1x0_rcc.c **** TypeState RCC_GetBitState(uint8_t RCC_FLAG)
+1083:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1562              		.loc 1 1083 0
+ 1563              		.cfi_startproc
+ 1564              		@ args = 0, pretend = 0, frame = 0
+ 1565              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1566              		@ link register save eliminated.
+ 1567              	.LVL139:
+1084:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t temp = 0;
+1085:Peripherals/src/gd32f1x0_rcc.c ****     uint32_t statusreg = 0;
+1086:Peripherals/src/gd32f1x0_rcc.c ****     
+1087:Peripherals/src/gd32f1x0_rcc.c ****     /* Get the RCC register index */
+1088:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC_FLAG >> 5;
+1089:Peripherals/src/gd32f1x0_rcc.c ****     
+1090:Peripherals/src/gd32f1x0_rcc.c ****     if (temp == 0)               /* The flag to check is in GCCR register */
+ 1568              		.loc 1 1090 0
+ 1569 0000 4309     		lsrs	r3, r0, #5
+ 1570              	.LVL140:
+ 1571 0002 02D1     		bne	.L162
+1091:Peripherals/src/gd32f1x0_rcc.c ****     {
+1092:Peripherals/src/gd32f1x0_rcc.c ****         statusreg = RCC->GCCR;
+ 1572              		.loc 1 1092 0
+ 1573 0004 0C4B     		ldr	r3, .L168
+ 1574              	.LVL141:
+ 1575 0006 1B68     		ldr	r3, [r3]
+ 1576              	.LVL142:
+ 1577 0008 0BE0     		b	.L163
+ 1578              	.LVL143:
+ 1579              	.L162:
+1093:Peripherals/src/gd32f1x0_rcc.c ****     }
+1094:Peripherals/src/gd32f1x0_rcc.c ****     else if (temp == 1)          /* The flag to check is in BDCR register */
+ 1580              		.loc 1 1094 0
+ 1581 000a 012B     		cmp	r3, #1
+ 1582 000c 02D1     		bne	.L164
+1095:Peripherals/src/gd32f1x0_rcc.c ****     {
+1096:Peripherals/src/gd32f1x0_rcc.c ****         statusreg = RCC->BDCR;
+ 1583              		.loc 1 1096 0
+ 1584 000e 0A4B     		ldr	r3, .L168
+ 1585              	.LVL144:
+ 1586 0010 1B6A     		ldr	r3, [r3, #32]
+ 1587              	.LVL145:
+ 1588 0012 06E0     		b	.L163
+ 1589              	.LVL146:
+ 1590              	.L164:
+1097:Peripherals/src/gd32f1x0_rcc.c ****     }
+1098:Peripherals/src/gd32f1x0_rcc.c ****     else if (temp == 2)          /* The flag to check is in GCSR register */
+ 1591              		.loc 1 1098 0
+ 1592 0014 022B     		cmp	r3, #2
+ 1593 0016 02D1     		bne	.L165
+1099:Peripherals/src/gd32f1x0_rcc.c ****     {
+1100:Peripherals/src/gd32f1x0_rcc.c ****         statusreg = RCC->GCSR;
+ 1594              		.loc 1 1100 0
+ 1595 0018 074B     		ldr	r3, .L168
+ARM GAS  /tmp/ccy6G2yN.s 			page 47
+
+
+ 1596              	.LVL147:
+ 1597 001a 5B6A     		ldr	r3, [r3, #36]
+ 1598              	.LVL148:
+ 1599 001c 01E0     		b	.L163
+ 1600              	.LVL149:
+ 1601              	.L165:
+1101:Peripherals/src/gd32f1x0_rcc.c ****     }
+1102:Peripherals/src/gd32f1x0_rcc.c ****     else                        /* The flag to check is in GCR2 register */
+1103:Peripherals/src/gd32f1x0_rcc.c ****     {
+1104:Peripherals/src/gd32f1x0_rcc.c ****         statusreg = RCC->GCCR2;
+ 1602              		.loc 1 1104 0
+ 1603 001e 064B     		ldr	r3, .L168
+ 1604              	.LVL150:
+ 1605 0020 5B6B     		ldr	r3, [r3, #52]
+ 1606              	.LVL151:
+ 1607              	.L163:
+1105:Peripherals/src/gd32f1x0_rcc.c ****     }    
+1106:Peripherals/src/gd32f1x0_rcc.c ****     
+1107:Peripherals/src/gd32f1x0_rcc.c ****     /* Get the flag position */
+1108:Peripherals/src/gd32f1x0_rcc.c ****     temp = RCC_FLAG & FLAG_MASK;
+ 1608              		.loc 1 1108 0
+ 1609 0022 00F01F00 		and	r0, r0, #31
+ 1610              	.LVL152:
+1109:Peripherals/src/gd32f1x0_rcc.c ****     
+1110:Peripherals/src/gd32f1x0_rcc.c ****     if ((statusreg & ((uint32_t)1 << temp)) != (uint32_t)RESET)
+ 1611              		.loc 1 1110 0
+ 1612 0026 23FA00F0 		lsr	r0, r3, r0
+ 1613              	.LVL153:
+ 1614 002a 10F0010F 		tst	r0, #1
+ 1615 002e 01D0     		beq	.L167
+1111:Peripherals/src/gd32f1x0_rcc.c ****     {
+1112:Peripherals/src/gd32f1x0_rcc.c ****         return SET;
+ 1616              		.loc 1 1112 0
+ 1617 0030 0120     		movs	r0, #1
+ 1618 0032 7047     		bx	lr
+ 1619              	.L167:
+1113:Peripherals/src/gd32f1x0_rcc.c ****     }
+1114:Peripherals/src/gd32f1x0_rcc.c ****     else
+1115:Peripherals/src/gd32f1x0_rcc.c ****     {
+1116:Peripherals/src/gd32f1x0_rcc.c ****         return RESET;
+ 1620              		.loc 1 1116 0
+ 1621 0034 0020     		movs	r0, #0
+1117:Peripherals/src/gd32f1x0_rcc.c ****     }
+1118:Peripherals/src/gd32f1x0_rcc.c **** }
+ 1622              		.loc 1 1118 0
+ 1623 0036 7047     		bx	lr
+ 1624              	.L169:
+ 1625              		.align	2
+ 1626              	.L168:
+ 1627 0038 00100240 		.word	1073876992
+ 1628              		.cfi_endproc
+ 1629              	.LFE66:
+ 1631              		.section	.text.RCC_WaitForHSEStartUp,"ax",%progbits
+ 1632              		.align	2
+ 1633              		.global	RCC_WaitForHSEStartUp
+ 1634              		.thumb
+ 1635              		.thumb_func
+ARM GAS  /tmp/ccy6G2yN.s 			page 48
+
+
+ 1637              	RCC_WaitForHSEStartUp:
+ 1638              	.LFB31:
+ 161:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1639              		.loc 1 161 0
+ 1640              		.cfi_startproc
+ 1641              		@ args = 0, pretend = 0, frame = 8
+ 1642              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1643 0000 10B5     		push	{r4, lr}
+ 1644              	.LCFI1:
+ 1645              		.cfi_def_cfa_offset 8
+ 1646              		.cfi_offset 4, -8
+ 1647              		.cfi_offset 14, -4
+ 1648 0002 82B0     		sub	sp, sp, #8
+ 1649              	.LCFI2:
+ 1650              		.cfi_def_cfa_offset 16
+ 162:Peripherals/src/gd32f1x0_rcc.c ****     __IO uint32_t HSE_StartOk_Counter = 0;
+ 1651              		.loc 1 162 0
+ 1652 0004 0020     		movs	r0, #0
+ 1653 0006 0190     		str	r0, [sp, #4]
+ 1654              	.LVL154:
+ 168:Peripherals/src/gd32f1x0_rcc.c ****         HSEState = RCC_GetBitState(RCC_FLAG_HSESTB);
+ 1655              		.loc 1 168 0
+ 1656 0008 1124     		movs	r4, #17
+ 166:Peripherals/src/gd32f1x0_rcc.c ****     while((HSE_StartOk_Counter != HSE_STARTUP_TIMEOUT) && (HSEState == RESET))
+ 1657              		.loc 1 166 0
+ 1658 000a 05E0     		b	.L171
+ 1659              	.LVL155:
+ 1660              	.L173:
+ 168:Peripherals/src/gd32f1x0_rcc.c ****         HSEState = RCC_GetBitState(RCC_FLAG_HSESTB);
+ 1661              		.loc 1 168 0
+ 1662 000c 2046     		mov	r0, r4
+ 1663              	.LVL156:
+ 1664 000e FFF7FEFF 		bl	RCC_GetBitState
+ 1665              	.LVL157:
+ 169:Peripherals/src/gd32f1x0_rcc.c ****         HSE_StartOk_Counter++;  
+ 1666              		.loc 1 169 0
+ 1667 0012 019B     		ldr	r3, [sp, #4]
+ 1668 0014 0133     		adds	r3, r3, #1
+ 1669 0016 0193     		str	r3, [sp, #4]
+ 1670              	.LVL158:
+ 1671              	.L171:
+ 166:Peripherals/src/gd32f1x0_rcc.c ****     while((HSE_StartOk_Counter != HSE_STARTUP_TIMEOUT) && (HSEState == RESET))
+ 1672              		.loc 1 166 0 discriminator 1
+ 1673 0018 019B     		ldr	r3, [sp, #4]
+ 1674 001a B3F5006F 		cmp	r3, #2048
+ 1675 001e 01D0     		beq	.L172
+ 166:Peripherals/src/gd32f1x0_rcc.c ****     while((HSE_StartOk_Counter != HSE_STARTUP_TIMEOUT) && (HSEState == RESET))
+ 1676              		.loc 1 166 0 is_stmt 0 discriminator 2
+ 1677 0020 0028     		cmp	r0, #0
+ 1678 0022 F3D0     		beq	.L173
+ 1679              	.L172:
+ 172:Peripherals/src/gd32f1x0_rcc.c ****     if(RCC_GetBitState(RCC_FLAG_HSESTB) != RESET)
+ 1680              		.loc 1 172 0 is_stmt 1
+ 1681 0024 1120     		movs	r0, #17
+ 1682              	.LVL159:
+ 1683 0026 FFF7FEFF 		bl	RCC_GetBitState
+ 1684              	.LVL160:
+ARM GAS  /tmp/ccy6G2yN.s 			page 49
+
+
+ 1685 002a 0346     		mov	r3, r0
+ 1686 002c 00B1     		cbz	r0, .L174
+ 174:Peripherals/src/gd32f1x0_rcc.c ****         return SUCCESS;
+ 1687              		.loc 1 174 0
+ 1688 002e 0123     		movs	r3, #1
+ 1689              	.L174:
+ 180:Peripherals/src/gd32f1x0_rcc.c **** }
+ 1690              		.loc 1 180 0
+ 1691 0030 1846     		mov	r0, r3
+ 1692 0032 02B0     		add	sp, sp, #8
+ 1693              		@ sp needed
+ 1694 0034 10BD     		pop	{r4, pc}
+ 1695              		.cfi_endproc
+ 1696              	.LFE31:
+ 1698 0036 00BF     		.section	.text.RCC_ClearBitState,"ax",%progbits
+ 1699              		.align	2
+ 1700              		.global	RCC_ClearBitState
+ 1701              		.thumb
+ 1702              		.thumb_func
+ 1704              	RCC_ClearBitState:
+ 1705              	.LFB67:
+1119:Peripherals/src/gd32f1x0_rcc.c **** 
+1120:Peripherals/src/gd32f1x0_rcc.c **** /**
+1121:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Clear the RCC all reset flags.
+1122:Peripherals/src/gd32f1x0_rcc.c ****   * @param  None
+1123:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+1124:Peripherals/src/gd32f1x0_rcc.c ****   */
+1125:Peripherals/src/gd32f1x0_rcc.c **** void RCC_ClearBitState(void)
+1126:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1706              		.loc 1 1126 0
+ 1707              		.cfi_startproc
+ 1708              		@ args = 0, pretend = 0, frame = 0
+ 1709              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1710              		@ link register save eliminated.
+1127:Peripherals/src/gd32f1x0_rcc.c ****     /* Set RSTFC bit to clear all reset flags */
+1128:Peripherals/src/gd32f1x0_rcc.c ****     RCC->GCSR |= RCC_GCSR_RSTFC;
+ 1711              		.loc 1 1128 0
+ 1712 0000 024B     		ldr	r3, .L176
+ 1713 0002 5A6A     		ldr	r2, [r3, #36]
+ 1714 0004 42F08072 		orr	r2, r2, #16777216
+ 1715 0008 5A62     		str	r2, [r3, #36]
+ 1716 000a 7047     		bx	lr
+ 1717              	.L177:
+ 1718              		.align	2
+ 1719              	.L176:
+ 1720 000c 00100240 		.word	1073876992
+ 1721              		.cfi_endproc
+ 1722              	.LFE67:
+ 1724              		.section	.text.RCC_GetIntBitState,"ax",%progbits
+ 1725              		.align	2
+ 1726              		.global	RCC_GetIntBitState
+ 1727              		.thumb
+ 1728              		.thumb_func
+ 1730              	RCC_GetIntBitState:
+ 1731              	.LFB68:
+1129:Peripherals/src/gd32f1x0_rcc.c **** }
+1130:Peripherals/src/gd32f1x0_rcc.c **** 
+ARM GAS  /tmp/ccy6G2yN.s 			page 50
+
+
+1131:Peripherals/src/gd32f1x0_rcc.c **** /**
+1132:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Check whether the RCC interrupt has occurred or not.
+1133:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_INT: specify the RCC interrupt source to check.
+1134:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+1135:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_LSISTB: the flag of LSI ready interrupt
+1136:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_LSESTB: the flag of LSE ready interrupt
+1137:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSISTB: the flag of HSI ready interrupt
+1138:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSESTB: the flag of HSE ready interrupt
+1139:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_PLLSTB: the flag of PLL ready interrupt
+1140:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSI14STB: the flag of HSI14 ready interrupt 
+1141:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_CKM: the flag of Clock Security System interrupt
+1142:Peripherals/src/gd32f1x0_rcc.c ****   * @retval The new state of RCC_INT (SET or RESET).
+1143:Peripherals/src/gd32f1x0_rcc.c ****   */
+1144:Peripherals/src/gd32f1x0_rcc.c **** TypeState RCC_GetIntBitState(uint8_t RCC_INT)
+1145:Peripherals/src/gd32f1x0_rcc.c **** {  
+ 1732              		.loc 1 1145 0
+ 1733              		.cfi_startproc
+ 1734              		@ args = 0, pretend = 0, frame = 0
+ 1735              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1736              		@ link register save eliminated.
+ 1737              	.LVL161:
+1146:Peripherals/src/gd32f1x0_rcc.c ****   /* Check the status of the RCC interrupt */
+1147:Peripherals/src/gd32f1x0_rcc.c ****     if ((RCC->GCIR & RCC_INT) != (uint32_t)RESET)
+ 1738              		.loc 1 1147 0
+ 1739 0000 034B     		ldr	r3, .L181
+ 1740 0002 9B68     		ldr	r3, [r3, #8]
+ 1741 0004 0342     		tst	r3, r0
+ 1742 0006 01D0     		beq	.L180
+1148:Peripherals/src/gd32f1x0_rcc.c ****     {
+1149:Peripherals/src/gd32f1x0_rcc.c ****         return SET;
+ 1743              		.loc 1 1149 0
+ 1744 0008 0120     		movs	r0, #1
+ 1745              	.LVL162:
+ 1746 000a 7047     		bx	lr
+ 1747              	.LVL163:
+ 1748              	.L180:
+1150:Peripherals/src/gd32f1x0_rcc.c ****     }
+1151:Peripherals/src/gd32f1x0_rcc.c ****     else
+1152:Peripherals/src/gd32f1x0_rcc.c ****     {
+1153:Peripherals/src/gd32f1x0_rcc.c ****         return RESET;
+ 1749              		.loc 1 1153 0
+ 1750 000c 0020     		movs	r0, #0
+ 1751              	.LVL164:
+1154:Peripherals/src/gd32f1x0_rcc.c ****     }
+1155:Peripherals/src/gd32f1x0_rcc.c **** }
+ 1752              		.loc 1 1155 0
+ 1753 000e 7047     		bx	lr
+ 1754              	.L182:
+ 1755              		.align	2
+ 1756              	.L181:
+ 1757 0010 00100240 		.word	1073876992
+ 1758              		.cfi_endproc
+ 1759              	.LFE68:
+ 1761              		.section	.text.RCC_ClearIntBitState,"ax",%progbits
+ 1762              		.align	2
+ 1763              		.global	RCC_ClearIntBitState
+ 1764              		.thumb
+ARM GAS  /tmp/ccy6G2yN.s 			page 51
+
+
+ 1765              		.thumb_func
+ 1767              	RCC_ClearIntBitState:
+ 1768              	.LFB69:
+1156:Peripherals/src/gd32f1x0_rcc.c **** 
+1157:Peripherals/src/gd32f1x0_rcc.c **** /**
+1158:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Clear the RCC interrupt bits.
+1159:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_INT: specify the interrupt bit to clear.
+1160:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be any combination of the following values:
+1161:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_LSISTB: LSI ready interrupt
+1162:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_LSESTB: LSE ready interrupt
+1163:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSISTB: HSI ready interrupt
+1164:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSESTB: HSE ready interrupt
+1165:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_PLLSTB: PLL ready interrupt
+1166:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_HSI14STB: HSI14 ready interrupt  
+1167:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_INT_CKM: Clock Security System interrupt
+1168:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+1169:Peripherals/src/gd32f1x0_rcc.c ****   */
+1170:Peripherals/src/gd32f1x0_rcc.c **** void RCC_ClearIntBitState(uint8_t RCC_INT)
+1171:Peripherals/src/gd32f1x0_rcc.c **** {
+ 1769              		.loc 1 1171 0
+ 1770              		.cfi_startproc
+ 1771              		@ args = 0, pretend = 0, frame = 0
+ 1772              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1773              		@ link register save eliminated.
+ 1774              	.LVL165:
+1172:Peripherals/src/gd32f1x0_rcc.c ****     /* Perform Byte access to RCC_GCIR[23:16] bits to clear the selected interrupt bits */
+1173:Peripherals/src/gd32f1x0_rcc.c ****     *(__IO uint8_t *) GCIR_BYTE2_ADDRESS = RCC_INT;
+ 1775              		.loc 1 1173 0
+ 1776 0000 014B     		ldr	r3, .L184
+ 1777 0002 1870     		strb	r0, [r3]
+ 1778 0004 7047     		bx	lr
+ 1779              	.L185:
+ 1780 0006 00BF     		.align	2
+ 1781              	.L184:
+ 1782 0008 0A100240 		.word	1073877002
+ 1783              		.cfi_endproc
+ 1784              	.LFE69:
+ 1786              		.section	.text.RCC_UnlockPower,"ax",%progbits
+ 1787              		.align	2
+ 1788              		.global	RCC_UnlockPower
+ 1789              		.thumb
+ 1790              		.thumb_func
+ 1792              	RCC_UnlockPower:
+ 1793              	.LFB70:
+1174:Peripherals/src/gd32f1x0_rcc.c **** }
+1175:Peripherals/src/gd32f1x0_rcc.c **** 
+1176:Peripherals/src/gd32f1x0_rcc.c **** /**
+1177:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Unlock the power.
+1178:Peripherals/src/gd32f1x0_rcc.c ****   * @note   Write 0x1A2B3C4D to RCC_VC_KEY to Unlock the power.
+1179:Peripherals/src/gd32f1x0_rcc.c ****   * @param  None
+1180:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+1181:Peripherals/src/gd32f1x0_rcc.c ****   */
+1182:Peripherals/src/gd32f1x0_rcc.c **** void RCC_UnlockPower(void)
+1183:Peripherals/src/gd32f1x0_rcc.c **** { 
+ 1794              		.loc 1 1183 0
+ 1795              		.cfi_startproc
+ 1796              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccy6G2yN.s 			page 52
+
+
+ 1797              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1798              		@ link register save eliminated.
+1184:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear RCC_VC_KEY bit */
+1185:Peripherals/src/gd32f1x0_rcc.c ****     RCC->RCC_VC_KEY &= RCC_VC_KEY_CLEAR;
+ 1799              		.loc 1 1185 0
+ 1800 0000 064B     		ldr	r3, .L187
+ 1801 0002 D3F80021 		ldr	r2, [r3, #256]
+ 1802 0006 0022     		movs	r2, #0
+ 1803 0008 C3F80021 		str	r2, [r3, #256]
+1186:Peripherals/src/gd32f1x0_rcc.c ****     /* Unlock the power according to RCC_VC_KEY_ULOCKPOWER */
+1187:Peripherals/src/gd32f1x0_rcc.c ****     RCC->RCC_VC_KEY |= RCC_VC_KEY_ULOCKPOWER;
+ 1804              		.loc 1 1187 0
+ 1805 000c D3F80011 		ldr	r1, [r3, #256]
+ 1806 0010 034A     		ldr	r2, .L187+4
+ 1807 0012 0A43     		orrs	r2, r2, r1
+ 1808 0014 C3F80021 		str	r2, [r3, #256]
+ 1809 0018 7047     		bx	lr
+ 1810              	.L188:
+ 1811 001a 00BF     		.align	2
+ 1812              	.L187:
+ 1813 001c 00100240 		.word	1073876992
+ 1814 0020 4D3C2B1A 		.word	439041101
+ 1815              		.cfi_endproc
+ 1816              	.LFE70:
+ 1818              		.section	.text.RCC_KERNELVOLConfig,"ax",%progbits
+ 1819              		.align	2
+ 1820              		.global	RCC_KERNELVOLConfig
+ 1821              		.thumb
+ 1822              		.thumb_func
+ 1824              	RCC_KERNELVOLConfig:
+ 1825              	.LFB71:
+1188:Peripherals/src/gd32f1x0_rcc.c **** }
+1189:Peripherals/src/gd32f1x0_rcc.c **** 
+1190:Peripherals/src/gd32f1x0_rcc.c **** /**
+1191:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the kernel voltage in Deep-sleep mode.
+1192:Peripherals/src/gd32f1x0_rcc.c ****   * @note   Only unlock the power,this configuration is effective.
+1193:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_KERNEL_VOL: specify the kernel voltage. 
+1194:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+1195:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_KERNEL_VOL1_2: The kernel voltage in Deep-sleep mode is 1.2V 
+1196:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_KERNEL_VOL1_1: The kernel voltage in Deep-sleep mode is 1.1V 
+1197:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_KERNEL_VOL1_0: The kernel voltage in Deep-sleep mode is 1.0V
+1198:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_KERNEL_VOL0_9: The kernel voltage in Deep-sleep mode is 0.9V
+1199:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+1200:Peripherals/src/gd32f1x0_rcc.c ****   */
+1201:Peripherals/src/gd32f1x0_rcc.c **** void RCC_KERNELVOLConfig(uint32_t RCC_KERNEL_VOL) 
+1202:Peripherals/src/gd32f1x0_rcc.c **** { 
+ 1826              		.loc 1 1202 0
+ 1827              		.cfi_startproc
+ 1828              		@ args = 0, pretend = 0, frame = 0
+ 1829              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1830              		@ link register save eliminated.
+ 1831              	.LVL166:
+1203:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear DEEPSLEEP_VC bit */
+1204:Peripherals/src/gd32f1x0_rcc.c ****     RCC->RCC_DEEPSLEEP_VC &= ~RCC_DEEPSLEEP_VC_CLEAR;
+ 1832              		.loc 1 1204 0
+ 1833 0000 064B     		ldr	r3, .L190
+ 1834 0002 D3F83421 		ldr	r2, [r3, #308]
+ARM GAS  /tmp/ccy6G2yN.s 			page 53
+
+
+ 1835 0006 22F00702 		bic	r2, r2, #7
+ 1836 000a C3F83421 		str	r2, [r3, #308]
+1205:Peripherals/src/gd32f1x0_rcc.c ****     /* Set DEEPSLEEP_VC bits according to RCC_KERNEL_VOL value */
+1206:Peripherals/src/gd32f1x0_rcc.c ****     RCC->RCC_DEEPSLEEP_VC |= RCC_KERNEL_VOL;
+ 1837              		.loc 1 1206 0
+ 1838 000e D3F83421 		ldr	r2, [r3, #308]
+ 1839 0012 1043     		orrs	r0, r0, r2
+ 1840              	.LVL167:
+ 1841 0014 C3F83401 		str	r0, [r3, #308]
+ 1842 0018 7047     		bx	lr
+ 1843              	.L191:
+ 1844 001a 00BF     		.align	2
+ 1845              	.L190:
+ 1846 001c 00100240 		.word	1073876992
+ 1847              		.cfi_endproc
+ 1848              	.LFE71:
+ 1850              		.section	.text.RCC_POWERDOWNVOLConfig,"ax",%progbits
+ 1851              		.align	2
+ 1852              		.global	RCC_POWERDOWNVOLConfig
+ 1853              		.thumb
+ 1854              		.thumb_func
+ 1856              	RCC_POWERDOWNVOLConfig:
+ 1857              	.LFB72:
+1207:Peripherals/src/gd32f1x0_rcc.c **** }
+1208:Peripherals/src/gd32f1x0_rcc.c **** 
+1209:Peripherals/src/gd32f1x0_rcc.c **** /**
+1210:Peripherals/src/gd32f1x0_rcc.c ****   * @brief  Configure the voltage of power down.
+1211:Peripherals/src/gd32f1x0_rcc.c ****   * @param  RCC_POWERDOWNVOL: specify the voltage of power down.
+1212:Peripherals/src/gd32f1x0_rcc.c ****   *   This parameter can be one of the following values:
+1213:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_POWERDOWNVOL2_6: The voltage of power down is 2.6V.
+1214:Peripherals/src/gd32f1x0_rcc.c ****   *     @arg RCC_POWERDOWNVOL1_8: The voltage of power down is 1.8V
+1215:Peripherals/src/gd32f1x0_rcc.c ****   * @retval None
+1216:Peripherals/src/gd32f1x0_rcc.c ****   */
+1217:Peripherals/src/gd32f1x0_rcc.c **** void RCC_POWERDOWNVOLConfig(uint32_t RCC_POWERDOWNVOL)
+1218:Peripherals/src/gd32f1x0_rcc.c **** { 
+ 1858              		.loc 1 1218 0
+ 1859              		.cfi_startproc
+ 1860              		@ args = 0, pretend = 0, frame = 0
+ 1861              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1862              		@ link register save eliminated.
+ 1863              	.LVL168:
+1219:Peripherals/src/gd32f1x0_rcc.c ****     /* Clear RCC_PDR_S bit */
+1220:Peripherals/src/gd32f1x0_rcc.c ****     RCC->RCC_PDR_S &= ~RCC_PDR_S_CLEAR;
+ 1864              		.loc 1 1220 0
+ 1865 0000 064B     		ldr	r3, .L193
+ 1866 0002 D3F83821 		ldr	r2, [r3, #312]
+ 1867 0006 22F00102 		bic	r2, r2, #1
+ 1868 000a C3F83821 		str	r2, [r3, #312]
+1221:Peripherals/src/gd32f1x0_rcc.c ****     /* Set RCC_PDR_S bit according to RCC_POWERDOWNVOL value */
+1222:Peripherals/src/gd32f1x0_rcc.c ****     RCC->RCC_PDR_S |= RCC_POWERDOWNVOL;
+ 1869              		.loc 1 1222 0
+ 1870 000e D3F83821 		ldr	r2, [r3, #312]
+ 1871 0012 1043     		orrs	r0, r0, r2
+ 1872              	.LVL169:
+ 1873 0014 C3F83801 		str	r0, [r3, #312]
+ 1874 0018 7047     		bx	lr
+ 1875              	.L194:
+ARM GAS  /tmp/ccy6G2yN.s 			page 54
+
+
+ 1876 001a 00BF     		.align	2
+ 1877              	.L193:
+ 1878 001c 00100240 		.word	1073876992
+ 1879              		.cfi_endproc
+ 1880              	.LFE72:
+ 1882              		.section	.data.AHBPrescTable,"aw",%progbits
+ 1883              		.align	2
+ 1884              		.set	.LANCHOR0,. + 0
+ 1887              	AHBPrescTable:
+ 1888 0000 00       		.byte	0
+ 1889 0001 00       		.byte	0
+ 1890 0002 00       		.byte	0
+ 1891 0003 00       		.byte	0
+ 1892 0004 00       		.byte	0
+ 1893 0005 00       		.byte	0
+ 1894 0006 00       		.byte	0
+ 1895 0007 00       		.byte	0
+ 1896 0008 01       		.byte	1
+ 1897 0009 02       		.byte	2
+ 1898 000a 03       		.byte	3
+ 1899 000b 04       		.byte	4
+ 1900 000c 06       		.byte	6
+ 1901 000d 07       		.byte	7
+ 1902 000e 08       		.byte	8
+ 1903 000f 09       		.byte	9
+ 1904              		.section	.data.APBPrescTable,"aw",%progbits
+ 1905              		.align	2
+ 1906              		.set	.LANCHOR1,. + 0
+ 1909              	APBPrescTable:
+ 1910 0000 00       		.byte	0
+ 1911 0001 00       		.byte	0
+ 1912 0002 00       		.byte	0
+ 1913 0003 00       		.byte	0
+ 1914 0004 01       		.byte	1
+ 1915 0005 02       		.byte	2
+ 1916 0006 03       		.byte	3
+ 1917 0007 04       		.byte	4
+ 1918              		.text
+ 1919              	.Letext0:
+ 1920              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 1921              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 1922              		.file 4 "CMSIS/gd32f1x0.h"
+ 1923              		.file 5 "Peripherals/inc/gd32f1x0_rcc.h"
+ 1924              		.file 6 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccy6G2yN.s 			page 55
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 gd32f1x0_rcc.c
+     /tmp/ccy6G2yN.s:17     .text.RCC_DeInit:00000000 $t
+     /tmp/ccy6G2yN.s:22     .text.RCC_DeInit:00000000 RCC_DeInit
+     /tmp/ccy6G2yN.s:74     .text.RCC_DeInit:00000054 $d
+     /tmp/ccy6G2yN.s:80     .text.RCC_HSEConfig:00000000 $t
+     /tmp/ccy6G2yN.s:85     .text.RCC_HSEConfig:00000000 RCC_HSEConfig
+     /tmp/ccy6G2yN.s:103    .text.RCC_HSEConfig:0000000c $d
+     /tmp/ccy6G2yN.s:108    .text.RCC_AdjustHSICalibrationValue:00000000 $t
+     /tmp/ccy6G2yN.s:113    .text.RCC_AdjustHSICalibrationValue:00000000 RCC_AdjustHSICalibrationValue
+     /tmp/ccy6G2yN.s:137    .text.RCC_AdjustHSICalibrationValue:00000010 $d
+     /tmp/ccy6G2yN.s:142    .text.RCC_HSI_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:147    .text.RCC_HSI_Enable:00000000 RCC_HSI_Enable
+     /tmp/ccy6G2yN.s:173    .text.RCC_HSI_Enable:0000001c $d
+     /tmp/ccy6G2yN.s:178    .text.RCC_AdjustHSI14CalibrationValue:00000000 $t
+     /tmp/ccy6G2yN.s:183    .text.RCC_AdjustHSI14CalibrationValue:00000000 RCC_AdjustHSI14CalibrationValue
+     /tmp/ccy6G2yN.s:207    .text.RCC_AdjustHSI14CalibrationValue:00000010 $d
+     /tmp/ccy6G2yN.s:212    .text.RCC_HSI14_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:217    .text.RCC_HSI14_Enable:00000000 RCC_HSI14_Enable
+     /tmp/ccy6G2yN.s:243    .text.RCC_HSI14_Enable:0000001c $d
+     /tmp/ccy6G2yN.s:248    .text.RCC_LSEConfig:00000000 $t
+     /tmp/ccy6G2yN.s:253    .text.RCC_LSEConfig:00000000 RCC_LSEConfig
+     /tmp/ccy6G2yN.s:279    .text.RCC_LSEConfig:0000001c $d
+     /tmp/ccy6G2yN.s:284    .text.RCC_LSEDriveConfig:00000000 $t
+     /tmp/ccy6G2yN.s:289    .text.RCC_LSEDriveConfig:00000000 RCC_LSEDriveConfig
+     /tmp/ccy6G2yN.s:311    .text.RCC_LSEDriveConfig:00000014 $d
+     /tmp/ccy6G2yN.s:316    .text.RCC_LSI_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:321    .text.RCC_LSI_Enable:00000000 RCC_LSI_Enable
+     /tmp/ccy6G2yN.s:347    .text.RCC_LSI_Enable:0000001c $d
+     /tmp/ccy6G2yN.s:352    .text.RCC_PLLConfig:00000000 $t
+     /tmp/ccy6G2yN.s:357    .text.RCC_PLLConfig:00000000 RCC_PLLConfig
+     /tmp/ccy6G2yN.s:381    .text.RCC_PLLConfig:00000018 $d
+     /tmp/ccy6G2yN.s:386    .text.RCC_PLL_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:391    .text.RCC_PLL_Enable:00000000 RCC_PLL_Enable
+     /tmp/ccy6G2yN.s:417    .text.RCC_PLL_Enable:0000001c $d
+     /tmp/ccy6G2yN.s:422    .text.RCC_HSEPREDVConfig:00000000 $t
+     /tmp/ccy6G2yN.s:427    .text.RCC_HSEPREDVConfig:00000000 RCC_HSEPREDVConfig
+     /tmp/ccy6G2yN.s:451    .text.RCC_HSEPREDVConfig:00000010 $d
+     /tmp/ccy6G2yN.s:456    .text.RCC_HSEClockMonitor_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:461    .text.RCC_HSEClockMonitor_Enable:00000000 RCC_HSEClockMonitor_Enable
+     /tmp/ccy6G2yN.s:487    .text.RCC_HSEClockMonitor_Enable:0000001c $d
+     /tmp/ccy6G2yN.s:492    .text.RCC_CKOUTSRCConfig:00000000 $t
+     /tmp/ccy6G2yN.s:497    .text.RCC_CKOUTSRCConfig:00000000 RCC_CKOUTSRCConfig
+     /tmp/ccy6G2yN.s:523    .text.RCC_CKOUTSRCConfig:00000010 $d
+     /tmp/ccy6G2yN.s:528    .text.RCC_CK_SYSConfig:00000000 $t
+     /tmp/ccy6G2yN.s:533    .text.RCC_CK_SYSConfig:00000000 RCC_CK_SYSConfig
+     /tmp/ccy6G2yN.s:557    .text.RCC_CK_SYSConfig:00000010 $d
+     /tmp/ccy6G2yN.s:562    .text.RCC_GetCK_SYSSource:00000000 $t
+     /tmp/ccy6G2yN.s:567    .text.RCC_GetCK_SYSSource:00000000 RCC_GetCK_SYSSource
+     /tmp/ccy6G2yN.s:583    .text.RCC_GetCK_SYSSource:0000000c $d
+     /tmp/ccy6G2yN.s:588    .text.RCC_AHBConfig:00000000 $t
+     /tmp/ccy6G2yN.s:593    .text.RCC_AHBConfig:00000000 RCC_AHBConfig
+     /tmp/ccy6G2yN.s:617    .text.RCC_AHBConfig:00000010 $d
+     /tmp/ccy6G2yN.s:622    .text.RCC_APB1Config:00000000 $t
+     /tmp/ccy6G2yN.s:627    .text.RCC_APB1Config:00000000 RCC_APB1Config
+     /tmp/ccy6G2yN.s:651    .text.RCC_APB1Config:00000010 $d
+     /tmp/ccy6G2yN.s:656    .text.RCC_APB2Config:00000000 $t
+ARM GAS  /tmp/ccy6G2yN.s 			page 56
+
+
+     /tmp/ccy6G2yN.s:661    .text.RCC_APB2Config:00000000 RCC_APB2Config
+     /tmp/ccy6G2yN.s:685    .text.RCC_APB2Config:00000010 $d
+     /tmp/ccy6G2yN.s:690    .text.RCC_ADCCLKConfig:00000000 $t
+     /tmp/ccy6G2yN.s:695    .text.RCC_ADCCLKConfig:00000000 RCC_ADCCLKConfig
+     /tmp/ccy6G2yN.s:726    .text.RCC_ADCCLKConfig:00000024 $d
+     /tmp/ccy6G2yN.s:731    .text.RCC_USBCLKConfig:00000000 $t
+     /tmp/ccy6G2yN.s:736    .text.RCC_USBCLKConfig:00000000 RCC_USBCLKConfig
+     /tmp/ccy6G2yN.s:758    .text.RCC_USBCLKConfig:00000014 $d
+     /tmp/ccy6G2yN.s:763    .text.RCC_CECCLKConfig:00000000 $t
+     /tmp/ccy6G2yN.s:768    .text.RCC_CECCLKConfig:00000000 RCC_CECCLKConfig
+     /tmp/ccy6G2yN.s:790    .text.RCC_CECCLKConfig:00000014 $d
+     /tmp/ccy6G2yN.s:795    .text.RCC_USARTCLKConfig:00000000 $t
+     /tmp/ccy6G2yN.s:800    .text.RCC_USARTCLKConfig:00000000 RCC_USARTCLKConfig
+     /tmp/ccy6G2yN.s:822    .text.RCC_USARTCLKConfig:00000014 $d
+     /tmp/ccy6G2yN.s:827    .text.RCC_RTCCLKConfig:00000000 $t
+     /tmp/ccy6G2yN.s:832    .text.RCC_RTCCLKConfig:00000000 RCC_RTCCLKConfig
+     /tmp/ccy6G2yN.s:850    .text.RCC_RTCCLKConfig:0000000c $d
+     /tmp/ccy6G2yN.s:855    .text.RCC_GetClocksFreq:00000000 $t
+     /tmp/ccy6G2yN.s:860    .text.RCC_GetClocksFreq:00000000 RCC_GetClocksFreq
+     /tmp/ccy6G2yN.s:1024   .text.RCC_GetClocksFreq:000000b8 $d
+     /tmp/ccy6G2yN.s:1028   .text.RCC_GetClocksFreq:000000bc $t
+     /tmp/ccy6G2yN.s:1121   .text.RCC_GetClocksFreq:00000138 $d
+     /tmp/ccy6G2yN.s:1132   .text.RCC_AHBPeriphClock_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1137   .text.RCC_AHBPeriphClock_Enable:00000000 RCC_AHBPeriphClock_Enable
+     /tmp/ccy6G2yN.s:1166   .text.RCC_AHBPeriphClock_Enable:00000018 $d
+     /tmp/ccy6G2yN.s:1171   .text.RCC_APB1PeriphClock_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1176   .text.RCC_APB1PeriphClock_Enable:00000000 RCC_APB1PeriphClock_Enable
+     /tmp/ccy6G2yN.s:1205   .text.RCC_APB1PeriphClock_Enable:00000018 $d
+     /tmp/ccy6G2yN.s:1210   .text.RCC_APB2PeriphClock_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1215   .text.RCC_APB2PeriphClock_Enable:00000000 RCC_APB2PeriphClock_Enable
+     /tmp/ccy6G2yN.s:1244   .text.RCC_APB2PeriphClock_Enable:00000018 $d
+     /tmp/ccy6G2yN.s:1249   .text.RCC_ACCRPeriphClock_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1254   .text.RCC_ACCRPeriphClock_Enable:00000000 RCC_ACCRPeriphClock_Enable
+     /tmp/ccy6G2yN.s:1283   .text.RCC_ACCRPeriphClock_Enable:00000020 $d
+     /tmp/ccy6G2yN.s:1288   .text.RCC_RTCCLK_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1293   .text.RCC_RTCCLK_Enable:00000000 RCC_RTCCLK_Enable
+     /tmp/ccy6G2yN.s:1319   .text.RCC_RTCCLK_Enable:0000001c $d
+     /tmp/ccy6G2yN.s:1324   .text.RCC_AHBPeriphReset_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1329   .text.RCC_AHBPeriphReset_Enable:00000000 RCC_AHBPeriphReset_Enable
+     /tmp/ccy6G2yN.s:1358   .text.RCC_AHBPeriphReset_Enable:00000018 $d
+     /tmp/ccy6G2yN.s:1363   .text.RCC_APB2PeriphReset_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1368   .text.RCC_APB2PeriphReset_Enable:00000000 RCC_APB2PeriphReset_Enable
+     /tmp/ccy6G2yN.s:1397   .text.RCC_APB2PeriphReset_Enable:00000018 $d
+     /tmp/ccy6G2yN.s:1402   .text.RCC_APB1PeriphReset_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1407   .text.RCC_APB1PeriphReset_Enable:00000000 RCC_APB1PeriphReset_Enable
+     /tmp/ccy6G2yN.s:1436   .text.RCC_APB1PeriphReset_Enable:00000018 $d
+     /tmp/ccy6G2yN.s:1441   .text.RCC_ARCRPeriphReset_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1446   .text.RCC_ARCRPeriphReset_Enable:00000000 RCC_ARCRPeriphReset_Enable
+     /tmp/ccy6G2yN.s:1475   .text.RCC_ARCRPeriphReset_Enable:00000020 $d
+     /tmp/ccy6G2yN.s:1480   .text.RCC_BackupReset_Enable:00000000 $t
+     /tmp/ccy6G2yN.s:1485   .text.RCC_BackupReset_Enable:00000000 RCC_BackupReset_Enable
+     /tmp/ccy6G2yN.s:1511   .text.RCC_BackupReset_Enable:0000001c $d
+     /tmp/ccy6G2yN.s:1516   .text.RCC_INTConfig:00000000 $t
+     /tmp/ccy6G2yN.s:1521   .text.RCC_INTConfig:00000000 RCC_INTConfig
+     /tmp/ccy6G2yN.s:1550   .text.RCC_INTConfig:00000018 $d
+     /tmp/ccy6G2yN.s:1555   .text.RCC_GetBitState:00000000 $t
+     /tmp/ccy6G2yN.s:1560   .text.RCC_GetBitState:00000000 RCC_GetBitState
+ARM GAS  /tmp/ccy6G2yN.s 			page 57
+
+
+     /tmp/ccy6G2yN.s:1627   .text.RCC_GetBitState:00000038 $d
+     /tmp/ccy6G2yN.s:1632   .text.RCC_WaitForHSEStartUp:00000000 $t
+     /tmp/ccy6G2yN.s:1637   .text.RCC_WaitForHSEStartUp:00000000 RCC_WaitForHSEStartUp
+     /tmp/ccy6G2yN.s:1699   .text.RCC_ClearBitState:00000000 $t
+     /tmp/ccy6G2yN.s:1704   .text.RCC_ClearBitState:00000000 RCC_ClearBitState
+     /tmp/ccy6G2yN.s:1720   .text.RCC_ClearBitState:0000000c $d
+     /tmp/ccy6G2yN.s:1725   .text.RCC_GetIntBitState:00000000 $t
+     /tmp/ccy6G2yN.s:1730   .text.RCC_GetIntBitState:00000000 RCC_GetIntBitState
+     /tmp/ccy6G2yN.s:1757   .text.RCC_GetIntBitState:00000010 $d
+     /tmp/ccy6G2yN.s:1762   .text.RCC_ClearIntBitState:00000000 $t
+     /tmp/ccy6G2yN.s:1767   .text.RCC_ClearIntBitState:00000000 RCC_ClearIntBitState
+     /tmp/ccy6G2yN.s:1782   .text.RCC_ClearIntBitState:00000008 $d
+     /tmp/ccy6G2yN.s:1787   .text.RCC_UnlockPower:00000000 $t
+     /tmp/ccy6G2yN.s:1792   .text.RCC_UnlockPower:00000000 RCC_UnlockPower
+     /tmp/ccy6G2yN.s:1813   .text.RCC_UnlockPower:0000001c $d
+     /tmp/ccy6G2yN.s:1819   .text.RCC_KERNELVOLConfig:00000000 $t
+     /tmp/ccy6G2yN.s:1824   .text.RCC_KERNELVOLConfig:00000000 RCC_KERNELVOLConfig
+     /tmp/ccy6G2yN.s:1846   .text.RCC_KERNELVOLConfig:0000001c $d
+     /tmp/ccy6G2yN.s:1851   .text.RCC_POWERDOWNVOLConfig:00000000 $t
+     /tmp/ccy6G2yN.s:1856   .text.RCC_POWERDOWNVOLConfig:00000000 RCC_POWERDOWNVOLConfig
+     /tmp/ccy6G2yN.s:1878   .text.RCC_POWERDOWNVOLConfig:0000001c $d
+     /tmp/ccy6G2yN.s:1883   .data.AHBPrescTable:00000000 $d
+     /tmp/ccy6G2yN.s:1887   .data.AHBPrescTable:00000000 AHBPrescTable
+     /tmp/ccy6G2yN.s:1905   .data.APBPrescTable:00000000 $d
+     /tmp/ccy6G2yN.s:1909   .data.APBPrescTable:00000000 APBPrescTable
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

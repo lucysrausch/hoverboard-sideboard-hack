@@ -1,0 +1,224 @@
+ARM GAS  /tmp/ccHG1Qtv.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 23, 1
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.thumb
+  12              		.file	"drv_gpio.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.gpio_init,"ax",%progbits
+  17              		.align	2
+  18              		.global	gpio_init
+  19              		.thumb
+  20              		.thumb_func
+  22              	gpio_init:
+  23              	.LFB29:
+  24              		.file 1 "Src/drv_gpio.c"
+   1:Src/drv_gpio.c **** #include "gd32f1x0.h"
+   2:Src/drv_gpio.c **** #include "drv_gpio.h"
+   3:Src/drv_gpio.c **** 
+   4:Src/drv_gpio.c **** #include "defines.h"
+   5:Src/drv_gpio.c **** void gpio_init(void)
+   6:Src/drv_gpio.c **** {
+  25              		.loc 1 6 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 8
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  30              	.LCFI0:
+  31              		.cfi_def_cfa_offset 24
+  32              		.cfi_offset 4, -24
+  33              		.cfi_offset 5, -20
+  34              		.cfi_offset 6, -16
+  35              		.cfi_offset 7, -12
+  36              		.cfi_offset 8, -8
+  37              		.cfi_offset 14, -4
+  38 0004 82B0     		sub	sp, sp, #8
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 32
+   7:Src/drv_gpio.c **** // clocks on to all ports
+   8:Src/drv_gpio.c ****     RCC_AHBPeriphClock_Enable(RCC_AHBPERIPH_GPIOA|RCC_AHBPERIPH_GPIOB|RCC_AHBPERIPH_GPIOF,ENABLE);
+  41              		.loc 1 8 0
+  42 0006 4FF48C00 		mov	r0, #4587520
+  43 000a 0121     		movs	r1, #1
+  44 000c FFF7FEFF 		bl	RCC_AHBPeriphClock_Enable
+  45              	.LVL0:
+   9:Src/drv_gpio.c **** 
+  10:Src/drv_gpio.c ****     GPIO_InitPara GPIO_InitStructure;
+  11:Src/drv_gpio.c **** 
+  12:Src/drv_gpio.c **** // common settings to set ports
+  13:Src/drv_gpio.c **** 	  GPIO_InitStructure.GPIO_Mode = GPIO_MODE_OUT;
+ARM GAS  /tmp/ccHG1Qtv.s 			page 2
+
+
+  46              		.loc 1 13 0
+  47 0010 0123     		movs	r3, #1
+  48 0012 8DF80430 		strb	r3, [sp, #4]
+  14:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_SPEED_50MHZ;
+  49              		.loc 1 14 0
+  50 0016 4FF00308 		mov	r8, #3
+  51 001a 8DF80580 		strb	r8, [sp, #5]
+  15:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_OType = GPIO_OTYPE_PP;
+  52              		.loc 1 15 0
+  53 001e 0025     		movs	r5, #0
+  54 0020 8DF80650 		strb	r5, [sp, #6]
+  16:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_PuPd = GPIO_PUPD_NOPULL;
+  55              		.loc 1 16 0
+  56 0024 8DF80750 		strb	r5, [sp, #7]
+  17:Src/drv_gpio.c **** 
+  18:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Pin = LED1_Pin;
+  57              		.loc 1 18 0
+  58 0028 02AC     		add	r4, sp, #8
+  59 002a 44F8083D 		str	r3, [r4, #-8]!
+  19:Src/drv_gpio.c ****     GPIO_Init(LED1_GPIO_Port,&GPIO_InitStructure);
+  60              		.loc 1 19 0
+  61 002e 4FF09040 		mov	r0, #1207959552
+  62 0032 6946     		mov	r1, sp
+  63 0034 FFF7FEFF 		bl	GPIO_Init
+  64              	.LVL1:
+  20:Src/drv_gpio.c **** 
+  21:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Pin = LED2_Pin;
+  65              		.loc 1 21 0
+  66 0038 4FF40073 		mov	r3, #512
+  67 003c 0093     		str	r3, [sp]
+  22:Src/drv_gpio.c ****     GPIO_Init(LED2_GPIO_Port,&GPIO_InitStructure);
+  68              		.loc 1 22 0
+  69 003e 1C4E     		ldr	r6, .L2
+  70 0040 3046     		mov	r0, r6
+  71 0042 6946     		mov	r1, sp
+  72 0044 FFF7FEFF 		bl	GPIO_Init
+  73              	.LVL2:
+  23:Src/drv_gpio.c **** 
+  24:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Pin = LED3_Pin;
+  74              		.loc 1 24 0
+  75 0048 4FF48073 		mov	r3, #256
+  76 004c 0093     		str	r3, [sp]
+  25:Src/drv_gpio.c ****     GPIO_Init(LED3_GPIO_Port,&GPIO_InitStructure);
+  77              		.loc 1 25 0
+  78 004e 3046     		mov	r0, r6
+  79 0050 6946     		mov	r1, sp
+  80 0052 FFF7FEFF 		bl	GPIO_Init
+  81              	.LVL3:
+  26:Src/drv_gpio.c **** 
+  27:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Pin = LED4_Pin;
+  82              		.loc 1 27 0
+  83 0056 2023     		movs	r3, #32
+  84 0058 0093     		str	r3, [sp]
+  28:Src/drv_gpio.c ****     GPIO_Init(LED4_GPIO_Port,&GPIO_InitStructure);
+  85              		.loc 1 28 0
+  86 005a 3046     		mov	r0, r6
+  87 005c 6946     		mov	r1, sp
+ARM GAS  /tmp/ccHG1Qtv.s 			page 3
+
+
+  88 005e FFF7FEFF 		bl	GPIO_Init
+  89              	.LVL4:
+  29:Src/drv_gpio.c **** 
+  30:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Pin = LED5_Pin;
+  90              		.loc 1 30 0
+  91 0062 1027     		movs	r7, #16
+  92 0064 0097     		str	r7, [sp]
+  31:Src/drv_gpio.c ****     GPIO_Init(LED5_GPIO_Port,&GPIO_InitStructure);
+  93              		.loc 1 31 0
+  94 0066 3046     		mov	r0, r6
+  95 0068 6946     		mov	r1, sp
+  96 006a FFF7FEFF 		bl	GPIO_Init
+  97              	.LVL5:
+  32:Src/drv_gpio.c **** 
+  33:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_MODE_IN;
+  98              		.loc 1 33 0
+  99 006e 8DF80450 		strb	r5, [sp, #4]
+  34:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_SPEED_50MHZ;
+ 100              		.loc 1 34 0
+ 101 0072 8DF80580 		strb	r8, [sp, #5]
+  35:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_OType = GPIO_PUPD_NOPULL;
+ 102              		.loc 1 35 0
+ 103 0076 8DF80650 		strb	r5, [sp, #6]
+  36:Src/drv_gpio.c **** 
+  37:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Pin = SENSOR1_Pin;
+ 104              		.loc 1 37 0
+ 105 007a 0097     		str	r7, [sp]
+  38:Src/drv_gpio.c ****     GPIO_Init(SENSOR1_GPIO_Port,&GPIO_InitStructure);
+ 106              		.loc 1 38 0
+ 107 007c 4FF09040 		mov	r0, #1207959552
+ 108 0080 6946     		mov	r1, sp
+ 109 0082 FFF7FEFF 		bl	GPIO_Init
+ 110              	.LVL6:
+  39:Src/drv_gpio.c **** 
+  40:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Pin = SENSOR2_Pin;
+ 111              		.loc 1 40 0
+ 112 0086 4FF48043 		mov	r3, #16384
+ 113 008a 0093     		str	r3, [sp]
+  41:Src/drv_gpio.c ****     GPIO_Init(SENSOR2_GPIO_Port,&GPIO_InitStructure);
+ 114              		.loc 1 41 0
+ 115 008c 0948     		ldr	r0, .L2+4
+ 116 008e 6946     		mov	r1, sp
+ 117 0090 FFF7FEFF 		bl	GPIO_Init
+ 118              	.LVL7:
+  42:Src/drv_gpio.c **** 
+  43:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_OType = GPIO_PUPD_PULLDOWN;
+ 119              		.loc 1 43 0
+ 120 0094 0223     		movs	r3, #2
+ 121 0096 8DF80630 		strb	r3, [sp, #6]
+  44:Src/drv_gpio.c **** 
+  45:Src/drv_gpio.c ****     GPIO_InitStructure.GPIO_Pin = GPIO_PIN_3;
+ 122              		.loc 1 45 0
+ 123 009a 0823     		movs	r3, #8
+ 124 009c 0093     		str	r3, [sp]
+  46:Src/drv_gpio.c ****     GPIO_Init(GPIOA,&GPIO_InitStructure);
+ 125              		.loc 1 46 0
+ 126 009e 4FF09040 		mov	r0, #1207959552
+ARM GAS  /tmp/ccHG1Qtv.s 			page 4
+
+
+ 127 00a2 6946     		mov	r1, sp
+ 128 00a4 FFF7FEFF 		bl	GPIO_Init
+ 129              	.LVL8:
+  47:Src/drv_gpio.c **** 
+  48:Src/drv_gpio.c **** 
+  49:Src/drv_gpio.c **** 
+  50:Src/drv_gpio.c **** 
+  51:Src/drv_gpio.c **** 
+  52:Src/drv_gpio.c **** }
+ 130              		.loc 1 52 0
+ 131 00a8 02B0     		add	sp, sp, #8
+ 132              		@ sp needed
+ 133 00aa BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 134              	.L3:
+ 135 00ae 00BF     		.align	2
+ 136              	.L2:
+ 137 00b0 00040048 		.word	1207960576
+ 138 00b4 00080048 		.word	1207961600
+ 139              		.cfi_endproc
+ 140              	.LFE29:
+ 142              		.text
+ 143              	.Letext0:
+ 144              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 145              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 146              		.file 4 "CMSIS/gd32f1x0.h"
+ 147              		.file 5 "Peripherals/inc/gd32f1x0_gpio.h"
+ 148              		.file 6 "Peripherals/inc/gd32f1x0_rcc.h"
+ 149              		.file 7 "CMSIS/core_cm3.h"
+ARM GAS  /tmp/ccHG1Qtv.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 drv_gpio.c
+     /tmp/ccHG1Qtv.s:17     .text.gpio_init:00000000 $t
+     /tmp/ccHG1Qtv.s:22     .text.gpio_init:00000000 gpio_init
+     /tmp/ccHG1Qtv.s:137    .text.gpio_init:000000b0 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_AHBPeriphClock_Enable
+GPIO_Init

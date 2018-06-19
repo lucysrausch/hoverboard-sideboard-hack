@@ -39,9 +39,10 @@ PUTCHAR_PROTOTYPE
 uint8_t ready = 0;
 
 void waitForTxReady() {
-	ready = 0;
-	NVIC_EnableIRQ( USART2_IRQn);
-	while (!ready) {}
+	//ready = 0;
+	//NVIC_EnableIRQ( USART2_IRQn);
+	//while (!ready) {}
+	delay(150);
 }
 
 void USART2_IRQHandler(void)
@@ -82,7 +83,7 @@ void serial_init(void)
 
 		USART_InitPara USART_InitStructure;
 
-		USART_InitStructure.USART_BRR           = 115200;
+		USART_InitStructure.USART_BRR           = 38400;
 		USART_InitStructure.USART_WL            = USART_WL_8B;
 		USART_InitStructure.USART_STBits        = USART_STBITS_1;
 		USART_InitStructure.USART_Parity        = USART_PARITY_RESET;

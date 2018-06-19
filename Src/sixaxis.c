@@ -138,9 +138,7 @@ void gyro_read( void)
 	for ( int i = 0 ; i < 3; i++)
 	{
 		gyronew[i] = gyronew[i] *  0.061035156f * 0.017453292f ;
-
 		gyro[i] = gyronew[i];
-
 	}
 
 	#define RAD_TO_DEG 57.29578f
@@ -171,7 +169,8 @@ void gyro_read( void)
 
 
 	USART_DataSend(USART2 , (uint8_t) 0x0F);
-	while(USART2->STAT & USART_STAT_TBE) {}
+	waitForTxReady();
+
 
 	USART_DataSend(USART2 , (uint8_t) compAngleX.s[0]);
 	waitForTxReady();

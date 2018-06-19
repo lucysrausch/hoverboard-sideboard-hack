@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccxbBmnB.s 			page 1
+ARM GAS  /tmp/ccjmXk1U.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccxbBmnB.s 			page 1
   32:Src/main.c    **** #include "util.h"
   33:Src/main.c    **** //#include "sixaxis.h"
   34:Src/main.c    **** #include "drv_time.h"
-ARM GAS  /tmp/ccxbBmnB.s 			page 2
+ARM GAS  /tmp/ccjmXk1U.s 			page 2
 
 
   35:Src/main.c    **** #include "drv_softi2c.h"
@@ -113,12 +113,12 @@ ARM GAS  /tmp/ccxbBmnB.s 			page 1
   50              	.LVL3:
   59:Src/main.c    **** 	printf( "Otter!\n\r" );
   51              		.loc 1 59 0
-  52 0016 4A48     		ldr	r0, .L11
+  52 0016 4A48     		ldr	r0, .L12
   53 0018 FFF7FEFF 		bl	printf
   54              	.LVL4:
   60:Src/main.c    **** 
   61:Src/main.c    **** 	i2c_init();
-ARM GAS  /tmp/ccxbBmnB.s 			page 3
+ARM GAS  /tmp/ccjmXk1U.s 			page 3
 
 
   55              		.loc 1 61 0
@@ -140,7 +140,7 @@ ARM GAS  /tmp/ccxbBmnB.s 			page 1
   66 0028 0026     		movs	r6, #0
   67:Src/main.c    **** 		GPIO_WriteBit(LED3_GPIO_Port, LED3_Pin, Bit_RESET);
   67              		.loc 1 67 0
-  68 002a 464C     		ldr	r4, .L11+4
+  68 002a 464C     		ldr	r4, .L12+4
   69 002c 4FF48077 		mov	r7, #256
   70 0030 3546     		mov	r5, r6
   66:Src/main.c    **** 	for (int i = 0; i < 6; i++) {
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccxbBmnB.s 			page 1
   98 005e 4FF09040 		mov	r0, #1207959552
   99 0062 0121     		movs	r1, #1
  100 0064 2A46     		mov	r2, r5
-ARM GAS  /tmp/ccxbBmnB.s 			page 4
+ARM GAS  /tmp/ccjmXk1U.s 			page 4
 
 
  101 0066 FFF7FEFF 		bl	GPIO_WriteBit
@@ -221,7 +221,7 @@ ARM GAS  /tmp/ccxbBmnB.s 			page 1
   77:Src/main.c    **** 
   78:Src/main.c    **** 	GPIO_WriteBit(LED3_GPIO_Port, LED3_Pin, Bit_RESET);
  131              		.loc 1 78 0 is_stmt 1
- 132 0096 2B48     		ldr	r0, .L11+4
+ 132 0096 2B48     		ldr	r0, .L12+4
  133 0098 4FF48071 		mov	r1, #256
  134 009c 0022     		movs	r2, #0
  135 009e FFF7FEFF 		bl	GPIO_WriteBit
@@ -236,9 +236,9 @@ ARM GAS  /tmp/ccxbBmnB.s 			page 1
   81:Src/main.c    **** 	{
   82:Src/main.c    **** 		printf( "ERROR\n\r" );
  142              		.loc 1 82 0
- 143 00a8 2748     		ldr	r0, .L11+8
+ 143 00a8 2748     		ldr	r0, .L12+8
  144 00aa FFF7FEFF 		bl	printf
-ARM GAS  /tmp/ccxbBmnB.s 			page 5
+ARM GAS  /tmp/ccjmXk1U.s 			page 5
 
 
  145              	.LVL21:
@@ -260,13 +260,13 @@ ARM GAS  /tmp/ccxbBmnB.s 			page 1
   92:Src/main.c    **** 	extern unsigned int liberror;
   93:Src/main.c    **** 	if ( liberror )
  152              		.loc 1 93 0
- 153 00b6 254B     		ldr	r3, .L11+12
+ 153 00b6 254B     		ldr	r3, .L12+12
  154 00b8 1B68     		ldr	r3, [r3]
  155 00ba 13B1     		cbz	r3, .L5
   94:Src/main.c    **** 	{
   95:Src/main.c    **** 		  printf( "ERROR: I2C \n\r" );
  156              		.loc 1 95 0
- 157 00bc 2448     		ldr	r0, .L11+16
+ 157 00bc 2448     		ldr	r0, .L12+16
  158 00be FFF7FEFF 		bl	printf
  159              	.LVL23:
  160              	.L5:
@@ -298,241 +298,242 @@ ARM GAS  /tmp/ccxbBmnB.s 			page 1
  110:Src/main.c    **** 		/*unsigned long time = gettime();
  111:Src/main.c    **** 		//gyro_read();*/
  112:Src/main.c    **** 
-ARM GAS  /tmp/ccxbBmnB.s 			page 6
+ARM GAS  /tmp/ccjmXk1U.s 			page 6
 
 
  113:Src/main.c    **** 		//delay(800);
  114:Src/main.c    **** 
- 115:Src/main.c    **** 		while(!GPIO_ReadInputBit(GPIOA, GPIO_PIN_3)) {}
- 172              		.loc 1 115 0
- 173 00d6 4FF09044 		mov	r4, #1207959552
+ 115:Src/main.c    **** 
  116:Src/main.c    **** 
  117:Src/main.c    **** 
- 118:Src/main.c    **** 
- 119:Src/main.c    **** 		if (GPIO_ReadInputBit(SENSOR1_GPIO_Port, SENSOR1_Pin) | GPIO_ReadInputBit(SENSOR2_GPIO_Port, SENS
- 174              		.loc 1 119 0
- 175 00da 1E4F     		ldr	r7, .L11+20
- 120:Src/main.c    **** 			GPIO_WriteBit(LED4_GPIO_Port, LED4_Pin, Bit_SET);
- 121:Src/main.c    **** 			GPIO_WriteBit(LED5_GPIO_Port, LED5_Pin, Bit_SET);
- 122:Src/main.c    **** 		} else {
- 123:Src/main.c    **** 			GPIO_WriteBit(LED4_GPIO_Port, LED4_Pin, Bit_RESET);
- 176              		.loc 1 123 0
- 177 00dc 194E     		ldr	r6, .L11+4
- 178              	.LVL26:
- 179              	.L10:
- 115:Src/main.c    **** 		while(!GPIO_ReadInputBit(GPIOA, GPIO_PIN_3)) {}
- 180              		.loc 1 115 0 discriminator 1
- 181 00de 2046     		mov	r0, r4
- 182 00e0 0821     		movs	r1, #8
- 183 00e2 FFF7FEFF 		bl	GPIO_ReadInputBit
- 184              	.LVL27:
- 185 00e6 0028     		cmp	r0, #0
- 186 00e8 F9D0     		beq	.L10
- 119:Src/main.c    **** 		if (GPIO_ReadInputBit(SENSOR1_GPIO_Port, SENSOR1_Pin) | GPIO_ReadInputBit(SENSOR2_GPIO_Port, SENS
- 187              		.loc 1 119 0
- 188 00ea 2046     		mov	r0, r4
- 189 00ec 1021     		movs	r1, #16
- 190 00ee FFF7FEFF 		bl	GPIO_ReadInputBit
- 191              	.LVL28:
- 192 00f2 0546     		mov	r5, r0
- 193 00f4 3846     		mov	r0, r7
- 194 00f6 4FF48041 		mov	r1, #16384
- 195 00fa FFF7FEFF 		bl	GPIO_ReadInputBit
- 196              	.LVL29:
- 197 00fe 2843     		orrs	r0, r0, r5
- 198 0100 10F0FF0F 		tst	r0, #255
- 199 0104 0AD0     		beq	.L7
- 120:Src/main.c    **** 			GPIO_WriteBit(LED4_GPIO_Port, LED4_Pin, Bit_SET);
- 200              		.loc 1 120 0
- 201 0106 3046     		mov	r0, r6
- 202 0108 2021     		movs	r1, #32
- 203 010a 0122     		movs	r2, #1
- 204 010c FFF7FEFF 		bl	GPIO_WriteBit
- 205              	.LVL30:
- 121:Src/main.c    **** 			GPIO_WriteBit(LED5_GPIO_Port, LED5_Pin, Bit_SET);
- 206              		.loc 1 121 0
+ 118:Src/main.c    **** 		if (GPIO_ReadInputBit(SENSOR1_GPIO_Port, SENSOR1_Pin) | GPIO_ReadInputBit(SENSOR2_GPIO_Port, SENS
+ 172              		.loc 1 118 0
+ 173 00d6 4FF09044 		mov	r4, #1207959552
+ 174 00da 1E4F     		ldr	r7, .L12+20
+ 119:Src/main.c    **** 			GPIO_WriteBit(LED4_GPIO_Port, LED4_Pin, Bit_SET);
+ 120:Src/main.c    **** 			GPIO_WriteBit(LED5_GPIO_Port, LED5_Pin, Bit_SET);
+ 121:Src/main.c    **** 		} else {
+ 122:Src/main.c    **** 			GPIO_WriteBit(LED4_GPIO_Port, LED4_Pin, Bit_RESET);
+ 175              		.loc 1 122 0
+ 176 00dc 194E     		ldr	r6, .L12+4
+ 177              	.LVL26:
+ 178              	.L9:
+ 118:Src/main.c    **** 		if (GPIO_ReadInputBit(SENSOR1_GPIO_Port, SENSOR1_Pin) | GPIO_ReadInputBit(SENSOR2_GPIO_Port, SENS
+ 179              		.loc 1 118 0
+ 180 00de 2046     		mov	r0, r4
+ 181 00e0 1021     		movs	r1, #16
+ 182 00e2 FFF7FEFF 		bl	GPIO_ReadInputBit
+ 183              	.LVL27:
+ 184 00e6 0546     		mov	r5, r0
+ 185 00e8 3846     		mov	r0, r7
+ 186 00ea 4FF48041 		mov	r1, #16384
+ 187 00ee FFF7FEFF 		bl	GPIO_ReadInputBit
+ 188              	.LVL28:
+ 189 00f2 2843     		orrs	r0, r0, r5
+ 190 00f4 10F0FF0F 		tst	r0, #255
+ 191 00f8 0AD0     		beq	.L6
+ 119:Src/main.c    **** 			GPIO_WriteBit(LED4_GPIO_Port, LED4_Pin, Bit_SET);
+ 192              		.loc 1 119 0
+ 193 00fa 3046     		mov	r0, r6
+ 194 00fc 2021     		movs	r1, #32
+ 195 00fe 0122     		movs	r2, #1
+ 196 0100 FFF7FEFF 		bl	GPIO_WriteBit
+ 197              	.LVL29:
+ 120:Src/main.c    **** 			GPIO_WriteBit(LED5_GPIO_Port, LED5_Pin, Bit_SET);
+ 198              		.loc 1 120 0
+ 199 0104 3046     		mov	r0, r6
+ 200 0106 1021     		movs	r1, #16
+ 201 0108 0122     		movs	r2, #1
+ 202 010a FFF7FEFF 		bl	GPIO_WriteBit
+ 203              	.LVL30:
+ 204 010e 09E0     		b	.L8
+ 205              	.L6:
+ 206              		.loc 1 122 0
  207 0110 3046     		mov	r0, r6
- 208 0112 1021     		movs	r1, #16
- 209 0114 0122     		movs	r2, #1
+ 208 0112 2021     		movs	r1, #32
+ 209 0114 0022     		movs	r2, #0
  210 0116 FFF7FEFF 		bl	GPIO_WriteBit
  211              	.LVL31:
- 212 011a 09E0     		b	.L8
- 213              	.L7:
-ARM GAS  /tmp/ccxbBmnB.s 			page 7
+ 123:Src/main.c    **** 			GPIO_WriteBit(LED5_GPIO_Port, LED5_Pin, Bit_RESET);
+ 212              		.loc 1 123 0
+ 213 011a 3046     		mov	r0, r6
+ 214 011c 1021     		movs	r1, #16
+ARM GAS  /tmp/ccjmXk1U.s 			page 7
 
 
- 214              		.loc 1 123 0
- 215 011c 3046     		mov	r0, r6
- 216 011e 2021     		movs	r1, #32
- 217 0120 0022     		movs	r2, #0
- 218 0122 FFF7FEFF 		bl	GPIO_WriteBit
- 219              	.LVL32:
- 124:Src/main.c    **** 			GPIO_WriteBit(LED5_GPIO_Port, LED5_Pin, Bit_RESET);
- 220              		.loc 1 124 0
- 221 0126 3046     		mov	r0, r6
- 222 0128 1021     		movs	r1, #16
- 223 012a 0022     		movs	r2, #0
- 224 012c FFF7FEFF 		bl	GPIO_WriteBit
+ 215 011e 0022     		movs	r2, #0
+ 216 0120 FFF7FEFF 		bl	GPIO_WriteBit
+ 217              	.LVL32:
+ 218              	.L8:
+ 124:Src/main.c    **** 		}
+ 125:Src/main.c    **** 
+ 126:Src/main.c    **** 		while(!GPIO_ReadInputBit(GPIOA, GPIO_PIN_3)) {}
+ 219              		.loc 1 126 0 discriminator 1
+ 220 0124 0825     		movs	r5, #8
+ 221              	.L10:
+ 222 0126 2046     		mov	r0, r4
+ 223 0128 2946     		mov	r1, r5
+ 224 012a FFF7FEFF 		bl	GPIO_ReadInputBit
  225              	.LVL33:
- 226              	.L8:
- 125:Src/main.c    **** 		}
- 126:Src/main.c    **** 
+ 226 012e 0028     		cmp	r0, #0
+ 227 0130 F9D0     		beq	.L10
  127:Src/main.c    **** 
- 128:Src/main.c    **** 		gyro_read();
- 227              		.loc 1 128 0
- 228 0130 FFF7FEFF 		bl	gyro_read
- 229              	.LVL34:
- 129:Src/main.c    **** 		delay(500);
- 230              		.loc 1 129 0
- 231 0134 4FF4FA70 		mov	r0, #500
- 232 0138 FFF7FEFF 		bl	delay
- 233              	.LVL35:
- 234              	.LBE4:
- 130:Src/main.c    **** 
- 131:Src/main.c    **** 		//printf( "X: %d Y: %d Z: %d\n\r", (int)(accel[0]*1000), (int)(accel[1]*1000), (int)(accel[2]*100
- 132:Src/main.c    **** 
- 133:Src/main.c    **** 	}// end loop
- 235              		.loc 1 133 0
- 236 013c CFE7     		b	.L10
- 237              	.L12:
- 238 013e 00BF     		.align	2
- 239              	.L11:
- 240 0140 00000000 		.word	.LC0
- 241 0144 00040048 		.word	1207960576
- 242 0148 0C000000 		.word	.LC1
- 243 014c 00000000 		.word	liberror
- 244 0150 14000000 		.word	.LC2
- 245 0154 00080048 		.word	1207961600
- 246              		.cfi_endproc
- 247              	.LFE29:
- 249              		.section	.text.HardFault_Handler,"ax",%progbits
- 250              		.align	2
- 251              		.global	HardFault_Handler
- 252              		.thumb
- 253              		.thumb_func
- 255              	HardFault_Handler:
- 256              	.LFB30:
- 134:Src/main.c    **** 
+ 128:Src/main.c    **** 
+ 129:Src/main.c    **** 		gyro_read();
+ 228              		.loc 1 129 0
+ 229 0132 FFF7FEFF 		bl	gyro_read
+ 230              	.LVL34:
+ 130:Src/main.c    **** 		delay(100);
+ 231              		.loc 1 130 0
+ 232 0136 6420     		movs	r0, #100
+ 233 0138 FFF7FEFF 		bl	delay
+ 234              	.LVL35:
+ 235              	.LBE4:
+ 131:Src/main.c    **** 
+ 132:Src/main.c    **** 		//printf( "X: %d Y: %d Z: %d\n\r", (int)(accel[0]*1000), (int)(accel[1]*1000), (int)(accel[2]*100
+ 133:Src/main.c    **** 
+ 134:Src/main.c    **** 	}// end loop
+ 236              		.loc 1 134 0
+ 237 013c CFE7     		b	.L9
+ 238              	.L13:
+ 239 013e 00BF     		.align	2
+ 240              	.L12:
+ 241 0140 00000000 		.word	.LC0
+ 242 0144 00040048 		.word	1207960576
+ 243 0148 0C000000 		.word	.LC1
+ 244 014c 00000000 		.word	liberror
+ 245 0150 14000000 		.word	.LC2
+ 246 0154 00080048 		.word	1207961600
+ 247              		.cfi_endproc
+ 248              	.LFE29:
+ 250              		.section	.text.HardFault_Handler,"ax",%progbits
+ 251              		.align	2
+ 252              		.global	HardFault_Handler
+ 253              		.thumb
+ 254              		.thumb_func
+ 256              	HardFault_Handler:
+ 257              	.LFB30:
  135:Src/main.c    **** 
- 136:Src/main.c    **** }
- 137:Src/main.c    **** 
- 138:Src/main.c    **** void HardFault_Handler(void)
- 139:Src/main.c    **** {
-ARM GAS  /tmp/ccxbBmnB.s 			page 8
+ 136:Src/main.c    **** 
+ 137:Src/main.c    **** }
+ 138:Src/main.c    **** 
+ 139:Src/main.c    **** void HardFault_Handler(void)
+ARM GAS  /tmp/ccjmXk1U.s 			page 8
 
 
- 257              		.loc 1 139 0
- 258              		.cfi_startproc
- 259              		@ args = 0, pretend = 0, frame = 0
- 260              		@ frame_needed = 0, uses_anonymous_args = 0
- 261              		@ link register save eliminated.
- 262 0000 7047     		bx	lr
- 263              		.cfi_endproc
- 264              	.LFE30:
- 266 0002 00BF     		.section	.text.MemManage_Handler,"ax",%progbits
- 267              		.align	2
- 268              		.global	MemManage_Handler
- 269              		.thumb
- 270              		.thumb_func
- 272              	MemManage_Handler:
- 273              	.LFB31:
- 140:Src/main.c    **** 
- 141:Src/main.c    **** }
- 142:Src/main.c    **** void MemManage_Handler(void)
- 143:Src/main.c    **** {
- 274              		.loc 1 143 0
- 275              		.cfi_startproc
- 276              		@ args = 0, pretend = 0, frame = 0
- 277              		@ frame_needed = 0, uses_anonymous_args = 0
- 278              		@ link register save eliminated.
- 279 0000 7047     		bx	lr
- 280              		.cfi_endproc
- 281              	.LFE31:
- 283 0002 00BF     		.section	.text.BusFault_Handler,"ax",%progbits
- 284              		.align	2
- 285              		.global	BusFault_Handler
- 286              		.thumb
- 287              		.thumb_func
- 289              	BusFault_Handler:
- 290              	.LFB32:
- 144:Src/main.c    **** 
- 145:Src/main.c    **** }
- 146:Src/main.c    **** void BusFault_Handler(void)
- 147:Src/main.c    **** {
- 291              		.loc 1 147 0
- 292              		.cfi_startproc
- 293              		@ args = 0, pretend = 0, frame = 0
- 294              		@ frame_needed = 0, uses_anonymous_args = 0
- 295              		@ link register save eliminated.
- 296 0000 7047     		bx	lr
- 297              		.cfi_endproc
- 298              	.LFE32:
- 300 0002 00BF     		.section	.text.UsageFault_Handler,"ax",%progbits
- 301              		.align	2
- 302              		.global	UsageFault_Handler
- 303              		.thumb
- 304              		.thumb_func
- 306              	UsageFault_Handler:
- 307              	.LFB33:
- 148:Src/main.c    **** 
- 149:Src/main.c    **** }
- 150:Src/main.c    **** void UsageFault_Handler(void)
- 151:Src/main.c    **** {
-ARM GAS  /tmp/ccxbBmnB.s 			page 9
+ 140:Src/main.c    **** {
+ 258              		.loc 1 140 0
+ 259              		.cfi_startproc
+ 260              		@ args = 0, pretend = 0, frame = 0
+ 261              		@ frame_needed = 0, uses_anonymous_args = 0
+ 262              		@ link register save eliminated.
+ 263 0000 7047     		bx	lr
+ 264              		.cfi_endproc
+ 265              	.LFE30:
+ 267 0002 00BF     		.section	.text.MemManage_Handler,"ax",%progbits
+ 268              		.align	2
+ 269              		.global	MemManage_Handler
+ 270              		.thumb
+ 271              		.thumb_func
+ 273              	MemManage_Handler:
+ 274              	.LFB31:
+ 141:Src/main.c    **** 
+ 142:Src/main.c    **** }
+ 143:Src/main.c    **** void MemManage_Handler(void)
+ 144:Src/main.c    **** {
+ 275              		.loc 1 144 0
+ 276              		.cfi_startproc
+ 277              		@ args = 0, pretend = 0, frame = 0
+ 278              		@ frame_needed = 0, uses_anonymous_args = 0
+ 279              		@ link register save eliminated.
+ 280 0000 7047     		bx	lr
+ 281              		.cfi_endproc
+ 282              	.LFE31:
+ 284 0002 00BF     		.section	.text.BusFault_Handler,"ax",%progbits
+ 285              		.align	2
+ 286              		.global	BusFault_Handler
+ 287              		.thumb
+ 288              		.thumb_func
+ 290              	BusFault_Handler:
+ 291              	.LFB32:
+ 145:Src/main.c    **** 
+ 146:Src/main.c    **** }
+ 147:Src/main.c    **** void BusFault_Handler(void)
+ 148:Src/main.c    **** {
+ 292              		.loc 1 148 0
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 0
+ 295              		@ frame_needed = 0, uses_anonymous_args = 0
+ 296              		@ link register save eliminated.
+ 297 0000 7047     		bx	lr
+ 298              		.cfi_endproc
+ 299              	.LFE32:
+ 301 0002 00BF     		.section	.text.UsageFault_Handler,"ax",%progbits
+ 302              		.align	2
+ 303              		.global	UsageFault_Handler
+ 304              		.thumb
+ 305              		.thumb_func
+ 307              	UsageFault_Handler:
+ 308              	.LFB33:
+ 149:Src/main.c    **** 
+ 150:Src/main.c    **** }
+ 151:Src/main.c    **** void UsageFault_Handler(void)
+ARM GAS  /tmp/ccjmXk1U.s 			page 9
 
 
- 308              		.loc 1 151 0
- 309              		.cfi_startproc
- 310              		@ args = 0, pretend = 0, frame = 0
- 311              		@ frame_needed = 0, uses_anonymous_args = 0
- 312              		@ link register save eliminated.
- 313 0000 7047     		bx	lr
- 314              		.cfi_endproc
- 315              	.LFE33:
- 317 0002 00BF     		.section	.rodata.str1.4,"aMS",%progbits,1
- 318              		.align	2
- 319              	.LC0:
- 320 0000 4F747465 		.ascii	"Otter!\012\015\000"
- 320      72210A0D 
- 320      00
- 321 0009 000000   		.space	3
- 322              	.LC1:
- 323 000c 4552524F 		.ascii	"ERROR\012\015\000"
- 323      520A0D00 
- 324              	.LC2:
- 325 0014 4552524F 		.ascii	"ERROR: I2C \012\015\000"
- 325      523A2049 
- 325      3243200A 
- 325      0D00
- 326 0022 0000     		.text
- 327              	.Letext0:
- 328              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
- 329              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
- 330              		.file 4 "CMSIS/gd32f1x0.h"
- 331              		.file 5 "Peripherals/inc/gd32f1x0_gpio.h"
- 332              		.file 6 "CMSIS/core_cm3.h"
- 333              		.file 7 "Src/drv_time.h"
- 334              		.file 8 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdio.h"
- 335              		.file 9 "Src/drv_gpio.h"
- 336              		.file 10 "Src/drv_serial.h"
- 337              		.file 11 "Src/drv_i2c.h"
-ARM GAS  /tmp/ccxbBmnB.s 			page 10
+ 152:Src/main.c    **** {
+ 309              		.loc 1 152 0
+ 310              		.cfi_startproc
+ 311              		@ args = 0, pretend = 0, frame = 0
+ 312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 313              		@ link register save eliminated.
+ 314 0000 7047     		bx	lr
+ 315              		.cfi_endproc
+ 316              	.LFE33:
+ 318 0002 00BF     		.section	.rodata.str1.4,"aMS",%progbits,1
+ 319              		.align	2
+ 320              	.LC0:
+ 321 0000 4F747465 		.ascii	"Otter!\012\015\000"
+ 321      72210A0D 
+ 321      00
+ 322 0009 000000   		.space	3
+ 323              	.LC1:
+ 324 000c 4552524F 		.ascii	"ERROR\012\015\000"
+ 324      520A0D00 
+ 325              	.LC2:
+ 326 0014 4552524F 		.ascii	"ERROR: I2C \012\015\000"
+ 326      523A2049 
+ 326      3243200A 
+ 326      0D00
+ 327 0022 0000     		.text
+ 328              	.Letext0:
+ 329              		.file 2 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/machine/_defaul
+ 330              		.file 3 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdint.h"
+ 331              		.file 4 "CMSIS/gd32f1x0.h"
+ 332              		.file 5 "Peripherals/inc/gd32f1x0_gpio.h"
+ 333              		.file 6 "CMSIS/core_cm3.h"
+ 334              		.file 7 "Src/drv_time.h"
+ 335              		.file 8 "/home/niklas/Downloads/gcc-arm-none-eabi-4_8-2014q3/arm-none-eabi/include/stdio.h"
+ 336              		.file 9 "Src/drv_gpio.h"
+ 337              		.file 10 "Src/drv_serial.h"
+ 338              		.file 11 "Src/drv_i2c.h"
+ARM GAS  /tmp/ccjmXk1U.s 			page 10
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccxbBmnB.s:17     .text.main:00000000 $t
-     /tmp/ccxbBmnB.s:22     .text.main:00000000 main
-     /tmp/ccxbBmnB.s:240    .text.main:00000140 $d
-     /tmp/ccxbBmnB.s:250    .text.HardFault_Handler:00000000 $t
-     /tmp/ccxbBmnB.s:255    .text.HardFault_Handler:00000000 HardFault_Handler
-     /tmp/ccxbBmnB.s:267    .text.MemManage_Handler:00000000 $t
-     /tmp/ccxbBmnB.s:272    .text.MemManage_Handler:00000000 MemManage_Handler
-     /tmp/ccxbBmnB.s:284    .text.BusFault_Handler:00000000 $t
-     /tmp/ccxbBmnB.s:289    .text.BusFault_Handler:00000000 BusFault_Handler
-     /tmp/ccxbBmnB.s:301    .text.UsageFault_Handler:00000000 $t
-     /tmp/ccxbBmnB.s:306    .text.UsageFault_Handler:00000000 UsageFault_Handler
-     /tmp/ccxbBmnB.s:318    .rodata.str1.4:00000000 $d
+     /tmp/ccjmXk1U.s:17     .text.main:00000000 $t
+     /tmp/ccjmXk1U.s:22     .text.main:00000000 main
+     /tmp/ccjmXk1U.s:241    .text.main:00000140 $d
+     /tmp/ccjmXk1U.s:251    .text.HardFault_Handler:00000000 $t
+     /tmp/ccjmXk1U.s:256    .text.HardFault_Handler:00000000 HardFault_Handler
+     /tmp/ccjmXk1U.s:268    .text.MemManage_Handler:00000000 $t
+     /tmp/ccjmXk1U.s:273    .text.MemManage_Handler:00000000 MemManage_Handler
+     /tmp/ccjmXk1U.s:285    .text.BusFault_Handler:00000000 $t
+     /tmp/ccjmXk1U.s:290    .text.BusFault_Handler:00000000 BusFault_Handler
+     /tmp/ccjmXk1U.s:302    .text.UsageFault_Handler:00000000 $t
+     /tmp/ccjmXk1U.s:307    .text.UsageFault_Handler:00000000 UsageFault_Handler
+     /tmp/ccjmXk1U.s:319    .rodata.str1.4:00000000 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

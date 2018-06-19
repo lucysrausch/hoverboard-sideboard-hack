@@ -112,7 +112,6 @@ int main(void)
 
 		//delay(800);
 
-		while(!GPIO_ReadInputBit(GPIOA, GPIO_PIN_3)) {}
 
 
 
@@ -124,9 +123,11 @@ int main(void)
 			GPIO_WriteBit(LED5_GPIO_Port, LED5_Pin, Bit_RESET);
 		}
 
+		while(!GPIO_ReadInputBit(GPIOA, GPIO_PIN_3)) {}
+
 
 		gyro_read();
-		delay(500);
+		delay(100);
 
 		//printf( "X: %d Y: %d Z: %d\n\r", (int)(accel[0]*1000), (int)(accel[1]*1000), (int)(accel[2]*1000));
 
